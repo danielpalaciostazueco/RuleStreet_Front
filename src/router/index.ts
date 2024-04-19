@@ -5,7 +5,7 @@ const routes = [
   {
     path: '/',
     name: 'home',
-    component: () => import('../views/PaginaPublicaView.vue'),
+    component: () => import('../views/HomeView.vue'),
   },
   {
     path: '/:catchAll(.*)',
