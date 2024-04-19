@@ -13,8 +13,11 @@
   </script>
   
   <style scoped>
+  :root{
+    --colorFondo: #6E87A1;
+  }
   .search-box {
-    background-color: #6E87A1;
+    background-color: var(--colorFondo);
     color: white;
     padding: 10px 20px;
     text-align: center;
