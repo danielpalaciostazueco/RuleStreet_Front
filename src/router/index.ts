@@ -13,6 +13,11 @@ const routes = [
     component: () => import('../views/BusquedaCiudadanoView.vue'),
   },
   {
+    path: '/notFound',
+    name: '404',
+    component: () => import('../views/404View.vue'),
+  },
+  {
     path: '/:catchAll(.*)',
     redirect: '/notFound',
   },
