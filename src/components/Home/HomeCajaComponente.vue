@@ -33,6 +33,7 @@ defineProps({
   transition: transform 0.3s ease, opacity 0.3s ease;
   transform: scale(1);
   overflow: hidden;
+  text-decoration: none;
 }
 
 .home_caja:hover {
