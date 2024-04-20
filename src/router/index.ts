@@ -8,6 +8,11 @@ const routes = [
     component: () => import('../views/HomeView.vue'),
   },
   {
+    path: '/busquedaCiudadano',
+    name: 'busquedaCiudadano',
+    component: () => import('../views/BusquedaCiudadanoView.vue'),
+  },
+  {
     path: '/:catchAll(.*)',
     redirect: '/notFound',
   },

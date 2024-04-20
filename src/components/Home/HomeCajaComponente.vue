@@ -1,18 +1,22 @@
 <script setup lang="ts">
+import { RouterLink, useRouter } from 'vue-router';
+
 defineProps({
   iconPath: String,
-  label: String
+  label: String,
+  cardRoute: String
 })
 </script>
 
 <template>
-  <div class="home_caja">
+  <router-link :to="cardRoute || '/'" class="home_caja">
     <svg class="home_icono" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
       <path :d="iconPath" />
     </svg>
     <p>{{ label }}</p>
-  </div>
+  </router-link>
 </template>
+
 
 <style scoped>
 .home_caja {

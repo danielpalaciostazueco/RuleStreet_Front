@@ -6,6 +6,7 @@ interface Card {
     id: number;
     iconPath: string;
     label: string;
+    route: string;
 }
 
 const props = defineProps<{
@@ -15,7 +16,8 @@ const props = defineProps<{
 
 <template>
     <div class="card-container">
-        <HomeCard v-for="card in cards" :key="card.id" :iconPath="card.iconPath" :label="card.label" />
+        <HomeCard v-for="card in cards" :key="card.id" :iconPath="card.iconPath" :label="card.label"
+            :cardRoute="card.route" />
     </div>
 </template>
 
