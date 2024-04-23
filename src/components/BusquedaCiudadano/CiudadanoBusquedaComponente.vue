@@ -14,8 +14,9 @@ export default defineComponent({
         CitizenList
     },
     setup() {
-
+        const searchQuery = ref('');
         const citizens = ref<Citizen[]>([]);
+        const hasSearched = ref(false);
 
         const allCitizens = [
             { id: 1, name: "Diego Gimenez", dni: "12345678A", photo: "https://via.placeholder.com/150" },
@@ -27,10 +28,17 @@ export default defineComponent({
         ];
 
         function searchCitizens() {
-            citizens.value = allCitizens;
+            hasSearched.value = true;
+            if (searchQuery.value.trim()) {
+                citizens.value = allCitizens.filter(citizen =>
+                    citizen.name.toLowerCase().includes(searchQuery.value.toLowerCase())
+                );
+            } else {
+                citizens.value = [];
+            }
         }
 
-        return { citizens, searchCitizens };
+        return { citizens, searchCitizens, searchQuery, hasSearched };
     }
 });
 </script>
@@ -41,7 +49,7 @@ export default defineComponent({
             <h2>LISTA DE CIUDADANOS</h2>
         </div>
         <div class="ciudadano_busqueda">
-            <input type="text" placeholder="Ciudadano">
+            <input type="text" placeholder="Ciudadano" v-model="searchQuery">
             <button @click="searchCitizens">
                 <svg class="ciudadano_icono" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                     <path
@@ -95,6 +103,7 @@ export default defineComponent({
     background-color: var(--colorBusquedaCiudadanoBusqueda);
     border: 1px solid var(--colorBusquedaCiudadanoBusqueda);
     color: var(--colorBlanco);
+    padding-left: 1rem;
 }
 
 .ciudadano_busqueda input::placeholder {
