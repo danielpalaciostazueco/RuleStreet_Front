@@ -1,13 +1,39 @@
 <script lang="ts">
-import { defineComponent } from 'vue';
-import CitizenList from '@/components/BusquedaCiudadano/ListaCiudadanosComponente.vue'
+import { defineComponent, ref } from 'vue';
+import CitizenList from '@/components/BusquedaCiudadano/ListaCiudadanosComponente.vue';
+
+interface Citizen {
+    id: number;
+    name: string;
+    dni: string;
+    photo: string;
+}
+
 export default defineComponent({
     components: {
         CitizenList
+    },
+    setup() {
+
+        const citizens = ref<Citizen[]>([]);
+
+        const allCitizens = [
+            { id: 1, name: "Diego Gimenez", dni: "12345678A", photo: "https://via.placeholder.com/150" },
+            { id: 2, name: "Daniel Palacios", dni: "87654321B", photo: "https://via.placeholder.com/150" },
+            { id: 3, name: "Jaime Vijuesca", dni: "23456789C", photo: "https://via.placeholder.com/150" },
+            { id: 4, name: "Ainhoa Galicia", dni: "24567543A", photo: "https://via.placeholder.com/150" },
+            { id: 5, name: "Samuel Morales", dni: "64576543P", photo: "https://via.placeholder.com/150" },
+            { id: 6, name: "Adrian Castelar", dni: "64576543P", photo: "https://via.placeholder.com/150" }
+        ];
+
+        function searchCitizens() {
+            citizens.value = allCitizens;
+        }
+
+        return { citizens, searchCitizens };
     }
 });
 </script>
-
 
 <template>
     <div class="ciudadano_menu_izquierda">
@@ -16,17 +42,16 @@ export default defineComponent({
         </div>
         <div class="ciudadano_busqueda">
             <input type="text" placeholder="Ciudadano">
-            <button>
+            <button @click="searchCitizens">
                 <svg class="ciudadano_icono" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                     <path
                         d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z" />
                 </svg>
             </button>
         </div>
-        <citizen-list />
+        <citizen-list :citizens="citizens" />
     </div>
 </template>
-
 
 <style>
 .ciudadano_menu_izquierda {

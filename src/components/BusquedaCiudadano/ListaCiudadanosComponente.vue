@@ -1,12 +1,23 @@
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, type PropType } from 'vue';
+import CitizenCard from '@/components/ComponentesGenerales/TarjetaCiudadanoComponente.vue';
 
-export default defineComponent({});
+export default defineComponent({
+    components: {
+        CitizenCard
+    },
+    props: {
+        citizens: Array as PropType<Array<{ id: number; name: string; dni: string; photo: string }>>
+    }
+});
 </script>
 
 <template>
     <div class="ciudadano_menu_izquierda_contenedor">
-        <p>REALIZA UNA BUSQUEDA PARA MOSTRAR RESULTADOS</p>
+        <div class="ciudadano_contenedor_tarjetas" v-if="citizens && citizens.length > 0">
+            <citizen-card v-for="citizen in citizens" :key="citizen.id" :citizen="citizen" />
+        </div>
+        <p v-else>REALIZA UNA BUSQUEDA PARA MOSTRAR RESULTADOS</p>
     </div>
 </template>
 
@@ -58,5 +69,11 @@ export default defineComponent({});
 .ciudadano_boton_contenedor {
     display: flex;
     justify-content: center;
+}
+
+.ciudadano_contenedor_tarjetas {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
 }
 </style>
