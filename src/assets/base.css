@@ -1,8 +1,14 @@
 /* color palette from <https://github.com/vuejs/theme> */
 :root {
+  --colorBlanco: #fff;
   --colorFondo: #234c80;
   --colorSvg: #fff;
   --colorFondoTarjeta: #263d59;
   --colorFondoTarjetaSelecionado: #4c6c85;
   --colorTextoTarjeta: #c0c9d8;
+  --colorFondoCiudadano: #6e87a1;
+  --colorFondoCiudadano2: #546b86;
+  --colorBotonBusquedaCiudadano: #275799;
+  --colorBotonBusquedaCiudadanoActivo: #006aff;
+  --colorBusquedaCiudadanoBusqueda: #2d3a48;
 }
