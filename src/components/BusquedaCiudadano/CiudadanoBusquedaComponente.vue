@@ -53,6 +53,9 @@ export default defineComponent({
     color: var(--colorTextoTarjeta);
     display: flex;
     align-items: center;
+    width: 90%;
+    display: flex;
+    justify-content: center;
 }
 
 .ciudadano_busqueda {
