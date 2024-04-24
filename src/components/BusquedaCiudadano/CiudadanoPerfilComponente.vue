@@ -1,6 +1,6 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
-import ReturnButton from '@/components/BusquedaCiudadano/CiudadanoBotonComponente.vue';
+import ReturnButton from '@/components/ComponentesGenerales/BotonPaginaPrincipalComponente.vue';
 
 export default defineComponent({
     components: {

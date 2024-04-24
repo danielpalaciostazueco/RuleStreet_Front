@@ -14,7 +14,7 @@ export default defineComponent({
     </div>
 </template>
 
-<style>
+<style scoped>
 .ciudadano_titulo {
     background-color: var(--colorFondoCiudadano);
     width: 80%;

@@ -1,8 +1,8 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import TitleBar from '@/components/ComponentesGenerales/TituloComponente.vue';
-import SearchPanel from '@/components/BusquedaCiudadano/CiudadanoBusquedaComponente.vue'
-import ProfileSection from '@/components/BusquedaCiudadano/CiudadanoPerfilComponente.vue';
+import SearchPanel from '@/components/BusquedaVehiculo/VehiculoBusquedaComponente.vue'
+import ProfileSection from '@/components/BusquedaVehiculo/VehiculoPerfilComponente.vue';
 
 export default defineComponent({
     components: {
@@ -14,9 +14,9 @@ export default defineComponent({
 </script>
 
 <template>
-    <div class="ciudadano_container">
-        <title-bar title="BUSCAR CIUDADANO" />
-        <div class="ciudadano_menu">
+    <div class="vehiculo_container">
+        <title-bar title="BUSCAR VEHICULO" />
+        <div class="vehiculo_menu">
             <search-panel />
             <profile-section />
         </div>
@@ -24,7 +24,7 @@ export default defineComponent({
 </template>
 
 <style scoped>
-.ciudadano_container {
+.vehiculo_container {
     background-color: var(--colorFondo);
     min-height: 100vh;
     display: flex;
@@ -35,7 +35,7 @@ export default defineComponent({
 }
 
 
-.ciudadano_menu {
+.vehiculo_menu {
     display: flex;
     flex-direction: row;
     width: 80%;

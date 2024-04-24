@@ -1,28 +1,29 @@
 <script lang="ts">
-import { defineComponent, type PropType } from 'vue';
-import CitizenCard from '@/components/BusquedaCiudadano/TarjetaCiudadanoComponente.vue';
+import { defineComponent } from 'vue';
+import ReturnButton from '@/components/ComponentesGenerales/BotonPaginaPrincipalComponente.vue';
 
 export default defineComponent({
     components: {
-        CitizenCard
-    },
-    props: {
-        citizens: Array as PropType<Array<{ id: number; name: string; dni: string; photo: string }>>
+        ReturnButton
     }
 });
 </script>
 
 <template>
-    <div class="ciudadano_menu_izquierda_contenedor">
-        <div class="ciudadano_contenedor_tarjetas" v-if="citizens && citizens.length > 0">
-            <citizen-card v-for="citizen in citizens" :key="citizen.id" :citizen="citizen" />
+    <div class="vehiculo_menu_derecha">
+        <div class="vehiculo_menu_derecha_titulo">
+            <h2>PERFIL DEL VEHICULO</h2>
         </div>
-        <p v-else>REALIZA UNA BUSQUEDA PARA MOSTRAR RESULTADOS</p>
+        <div class="vehiculo_perfil">
+            <p>SELECIONA UN VEHICULO PARA CARGAR LA INFORMACIÓN</p>
+            <return-button />
+        </div>
     </div>
 </template>
 
-<style>
-.ciudadano_menu_derecha {
+<style scoped>
+
+.vehiculo_menu_derecha {
     background-color: var(--colorFondoCiudadano2);
     width: 75%;
     display: flex;
@@ -33,13 +34,13 @@ export default defineComponent({
     gap: 2rem;
 }
 
-.ciudadano_menu_derecha_titulo {
+.vehiculo_menu_derecha_titulo {
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.ciudadano_menu_derecha_titulo h2 {
+.vehiculo_menu_derecha_titulo h2 {
     background-color: var(--colorFondoCiudadano);
     border-radius: 0.7rem;
     height: 2.5rem;
@@ -51,7 +52,8 @@ export default defineComponent({
     justify-content: center;
 }
 
-.ciudadano_perfil {
+
+.vehiculo_perfil {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -61,19 +63,22 @@ export default defineComponent({
     height: 100%;
 }
 
-.ciudadano_perfil p {
+.vehiculo_perfil p {
     color: var(--colorTextoTarjeta);
     font-size: 2.5rem;
 }
 
-.ciudadano_boton_contenedor {
+.vehiculo_boton_contenedor {
     display: flex;
     justify-content: center;
 }
 
-.ciudadano_contenedor_tarjetas {
+.vehiculo_contenedor_tarjeta{
     display: flex;
     flex-direction: column;
     gap: 2rem;
 }
+
+
+
 </style>

@@ -8,7 +8,7 @@ export default defineComponent({});
     <router-link to="/" class="ciudadano_boton">Volver</router-link>
 </template>
 
-<style>
+<style scoped>
 .ciudadano_boton {
     background-color: var(--colorBotonBusquedaCiudadano);
     width: 5rem;
