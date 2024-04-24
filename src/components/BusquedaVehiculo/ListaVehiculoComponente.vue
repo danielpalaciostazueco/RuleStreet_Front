@@ -7,7 +7,7 @@ export default defineComponent({
         VehicleCard
     },
     props: {
-        vehicles: Array as PropType<Array<{ id: number; Matricula: string; Modelo: string; Color: string; IdCiudadano: number, Photo: string }>>
+        vehicles: Array as PropType<Array<{ idVehiculo: number; matricula: string; modelo: string; color: string; idCiudadano: number, Photo: string }>>
     }
 });
 </script>
@@ -15,7 +15,7 @@ export default defineComponent({
 <template>
     <div class="vehiculo_menu_izquierda_contenedor">
         <div class="vehiculo_contenedor_tarjeta" v-if="vehicles && vehicles.length > 0">
-            <VehicleCard v-for="vehicle in vehicles" :key="vehicle.id" :vehicle="vehicle" :vehicles="vehicles" />
+            <VehicleCard v-for="vehicle in vehicles" :key="vehicle.idVehiculo" :vehicle="{ idVehiculo: vehicle.idVehiculo, matricula: vehicle.matricula, modelo: vehicle.modelo, color: vehicle.color, idCiudadano: vehicle.idCiudadano, Photo: vehicle.Photo }" :vehicles="vehicles" />
         </div>
         <p v-else>REALIZA UNA BUSQUEDA PARA MOSTRAR RESULTADOS</p>
     </div>

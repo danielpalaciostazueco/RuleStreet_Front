@@ -1,23 +1,26 @@
 <script lang="ts">
-import { defineComponent, type PropType } from 'vue';
+import { defineComponent,  type PropType } from 'vue';
+
 
 export default defineComponent({
     props: {
         vehicle: {
-            type: Object as PropType<{ id: number; Matricula: string; Modelo: string; Color: string; IdCiudadano: number, Photo: string  }>,
+            type: Object as PropType<{ idVehiculo: number; matricula: string; modelo: string; color: string; idCiudadano: number, Photo: string  }>,
             required: true
         }
     }
 });
+
+
 </script>
 
 <template>
     <div class="tarjeta">
         <img class="tarjeta_imagen" :src="vehicle.Photo" alt="Foto del Vehiculo" />
         <div>
-            <h3>{{ vehicle.id }}</h3>
-            <p>Modelo: {{ vehicle.Modelo }}</p>
-            <p>Matrícula: {{ vehicle.Matricula }}</p>       
+            <h3>{{ vehicle.idVehiculo }}</h3>
+            <p>Modelo: {{ vehicle.modelo }}</p>
+            <p>Matrícula: {{ vehicle.matricula }}</p>       
         </div>
     </div>
 </template>

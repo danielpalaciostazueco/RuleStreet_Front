@@ -1,51 +1,59 @@
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { defineComponent, onMounted, ref } from 'vue';
+import { useListadoVehiculos } from '@/stores/storeVehiculo';
 import VehicleList from '@/components/BusquedaVehiculo/ListaVehiculoComponente.vue';
-interface Vehicle {
-    id: number;
-    Matricula: string;
-    Marca: string;
-    Modelo: string;
-    Color: string;
-    IdCiudadano: number;
-    Photo: string;
-}
 
 export default defineComponent({
-    components: {
-        VehicleList
-    },
-    setup() {
-        const searchQuery = ref('');
-        const Vehicles = ref<Vehicle[]>([]);
-        const hasSearched = ref(false);
+  components: {
+    VehicleList
+  },
+  setup() {
+    const store = useListadoVehiculos();
 
-        const allvehicles = [
-            { id: 1, Matricula: "Diego Gimenez", Marca: "Alfa Romeo", Modelo: "r1", Color: "Negro", IdCiudadano: 1, Photo: "https://via.placeholder.com/150" },
-            { id: 1, Matricula: "Diego Gimenez", Marca: "Alfa Romeo", Modelo: "r1", Color: "Negro", IdCiudadano: 1, Photo: "https://via.placeholder.com/150"},
-            { id: 1, Matricula: "Diego Gimenez", Marca: "Alfa Romeo", Modelo: "r1", Color: "Negro", IdCiudadano: 1,  Photo: "https://via.placeholder.com/150"},
-            { id: 1, Matricula: "Diego Gimenez", Marca: "Alfa Romeo", Modelo: "r1", Color: "Negro", IdCiudadano: 1,  Photo: "https://via.placeholder.com/150"},
-            { id: 1, Matricula: "Diego Gimenez", Marca: "Alfa Romeo", Modelo: "r1", Color: "Negro", IdCiudadano: 1, Photo: "https://via.placeholder.com/150"},
-            { id: 1, Matricula: "Diego Gimenez", Marca: "Alfa Romeo", Modelo: "r1", Color: "Negro", IdCiudadano: 1,  Photo: "https://via.placeholder.com/150"},         
-        ];
+    onMounted(() => {
+        store.cargarDatosVehiculos();
+    });
 
-    
-        
-
-        function searchVehicles() {
-            hasSearched.value = true;
-            if (searchQuery.value.trim()) {
-                Vehicles.value = allvehicles.filter(citizen =>
-                    citizen.Matricula.toLowerCase().includes(searchQuery.value.toLowerCase())
-                );
-            } else {
-                Vehicles.value = [];
-            }
-        }
-
-        return { Vehicles,searchVehicles, searchQuery, hasSearched };
+    interface Vehicle {
+      idVehiculo: number;
+      matricula: string;
+      marca: string;
+      modelo: string;
+      color: string;
+      idCiudadano: number;
+      Photo: string;
     }
+
+    const hasSearched = ref(false);
+    const searchQuery = ref('');
+    const Vehicles = ref<Vehicle[]>([]);  
+
+    function searchVehicles() {
+        hasSearched.value = true;
+        if (searchQuery.value.trim()) {
+            Vehicles.value = store.infoVehiculos.map(vehiculo => ({
+                idVehiculo: vehiculo.idVehiculo,
+                matricula: vehiculo.matricula,
+                marca: vehiculo.marca,
+                modelo: vehiculo.modelo,
+                color: vehiculo.color,
+                idCiudadano: vehiculo.idCiudadano,
+                Photo: ''  
+            })).filter(vehiculo => vehiculo.matricula.toLowerCase().includes(searchQuery.value.toLowerCase()));
+        } else {
+            Vehicles.value = [];
+        }
+    }
+
+    return {
+      hasSearched,
+      searchQuery,
+      Vehicles,
+      searchVehicles
+    };
+  }
 });
+
 </script>
 
 <template>
@@ -62,7 +70,7 @@ export default defineComponent({
                 </svg>
             </button>
         </div>
-        <vehicle-list :vehicles="Vehicles" />
+        <VehicleList :vehicles="Vehicles " />
     </div>
 </template>
 
