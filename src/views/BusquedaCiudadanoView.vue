@@ -25,6 +25,7 @@ export default defineComponent({
 
 <style scoped>
 .ciudadano_container {
+    padding: 2rem;
     background-color: var(--colorFondo);
     min-height: 100vh;
     display: flex;
@@ -40,6 +41,6 @@ export default defineComponent({
     flex-direction: row;
     width: 80%;
     gap: 2rem;
-    height: 50rem;
+    height: 90rem;
 }
 </style>
