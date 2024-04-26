@@ -27,9 +27,6 @@ export default defineComponent({
             { id: 6, name: "Adrian Castelar", dni: "64576543P", photo: "https://via.placeholder.com/150" }
         ];
 
-    
-        
-
         function searchCitizens() {
             hasSearched.value = true;
             if (searchQuery.value.trim()) {
