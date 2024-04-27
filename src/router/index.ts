@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory } from 'vue-router';
-// import { useAuthStore } from '@/store/LoginStore';
 
 const routes = [
   {
@@ -22,6 +21,16 @@ const routes = [
     path: '/notFound',
     name: '404',
     component: () => import('../views/404View.vue'),
+  },
+   {
+    path: '/login',
+    name: 'login',
+    component: () => import('../views/LoginView.vue'),
+  },
+  {
+    path: '/register',
+    name: 'register',
+    component: () => import('@/views/RegisterView.vue'),
   },
   {
     path: '/:catchAll(.*)',
