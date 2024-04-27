@@ -1,6 +1,7 @@
 <script lang="ts">
-import { defineComponent, ref } from 'vue';
+import { defineComponent, ref, onMounted } from 'vue';
 import CitizenList from '@/components/BusquedaCiudadano/ListaCiudadanosComponente.vue';
+import { useListadoCiudadanos } from '@/stores/storeCiudadano'; // Update the path as necessary
 
 interface Citizen {
     id: number;
@@ -14,31 +15,25 @@ export default defineComponent({
         CitizenList
     },
     setup() {
+        const { infoCiudadanos, cargarDatosCiudadanos } = useListadoCiudadanos();
         const searchQuery = ref('');
-        const citizens = ref<Citizen[]>([]);
-        const hasSearched = ref(false);
+        const filteredCitizens = ref([]);
 
-        const allCitizens = [
-            { id: 1, name: "Diego Gimenez", dni: "12345678A", photo: "https://via.placeholder.com/150" },
-            { id: 2, name: "Daniel Palacios", dni: "87654321B", photo: "https://via.placeholder.com/150" },
-            { id: 3, name: "Jaime Vijuesca", dni: "23456789C", photo: "https://via.placeholder.com/150" },
-            { id: 4, name: "Ainhoa Galicia", dni: "24567543A", photo: "https://via.placeholder.com/150" },
-            { id: 5, name: "Samuel Morales", dni: "64576543P", photo: "https://via.placeholder.com/150" },
-            { id: 6, name: "Adrian Castelar", dni: "64576543P", photo: "https://via.placeholder.com/150" }
-        ];
+        onMounted(async () => {
+            await cargarDatosCiudadanos();
+        });
 
         function searchCitizens() {
-            hasSearched.value = true;
             if (searchQuery.value.trim()) {
-                citizens.value = allCitizens.filter(citizen =>
-                    citizen.name.toLowerCase().includes(searchQuery.value.toLowerCase())
+                filteredCitizens.value = infoCiudadanos.filter(citizen =>
+                    citizen.nombre.toLowerCase().includes(searchQuery.value.toLowerCase())
                 );
             } else {
-                citizens.value = [];
+                filteredCitizens.value = [];
             }
         }
 
-        return { citizens, searchCitizens, searchQuery, hasSearched };
+        return { filteredCitizens, searchCitizens, searchQuery };
     }
 });
 </script>
@@ -57,7 +52,7 @@ export default defineComponent({
                 </svg>
             </button>
         </div>
-        <citizen-list :citizens="citizens" />
+        <CitizenList :citizens="filteredCitizens" />
     </div>
 </template>
 
