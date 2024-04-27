@@ -22,36 +22,40 @@ export default defineComponent({
 </template>
 
 <style>
-.ciudadano_menu_izquierda_contenedor {
+.ciudadano_menu_derecha {
+    background-color: var(--colorFondoCiudadano2);
+    width: 75%;
     display: flex;
     flex-direction: column;
     border-radius: 0.5rem;
-    padding-left: 2rem;
-    padding-right: 2rem;
-    height: 100%;
-    overflow-y: auto;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    gap: 2rem;
+}
+
+.ciudadano_menu_derecha_titulo {
+    display: flex;
+    justify-content: center;
     align-items: center;
 }
 
-.ciudadano_menu_izquierda_contenedor p {
-    color: var(--colorTextoTarjeta);
-}
-
-.ciudadano_menu_izquierda_contenedor::-webkit-scrollbar {
-    width: 8px;
-}
-
-.ciudadano_menu_izquierda_contenedor::-webkit-scrollbar-track {
-    background-color: var(--colorFondoCiudadano2);
-}
-
-.ciudadano_menu_izquierda_contenedor::-webkit-scrollbar-thumb {
-    background-color: var(--colorBlanco);
-    border-radius: 4px;
-}
-
-.ciudadano_menu_izquierda_contenedor::-webkit-scrollbar-thumb:hover {
+.ciudadano_menu_derecha_titulo h2 {
     background-color: var(--colorFondoCiudadano);
+    border-radius: 0.7rem;
+    height: 2.5rem;
+    color: var(--colorTextoTarjeta);
+    display: flex;
+    align-items: center;
+    width: 80%;
+    display: flex;
+    justify-content: center;
+}
+
+
+
+.ciudadano_boton_contenedor {
+    display: flex;
+    justify-content: center;
 }
 
 .ciudadano_contenedor_tarjetas {
