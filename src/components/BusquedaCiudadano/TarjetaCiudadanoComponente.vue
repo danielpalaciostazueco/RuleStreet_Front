@@ -4,21 +4,30 @@ import { defineComponent, type PropType } from 'vue';
 export default defineComponent({
     props: {
         citizen: {
-            type: Object as PropType<{ id: number; name: string; dni: string; photo: string }>,
+            type: Object as PropType<{
+                id: number;
+                name: string;
+                dni: string;
+                photo?: string;
+            }>,
             required: true
         }
-    }
+    },
+
 });
 </script>
 
 <template>
     <div class="tarjeta">
-        <img class="tarjeta_imagen" :src="citizen.photo" alt="Foto del Ciudadano" />
+        <!-- poner foto en el back -->
+        <img class="tarjeta_imagen" :src="citizen.photo || 'https://via.placeholder.com/150'"
+            alt="Foto del Ciudadano" />
         <div>
             <h3>{{ citizen.name }}</h3>
             <p>DNI: {{ citizen.dni }}</p>
         </div>
     </div>
+
 </template>
 
 

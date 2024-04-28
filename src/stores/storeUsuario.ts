@@ -1,7 +1,8 @@
 
 
+import router from '@/router';
 import { defineStore } from 'pinia';
-import { reactive } from 'vue';
+import { reactive, ref } from 'vue';
 
 
 export interface Usuario {
@@ -10,12 +11,19 @@ export interface Usuario {
     idCiudadano : number;
     nombre : string;
     contrasena : string;
+    isPoli : boolean;
 }
 
 
 export const useListadoUsuarios = defineStore('listadoUsuarios', () => {
   const apiUrl = `http://localhost:8001`;
   const infoUsuarios = reactive<Array<Usuario>>([]);
+   const Datos = ref({
+    nombre: '',
+    nombreUsuario: '',
+    contrasena: '',
+  });
+
   
   async function cargarDatosUsuarios() {
     try {
@@ -46,13 +54,13 @@ export const useListadoUsuarios = defineStore('listadoUsuarios', () => {
   }
 
 
-async function guardarUsuario(usuario : Usuario) {
+async function guardarUsuario() {
   try {
 
     const response = await fetch(apiUrl + '/Usuario', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(usuario),
+      body: JSON.stringify(Datos.value),
     });
 
     if (!response.ok) {
@@ -65,6 +73,32 @@ async function guardarUsuario(usuario : Usuario) {
     console.error('Error al guardar la información del usuario:', error);
   }
 }
+
+async function registroUsuario() {
+    const url = `${apiUrl}/Usuario/Register`;
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(Datos.value),
+        
+      });
+
+      if (response.ok) {
+        const usuarioRegistrado: Usuario = await response.json();
+        infoUsuarios.push(usuarioRegistrado);
+        infoUsuarios.splice(0, infoUsuarios.length, usuarioRegistrado); 
+        localStorage.setItem('usuario', JSON.stringify(usuarioRegistrado));
+        router.push('/');
+      } else {
+        console.error('Error en el registro:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error en el registro:', error);
+    }
+  }
 
 
 function formatearFecha(fecha: string) {
@@ -126,5 +160,5 @@ async function borrarDatosUsuario(usuarioId: number) {
     }
   }
 
-  return {cargarDatosUsuarios ,cargarDatosUsuariosId, borrarDatosUsuario, actualizarUsuario, infoUsuarios, guardarUsuario  };
+  return {cargarDatosUsuarios ,cargarDatosUsuariosId, borrarDatosUsuario, actualizarUsuario, infoUsuarios, guardarUsuario, registroUsuario, Datos, formatearFecha};
 });

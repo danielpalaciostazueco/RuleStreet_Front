@@ -1,13 +1,14 @@
 <script lang="ts">
 import { defineComponent, type PropType } from 'vue';
 import CitizenCard from '@/components/BusquedaCiudadano/TarjetaCiudadanoComponente.vue';
+import type { Ciudadano } from '@/stores/storeCiudadano'; 
 
 export default defineComponent({
     components: {
         CitizenCard
     },
     props: {
-        citizens: Array as PropType<Array<{ id: number; name: string; dni: string; photo: string }>>
+        citizens: Array as PropType<Ciudadano[]>
     }
 });
 </script>
@@ -15,9 +16,14 @@ export default defineComponent({
 <template>
     <div class="ciudadano_menu_izquierda_contenedor">
         <div class="ciudadano_contenedor_tarjetas" v-if="citizens && citizens.length > 0">
-            <citizen-card v-for="citizen in citizens" :key="citizen.id" :citizen="citizen" />
+            <citizen-card v-for="citizen in citizens" :key="citizen.idCiudadano" :citizen="{
+                id: citizen.idCiudadano,
+                name: citizen.nombre,
+                dni: citizen.dni,
+                photo: citizen.foto 
+            }" />
         </div>
-        <p v-else>REALIZA UNA BUSQUEDA PARA MOSTRAR RESULTADOS</p>
+        <p v-else>No se encontraron resultados para tu búsqueda.</p>
     </div>
 </template>
 
@@ -51,20 +57,7 @@ export default defineComponent({
     justify-content: center;
 }
 
-.ciudadano_perfil {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 2rem;
-    flex-direction: column;
-    justify-content: space-between;
-    height: 100%;
-}
 
-.ciudadano_perfil p {
-    color: var(--colorTextoTarjeta);
-    font-size: 2.5rem;
-}
 
 .ciudadano_boton_contenedor {
     display: flex;
