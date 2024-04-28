@@ -9,6 +9,11 @@ export default defineComponent({
     },
     props: {
         citizens: Array as PropType<Ciudadano[]>
+    },
+    methods: {
+        selectCitizen(idCiudadano: number) {
+            this.$emit('select-citizen', idCiudadano);
+        }
     }
 });
 </script>
@@ -20,8 +25,8 @@ export default defineComponent({
                 id: citizen.idCiudadano,
                 name: citizen.nombre,
                 dni: citizen.dni,
-                photo: citizen.foto 
-            }" />
+                photo: citizen.foto
+            }" @click="selectCitizen(citizen.idCiudadano)" />
         </div>
         <p v-else>No se encontraron resultados para tu búsqueda.</p>
     </div>

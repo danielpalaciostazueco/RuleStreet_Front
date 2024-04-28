@@ -13,12 +13,19 @@ export default defineComponent({
             required: true
         }
     },
-
+    methods: {
+        emitSelectCitizen() {
+            this.$emit('select-citizen', this.citizen.id);
+            console.log(this.citizen.id)
+            //cuando funcione el evento quitar esto
+            window.localStorage.setItem('id', this.citizen.id.toString());
+        }
+    }
 });
 </script>
 
 <template>
-    <div class="tarjeta">
+    <div class="tarjeta" @click="emitSelectCitizen">
         <!-- poner foto en el back -->
         <img class="tarjeta_imagen" :src="citizen.photo || 'https://via.placeholder.com/150'"
             alt="Foto del Ciudadano" />

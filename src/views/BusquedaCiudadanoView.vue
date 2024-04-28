@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, ref } from 'vue';
 import TitleBar from '@/components/ComponentesGenerales/TituloComponente.vue';
 import SearchPanel from '@/components/BusquedaCiudadano/CiudadanoBusquedaComponente.vue'
 import ProfileSection from '@/components/BusquedaCiudadano/CiudadanoPerfilComponente.vue';
@@ -9,6 +9,15 @@ export default defineComponent({
         TitleBar,
         SearchPanel,
         ProfileSection
+    },
+    setup() {
+        const selectedCitizenId = ref<number>(0);
+
+        const handleSelectCitizen = (id: number) => {
+            selectedCitizenId.value = id;
+        };
+
+        return { selectedCitizenId, handleSelectCitizen };
     }
 });
 </script>
@@ -17,8 +26,8 @@ export default defineComponent({
     <div class="ciudadano_container">
         <title-bar title="BUSCAR CIUDADANO" />
         <div class="ciudadano_menu">
-            <search-panel />
-            <profile-section />
+            <search-panel @select-citizen="handleSelectCitizen" />
+            <profile-section :selectedCitizenId="selectedCitizenId" />
         </div>
     </div>
 </template>
