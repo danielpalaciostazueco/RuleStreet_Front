@@ -10,50 +10,238 @@ export default defineComponent({
 </script>
 
 <template>
-    <div class="vehiculo_menu_derecha">
-        <div class="vehiculo_menu_derecha_titulo">
+    <div class="ciudadano_menu_derecha">
+        <div class="ciudadano_menu_derecha_titulo">
             <h2>PERFIL DEL VEHICULO</h2>
         </div>
-        <div class="vehiculo_perfil">
+        <div class="ciudadano_perfil">
             <p>SELECIONA UN VEHICULO PARA CARGAR LA INFORMACIÓN</p>
+            <div class="ciudadano_perfil_usuario">
+                <div class="ciudadano_perfil_usuario_izquierda">
+                    <img src="https://via.placeholder.com/150" alt="">
+                </div>
+                <div class="ciudadano_perfil_usuario_derecha">
+                    <div class="ciudadano_tarjeta">
+                        <p>Matricula</p>
+                        <p>D123123</p>
+                    </div>
+                    <div class="ciudadano_tarjeta">
+                        <p>Modelo</p>
+                        <p>s1</p>
+                    </div>
+                    <div class="ciudadano_tarjeta">
+                        <p>Marca</p>
+                        <p>Porche</p>
+                    </div>
+                    <div class="ciudadano_tarjeta">
+                        <p>Color</p>
+                        <p>Azul</p>
+                    </div>
+                    <div class="ciudadano_tarjeta">
+                        <p>Dueño</p>
+                        <p>Daniel</p>
+                    </div>
+
+                </div>
+            </div>
+            <div class="ciudadano_perfil_botones">
+                <div class="ciudadano_perfil_botones_izquierda">
+                    <h2>EN BUSQUEDA Y CAPTURA</h2>
+                    <div class="ciudadano_perfil_boton">
+                        <input type="radio" id="no_izquierda" name="response_izquierda" checked>
+                        <label for="no_izquierda">No</label>
+                        <input type="radio" id="yes_izquierda" name="response_izquierda">
+                        <label for="yes_izquierda">Sí</label>
+                    </div>
+                </div>
+            </div>
             <return-button />
         </div>
     </div>
 </template>
 
-<style scoped>
-
-.vehiculo_menu_derecha {
-    background-color: var(--colorFondoCiudadano2);
-    width: 75%;
+<style>
+.ciudadano_menu_izquierda_contenedor {
     display: flex;
     flex-direction: column;
     border-radius: 0.5rem;
-    padding-top: 2rem;
-    padding-bottom: 2rem;
-    gap: 2rem;
-}
-
-.vehiculo_menu_derecha_titulo {
-    display: flex;
-    justify-content: center;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    height: 100%;
+    overflow-y: auto;
     align-items: center;
 }
 
-.vehiculo_menu_derecha_titulo h2 {
-    background-color: var(--colorFondoCiudadano);
-    border-radius: 0.7rem;
-    height: 2.5rem;
+.ciudadano_menu_izquierda_contenedor p {
     color: var(--colorTextoTarjeta);
-    display: flex;
-    align-items: center;
-    width: 80%;
-    display: flex;
-    justify-content: center;
 }
 
+.ciudadano_menu_izquierda_contenedor::-webkit-scrollbar {
+    width: 8px;
+}
 
-.vehiculo_perfil {
+.ciudadano_menu_izquierda_contenedor::-webkit-scrollbar-track {
+    background-color: var(--colorFondoCiudadano2);
+}
+
+.ciudadano_menu_izquierda_contenedor::-webkit-scrollbar-thumb {
+    background-color: var(--colorBlanco);
+    border-radius: 4px;
+}
+
+.ciudadano_menu_izquierda_contenedor::-webkit-scrollbar-thumb:hover {
+    background-color: var(--colorFondoCiudadano);
+}
+
+.ciudadano_perfil_usuario {
+    display: flex;
+    width: 100%;
+    gap: 3rem;
+}
+
+.ciudadano_perfil_usuario_izquierda {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.ciudadano_perfil_usuario_izquierda img {
+    width: 15rem;
+    height: 15rem;
+}
+
+.ciudadano_perfil_usuario_derecha {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.ciudadano_tarjeta {
+    background-color: var(--colorBusquedaCiudadanoTarjeta);
+    border-radius: 0.7rem;
+    width: 12rem;
+    height: 4rem;
+    display: flex;
+    flex-direction: column;
+    padding-left: 2rem;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.ciudadano_tarjeta p {
+    font-size: 16px;
+}
+
+.ciudadano_perfil_botones {
+    display: flex;
+    gap: 2rem;
+    background-color: var(--colorBusquedaCiudadanoTarjeta);
+    width: 100%;
+    height: 8rem;
+    border-radius: 0.7rem;
+    justify-content: center;
+    align-items: center;
+}
+
+.ciudadano_perfil_boton input[type="radio"] {
+    display: none;
+}
+
+.ciudadano_perfil_boton label {
+    display: inline-block;
+    width: 13rem;
+    padding: 10px;
+    text-align: center;
+    color: var(--colorBlanco);
+    background-color: var(--colorBusquedaCiudadanoTarjeta);
+    cursor: pointer;
+    border: 1px solid var(--colorTextoTarjeta);
+    color: var(--colorTextoTarjeta)
+}
+
+#no_izquierda:checked+label,
+#no_derecha:checked+label {
+    background-color: var(--colorBusquedaCiudadanoPerfilBoton);
+    color: var(--colorTextoTarjeta)
+}
+
+#yes_izquierda:checked+label,
+#yes_derecha:checked+label {
+    background-color: var(--colorBusquedaCiudadanoPerfilBoton);
+    color: var(--colorTextoTarjeta)
+}
+
+.ciudadano_perfil_botones_derecha {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.ciudadano_perfil_botones_izquierda {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.ciudadano_perfil_botones_derecha h2 {
+    color: var(--colorTextoTarjeta);
+}
+
+.ciudadano_perfil_botones_izquierda h2 {
+    color: var(--colorTextoTarjeta);
+}
+
+.ciudadano_perfil_otros {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.ciudadano_perfil_otros_container {
+    display: flex;
+    background-color: var(--colorBusquedaCiudadanoTarjeta);
+    border-radius: 0.7rem;
+    width: 100%;
+    height: 20rem;
+
+}
+
+.ciudadano_icono {
+    width: 2rem;
+    height: 1rem;
+}
+
+.ciudadano_perfil_notasdiv {
+    display: flex;
+    width: 100%;
+    padding: 1rem;
+    gap: 0.5rem;
+}
+
+.ciudadano_perfil_notasdiv p {
+    font-size: 16px;
+}
+
+.ciudadano_perfil_multas {
+    display: flex;
+    width: 100%;
+    justify-content: flex-end;
+    padding: 1rem;
+}
+
+.ciudadano_perfil_multas p {
+    font-size: 16px;
+}
+
+.ciudadano_perfil {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -63,22 +251,7 @@ export default defineComponent({
     height: 100%;
 }
 
-.vehiculo_perfil p {
+.ciudadano_perfil p {
     color: var(--colorTextoTarjeta);
-    font-size: 2.5rem;
 }
-
-.vehiculo_boton_contenedor {
-    display: flex;
-    justify-content: center;
-}
-
-.vehiculo_contenedor_tarjeta{
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-}
-
-
-
 </style>
