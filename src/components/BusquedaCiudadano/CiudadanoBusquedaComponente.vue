@@ -1,13 +1,16 @@
 <script lang="ts">
-import { defineComponent, ref, onMounted } from 'vue';
+import { defineComponent, ref, onMounted, type Ref } from 'vue';
 import CitizenList from '@/components/BusquedaCiudadano/ListaCiudadanosComponente.vue';
-import { useListadoCiudadanos } from '@/stores/storeCiudadano'; // Update the path as necessary
+import { useListadoCiudadanos } from '@/stores/storeCiudadano';
 
-interface Citizen {
-    id: number;
-    name: string;
+interface Ciudadano {
+    idCiudadano: number;
+    nombre: string;
+    apellidos: string;
     dni: string;
-    photo: string;
+    genero: string;
+    fechaNacimiento: Date;
+    isPeligoso: boolean;
 }
 
 export default defineComponent({
@@ -17,7 +20,7 @@ export default defineComponent({
     setup() {
         const { infoCiudadanos, cargarDatosCiudadanos } = useListadoCiudadanos();
         const searchQuery = ref('');
-        const filteredCitizens = ref([]);
+        const filteredCitizens: Ref<Ciudadano[]> = ref([]);
 
         onMounted(async () => {
             await cargarDatosCiudadanos();
