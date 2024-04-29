@@ -1,26 +1,49 @@
 <script lang="ts">
-import { defineComponent, ref, computed } from 'vue';
+import { defineComponent, ref, computed, watch, onMounted } from 'vue';
 import ReturnButton from '@/components/ComponentesGenerales/BotonPaginaPrincipalComponente.vue';
+import { useRoute } from 'vue-router';
+import { useListadoCiudadanos } from '@/stores/storeCiudadano';
 
 export default defineComponent({
     components: {
         ReturnButton
     },
     setup() {
-        const citizenId = ref(localStorage.getItem('id') || '0');
+        const route = useRoute();
+        const store = useListadoCiudadanos();
+        const citizenId = ref(parseInt(parseRouteParam(route.params.id)));
 
-        const citizenIdComputed = computed(() => citizenId.value);
+        const citizenDetails = computed(() => {
+            return store.infoCiudadanos.find(c => c.idCiudadano === citizenId.value) || {};
+        });
 
-        window.addEventListener('storage', (event) => {
-            if (event.key === 'id') {
-                citizenId.value = event.newValue || '0';
+        watch(() => route.params.id, (newId) => {
+            const parsedId = parseInt(parseRouteParam(newId));
+            if (parsedId) {
+                citizenId.value = parsedId;
+                store.cargarDatosCiudadanosId(parsedId);
+            }
+        }, { immediate: true });
+
+        onMounted(() => {
+            if (citizenId.value) {
+                store.cargarDatosCiudadanosId(citizenId.value);
             }
         });
 
-        return { citizenId: citizenIdComputed };
+        return {
+            citizenDetails,
+            citizenId
+        };
     }
 });
+
+function parseRouteParam(param: string | string[]): string {
+    return Array.isArray(param) ? param[0] : param || '0';
+}
 </script>
+
+
 
 <template>
     <div class="ciudadano_menu_derecha">
