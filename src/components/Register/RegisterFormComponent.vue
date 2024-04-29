@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { ref, defineEmits } from 'vue';
-import { useListadoUsuarios } from '@/stores/storeUsuario';
-const store = useListadoUsuarios();
+import { useListadoAuth } from '@/stores/storeAuth';
+const store = useListadoAuth();
 
 const submitForm = async () => {
 
-    await store.guardarUsuario();
+    await store.registroUsuario();
 };
 </script>
 

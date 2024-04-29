@@ -2,11 +2,9 @@
 import { ref } from 'vue';
 
 import { useRouter } from 'vue-router';
-import { useListadoUsuarios } from '@/stores/storeUsuario';
+import { useListadoAuth } from '@/stores/storeAuth';
 
-const store = useListadoUsuarios();
-store.cargarDatosUsuarios();
-
+const store = useListadoAuth();
 const NombreUsuario = ref('');
 const Contraseña = ref('');
 const router = useRouter();
@@ -14,7 +12,7 @@ const router = useRouter();
 
 const submitForm = async () => {
     try {
-        await store.registroUsuario();
+        await store.LoginUsuario();
     } catch (error) {
         console.error('Error al enviar formulario:', error);
     }

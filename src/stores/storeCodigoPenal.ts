@@ -34,7 +34,10 @@ export const useListadoCodigoPenal = defineStore('listadoCodigoPenal', () => {
 
   async function cargarDatosCodigoPenalId(cpId : number) {
     try {
-      const response = await fetch(apiUrl + '/CodigoPenal/' + cpId.toString() );
+      const response = await fetch(apiUrl + '/CodigoPenal/' + cpId.toString(), {
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } 
+      
+      } );
       if (!response.ok) throw new Error('Error al cargar los datos del código penal');
       const data = await response.json();
       infoCodigoPenal.splice(0, infoCodigoPenal.length); 
@@ -80,6 +83,7 @@ async function borrarDatosCodigoPenal(cpId: number) {
     try {
       const response = await fetch(apiUrl + '/CodigoPenal/' + cpId.toString(), {
         method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` },
       });
       if (!response.ok) throw new Error('Error al borrar la información del código penal');
       await cargarDatosCodigoPenal();

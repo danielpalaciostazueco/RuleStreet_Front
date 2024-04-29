@@ -19,20 +19,22 @@ export const useListadoVehiculos = defineStore('listadoVehiculos', () => {
   const infoVehiculos = reactive<Array<Vehiculo>>([]);
   
 
-
   async function cargarDatosVehiculos() {
     try {
-      const response = await fetch(apiUrl + '/Vehiculo' );
-      if (!response.ok) throw new Error('Error al cargar los datos de los vehiculos');
-      const data = await response.json();
-      infoVehiculos.splice(0, infoVehiculos.length); 
-      data.forEach((vehiculo: Vehiculo) => {
-        infoVehiculos.push(vehiculo); 
-      });
+        const token = localStorage.getItem('token'); 
+        const response = await fetch(apiUrl + '/Vehiculo', {
+            headers: { 'Authorization': `Bearer ${token}` } 
+        });
+        if (!response.ok) throw new Error('Error al cargar los datos de los vehiculos');
+        const data = await response.json();
+        infoVehiculos.splice(0, infoVehiculos.length); 
+        data.forEach((vehiculo: Vehiculo) => {
+            infoVehiculos.push(vehiculo); 
+        });
     } catch (error) {
-      console.error('Error al cargar la información de los vehiculos:', error);
+        console.error('Error al cargar la información de los vehiculos:', error);
     }
-  }
+}
 
   async function cargarDatosVehiculosId(vehiculoId : number) {
     try {
@@ -51,10 +53,10 @@ export const useListadoVehiculos = defineStore('listadoVehiculos', () => {
 async function guardarObra(vehiculo : Vehiculo) {
   try {
   
-   
+    const token = localStorage.getItem('token'); 
     const response = await fetch(apiUrl + '/Vehiculo', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
       body: JSON.stringify(vehiculo),
     });
 
@@ -100,10 +102,10 @@ async function actualizarVehiculo(vehiculo : Vehiculo) {
   try {
     
 
-
+    const token = localStorage.getItem('token');
     const response = await fetch(apiUrl + '/Vehiculo', {
       method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
       body: JSON.stringify(vehiculo),
     });
 
@@ -117,10 +119,13 @@ async function actualizarVehiculo(vehiculo : Vehiculo) {
     console.error('Error al actualizar la información del vehiculo:', error);
   }
 }
+
   async function borrarDatosVehiculos(vehiculoId: number) {
+    const token = localStorage.getItem('token');
     try {
       const response = await fetch(apiUrl + '/Vehiculo/' + vehiculoId.toString(), {
         method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${token}` }
       });
       if (!response.ok) throw new Error('Error al borrar la información del vehiculo');
       await cargarDatosVehiculos();

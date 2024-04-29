@@ -19,7 +19,11 @@ export const useListadoAuditorias = defineStore('listadoAuditorias', () => {
   
   async function cargarDatosAuditorias() {
     try {
-      const response = await fetch(apiUrl + '/Auditoria' );
+      const response = await fetch(apiUrl + '/Auditoria', {
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } 
+      
+      
+      } );
       if (!response.ok) throw new Error('Error al cargar los datos de las auditorias');
       const data = await response.json();
       infoAuditorias.splice(0, infoAuditorias.length); 
@@ -33,7 +37,9 @@ export const useListadoAuditorias = defineStore('listadoAuditorias', () => {
 
   async function cargarDatosAuditoriasId(auditoriaId : number) {
     try {
-      const response = await fetch(apiUrl + '/Auditoria/' + auditoriaId.toString() );
+      const response = await fetch(apiUrl + '/Auditoria/' + auditoriaId.toString(), {
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } 
+      });
       if (!response.ok) throw new Error('Error al cargar los datos de las auditorias');
       const data = await response.json();
       infoAuditorias.splice(0, infoAuditorias.length); 
@@ -51,7 +57,7 @@ async function guardarPolicia(auditoria : Auditoria) {
 
     const response = await fetch(apiUrl + '/Auditoria', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json' , 'Authorization': `Bearer ${localStorage.getItem('token')}`},
       body: JSON.stringify(auditoria),
     });
 
@@ -99,7 +105,7 @@ async function actualizarPolicia(auditoria : Auditoria) {
   try {
     const response = await fetch(apiUrl + '/Auditoria', {
       method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${localStorage.getItem('token')}`},
       body: JSON.stringify(auditoria),
     });
 
@@ -118,6 +124,7 @@ async function borrarDatosPolicia(auditoriaId: number) {
     try {
       const response = await fetch(apiUrl + '/Auditoria/' + auditoriaId.toString(), {
         method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
       });
       if (!response.ok) throw new Error('Error al borrar la información de la auditoria');
       await cargarDatosAuditorias();
