@@ -23,7 +23,9 @@ export const useListadoMultas = defineStore('listadoMultas', () => {
   
   async function cargarDatosMultas() {
     try {
-      const response = await fetch(apiUrl + '/Multa' );
+      const response = await fetch(apiUrl + '/Multa', {
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } 
+      } );
       if (!response.ok) throw new Error('Error al cargar los datos de las multas');
       const data = await response.json();
       infoMultas.splice(0, infoMultas.length); 
@@ -37,7 +39,10 @@ export const useListadoMultas = defineStore('listadoMultas', () => {
 
   async function cargarDatosMultasId(multaId : number) {
     try {
-      const response = await fetch(apiUrl + '/Multa/' + multaId.toString() );
+      const response = await fetch(apiUrl + '/Multa/' + multaId.toString(),{
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+      
+      } );
       if (!response.ok) throw new Error('Error al cargar los datos de las multas');
       const data = await response.json();
       infoMultas.splice(0, infoMultas.length); 
@@ -55,7 +60,7 @@ async function guardarMulta(multa : Multa) {
 
     const response = await fetch(apiUrl + '/Multa', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${localStorage.getItem('token')}` },
       body: JSON.stringify(multa),
     });
 
@@ -103,7 +108,7 @@ async function actualizarMulta(multa : Multa) {
   try {
     const response = await fetch(apiUrl + '/Multa', {
       method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${localStorage.getItem('token')}`},
       body: JSON.stringify(multa),
     });
 
@@ -122,6 +127,7 @@ async function borrarDatosMulta(multaId: number) {
     try {
       const response = await fetch(apiUrl + '/Multa/' + multaId.toString(), {
         method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
       });
       if (!response.ok) throw new Error('Error al borrar la información de la multa');
       await cargarDatosMultas();

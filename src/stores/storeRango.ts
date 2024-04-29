@@ -19,7 +19,9 @@ export const useListadoRangos = defineStore('listadoRangos', () => {
   
   async function cargarDatosCiudadanos() {
     try {
-      const response = await fetch(apiUrl + '/Rango' );
+      const response = await fetch(apiUrl + '/Rango' ,{
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } 
+      });
       if (!response.ok) throw new Error('Error al cargar los datos de los rangos');
       const data = await response.json();
       infoRangos.splice(0, infoRangos.length); 
@@ -34,7 +36,10 @@ export const useListadoRangos = defineStore('listadoRangos', () => {
 
   async function cargarDatosCiudadanosId(rangoId: number) {
     try {
-      const response = await fetch(apiUrl + '/Rango/' +rangoId.toString() );
+      const response = await fetch(apiUrl + '/Rango/' +rangoId.toString(), {
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } 
+      });
+   
       if (!response.ok) throw new Error('Error al cargar los datos de los rangos');
       const data = await response.json();
       infoRangos.splice(0, infoRangos.length); 
@@ -79,7 +84,7 @@ async function actualizarCiudadano(rango : Rango) {
   try {
     const response = await fetch(apiUrl + '/Rango', {
       method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json' , 'Authorization': `Bearer ${localStorage.getItem('token')}` },
       body: JSON.stringify(rango),
     });
 
