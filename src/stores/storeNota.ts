@@ -21,7 +21,10 @@ export const useListadoNotas = defineStore('listadoNotas', () => {
   
   async function cargarDatosNotas() {
     try {
-      const response = await fetch(apiUrl + '/Nota' );
+      const response = await fetch(apiUrl + '/Nota', {
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } 
+      
+      } );
       if (!response.ok) throw new Error('Error al cargar los datos de las notas');
       const data = await response.json();
       infoNotas.splice(0, infoNotas.length); 
@@ -35,7 +38,10 @@ export const useListadoNotas = defineStore('listadoNotas', () => {
 
   async function cargarDatosNotasId(notaId : number) {
     try {
-      const response = await fetch(apiUrl + '/Nota/' + notaId.toString() );
+      const response = await fetch(apiUrl + '/Nota/' + notaId.toString(), {
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } 
+      });
+   
       if (!response.ok) throw new Error('Error al cargar los datos de las notas');
       const data = await response.json();
       infoNotas.splice(0, infoNotas.length); 
@@ -53,7 +59,7 @@ async function guardarNotas(nota : Nota) {
 
     const response = await fetch(apiUrl + '/Nota', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${localStorage.getItem('token')}` },
       body: JSON.stringify(nota),
     });
 
@@ -101,7 +107,7 @@ async function actualizarNotas(nota : Nota) {
   try {
     const response = await fetch(apiUrl + '/Nota', {
       method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${localStorage.getItem('token')}` },
       body: JSON.stringify(nota),
     });
 
@@ -120,6 +126,7 @@ async function borrarDatosNotas(notaId: number) {
     try {
       const response = await fetch(apiUrl + '/Nota/' + notaId.toString(), {
         method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
       });
       if (!response.ok) throw new Error('Error al borrar la información de la nota');
       await cargarDatosNotas();

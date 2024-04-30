@@ -1,5 +1,6 @@
 <script lang="ts">
 import { defineComponent, type PropType } from 'vue';
+import { useRouter } from 'vue-router';
 
 export default defineComponent({
     props: {
@@ -13,12 +14,20 @@ export default defineComponent({
             required: true
         }
     },
+    setup(props) {
+        const router = useRouter();
 
+        const navigateToCitizen = () => {
+            router.push({ name: 'busquedaCiudadano', params: { id: props.citizen.id } });
+        };
+
+        return { navigateToCitizen };
+    }
 });
 </script>
 
 <template>
-    <div class="tarjeta">
+    <div class="tarjeta" @click="navigateToCitizen">
         <!-- poner foto en el back -->
         <img class="tarjeta_imagen" :src="citizen.photo || 'https://via.placeholder.com/150'"
             alt="Foto del Ciudadano" />

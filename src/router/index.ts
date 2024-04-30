@@ -12,17 +12,17 @@ const routes = [
     component: () => import('../views/BusquedaCiudadanoView.vue'),
   },
   {
-    path: '/busquedaVehiculo',
-    name: 'busquedaVehiculo',
-    component: () => import('../views/BusquedaVehiculoView.vue'),
+    path: '/busquedaCiudadano/:id?', 
+    name: 'busquedaCiudadano',
+    component: () => import('../views/BusquedaCiudadanoView.vue'),
+    props: true
   },
-  
   {
     path: '/notFound',
     name: '404',
     component: () => import('../views/404View.vue'),
   },
-   {
+  {
     path: '/login',
     name: 'login',
     component: () => import('../views/LoginView.vue'),

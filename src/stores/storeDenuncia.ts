@@ -20,7 +20,10 @@ export const useListadoDenuncias = defineStore('listadoDenuncias', () => {
   
   async function cargarDatosDenuncias() {
     try {
-      const response = await fetch(apiUrl + '/Denuncia' );
+      const response = await fetch(apiUrl + '/Denuncia' ,{
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } 
+      
+      });
       if (!response.ok) throw new Error('Error al cargar los datos de las denuncias');
       const data = await response.json();
       infoDenuncias.splice(0, infoDenuncias.length); 
@@ -34,7 +37,9 @@ export const useListadoDenuncias = defineStore('listadoDenuncias', () => {
 
   async function cargarDatosDenunciasId(denunciaId : number) {
     try {
-      const response = await fetch(apiUrl + '/Denuncia/' + denunciaId.toString() );
+      const response = await fetch(apiUrl + '/Denuncia/' + denunciaId.toString() , {
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } 
+      });
       if (!response.ok) throw new Error('Error al cargar los datos de las denuncias');
       const data = await response.json();
       infoDenuncias.splice(0, infoDenuncias.length); 
@@ -52,7 +57,7 @@ async function guardarDenuncia(denuncia : Denuncia) {
 
     const response = await fetch(apiUrl + '/Denuncia', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${localStorage.getItem('token')}`},
       body: JSON.stringify(denuncia),
     });
 
@@ -100,7 +105,7 @@ async function actualizarDenuncia(denuncia : Denuncia) {
   try {
     const response = await fetch(apiUrl + '/Denuncia', {
       method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json' , 'Authorization': `Bearer ${localStorage.getItem('token')}`},
       body: JSON.stringify(denuncia),
     });
 
@@ -119,6 +124,7 @@ async function borrarDatosDenuncia(denunciaId: number) {
     try {
       const response = await fetch(apiUrl + '/Denuncia/' + denunciaId.toString(), {
         method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
       });
       if (!response.ok) throw new Error('Error al borrar la información de la denuncia');
       await cargarDatosDenuncias();

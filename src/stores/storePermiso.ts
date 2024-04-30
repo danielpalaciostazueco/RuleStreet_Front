@@ -17,7 +17,10 @@ export const useListadoPermisos = defineStore('listadoPermisos', () => {
   
   async function cargarDatosPermisos() {
     try {
-      const response = await fetch(apiUrl + '/Permiso' );
+      const response = await fetch(apiUrl + '/Permiso', {
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+      
+      } );
       if (!response.ok) throw new Error('Error al cargar los datos de las permisos');
       const data = await response.json();
       infoPermiso.splice(0, infoPermiso.length); 
@@ -31,7 +34,10 @@ export const useListadoPermisos = defineStore('listadoPermisos', () => {
 
   async function cargarDatosPermisosId(permisoId: number) {
     try {
-      const response = await fetch(apiUrl + '/Multa/' + permisoId.toString() );
+      const response = await fetch(apiUrl + '/Multa/' + permisoId.toString(), {
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+      
+      } );
       if (!response.ok) throw new Error('Error al cargar los datos de los permisos');
       const data = await response.json();
       infoPermiso.splice(0, infoPermiso.length); 
@@ -76,7 +82,7 @@ async function actualizarMulta(permiso : Permiso) {
   try {
     const response = await fetch(apiUrl + '/Permiso', {
       method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${localStorage.getItem('token')}` },
       body: JSON.stringify(permiso),
     });
 
@@ -95,6 +101,7 @@ async function borrarDatosMulta(permisoId: number) {
     try {
       const response = await fetch(apiUrl + '/Permiso/' + permisoId.toString(), {
         method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
       });
       if (!response.ok) throw new Error('Error al borrar la información del permiso');
       await cargarDatosPermisos();

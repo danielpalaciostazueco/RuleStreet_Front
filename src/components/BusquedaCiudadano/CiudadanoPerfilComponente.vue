@@ -1,13 +1,49 @@
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, ref, computed, watch, onMounted } from 'vue';
 import ReturnButton from '@/components/ComponentesGenerales/BotonPaginaPrincipalComponente.vue';
+import { useRoute } from 'vue-router';
+import { useListadoCiudadanos } from '@/stores/storeCiudadano';
 
 export default defineComponent({
     components: {
         ReturnButton
+    },
+    setup() {
+        const route = useRoute();
+        const store = useListadoCiudadanos();
+        const citizenId = ref(parseInt(parseRouteParam(route.params.id)));
+
+        const citizenDetails = computed(() => {
+            return store.infoCiudadanos.find(c => c.idCiudadano === citizenId.value) || {};
+        });
+
+        watch(() => route.params.id, (newId) => {
+            const parsedId = parseInt(parseRouteParam(newId));
+            if (parsedId) {
+                citizenId.value = parsedId;
+                store.cargarDatosCiudadanosId(parsedId);
+            }
+        }, { immediate: true });
+
+        onMounted(() => {
+            if (citizenId.value) {
+                store.cargarDatosCiudadanosId(citizenId.value);
+            }
+        });
+
+        return {
+            citizenDetails,
+            citizenId
+        };
     }
 });
+
+function parseRouteParam(param: string | string[]): string {
+    return Array.isArray(param) ? param[0] : param || '0';
+}
 </script>
+
+
 
 <template>
     <div class="ciudadano_menu_derecha">
@@ -43,7 +79,7 @@ export default defineComponent({
                     </div>
                     <div class="ciudadano_tarjeta">
                         <p>ID</p>
-                        <p>1</p>
+                        <p>{{ citizenId }}</p>
                     </div>
                     <div class="ciudadano_tarjeta">
                         <p>Numero de telefono</p>
@@ -98,7 +134,7 @@ export default defineComponent({
                         <p>MULTAS</p>
                     </div>
                     <div class="ciudadano_perfil_multas">
-                       <p>+ AÑADIR MULTA</p>
+                        <p>+ AÑADIR MULTA</p>
                     </div>
                 </div>
                 <div class="ciudadano_perfil_otros_container">
@@ -112,8 +148,7 @@ export default defineComponent({
                 </div>
                 <div class="ciudadano_perfil_otros_container">
                     <div class="ciudadano_perfil_notasdiv">
-                        <svg class="ciudadano_icono" xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 512 512">
+                        <svg class="ciudadano_icono" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                             <path
                                 d="M135.2 117.4L109.1 192H402.9l-26.1-74.6C372.3 104.6 360.2 96 346.6 96H165.4c-13.6 0-25.7 8.6-30.2 21.4zM39.6 196.8L74.8 96.3C88.3 57.8 124.6 32 165.4 32H346.6c40.8 0 77.1 25.8 90.6 64.3l35.2 100.5c23.2 9.6 39.6 32.5 39.6 59.2V400v48c0 17.7-14.3 32-32 32H448c-17.7 0-32-14.3-32-32V400H96v48c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32V400 256c0-26.7 16.4-49.6 39.6-59.2zM128 288a32 32 0 1 0 -64 0 32 32 0 1 0 64 0zm288 32a32 32 0 1 0 0-64 32 32 0 1 0 0 64z" />
                         </svg>
@@ -277,7 +312,7 @@ export default defineComponent({
     border-radius: 0.7rem;
     width: 100%;
     height: 20rem;
-    
+
 }
 
 .ciudadano_icono {
@@ -296,14 +331,14 @@ export default defineComponent({
     font-size: 16px;
 }
 
-.ciudadano_perfil_multas{
+.ciudadano_perfil_multas {
     display: flex;
     width: 100%;
     justify-content: flex-end;
     padding: 1rem;
 }
 
-.ciudadano_perfil_multas p{
+.ciudadano_perfil_multas p {
     font-size: 16px;
 }
 
