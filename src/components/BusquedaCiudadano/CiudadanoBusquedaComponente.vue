@@ -27,7 +27,6 @@ export default defineComponent({
         });
 
         function searchCitizens() {
-            cargarDatosCiudadanos(); 
             if (searchQuery.value.trim()) {
                 filteredCitizens.value = infoCiudadanos.filter(citizen =>
                     citizen.nombre.toLowerCase().includes(searchQuery.value.toLowerCase())

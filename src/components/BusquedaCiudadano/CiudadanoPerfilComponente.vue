@@ -25,6 +25,7 @@ export default defineComponent({
             }
         }, { immediate: true });
 
+
         onMounted(() => {
             if (citizenId.value) {
                 store.cargarDatosCiudadanosId(citizenId.value);
@@ -59,39 +60,39 @@ function parseRouteParam(param: string | string[]): string {
                 <div class="ciudadano_perfil_usuario_derecha">
                     <div class="ciudadano_tarjeta">
                         <p>Nombre</p>
-                        <p>Diego</p>
+                        <p>{{ citizenDetails.nombre }}</p>
                     </div>
                     <div class="ciudadano_tarjeta">
                         <p>Apellidos</p>
-                        <p>Gimenez</p>
+                        <p>{{ citizenDetails.apellidos }}</p>
                     </div>
                     <div class="ciudadano_tarjeta">
                         <p>Genero</p>
-                        <p>Male</p>
+                        <p>{{ citizenDetails.genero }}</p>
                     </div>
                     <div class="ciudadano_tarjeta">
                         <p>Nacionalidad</p>
-                        <p>Española</p>
+                        <p>{{ citizenDetails.nacionalidad }}</p>
                     </div>
                     <div class="ciudadano_tarjeta">
                         <p>Fecha de nacimiento</p>
-                        <p>17/08/2003</p>
+                        <p>{{ citizenDetails.fechaNacimiento }}</p>
                     </div>
                     <div class="ciudadano_tarjeta">
                         <p>ID</p>
-                        <p>{{ citizenId }}</p>
+                        <p>{{ citizenDetails.idCiudadano }}</p>
                     </div>
                     <div class="ciudadano_tarjeta">
-                        <p>Numero de telefono</p>
-                        <p>601221242</p>
+                        <p>Número de teléfono</p>
+                        <p>{{ citizenDetails.telefono }}</p>
                     </div>
                     <div class="ciudadano_tarjeta">
-                        <p>Numero de cuenta</p>
-                        <p>432432322432</p>
+                        <p>Número de cuenta</p>
+                        <p>{{ citizenDetails.numeroCuenta }}</p>
                     </div>
                     <div class="ciudadano_tarjeta">
                         <p>Trabajo</p>
-                        <p>Desempleado</p>
+                        <p>{{ citizenDetails.trabajo }}</p>
                     </div>
                 </div>
             </div>
