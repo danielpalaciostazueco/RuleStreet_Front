@@ -3,14 +3,7 @@ import { defineComponent, onMounted, ref, watch } from 'vue';
 import { useListadoVehiculos } from '@/stores/storeVehiculo';
 import VehicleList from '@/components/BusquedaVehiculo/ListaVehiculoComponente.vue';
 
-export default defineComponent({
-  components: {
-    VehicleList
-  },
-  setup() {
-    const store = useListadoVehiculos();
-
-    interface Vehicle {
+interface Vehicle {
       idVehiculo: number;
       matricula: string;
       marca: string;
@@ -20,6 +13,14 @@ export default defineComponent({
       Photo: string;
     }
 
+export default defineComponent({
+  components: {
+    VehicleList
+  },
+  setup() {
+    const store = useListadoVehiculos();
+
+    
     const searchQuery = ref('');
     const allVehicles = ref<Vehicle[]>([]);  
     const filteredVehicles = ref<Vehicle[]>([]);

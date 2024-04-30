@@ -141,5 +141,5 @@ async function borrarDatosCiudadano(ciudadanoId: number) {
     }
   }
 
-  return {cargarDatosCiudadanos ,cargarDatosCiudadanosId, borrarDatosCiudadano, actualizarCiudadano, infoCiudadanos, guardarCiudadano  };
+  return {cargarDatosCiudadanos ,cargarDatosCiudadanosId, borrarDatosCiudadano, actualizarCiudadano, infoCiudadanos, guardarCiudadano   };
 });
