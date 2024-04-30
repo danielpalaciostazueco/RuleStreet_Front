@@ -4,6 +4,23 @@ import ReturnButton from '@/components/ComponentesGenerales/BotonPaginaPrincipal
 import { useRoute } from 'vue-router';
 import { useListadoCiudadanos } from '@/stores/storeCiudadano';
 
+// Definición de la interfaz Ciudadano directamente en el componente
+interface Ciudadano {
+    idCiudadano: number;
+    nombre: string;
+    apellidos: string;
+    dni: string;
+    genero: string;
+    nacionalidad: string;
+    fechaNacimiento: Date;
+    direccion: string;
+    numeroTelefono: string;
+    numeroCuentaBancaria: string;
+    isPoli: boolean;
+    isBusquedaYCaptura: boolean;
+    isPeligroso: boolean;
+}
+
 export default defineComponent({
     components: {
         ReturnButton
@@ -11,10 +28,24 @@ export default defineComponent({
     setup() {
         const route = useRoute();
         const store = useListadoCiudadanos();
-        const citizenId = ref(parseInt(parseRouteParam(route.params.id)));
+        const citizenId = ref(parseInt(parseRouteParam(route.params.id) || '0'));
 
-        const citizenDetails = computed(() => {
-            return store.infoCiudadanos.find(c => c.idCiudadano === citizenId.value) || {};
+        const citizenDetails = computed<Ciudadano>(() => {
+            return store.infoCiudadanos.find(c => c.idCiudadano === citizenId.value) || {
+                idCiudadano: 0,
+                nombre: '',
+                apellidos: '',
+                dni: '',
+                genero: '',
+                nacionalidad: '',
+                fechaNacimiento: new Date(),
+                direccion: '',
+                numeroTelefono: '',
+                numeroCuentaBancaria: '',
+                isPoli: false,
+                isBusquedaYCaptura: false,
+                isPeligroso: false
+            };
         });
 
         watch(() => route.params.id, (newId) => {
@@ -24,7 +55,6 @@ export default defineComponent({
                 store.cargarDatosCiudadanosId(parsedId);
             }
         }, { immediate: true });
-
 
         onMounted(() => {
             if (citizenId.value) {
@@ -84,11 +114,11 @@ function parseRouteParam(param: string | string[]): string {
                     </div>
                     <div class="ciudadano_tarjeta">
                         <p>Número de teléfono</p>
-                        <p>{{ citizenDetails.telefono }}</p>
+                        <p>{{ citizenDetails.numeroTelefono }}</p>
                     </div>
                     <div class="ciudadano_tarjeta">
                         <p>Número de cuenta</p>
-                        <p>{{ citizenDetails.numeroCuenta }}</p>
+                        <p>{{ citizenDetails.numeroCuentaBancaria }}</p>
                     </div>
                     <div class="ciudadano_tarjeta">
                         <p>Trabajo</p>
@@ -100,18 +130,18 @@ function parseRouteParam(param: string | string[]): string {
                 <div class="ciudadano_perfil_botones_izquierda">
                     <h2>EN BUSQUEDA Y CAPTURA</h2>
                     <div class="ciudadano_perfil_boton">
-                        <input type="radio" id="no_izquierda" name="response_izquierda" checked>
+                        <input type="radio" id="no_izquierda" value="false" v-model="citizenDetails.isBusquedaYCaptura">
                         <label for="no_izquierda">No</label>
-                        <input type="radio" id="yes_izquierda" name="response_izquierda">
+                        <input type="radio" id="yes_izquierda" value="true" v-model="citizenDetails.isBusquedaYCaptura">
                         <label for="yes_izquierda">Sí</label>
                     </div>
                 </div>
                 <div class="ciudadano_perfil_botones_derecha">
-                    <h2>EN BUSQUEDA Y CAPTURA</h2>
+                    <h2>PELIGROSO</h2>
                     <div class="ciudadano_perfil_boton">
-                        <input type="radio" id="no_derecha" name="response_derecha" checked>
+                        <input type="radio" id="no_derecha" value="false" v-model="citizenDetails.isPeligroso">
                         <label for="no_derecha">No</label>
-                        <input type="radio" id="yes_derecha" name="response_derecha">
+                        <input type="radio" id="yes_derecha" value="true" v-model="citizenDetails.isPeligroso">
                         <label for="yes_derecha">Sí</label>
                     </div>
                 </div>

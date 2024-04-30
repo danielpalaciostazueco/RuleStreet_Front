@@ -10,16 +10,15 @@ export interface Ciudadano {
   apellidos: string;
   dni: string;
   genero: string;
+  nacionalidad: string;
   fechaNacimiento: Date;
   direccion: string;
   numeroTelefono: string;
   numeroCuentaBancaria: string;
   isPoli: boolean;
   isBusquedaYCaptura: boolean;
-  isPeligoso: boolean;
-
+  isPeligroso: boolean;
 }
-
 
 export const useListadoCiudadanos = defineStore('listadoCiduadanos', () => {
   const apiUrl = `http://localhost:8001`;
