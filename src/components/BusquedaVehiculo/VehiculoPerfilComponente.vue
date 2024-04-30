@@ -2,6 +2,7 @@
 import { defineComponent } from 'vue';
 import ReturnButton from '@/components/ComponentesGenerales/BotonPaginaPrincipalComponente.vue';
 
+
 export default defineComponent({
     components: {
         ReturnButton
