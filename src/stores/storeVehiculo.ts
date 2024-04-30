@@ -10,7 +10,8 @@ export interface Vehiculo {
   marca : string;
   modelo : string;
   color : string;
-  idCiudadano : number
+  idCiudadano : number,
+  photo : string;
 }
 
 
@@ -36,17 +37,22 @@ export const useListadoVehiculos = defineStore('listadoVehiculos', () => {
     }
 }
 
-  async function cargarDatosVehiculosId(vehiculoId : number) {
+  async function cargarDatosVehiculosId(vehiculoId: number) {
     try {
-      const response = await fetch(apiUrl + '/Vehiculo/' + vehiculoId.toString() );
-      if (!response.ok) throw new Error('Error al cargar los datos de los vehiculos');
-      const data = await response.json();
-      infoVehiculos.splice(0, infoVehiculos.length); 
-      data.forEach((vehiculo: Vehiculo) => {
-        infoVehiculos.push(vehiculo); 
+      const response = await fetch(apiUrl + '/Vehiculo/' + vehiculoId.toString(), {
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
       });
+      if (!response.ok) throw new Error('Error al cargar los datos del vehiculo');
+      const ciudadano = await response.json();
+
+      const index = infoVehiculos.findIndex(c => c.idCiudadano === vehiculoId);
+      if (index !== -1) {
+        infoVehiculos[index] = ciudadano;
+      } else {
+        infoVehiculos.push(ciudadano); 
+      }
     } catch (error) {
-      console.error('Error al cargar la información de los vehiculos:', error);
+      console.error('Error al cargar la información del vehiculo:', error);
     }
   }
   

@@ -1,16 +1,34 @@
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { computed, defineComponent, ref } from 'vue';
 import TitleBar from '@/components/ComponentesGenerales/TituloComponente.vue';
 import SearchPanel from '@/components/BusquedaVehiculo/VehiculoBusquedaComponente.vue'
 import ProfileSection from '@/components/BusquedaVehiculo/VehiculoPerfilComponente.vue';
+import { useRoute } from 'vue-router';
 
 export default defineComponent({
+    
     components: {
         TitleBar,
         SearchPanel,
         ProfileSection
+    },
+    setup() {
+        const selectedVehicleId = ref<number>(0);
+        const route = useRoute();
+
+        const handleSelectVehicle = (id: number) => {
+            selectedVehicleId.value = id;
+        };
+
+        const containerHeight = computed(() => {
+            return route.path.includes('/busquedaVehiculo/');
+        });
+
+        return { selectedVehicleId, handleSelectVehicle, containerHeight };
     }
 });
+
+
 </script>
 
 <template>

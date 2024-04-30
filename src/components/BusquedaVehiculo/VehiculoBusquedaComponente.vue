@@ -1,20 +1,9 @@
 <script lang="ts">
-import { defineComponent, onMounted, ref } from 'vue';
+import { defineComponent, onMounted, ref, watch } from 'vue';
 import { useListadoVehiculos } from '@/stores/storeVehiculo';
 import VehicleList from '@/components/BusquedaVehiculo/ListaVehiculoComponente.vue';
 
-export default defineComponent({
-  components: {
-    VehicleList
-  },
-  setup() {
-    const store = useListadoVehiculos();
-
-    onMounted(() => {
-        store.cargarDatosVehiculos();
-    });
-
-    interface Vehicle {
+interface Vehicle {
       idVehiculo: number;
       matricula: string;
       marca: string;
@@ -24,36 +13,53 @@ export default defineComponent({
       Photo: string;
     }
 
-    const hasSearched = ref(false);
-    const searchQuery = ref('');
-    const Vehicles = ref<Vehicle[]>([]);  
+export default defineComponent({
+  components: {
+    VehicleList
+  },
+  setup() {
+    const store = useListadoVehiculos();
 
-    function searchVehicles() {
-        hasSearched.value = true;
-        if (searchQuery.value.trim()) {
-            Vehicles.value = store.infoVehiculos.map(vehiculo => ({
-                idVehiculo: vehiculo.idVehiculo,
-                matricula: vehiculo.matricula,
-                marca: vehiculo.marca,
-                modelo: vehiculo.modelo,
-                color: vehiculo.color,
-                idCiudadano: vehiculo.idCiudadano,
-                Photo: ''  
-            })).filter(vehiculo => vehiculo.matricula.toLowerCase().includes(searchQuery.value.toLowerCase()));
-        } else {
-            Vehicles.value = [];
-        }
-    }
+    
+    const searchQuery = ref('');
+    const allVehicles = ref<Vehicle[]>([]);  
+    const filteredVehicles = ref<Vehicle[]>([]);
+    const selectedVehicle = ref<Vehicle | null>(null);  
+
+    onMounted(async () => {
+      await store.cargarDatosVehiculos();
+      allVehicles.value = store.infoVehiculos.map(vehiculo => ({
+        idVehiculo: vehiculo.idVehiculo,
+        matricula: vehiculo.matricula,
+        marca: vehiculo.marca,
+        modelo: vehiculo.modelo,
+        color: vehiculo.color,
+        idCiudadano: vehiculo.idCiudadano,
+        Photo: ''  
+      }));
+      filteredVehicles.value = [...allVehicles.value];
+    });
+
+    watch(searchQuery, (newQuery) => {
+      if (newQuery.trim()) {
+        filteredVehicles.value = allVehicles.value.filter(vehiculo => vehiculo.matricula.toLowerCase().includes(newQuery.toLowerCase()));
+      } else {
+        filteredVehicles.value = [...allVehicles.value];
+      }
+    }, { immediate: true });
+
+    const handleVehicleSelected = (vehicle: Vehicle) => {
+      selectedVehicle.value = vehicle;
+      console.log(selectedVehicle.value);  
+    };
 
     return {
-      hasSearched,
       searchQuery,
-      Vehicles,
-      searchVehicles
+      filteredVehicles,
+      handleVehicleSelected
     };
   }
 });
-
 </script>
 
 <template>
@@ -70,10 +76,9 @@ export default defineComponent({
                 </svg>
             </button>
         </div>
-        <VehicleList :vehicles="Vehicles " />
+        <VehicleList :vehicles="filteredVehicles" @vehicle-selected="handleVehicleSelected" />
     </div>
 </template>
-
 <style scoped>
 .vehiculo_menu_izquierda {
     background-color: var(--colorFondoCiudadano2);
