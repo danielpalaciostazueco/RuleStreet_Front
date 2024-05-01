@@ -1,6 +1,7 @@
 <script lang="ts">
 import { defineComponent, ref, computed, watch, onMounted } from 'vue';
 import ReturnButton from '@/components/ComponentesGenerales/BotonPaginaPrincipalComponente.vue';
+import Modal from '@/components/BusquedaCiudadano/CiudadanoMultasComponente.vue';
 import { useRoute } from 'vue-router';
 import { useListadoCiudadanos } from '@/stores/storeCiudadano';
 
@@ -44,12 +45,14 @@ interface Ciudadano {
 
 export default defineComponent({
     components: {
-        ReturnButton
+        ReturnButton,
+        Modal
     },
     setup() {
         const route = useRoute();
         const store = useListadoCiudadanos();
         const citizenId = ref(parseInt(parseRouteParam(route.params.id) || '0'));
+        const showModal = ref(false);
 
         const citizenDetails = computed<Ciudadano>(() => {
             return store.infoCiudadanos.find(c => c.idCiudadano === citizenId.value) || {
@@ -71,6 +74,10 @@ export default defineComponent({
             };
         });
 
+        const openModal = () => {
+            showModal.value = true;
+        };
+
         watch(() => route.params.id, (newId) => {
             const parsedId = parseInt(parseRouteParam(newId));
             if (parsedId) {
@@ -87,7 +94,9 @@ export default defineComponent({
 
         return {
             citizenDetails,
-            citizenId
+            citizenId,
+            showModal,
+            openModal
         };
     }
 });
@@ -205,8 +214,10 @@ function parseRouteParam(param: string | string[]): string {
                                 </svg>
                                 <p>MULTAS</p>
                                 <div class="ciudadano_perfil_multas">
-                                    <p>+ AÑADIR MULTA</p>
+                                    <p @click="showModal = true">+ AÑADIR MULTA</p>
                                 </div>
+                                <Modal :visible="showModal" @update:visible="showModal = $event" />
+
                             </div>
                             <template v-if="citizenDetails.multas && citizenDetails.multas.length > 0">
                                 <div class="notas_container">
