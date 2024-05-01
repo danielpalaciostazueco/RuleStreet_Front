@@ -26,7 +26,7 @@ export default defineComponent({
                 name: citizen.nombre,
                 dni: citizen.dni,
                 photo: citizen.foto
-            }" @click="selectCitizen(citizen.idCiudadano)" />
+            }" />
         </div>
         <p v-else>No se encontraron resultados para tu búsqueda.</p>
     </div>
