@@ -3,6 +3,25 @@
 import { defineStore } from 'pinia';
 import { reactive } from 'vue';
 
+interface Vehiculo {
+  idVehiculo: number;
+  matricula: string;
+  marca: string;
+  modelo: string;
+  color: string;
+  idCiudadano: number;
+}
+
+interface Multa {
+  idMulta: number;
+  idPolicia: number;
+  fecha: string;
+  precio: number;
+  articuloPenal: string;
+  descripcion: string;
+  pagada: boolean;
+  idCiudadano: number;
+}
 
 export interface Ciudadano {
   idCiudadano: number;
@@ -18,6 +37,8 @@ export interface Ciudadano {
   isPoli: boolean;
   isBusquedaYCaptura: boolean;
   isPeligroso: boolean;
+  multas: Multa[];
+  vehiculos: Vehiculo[];
 }
 
 export const useListadoCiudadanos = defineStore('listadoCiduadanos', () => {

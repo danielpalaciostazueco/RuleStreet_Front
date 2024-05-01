@@ -13,4 +13,7 @@
   --colorBusquedaCiudadanoBusqueda: #2d3a48;
   --colorBusquedaCiudadanoTarjeta: #3e4c63;
   --colorBusquedaCiudadanoPerfilBoton: #1d5485;
+  --colorBusquedaCiudadanoPerfilOtrosTarjeta: rgb(78, 88, 102, 0.5);
+  --colorBusquedaCiudadanoPerfilOtrosMultaPagada: rgba(29, 130, 39, 0.5);
+
 }
