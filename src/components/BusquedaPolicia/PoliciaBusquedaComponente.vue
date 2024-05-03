@@ -47,8 +47,7 @@ export default defineComponent({
         function searchPolicias() {
             if (searchQuery.value.trim()) {
                 filteredPolicias.value = allPolicias.value.filter(policia =>
-                    policia.ciudadano?.[0]?.nombre.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
-                    policia.ciudadano?.[0]?.apellidos.toLowerCase().includes(searchQuery.value.toLowerCase())
+                    policia.rango.toLowerCase().includes(searchQuery.value.toLowerCase())
                 );
             } else {
                 filteredPolicias.value = [...allPolicias.value];
