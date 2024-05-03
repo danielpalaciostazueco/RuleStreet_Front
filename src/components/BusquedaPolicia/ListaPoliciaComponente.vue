@@ -7,15 +7,15 @@ export default defineComponent({
         PoliciaCard
     },
     props: {
-        policia : Array as PropType<Array<{ idPolicia: number; idCiudadano: number, rango: string, numeroPlaca: string; }>>
+        policia: Array as PropType<Array<{ idPolicia: number; idCiudadano: number, rango: string, numeroPlaca: string }>>
     }
 });
 </script>
 
 <template>
-    <div class="vehiculo_menu_izquierda_contenedor">
-        <div class="vehiculo_contenedor_tarjeta" v-if="policia && policia.length > 0">
-            <VehicleCard v-for="poli in policia" :key="poli.idPolicia" :vehicle="{ idPolicia: poli.idPolicia, idCiudadano: poli.idCiudadano, rango: poli.rango, numeroPlaca: poli.numeroPlaca }" :policia="policia" />
+    <div class="policia_menu_izquierda_contenedor">
+        <div class="policia_contenedor_tarjeta" v-if="policia && policia.length > 0">
+            <PoliciaCard v-for="poli in policia" :key="poli.idPolicia" :policia="poli" />
         </div>
         <p v-else>REALIZA UNA BUSQUEDA PARA MOSTRAR RESULTADOS</p>
     </div>
@@ -71,7 +71,7 @@ export default defineComponent({
     justify-content: center;
 }
 
-.vehicle_contenedor_tarjeta{
+.vehicle_contenedor_tarjeta {
     display: flex;
     flex-direction: column;
     gap: 2rem;
@@ -143,6 +143,7 @@ export default defineComponent({
     fill: var(--colorSvg);
     transition: transform 0.3s ease, width 0.3s ease, height 0.3s ease;
 }
+
 vehiculo_menu_izquierda_contenedor {
     display: flex;
     flex-direction: column;

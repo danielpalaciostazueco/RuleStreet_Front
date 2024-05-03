@@ -1,53 +1,83 @@
 <script lang="ts">
-import { defineComponent, onMounted, ref } from 'vue';
+import { defineComponent, onMounted, ref, watch } from 'vue';
 import { useListadoPolicias } from '@/stores/storePolicia';
-import PoliciaList from '@/components/BusquedaPolicia/ListaPoliciaComponente.vue';
+import VehicleList from '@/components/BusquedaPolicia/ListaPoliciaComponente.vue';
+
+
+
+interface Policia {
+    idPolicia: number;
+    idCiudadano: number;
+    rango: string;
+    numeroPlaca: string;
+    ciudadano: Ciudadano[];
+}
+
+interface Ciudadano {
+    idCiudadano: number;
+    nombre: string;
+    apellidos: string;
+    dni: string;
+    genero: string;
+    nacionalidad: string;
+    fechaNacimiento: Date;
+    direccion: string;
+    numeroTelefono: string;
+    numeroCuentaBancaria: string;
+    isPoli: boolean;
+    isBusquedaYCaptura: boolean;
+    isPeligroso: boolean;
+}
+
+
+
 
 export default defineComponent({
-  components: {
-  PoliciaList
-  },
-  setup() {
-    const store =   useListadoPolicias();
+    components: {
+        VehicleList
+    },
+    setup() {
+        const store = useListadoPolicias();
 
-    onMounted(() => {
-        store.cargarDatosPolicias();
-    });
 
-    interface Policia {
-      idPolicia: number,
-      idCiudadano: number,
-      rango: string,
-      numeroPlaca: string
+        const searchQuery = ref('');
+        const allPolicias = ref<Policia[]>([]);
+        const filteredPolicias = ref<Policia[]>([]);
+        const selectedPolicia = ref<Policia | null>(null);
+
+        onMounted(async () => {
+            await store.cargarDatosPolicias();
+            allPolicias.value = store.infoPolicias.map((policias: Policia) => ({
+                idPolicia: policias.idPolicia,
+                idCiudadano: policias.idCiudadano,
+                rango: policias.rango,
+                numeroPlaca: policias.numeroPlaca,
+                ciudadano: [policias.ciudadano[0]]
+            }));
+
+            filteredPolicias.value = [...allPolicias.value];
+        });
+
+        watch(searchQuery, (newQuery) => {
+            if (newQuery.trim()) {
+                filteredPolicias.value = allPolicias.value.filter(policia => policia.rango.toLowerCase().includes(newQuery.toLowerCase()) || policia.numeroPlaca.toLowerCase().includes(newQuery.toLowerCase()));
+            } else {
+                filteredPolicias.value = [...allPolicias.value];
+            }
+        }, { immediate: true });
+
+        const handlePoliciaSelected = (policia: Policia) => {
+            selectedPolicia.value = policia;
+            console.log(selectedPolicia.value);
+        };
+
+        return {
+            searchQuery,
+            filteredPolicias,
+            handlePoliciaSelected
+        };
     }
-
-    const hasSearched = ref(false);
-    const searchQuery = ref('');
-    const Policia = ref<Policia[]>([]);  
-
-    function searchPolicia() {
-        hasSearched.value = true;
-        if (searchQuery.value.trim()) {
-            Policia.value = store.infoPolicias.map(policia  => ({
-                idPolicia: policia.idPolicia,
-                idCiudadano: policia.idCiudadano,
-                rango: policia.rango.toString(),
-                numeroPlaca: policia.numeroPlaca
-            }));               
-        } else {
-            Policia.value = [];
-        }
-    }
-
-    return {
-      hasSearched,
-      searchQuery,
-      Policia,
-      searchPolicia
-    };
-  }
 });
-
 </script>
 
 <template>
@@ -56,18 +86,17 @@ export default defineComponent({
             <h2>LISTA DE POLICIAS</h2>
         </div>
         <div class="vehiculo_busqueda">
-            <input type="text" placeholder="Policia" v-model="searchQuery">
-            <button @click="searchPolicia">
+            <input type="text" placeholder="Vehiculo" v-model="searchQuery">
+            <button @click="searchVehicles">
                 <svg class="vehiculo_icono" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                     <path
                         d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z" />
                 </svg>
             </button>
         </div>
-        <VehicleList :Policia="Policia " />
+        <VehicleList :vehicles="filteredPolicias" @vehicle-selected="handlePoliciaSelected" />
     </div>
 </template>
-
 <style scoped>
 .vehiculo_menu_izquierda {
     background-color: var(--colorFondoCiudadano2);

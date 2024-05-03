@@ -7,9 +7,26 @@ import { reactive } from 'vue';
 export interface Policia {
    idPolicia : number;
    idCiudadano : number;
-   rango : number;
+   rango : string;
    numeroPlaca : string;
+   ciudadano : Ciudadano[];
 }
+interface Ciudadano {
+    idCiudadano: number;
+    nombre: string;
+    apellidos: string;
+    dni: string;
+    genero: string;
+    nacionalidad: string;
+    fechaNacimiento: Date;
+    direccion: string;
+    numeroTelefono: string;
+    numeroCuentaBancaria: string;
+    isPoli: boolean;
+    isBusquedaYCaptura: boolean;
+    isPeligroso: boolean;
+}
+
 
 
 export const useListadoPolicias = defineStore('listadoPolicias', () => {

@@ -27,6 +27,18 @@ const routes = [
     component: () => import('../views/BusquedaCiudadanoView.vue'),
     props: true
   },
+
+   {
+    path: '/busquedaPolicia/',
+    name: 'busquedaPolicia',
+    component: () => import('../views/BusquedaPoliciaView.vue'),
+  },
+  {
+    path: '/busquedaPolicia/:id?', 
+    name: 'busquedaPolicia',
+    component: () => import('../views/BusquedaPoliciaView.vue'),
+    props: true
+  },
   {
     path: '/notFound',
     name: '404',
