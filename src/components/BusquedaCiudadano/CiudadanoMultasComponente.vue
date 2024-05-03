@@ -36,12 +36,9 @@ export default defineComponent({
 });
 </script>
 
-
-
 <template>
     <div v-if="visible" class="modal_fondo" @click.self="close">
         <div class="modal_container">
-
             <div class="modal_izquierda">
                 <div class="modal_titulo">
                     <h1>CODIGO PENAL</h1>
@@ -68,13 +65,16 @@ export default defineComponent({
                 </div>
             </div>
             <div class="modal_derecha">
-                derecha
+                <div class="modal_titulo">
+                    <h1>MAS</h1>
+                </div>
+                <div class="modal_derecha_div">
+                    <p>CONCEPTO DE MULTA</p>
+                </div>
             </div>
         </div>
     </div>
 </template>
-
-
 
 <style scoped>
 .modal_fondo {
@@ -109,6 +109,8 @@ export default defineComponent({
 .modal_derecha {
     display: flex;
     width: 40%;
+    flex-direction: column;
+    gap: 2rem;
 }
 
 .modal_titulo {
@@ -190,5 +192,10 @@ export default defineComponent({
     display: flex;
     align-items: center;
     color: var(--colorTextoTarjeta);
+}
+
+.modal_derecha_div{
+    background-color: var(--colorFondoTablaModal);
+    height: 100%;
 }
 </style>
