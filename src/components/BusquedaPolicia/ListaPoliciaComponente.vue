@@ -71,7 +71,7 @@ export default defineComponent({
     justify-content: center;
 }
 
-.vehicle_contenedor_tarjeta {
+.policia_contenedor_tarjeta {
     display: flex;
     flex-direction: column;
     gap: 2rem;
@@ -144,7 +144,7 @@ export default defineComponent({
     transition: transform 0.3s ease, width 0.3s ease, height 0.3s ease;
 }
 
-vehiculo_menu_izquierda_contenedor {
+.policia_menu_izquierda_contenedor {
     display: flex;
     flex-direction: column;
     border-radius: 0.5rem;
@@ -155,24 +155,24 @@ vehiculo_menu_izquierda_contenedor {
     align-items: center;
 }
 
-.vehiculo_menu_izquierda_contenedor p {
+.policia_menu_izquierda_contenedor p {
     color: var(--colorTextoTarjeta);
 }
 
-.vehiculo_menu_izquierda_contenedor::-webkit-scrollbar {
+.policia_menu_izquierda_contenedor::-webkit-scrollbar {
     width: 8px;
 }
 
-.vehiculo_menu_izquierda_contenedor::-webkit-scrollbar-track {
+.policia_menu_izquierda_contenedor::-webkit-scrollbar-track {
     background-color: var(--colorFondoCiudadano2);
 }
 
-.vehiculo_menu_izquierda_contenedor::-webkit-scrollbar-thumb {
+.policia_menu_izquierda_contenedor::-webkit-scrollbar-thumb {
     background-color: var(--colorBlanco);
     border-radius: 4px;
 }
 
-.vehiculo_menu_izquierda_contenedor::-webkit-scrollbar-thumb:hover {
+.policia_menu_izquierda_contenedor::-webkit-scrollbar-thumb:hover {
     background-color: var(--colorFondoCiudadano);
 }
 </style>
