@@ -69,7 +69,21 @@ export default defineComponent({
                     <h1>MAS</h1>
                 </div>
                 <div class="modal_derecha_div">
-                    <p>CONCEPTO DE MULTA</p>
+                    <div class="modal_derecha_container">
+                        <p>CONCEPTO DE MULTA</p>
+                        <div class="modal_derecha_container_tarjeta">
+                            <div class="izquierda">
+                                <p>Art 1.1</p>
+                            </div>
+                            <div class="derecha">
+                                <p>10 MESES</p>
+                                <p>500€</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="boton_container">
+                        <button class="modal_boton">Añadir</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -186,7 +200,7 @@ export default defineComponent({
     color: var(--colorTextoTarjeta);
 }
 
-.model_tabla_item_texto{
+.model_tabla_item_texto {
     padding: 10px;
     background-color: var(--colorFondoTablaModal);
     display: flex;
@@ -194,8 +208,60 @@ export default defineComponent({
     color: var(--colorTextoTarjeta);
 }
 
-.modal_derecha_div{
+.modal_derecha_div {
     background-color: var(--colorFondoTablaModal);
     height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    padding: 2rem;
+    justify-content: space-between;
+}
+
+.modal_derecha_div p {
+    color: var(--colorTextoTarjeta);
+}
+
+.modal_derecha_container {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.modal_derecha_container_tarjeta {
+    display: flex;
+    justify-content: space-between;
+    background-color: var(--colorTarjetaModal);
+    border: 1px solid var(--colorBlanco);
+    width: 100%;
+    height: 2rem;
+    align-items: center;
+    border-radius: 0.2rem;
+    padding: 0rem 1rem 0rem 1rem;
+}
+
+.derecha {
+    display: flex;
+    gap: 1rem;
+}
+
+.modal_boton {
+    width: 6rem;
+    height: 1.5rem;
+    background-color: var(--colorTarjetaModal);
+    color: var(--colorTextoTarjeta);
+    border: none;
+}
+
+.modal_boton:hover {
+    cursor: pointer;
+    color: var(--colorBlanco);
+    background-color: var(--colorFondoPantallaModal);
+}
+
+.boton_container{
+    display: flex;
+    justify-content: center;
+    width: 100%;
 }
 </style>

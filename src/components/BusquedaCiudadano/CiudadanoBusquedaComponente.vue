@@ -3,14 +3,42 @@ import { defineComponent, ref, onMounted, type Ref } from 'vue';
 import CitizenList from '@/components/BusquedaCiudadano/ListaCiudadanosComponente.vue';
 import { useListadoCiudadanos } from '@/stores/storeCiudadano';
 
+interface Vehiculo {
+    idVehiculo: number;
+    matricula: string;
+    marca: string;
+    modelo: string;
+    color: string;
+    idCiudadano: number;
+}
+
+interface Multa {
+    idMulta: number;
+    idPolicia: number;
+    fecha: string;
+    precio: number;
+    articuloPenal: string;
+    descripcion: string;
+    pagada: boolean;
+    idCiudadano: number;
+}
+
 interface Ciudadano {
     idCiudadano: number;
     nombre: string;
     apellidos: string;
     dni: string;
     genero: string;
+    nacionalidad: string;
     fechaNacimiento: Date;
-    isPeligoso: boolean;
+    direccion: string;
+    numeroTelefono: string;
+    numeroCuentaBancaria: string;
+    isPoli: boolean;
+    isBusquedaYCaptura: boolean;
+    isPeligroso: boolean;
+    multas: Multa[];
+    vehiculos: Vehiculo[];
 }
 
 export default defineComponent({
