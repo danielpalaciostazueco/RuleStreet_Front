@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent, onMounted, ref } from 'vue';
+import { computed, defineComponent, onMounted, ref } from 'vue';
 import { useListadoCodigoPenal } from '@/stores/storeCodigoPenal';
 
 export default defineComponent({
@@ -23,6 +23,8 @@ export default defineComponent({
             precio: 0,
             sentencia: ''
         });
+        const filtro = ref('');
+
         onMounted(async () => {
             await cargarDatosCodigoPenal();
         });
@@ -30,6 +32,7 @@ export default defineComponent({
         const close = () => {
             newMulta.value = { descripcion: '', monto: 0 };
             articuloSeleccionado.value = { articulo: '', descripcion: '', precio: 0, sentencia: '' };
+            filtro.value = ''; 
             emit('update:visible', false);
         };
 
@@ -40,14 +43,21 @@ export default defineComponent({
             }
         };
 
+        const articulosFiltrados = computed(() => {
+            return infoCodigoPenal.filter(item =>
+                item.descripcion.toLowerCase().includes(filtro.value.toLowerCase())
+            );
+        });
 
         return {
             newMulta,
             infoCodigoPenal,
+            articulosFiltrados,
             submitMulta: close,
             close,
             guardarId,
-            articuloSeleccionado
+            articuloSeleccionado,
+            filtro
         };
     }
 });
@@ -62,7 +72,7 @@ export default defineComponent({
                     <h1>CODIGO PENAL</h1>
                 </div>
                 <div>
-                    <input class="model_buscador" type="text" v-model="newMulta.descripcion"
+                    <input class="model_buscador" type="text" v-model="filtro"
                         placeholder="Buscar en el código criminal...">
                 </div>
                 <div class="model_tabla">
@@ -72,12 +82,12 @@ export default defineComponent({
                     <div class="model_tabla_encabezado">SENTENCIA</div>
                     <div class="model_tabla_encabezado">Añadir</div>
 
-                    <div v-for="item in infoCodigoPenal" :key="item.idCodigoPenal" class="model_tabla_fila">
+                    <div v-for="item in articulosFiltrados" :key="item.idCodigoPenal" class="model_tabla_fila">
                         <div class="model_tabla_item">{{ item.articulo }}</div>
                         <div class="model_tabla_item_texto">{{ item.descripcion }}</div>
                         <div class="model_tabla_item">{{ item.precio }}</div>
                         <div class="model_tabla_item">{{ item.sentencia }}</div>
-                        <div class="model_tabla_item" @click="guardarId(item.idCodigoPenal)">Añadir</div>
+                        <div class="model_tabla_item_filtro" @click="guardarId(item.idCodigoPenal)">Añadir</div>
                     </div>
 
                 </div>
@@ -98,7 +108,6 @@ export default defineComponent({
                                 <p>{{ articuloSeleccionado.precio }}€</p>
                             </div>
                         </div>
-
                     </div>
                     <div class="boton_container">
                         <button class="modal_boton">Añadir</button>
@@ -217,6 +226,24 @@ export default defineComponent({
     align-items: center;
     justify-content: center;
     color: var(--colorTextoTarjeta);
+}
+
+.model_tabla_item_filtro {
+    padding: 10px;
+    background-color: var(--colorFondoTablaModal);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--colorTextoTarjeta);
+}
+
+.model_tabla_item_filtro:hover {
+    cursor: pointer;
+}
+
+.model_tabla_item:hover,
+.model_tabla_item_texto:hover {
+    cursor: default;
 }
 
 .model_tabla_item_texto {
