@@ -11,6 +11,7 @@ const routes = [
     name: 'busquedaCiudadano',
     component: () => import('../views/BusquedaCiudadanoView.vue'),
   },
+  
   {
     path: '/busquedaVehiculo',
     name: 'busquedaVehiculo',
@@ -37,6 +38,7 @@ const routes = [
     name: 'login',
     component: () => import('../views/LoginView.vue'),
   },
+
   {
     path: '/register',
     name: 'register',
