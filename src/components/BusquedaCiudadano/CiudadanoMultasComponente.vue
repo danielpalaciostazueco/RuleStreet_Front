@@ -1,6 +1,7 @@
 <script lang="ts">
 import { defineComponent, onMounted, ref } from 'vue';
 import { useListadoCodigoPenal } from '@/stores/storeCodigoPenal';
+
 export default defineComponent({
     props: {
         visible: {
@@ -15,25 +16,42 @@ export default defineComponent({
             monto: 0
         });
 
-        const { cargarDatosCodigoPenal, infoCodigoPenal } = useListadoCodigoPenal();
-
+        const { cargarDatosCodigoPenal, infoCodigoPenal, cargarDatosCodigoPenalId } = useListadoCodigoPenal();
+        const articuloSeleccionado = ref({
+            articulo: '',
+            descripcion: '',
+            precio: 0,
+            sentencia: ''
+        });
         onMounted(async () => {
             await cargarDatosCodigoPenal();
         });
 
         const close = () => {
             newMulta.value = { descripcion: '', monto: 0 };
+            articuloSeleccionado.value = { articulo: '', descripcion: '', precio: 0, sentencia: '' };
             emit('update:visible', false);
         };
+
+        const guardarId = async (id: number) => {
+            const response = await cargarDatosCodigoPenalId(id);
+            if (response) {
+                articuloSeleccionado.value = response;
+            }
+        };
+
 
         return {
             newMulta,
             infoCodigoPenal,
             submitMulta: close,
-            close
+            close,
+            guardarId,
+            articuloSeleccionado
         };
     }
 });
+
 </script>
 
 <template>
@@ -59,7 +77,7 @@ export default defineComponent({
                         <div class="model_tabla_item_texto">{{ item.descripcion }}</div>
                         <div class="model_tabla_item">{{ item.precio }}</div>
                         <div class="model_tabla_item">{{ item.sentencia }}</div>
-                        <div class="model_tabla_item">Añadir</div>
+                        <div class="model_tabla_item" @click="guardarId(item.idCodigoPenal)">Añadir</div>
                     </div>
 
                 </div>
@@ -71,15 +89,16 @@ export default defineComponent({
                 <div class="modal_derecha_div">
                     <div class="modal_derecha_container">
                         <p>CONCEPTO DE MULTA</p>
-                        <div class="modal_derecha_container_tarjeta">
+                        <div class="modal_derecha_container_tarjeta" v-if="articuloSeleccionado.articulo">
                             <div class="izquierda">
-                                <p>Art 1.1</p>
+                                <p>{{ articuloSeleccionado.articulo }}</p>
                             </div>
                             <div class="derecha">
-                                <p>10 MESES</p>
-                                <p>500€</p>
+                                <p>{{ articuloSeleccionado.sentencia }}</p>
+                                <p>{{ articuloSeleccionado.precio }}€</p>
                             </div>
                         </div>
+
                     </div>
                     <div class="boton_container">
                         <button class="modal_boton">Añadir</button>
@@ -259,7 +278,7 @@ export default defineComponent({
     background-color: var(--colorFondoPantallaModal);
 }
 
-.boton_container{
+.boton_container {
     display: flex;
     justify-content: center;
     width: 100%;
