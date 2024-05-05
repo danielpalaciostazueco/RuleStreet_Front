@@ -1,21 +1,25 @@
 <script lang="ts">
 import { defineComponent, type PropType } from 'vue';
 import VehicleCard from '@/components/BusquedaVehiculo/TarjetaVehiculoComponente.vue';
+import type { Vehiculo } from '@/stores/storeVehiculo';
 
 export default defineComponent({
     components: {
-        VehicleCard
+       VehicleCard
     },
     props: {
-        vehicles: Array as PropType<Array<{ idVehiculo: number; matricula: string; modelo: string; color: string; idCiudadano: number, Photo: string }>>
+        vehicles: Array as PropType<Vehiculo[]>
     }
+   
+    
 });
 </script>
+
 
 <template>
     <div class="vehiculo_menu_izquierda_contenedor">
         <div class="vehiculo_contenedor_tarjeta" v-if="vehicles && vehicles.length > 0">
-            <VehicleCard v-for="vehicle in vehicles" :key="vehicle.idVehiculo" :vehicle="{ idVehiculo: vehicle.idVehiculo, matricula: vehicle.matricula, modelo: vehicle.modelo, color: vehicle.color, idCiudadano: vehicle.idCiudadano, Photo: vehicle.Photo }" :vehicles="vehicles" />
+            <VehicleCard v-for="vehicle in vehicles" :key="vehicle.idVehiculo" :vehicle="{ idVehiculo: vehicle.idVehiculo, matricula: vehicle.matricula, modelo: vehicle.modelo, color: vehicle.color,  Photo: vehicle.photo }" :vehicles="vehicles" />
         </div>
         <p v-else>REALIZA UNA BUSQUEDA PARA MOSTRAR RESULTADOS</p>
     </div>

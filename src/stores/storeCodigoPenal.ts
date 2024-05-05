@@ -23,6 +23,7 @@ export const useListadoCodigoPenal = defineStore('listadoCodigoPenal', () => {
       const response = await fetch(apiUrl + '/CodigoPenal', {
         headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
       });
+
       if (!response.ok) throw new Error('Error al cargar los datos del código penal');
       const data = await response.json();
       infoCodigoPenal.splice(0, infoCodigoPenal.length);

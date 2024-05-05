@@ -1,23 +1,41 @@
 <script lang="ts">
 import { defineComponent,  type PropType } from 'vue';
+import { useRouter } from 'vue-router';
 
 
 export default defineComponent({
     props: {
         vehicle: {
-            type: Object as PropType<{ idVehiculo: number; matricula: string; modelo: string; color: string; idCiudadano: number, Photo: string  }>,
+            type: Object as PropType<{
+                idVehiculo: number;
+                matricula: string;
+                modelo: string;
+                Photo: string;
+                color: string;
+                
+            }>,
             required: true
         }
+    },
+
+
+setup(props) {
+        const router = useRouter();
+
+        const navigateToVehicle = () => {
+            router.push({ name: 'busquedaVehiculo', params: { id: props.vehicle.idVehiculo } });
+        };
+
+        return { navigateToVehicle };
     }
 });
-
-
 </script>
 
 <template>
-    <div class="tarjeta">
+    <div  class="tarjeta" @click="navigateToVehicle">
         <img class="tarjeta_imagen" :src="vehicle.Photo" alt="Foto del Vehiculo" />
         <div>
+            
             <h3>{{ vehicle.idVehiculo }}</h3>
             <p>Modelo: {{ vehicle.modelo }}</p>
             <p>Matrícula: {{ vehicle.matricula }}</p>       
