@@ -26,43 +26,44 @@ export default defineComponent({
                 name: citizen.nombre,
                 dni: citizen.dni,
                 photo: citizen.foto
-            }" @click="selectCitizen(citizen.idCiudadano)" />
+            }" />
         </div>
         <p v-else>No se encontraron resultados para tu búsqueda.</p>
     </div>
 </template>
 
-<style>
-.ciudadano_menu_derecha {
-    background-color: var(--colorFondoCiudadano2);
-    width: 75%;
+<style scoped>
+
+.ciudadano_menu_izquierda_contenedor {
     display: flex;
     flex-direction: column;
     border-radius: 0.5rem;
-    padding-top: 2rem;
-    padding-bottom: 2rem;
-    gap: 2rem;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    height: 100%;
+    overflow-y: auto;
 }
 
-.ciudadano_menu_derecha_titulo {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.ciudadano_menu_derecha_titulo h2 {
-    background-color: var(--colorFondoCiudadano);
-    border-radius: 0.7rem;
-    height: 2.5rem;
+.ciudadano_menu_izquierda_contenedor p {
     color: var(--colorTextoTarjeta);
-    display: flex;
-    align-items: center;
-    width: 80%;
-    display: flex;
-    justify-content: center;
 }
 
+.ciudadano_menu_izquierda_contenedor::-webkit-scrollbar {
+    width: 8px;
+}
 
+.ciudadano_menu_izquierda_contenedor::-webkit-scrollbar-track {
+    background-color: var(--colorFondoCiudadano2);
+}
+
+.ciudadano_menu_izquierda_contenedor::-webkit-scrollbar-thumb {
+    background-color: var(--colorBlanco);
+    border-radius: 4px;
+}
+
+.ciudadano_menu_izquierda_contenedor::-webkit-scrollbar-thumb:hover {
+    background-color: var(--colorFondoCiudadano);
+}
 
 .ciudadano_boton_contenedor {
     display: flex;

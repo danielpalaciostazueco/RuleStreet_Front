@@ -1,6 +1,7 @@
 /* color palette from <https://github.com/vuejs/theme> */
 :root {
   --colorBlanco: #fff;
+  --colorNegro: #000;
   --colorFondo: #234c80;
   --colorSvg: #fff;
   --colorFondoTarjeta: #263d59;
@@ -13,4 +14,11 @@
   --colorBusquedaCiudadanoBusqueda: #2d3a48;
   --colorBusquedaCiudadanoTarjeta: #3e4c63;
   --colorBusquedaCiudadanoPerfilBoton: #1d5485;
+  --colorBusquedaCiudadanoPerfilOtrosTarjeta: rgb(78, 88, 102, 0.5);
+  --colorBusquedaCiudadanoPerfilOtrosMultaPagada: rgba(29, 130, 39, 0.5);
+  --colorFondoPantallaModal: rgba(0, 0, 0, 0.5);
+  --colorFondoModal: #242424;
+  --colorTituloModal: #3d8cf0;
+  --colorFondoTablaModal: #474747;
+  --colorTarjetaModal: #626262;
 }

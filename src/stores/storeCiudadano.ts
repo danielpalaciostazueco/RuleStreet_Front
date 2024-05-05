@@ -3,132 +3,154 @@
 import { defineStore } from 'pinia';
 import { reactive } from 'vue';
 
-
-export interface Ciudadano {
-    idCiudadano : number;
-    nombre : string;
-    apellidos : string;
-    dni : string;
-    genero : string;
-    fechaNacimiento : Date;
-    direccion : string;
-    numeroTelefono : string;
-    numeroCuentaBancaria : string;
-    isPoli : boolean;
-    isBusquedaYCaptura : boolean;
-    isPeligoso : boolean;
-
+interface Vehiculo {
+  idVehiculo: number;
+  matricula: string;
+  marca: string;
+  modelo: string;
+  color: string;
+  idCiudadano: number;
 }
 
+interface Multa {
+  idMulta: number;
+  idPolicia: number;
+  fecha: string;
+  precio: number;
+  articuloPenal: string;
+  descripcion: string;
+  pagada: boolean;
+  idCiudadano: number;
+}
+
+export interface Ciudadano {
+  idCiudadano: number;
+  nombre: string;
+  apellidos: string;
+  dni: string;
+  genero: string;
+  nacionalidad: string;
+  fechaNacimiento: Date;
+  direccion: string;
+  numeroTelefono: string;
+  numeroCuentaBancaria: string;
+  isPoli: boolean;
+  isBusquedaYCaptura: boolean;
+  isPeligroso: boolean;
+  multas: Multa[];
+  vehiculos: Vehiculo[];
+}
 
 export const useListadoCiudadanos = defineStore('listadoCiduadanos', () => {
   const apiUrl = `http://localhost:8001`;
   const infoCiudadanos = reactive<Array<Ciudadano>>([]);
-  
+
   async function cargarDatosCiudadanos() {
     try {
       const response = await fetch(apiUrl + '/Ciudadano', {
-        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } 
-      
-      } );
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+
+      });
       if (!response.ok) throw new Error('Error al cargar los datos de los ciudadanos');
       const data = await response.json();
-      infoCiudadanos.splice(0, infoCiudadanos.length); 
-      data.forEach((ciudadano : Ciudadano) => {
-        infoCiudadanos.push(ciudadano); 
+      infoCiudadanos.splice(0, infoCiudadanos.length);
+      data.forEach((ciudadano: Ciudadano) => {
+        infoCiudadanos.push(ciudadano);
       });
     } catch (error) {
       console.error('Error al cargar la información de los ciudadanos:', error);
     }
   }
 
-  async function cargarDatosCiudadanosId(ciudadanoId : number) {
+  async function cargarDatosCiudadanosId(ciudadanoId: number) {
     try {
       const response = await fetch(apiUrl + '/Ciudadano/' + ciudadanoId.toString(), {
-        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } 
-      
-      } );
-      if (!response.ok) throw new Error('Error al cargar los datos de los ciduadanos');
-      const data = await response.json();
-      infoCiudadanos.splice(0, infoCiudadanos.length); 
-      data.forEach((ciudadano : Ciudadano) => {
-        infoCiudadanos.push(ciudadano); 
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
       });
+      if (!response.ok) throw new Error('Error al cargar los datos del ciudadano');
+      const ciudadano = await response.json();
+
+      const index = infoCiudadanos.findIndex(c => c.idCiudadano === ciudadanoId);
+      if (index !== -1) {
+        infoCiudadanos[index] = ciudadano;
+      } else {
+        infoCiudadanos.push(ciudadano); 
+      }
     } catch (error) {
-      console.error('Error al cargar la información de los ciudadanos:', error);
+      console.error('Error al cargar la información del ciudadano:', error);
     }
   }
 
 
-async function guardarCiudadano(ciudadano : Ciudadano) {
-  try {
+  async function guardarCiudadano(ciudadano: Ciudadano) {
+    try {
 
-    const response = await fetch(apiUrl + '/Ciudadano', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${localStorage.getItem('token')}`},
-      body: JSON.stringify(ciudadano),
-    });
+      const response = await fetch(apiUrl + '/Ciudadano', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${localStorage.getItem('token')}` },
+        body: JSON.stringify(ciudadano),
+      });
 
-    if (!response.ok) {
-      const errorBody = await response.text();
-      throw new Error(`Error al guardar la información del ciudadano: ${errorBody}`);
+      if (!response.ok) {
+        const errorBody = await response.text();
+        throw new Error(`Error al guardar la información del ciudadano: ${errorBody}`);
+      }
+
+      await cargarDatosCiudadanos();
+    } catch (error) {
+      console.error('Error al guardar la información del ciudadano:', error);
     }
-
-    await cargarDatosCiudadanos();
-  } catch (error) {
-    console.error('Error al guardar la información del ciudadano:', error);
   }
-}
 
 
-function formatearFecha(fecha: string) {
-  const fechaObj = new Date(fecha);
-  const opciones: Intl.DateTimeFormatOptions = {
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-    hour: '2-digit',
-    minute: '2-digit',
-    hour12: false
-  };
-  
-
-  const fechaFormateada = fechaObj.toLocaleDateString('es-ES', opciones);
-  const horaFormateada = fechaObj.toLocaleTimeString('es-ES', opciones);
-
-  const fechaMatch = fechaFormateada.match(/(\d{2})\/(\d{2})\/(\d{4})/);
-  const horaMatch = horaFormateada.match(/(\d{2}):(\d{2})/);
-  
-  if (fechaMatch && horaMatch) {
-  
-    return `${fechaMatch[3]}-${fechaMatch[2]}-${fechaMatch[1]} ${horaMatch[1]}:${horaMatch[2]}`;
-  } else {
-    console.error('No se pudo formatear la fecha:', fecha);
-    return '';
-  }
-}
+  function formatearFecha(fecha: string) {
+    const fechaObj = new Date(fecha);
+    const opciones: Intl.DateTimeFormatOptions = {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false
+    };
 
 
-async function actualizarCiudadano(ciudadano : Ciudadano) { 
-  try {
-    const response = await fetch(apiUrl + '/Ciudadano', {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${localStorage.getItem('token')}`},
-      body: JSON.stringify(ciudadano),
-    });
+    const fechaFormateada = fechaObj.toLocaleDateString('es-ES', opciones);
+    const horaFormateada = fechaObj.toLocaleTimeString('es-ES', opciones);
 
-    if (!response.ok) {
-      const errorBody = await response.text();
-      throw new Error(`Error al actualizar la información del ciudadano: ${errorBody}`);
+    const fechaMatch = fechaFormateada.match(/(\d{2})\/(\d{2})\/(\d{4})/);
+    const horaMatch = horaFormateada.match(/(\d{2}):(\d{2})/);
+
+    if (fechaMatch && horaMatch) {
+
+      return `${fechaMatch[3]}-${fechaMatch[2]}-${fechaMatch[1]} ${horaMatch[1]}:${horaMatch[2]}`;
+    } else {
+      console.error('No se pudo formatear la fecha:', fecha);
+      return '';
     }
-
-    await cargarDatosCiudadanos();
-  } catch (error) {
-    console.error('Error al actualizar la información del ciudadano:', error);
   }
-}
 
-async function borrarDatosCiudadano(ciudadanoId: number) {
+
+  async function actualizarCiudadano(ciudadano: Ciudadano) {
+    try {
+      const response = await fetch(apiUrl + '/Ciudadano', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${localStorage.getItem('token')}` },
+        body: JSON.stringify(ciudadano),
+      });
+
+      if (!response.ok) {
+        const errorBody = await response.text();
+        throw new Error(`Error al actualizar la información del ciudadano: ${errorBody}`);
+      }
+
+      await cargarDatosCiudadanos();
+    } catch (error) {
+      console.error('Error al actualizar la información del ciudadano:', error);
+    }
+  }
+
+  async function borrarDatosCiudadano(ciudadanoId: number) {
     try {
       const response = await fetch(apiUrl + '/Ciduadano/' + ciudadanoId.toString(), {
         method: 'DELETE',
@@ -141,5 +163,5 @@ async function borrarDatosCiudadano(ciudadanoId: number) {
     }
   }
 
-  return {cargarDatosCiudadanos ,cargarDatosCiudadanosId, borrarDatosCiudadano, actualizarCiudadano, infoCiudadanos, guardarCiudadano   };
+  return { cargarDatosCiudadanos, cargarDatosCiudadanosId, borrarDatosCiudadano, actualizarCiudadano, infoCiudadanos, guardarCiudadano };
 });
