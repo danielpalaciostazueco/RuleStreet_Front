@@ -50,7 +50,6 @@ export default defineComponent({
     gap: 3rem;
 }
 
-
 .ciudadano_menu {
     display: flex;
     flex-direction: row;

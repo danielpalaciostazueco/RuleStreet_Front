@@ -90,7 +90,7 @@ export default defineComponent({
 <style>
 .ciudadano_menu_izquierda {
     background-color: var(--colorFondoCiudadano2);
-    width: 25%;
+    width: 30%;
     display: flex;
     flex-direction: column;
     border-radius: 0.5rem;
@@ -112,9 +112,10 @@ export default defineComponent({
     color: var(--colorTextoTarjeta);
     display: flex;
     align-items: center;
-    width: 90%;
+    width: 80%;
     display: flex;
     justify-content: center;
+    font-size: 18px;
 }
 
 .ciudadano_busqueda {

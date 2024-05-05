@@ -320,7 +320,7 @@ function parseRouteParam(param: string | string[]): string {
 <style scoped>
 .ciudadano_menu_derecha {
     background-color: var(--colorFondoCiudadano2);
-    width: 75%;
+    width: 70%;
     display: flex;
     flex-direction: column;
     border-radius: 0.5rem;
@@ -345,6 +345,7 @@ function parseRouteParam(param: string | string[]): string {
     width: 80%;
     display: flex;
     justify-content: center;
+    font-size: 18px;
 }
 
 .ciudadano_perfil_usuario {

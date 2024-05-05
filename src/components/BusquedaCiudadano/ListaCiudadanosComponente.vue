@@ -42,7 +42,6 @@ export default defineComponent({
     padding-right: 2rem;
     height: 100%;
     overflow-y: auto;
-    align-items: center;
 }
 
 .ciudadano_menu_izquierda_contenedor p {
