@@ -44,11 +44,14 @@ export interface Ciudadano {
 export const useListadoCiudadanos = defineStore('listadoCiduadanos', () => {
   const apiUrl = `http://localhost:8001`;
   const infoCiudadanos = reactive<Array<Ciudadano>>([]);
-
+  let token = localStorage.getItem('token');
   async function cargarDatosCiudadanos() {
     try {
+       if(token === null) {
+        token = localStorage.getItem('tokenPolicia');
+      }
       const response = await fetch(apiUrl + '/Ciudadano', {
-        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+        headers: { 'Authorization': `Bearer ${token}` }
 
       });
       if (!response.ok) throw new Error('Error al cargar los datos de los ciudadanos');
@@ -64,8 +67,11 @@ export const useListadoCiudadanos = defineStore('listadoCiduadanos', () => {
 
   async function cargarDatosCiudadanosId(ciudadanoId: number) {
     try {
+       if(token === null) {
+        token = localStorage.getItem('tokenPolicia');
+      }
       const response = await fetch(apiUrl + '/Ciudadano/' + ciudadanoId.toString(), {
-        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+        headers: { 'Authorization': `Bearer ${token}` }
       });
       if (!response.ok) throw new Error('Error al cargar los datos del ciudadano');
       const ciudadano = await response.json();
@@ -84,10 +90,12 @@ export const useListadoCiudadanos = defineStore('listadoCiduadanos', () => {
 
   async function guardarCiudadano(ciudadano: Ciudadano) {
     try {
-
+       if(token === null) {
+        token = localStorage.getItem('tokenPolicia');
+      }
       const response = await fetch(apiUrl + '/Ciudadano', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${localStorage.getItem('token')}` },
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
         body: JSON.stringify(ciudadano),
       });
 
@@ -132,10 +140,13 @@ export const useListadoCiudadanos = defineStore('listadoCiduadanos', () => {
 
 
   async function actualizarCiudadano(ciudadano: Ciudadano) {
+     if(token === null) {
+        token = localStorage.getItem('tokenPolicia');
+      }
     try {
       const response = await fetch(apiUrl + '/Ciudadano', {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${localStorage.getItem('token')}` },
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
         body: JSON.stringify(ciudadano),
       });
 
@@ -151,10 +162,13 @@ export const useListadoCiudadanos = defineStore('listadoCiduadanos', () => {
   }
 
   async function borrarDatosCiudadano(ciudadanoId: number) {
+     if(token === null) {
+        token = localStorage.getItem('tokenPolicia');
+      }
     try {
       const response = await fetch(apiUrl + '/Ciduadano/' + ciudadanoId.toString(), {
         method: 'DELETE',
-        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+        headers: { 'Authorization': `Bearer ${token}` }
       });
       if (!response.ok) throw new Error('Error al borrar la información del ciudadano');
       await cargarDatosCiudadanos();

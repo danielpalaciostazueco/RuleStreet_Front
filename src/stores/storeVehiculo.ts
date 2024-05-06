@@ -19,10 +19,12 @@ export const useListadoVehiculos = defineStore('listadoVehiculos', () => {
   const apiUrl = `http://localhost:8001`;
   const infoVehiculos = reactive<Array<Vehiculo>>([]);
   
-
+  let token = localStorage.getItem('token');
   async function cargarDatosVehiculos() {
     try {
-        const token = localStorage.getItem('token'); 
+        if(token === null) {
+        token = localStorage.getItem('tokenPolicia');
+      }
         const response = await fetch(apiUrl + '/Vehiculo', {
             headers: { 'Authorization': `Bearer ${token}` } 
         });
@@ -39,8 +41,11 @@ export const useListadoVehiculos = defineStore('listadoVehiculos', () => {
 
   async function cargarDatosVehiculosId(vehiculoId: number) {
     try {
+       if(token === null) {
+        token = localStorage.getItem('tokenPolicia');
+      }
       const response = await fetch(apiUrl + '/Vehiculo/' + vehiculoId.toString(), {
-        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+        headers: { 'Authorization': `Bearer ${token}` }
       });
       if (!response.ok) throw new Error('Error al cargar los datos del vehiculo');
       const ciudadano = await response.json();
@@ -59,7 +64,9 @@ export const useListadoVehiculos = defineStore('listadoVehiculos', () => {
 async function guardarObra(vehiculo : Vehiculo) {
   try {
   
-    const token = localStorage.getItem('token'); 
+    if(token === null) {
+        token = localStorage.getItem('tokenPolicia');
+      }
     const response = await fetch(apiUrl + '/Vehiculo', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
@@ -106,9 +113,9 @@ function formatearFecha(fecha: string) {
 
 async function actualizarVehiculo(vehiculo : Vehiculo) {
   try {
-    
-
-    const token = localStorage.getItem('token');
+ if(token === null) {
+        token = localStorage.getItem('tokenPolicia');
+      }
     const response = await fetch(apiUrl + '/Vehiculo', {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
@@ -127,8 +134,11 @@ async function actualizarVehiculo(vehiculo : Vehiculo) {
 }
 
   async function borrarDatosVehiculos(vehiculoId: number) {
-    const token = localStorage.getItem('token');
+    
     try {
+        if(token === null) {
+        token = localStorage.getItem('tokenPolicia');
+      }
       const response = await fetch(apiUrl + '/Vehiculo/' + vehiculoId.toString(), {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }

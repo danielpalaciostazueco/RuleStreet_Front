@@ -16,11 +16,14 @@ export interface Rango {
 export const useListadoRangos = defineStore('listadoRangos', () => {
   const apiUrl = `http://localhost:8001`;
   const infoRangos = reactive<Array<Rango>>([]);
-  
+  let token = localStorage.getItem('token');
   async function cargarDatosCiudadanos() {
     try {
+       if(token === null) {
+        token = localStorage.getItem('tokenPolicia');
+      }
       const response = await fetch(apiUrl + '/Rango' ,{
-        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } 
+        headers: { 'Authorization': `Bearer ${token}` } 
       });
       if (!response.ok) throw new Error('Error al cargar los datos de los rangos');
       const data = await response.json();
@@ -36,8 +39,11 @@ export const useListadoRangos = defineStore('listadoRangos', () => {
 
   async function cargarDatosCiudadanosId(rangoId: number) {
     try {
+       if(token === null) {
+        token = localStorage.getItem('tokenPolicia');
+      }
       const response = await fetch(apiUrl + '/Rango/' +rangoId.toString(), {
-        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } 
+        headers: { 'Authorization': `Bearer ${token}` } 
       });
    
       if (!response.ok) throw new Error('Error al cargar los datos de los rangos');
@@ -82,9 +88,12 @@ function formatearFecha(fecha: string) {
 
 async function actualizarCiudadano(rango : Rango) { 
   try {
+     if(token === null) {
+        token = localStorage.getItem('tokenPolicia');
+      }
     const response = await fetch(apiUrl + '/Rango', {
       method: 'PUT',
-      headers: { 'Content-Type': 'application/json' , 'Authorization': `Bearer ${localStorage.getItem('token')}` },
+      headers: { 'Content-Type': 'application/json' , 'Authorization': `Bearer ${token}` },
       body: JSON.stringify(rango),
     });
 

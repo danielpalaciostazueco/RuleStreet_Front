@@ -1,36 +1,30 @@
-<script setup lang="ts">
-import { ref } from 'vue';
-
+<script lang="ts">
+import { defineComponent } from 'vue';
 import { useRouter } from 'vue-router';
-import { useListadoAuth } from '@/stores/storeAuth';
 
-const store = useListadoAuth();
-const NombreUsuario = ref('');
-const Contraseña = ref('');
-const router = useRouter();
+import LoginForm from '@/components/Login/LoginPoliciaFormComponent.vue';
+
+export default defineComponent({
+    name: 'LoginView',
+    components: {
+        LoginForm,
+    },
+    setup() {
+        const router = useRouter();
 
 
-const submitForm = async () => {
-    try {
-        await store.LoginUsuario();
-    } catch (error) {
-        console.error('Error al enviar formulario:', error);
+        const onLoginSuccess = () => {
+            router.push('/');
+        };
+
+        return { onLoginSuccess };
     }
-};
+});
 </script>
+
 <template>
-    <div class="register_container">
-        <form @submit.prevent="submitForm" class="register_formulario">
-            <h2>Iniciar sesión</h2>
-            <input type="text" v-model="store.Datos.dni" placeholder="Dni Completo">
-            <input type="text" v-model="store.Datos.nombreUsuario" placeholder="Nombre de usuario">
-            <input type="password" v-model="store.Datos.contrasena" placeholder="Contraseña">
-            <button type="submit">Enviar</button>
-            <p>¿No tienes cuenta? <RouterLink to="/register">Regístrate</RouterLink>
-            </p>
-            <p>¿Eres policía? <RouterLink to="/loginPolicia">Ir al login para la policia</RouterLink>
-            </p>
-        </form>
+    <div class="login_section">
+        <LoginForm @login-success="onLoginSuccess" />
     </div>
 </template>
 

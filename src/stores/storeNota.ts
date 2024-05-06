@@ -18,11 +18,15 @@ export interface Nota {
 export const useListadoNotas = defineStore('listadoNotas', () => {
   const apiUrl = `http://localhost:8001`;
   const infoNotas = reactive<Array<Nota>>([]);
-  
+  let token = localStorage.getItem('token');
+   
   async function cargarDatosNotas() {
     try {
+       if(token === null) {
+        token = localStorage.getItem('tokenPolicia');
+      }
       const response = await fetch(apiUrl + '/Nota', {
-        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } 
+        headers: { 'Authorization': `Bearer ${token}` } 
       
       } );
       if (!response.ok) throw new Error('Error al cargar los datos de las notas');
@@ -38,8 +42,11 @@ export const useListadoNotas = defineStore('listadoNotas', () => {
 
   async function cargarDatosNotasId(notaId : number) {
     try {
+       if(token === null) {
+        token = localStorage.getItem('tokenPolicia');
+      }
       const response = await fetch(apiUrl + '/Nota/' + notaId.toString(), {
-        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } 
+        headers: { 'Authorization': `Bearer ${token}` } 
       });
    
       if (!response.ok) throw new Error('Error al cargar los datos de las notas');
@@ -56,10 +63,12 @@ export const useListadoNotas = defineStore('listadoNotas', () => {
 
 async function guardarNotas(nota : Nota) {
   try {
-
+     if(token === null) {
+        token = localStorage.getItem('tokenPolicia');
+      }
     const response = await fetch(apiUrl + '/Nota', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${localStorage.getItem('token')}` },
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
       body: JSON.stringify(nota),
     });
 
@@ -105,9 +114,12 @@ function formatearFecha(fecha: string) {
 
 async function actualizarNotas(nota : Nota) { 
   try {
+     if(token === null) {
+        token = localStorage.getItem('tokenPolicia');
+      }
     const response = await fetch(apiUrl + '/Nota', {
       method: 'PUT',
-      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${localStorage.getItem('token')}` },
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
       body: JSON.stringify(nota),
     });
 
@@ -124,9 +136,12 @@ async function actualizarNotas(nota : Nota) {
 
 async function borrarDatosNotas(notaId: number) {
     try {
+       if(token === null) {
+        token = localStorage.getItem('tokenPolicia');
+      }
       const response = await fetch(apiUrl + '/Nota/' + notaId.toString(), {
         method: 'DELETE',
-        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+        headers: { 'Authorization': `Bearer ${token}` }
       });
       if (!response.ok) throw new Error('Error al borrar la información de la nota');
       await cargarDatosNotas();

@@ -17,7 +17,7 @@ export interface CodigoPenal {
 export const useListadoCodigoPenal = defineStore('listadoCodigoPenal', () => {
   const apiUrl = `http://localhost:8001`;
   const infoCodigoPenal = reactive<Array<CodigoPenal>>([]);
-
+  let token = localStorage.getItem('token');
   async function cargarDatosCodigoPenal() {
     try {
       const response = await fetch(apiUrl + '/CodigoPenal', {
@@ -89,9 +89,12 @@ export const useListadoCodigoPenal = defineStore('listadoCodigoPenal', () => {
 
   async function borrarDatosCodigoPenal(cpId: number) {
     try {
+       if(token === null) {
+        token = localStorage.getItem('tokenPolicia');
+      }
       const response = await fetch(apiUrl + '/CodigoPenal/' + cpId.toString(), {
         method: 'DELETE',
-        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` },
+        headers: { 'Authorization': `Bearer ${token}` },
       });
       if (!response.ok) throw new Error('Error al borrar la información del código penal');
       await cargarDatosCodigoPenal();

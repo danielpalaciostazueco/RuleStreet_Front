@@ -16,11 +16,15 @@ export interface Auditoria {
 export const useListadoAuditorias = defineStore('listadoAuditorias', () => {
   const apiUrl = `http://localhost:8001`;
   const infoAuditorias = reactive<Array<Auditoria>>([]);
-  
+  let token = localStorage.getItem('token');
   async function cargarDatosAuditorias() {
     try {
+     
+      if(token === null) {
+        token = localStorage.getItem('tokenPolicia');
+      }
       const response = await fetch(apiUrl + '/Auditoria', {
-        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } 
+        headers: { 'Authorization': `Bearer ${token}` } 
       
       
       } );
@@ -36,9 +40,12 @@ export const useListadoAuditorias = defineStore('listadoAuditorias', () => {
   }
 
   async function cargarDatosAuditoriasId(auditoriaId : number) {
+     if(token === null) {
+        token = localStorage.getItem('tokenPolicia');
+      }
     try {
       const response = await fetch(apiUrl + '/Auditoria/' + auditoriaId.toString(), {
-        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } 
+        headers: { 'Authorization': `Bearer ${token}` } 
       });
       if (!response.ok) throw new Error('Error al cargar los datos de las auditorias');
       const data = await response.json();
@@ -53,11 +60,14 @@ export const useListadoAuditorias = defineStore('listadoAuditorias', () => {
 
 
 async function guardarPolicia(auditoria : Auditoria) {
+   if(token === null) {
+        token = localStorage.getItem('tokenPolicia');
+      }
   try {
 
     const response = await fetch(apiUrl + '/Auditoria', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' , 'Authorization': `Bearer ${localStorage.getItem('token')}`},
+      headers: { 'Content-Type': 'application/json' , 'Authorization': `Bearer ${token}`},
       body: JSON.stringify(auditoria),
     });
 
@@ -102,10 +112,13 @@ function formatearFecha(fecha: string) {
 
 
 async function actualizarPolicia(auditoria : Auditoria) { 
+   if(token === null) {
+        token = localStorage.getItem('tokenPolicia');
+      }
   try {
     const response = await fetch(apiUrl + '/Auditoria', {
       method: 'PUT',
-      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${localStorage.getItem('token')}`},
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
       body: JSON.stringify(auditoria),
     });
 
@@ -121,10 +134,13 @@ async function actualizarPolicia(auditoria : Auditoria) {
 }
 
 async function borrarDatosPolicia(auditoriaId: number) {
+    if(token === null) {
+        token = localStorage.getItem('tokenPolicia');
+    }
     try {
       const response = await fetch(apiUrl + '/Auditoria/' + auditoriaId.toString(), {
         method: 'DELETE',
-        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+        headers: { 'Authorization': `Bearer ${token}` }
       });
       if (!response.ok) throw new Error('Error al borrar la información de la auditoria');
       await cargarDatosAuditorias();

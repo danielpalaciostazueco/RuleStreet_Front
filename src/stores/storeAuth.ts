@@ -10,10 +10,19 @@ export interface Usuario {
   idUsuario: number;
   idPolicia: number;
   idCiudadano: number;
-  nombre: string;
+  nombreUsuario: string;
   contrasena: string;
-  isPoli: boolean;
+  isPolicia: boolean;
 }
+
+interface Policia {
+   idPolicia : number;
+   idCiudadano : number;
+   rango : number;
+   numeroPlaca : string;
+   isPolicia : boolean;
+}
+
 
 
 export const useListadoAuth = defineStore('listadoAuth', () => {
@@ -24,26 +33,65 @@ export const useListadoAuth = defineStore('listadoAuth', () => {
     idUsuario: 0,
     idPolicia: 0,
     idCiudadano: 0,
-    nombre: "",
+    nombreUsuario: "",
     contrasena: "",
-    isPoli: false
-
-
-
+    isPolicia: false
   };
+
+    let infoPolicias: Policia = { 
+      idPolicia : 0,
+      idCiudadano : 0,
+      rango : 0,
+      numeroPlaca : "",
+      isPolicia : false
+    };
+
+
+
+
   const Datos = ref({
-    nombre: '',
+    dni: '',
     nombreUsuario: '',
     contrasena: '',
   });
 
+  const DatosPolicia = ref({
+    numeroPlaca: '',
+    contrasena : '',
+  });
+
+  async function LoginPolicia() {
+    try {
+        const response = await fetch(apiUrl + '/Auth/Login/Policia', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json', 
+            },
+            body: JSON.stringify(DatosPolicia.value),
+        });
+
+        if (!response.ok) {
+            const errorBody = await response.text();
+            throw new Error(`Error al guardar la información del usuario: ${errorBody}`);
+        }
+
+        const token = await response.text(); 
+        localStorage.setItem('tokenPolicia', token);
+
+        infoPolicias = jwtDecode(token) as { idPolicia: number, idCiudadano: number, rango: number, numeroPlaca: string, isPolicia: boolean};
+        
+        router.push('/');
+    } catch (error) {
+        console.error('Error al guardar la información del usuario:', error);
+    }
+}
 
 
   async function LoginUsuario() {
     try {
         const response = await fetch(apiUrl + '/Auth/Login', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${localStorage.getItem('token')}`},
+            headers: { 'Content-Type': 'application/json'},
             body: JSON.stringify(Datos.value),
         });
 
@@ -57,7 +105,7 @@ export const useListadoAuth = defineStore('listadoAuth', () => {
         
       
 
-        infoUsuarios = jwtDecode(token) as { idUsuario: number, idPolicia: number, idCiudadano: number, nombre: string, contrasena: string, isPoli: boolean };
+        infoUsuarios = jwtDecode(token) as { idUsuario: number, idPolicia: number, idCiudadano: number, nombreUsuario: string, contrasena: string, isPolicia: boolean };
         
         router.push('/');
     } catch (error) {
@@ -71,7 +119,7 @@ export const useListadoAuth = defineStore('listadoAuth', () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
+          
         },
         body: JSON.stringify(Datos.value),
 
@@ -119,5 +167,5 @@ export const useListadoAuth = defineStore('listadoAuth', () => {
   }
 
 
-  return { LoginUsuario, registroUsuario, formatearFecha, infoUsuarios, Datos };
+  return { LoginUsuario, registroUsuario, formatearFecha, infoUsuarios, Datos, DatosPolicia,LoginPolicia, infoPolicias};
 });
