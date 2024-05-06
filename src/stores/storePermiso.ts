@@ -14,11 +14,14 @@ export interface Permiso {
 export const useListadoPermisos = defineStore('listadoPermisos', () => {
   const apiUrl = `http://localhost:8001`;
   const infoPermiso = reactive<Array<Permiso>>([]);
-  
+  let token = localStorage.getItem('token');
   async function cargarDatosPermisos() {
     try {
+       if(token === null) {
+        token = localStorage.getItem('tokenPolicia');
+      }
       const response = await fetch(apiUrl + '/Permiso', {
-        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+        headers: { 'Authorization': `Bearer ${token}` }
       
       } );
       if (!response.ok) throw new Error('Error al cargar los datos de las permisos');
@@ -34,8 +37,11 @@ export const useListadoPermisos = defineStore('listadoPermisos', () => {
 
   async function cargarDatosPermisosId(permisoId: number) {
     try {
+       if(token === null) {
+        token = localStorage.getItem('tokenPolicia');
+      }
       const response = await fetch(apiUrl + '/Multa/' + permisoId.toString(), {
-        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+        headers: { 'Authorization': `Bearer ${token}` }
       
       } );
       if (!response.ok) throw new Error('Error al cargar los datos de los permisos');
@@ -80,9 +86,12 @@ function formatearFecha(fecha: string) {
 
 async function actualizarMulta(permiso : Permiso) { 
   try {
+     if(token === null) {
+        token = localStorage.getItem('tokenPolicia');
+      }
     const response = await fetch(apiUrl + '/Permiso', {
       method: 'PUT',
-      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${localStorage.getItem('token')}` },
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
       body: JSON.stringify(permiso),
     });
 
@@ -99,9 +108,12 @@ async function actualizarMulta(permiso : Permiso) {
 
 async function borrarDatosMulta(permisoId: number) {
     try {
+       if(token === null) {
+        token = localStorage.getItem('tokenPolicia');
+      }
       const response = await fetch(apiUrl + '/Permiso/' + permisoId.toString(), {
         method: 'DELETE',
-        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+        headers: { 'Authorization': `Bearer ${token}` }
       });
       if (!response.ok) throw new Error('Error al borrar la información del permiso');
       await cargarDatosPermisos();

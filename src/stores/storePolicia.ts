@@ -15,11 +15,14 @@ export interface Policia {
 export const useListadoPolicias = defineStore('listadoPolicias', () => {
   const apiUrl = `http://localhost:8001`;
   const infoPolicias = reactive<Array<Policia>>([]);
-  
+  let token = localStorage.getItem('token');
   async function cargarDatosPolicias() {
     try {
+       if(token === null) {
+        token = localStorage.getItem('tokenPolicia');
+      }
       const response = await fetch(apiUrl + '/Policia' ,{
-        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } 
+        headers: { 'Authorization': `Bearer ${token}` } 
       
       });
       if (!response.ok) throw new Error('Error al cargar los datos de los policias');
@@ -35,8 +38,11 @@ export const useListadoPolicias = defineStore('listadoPolicias', () => {
 
   async function cargarDatosPoliciasId(policiaId : number) {
     try {
+       if(token === null) {
+        token = localStorage.getItem('tokenPolicia');
+      }
       const response = await fetch(apiUrl + '/Policia/' + policiaId.toString(), {
-        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } 
+        headers: { 'Authorization': `Bearer ${token}` } 
       });
       
       if (!response.ok) throw new Error('Error al cargar los datos de los policias');
@@ -53,10 +59,12 @@ export const useListadoPolicias = defineStore('listadoPolicias', () => {
 
 async function guardarPolicia(policia : Policia) {
   try {
-
+     if(token === null) {
+        token = localStorage.getItem('tokenPolicia');
+      }
     const response = await fetch(apiUrl + '/Policia', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${localStorage.getItem('token')}` },
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
       body: JSON.stringify(policia),
     });
 
@@ -101,10 +109,14 @@ function formatearFecha(fecha: string) {
 
 
 async function actualizarPolicia(policia : Policia) { 
+  
   try {
+     if(token === null) {
+        token = localStorage.getItem('tokenPolicia');
+      }
     const response = await fetch(apiUrl + '/Policia', {
       method: 'PUT',
-      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${localStorage.getItem('token')}` },
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
       body: JSON.stringify(policia),
     });
 
@@ -121,9 +133,12 @@ async function actualizarPolicia(policia : Policia) {
 
 async function borrarDatosPolicia(policiaId: number) {
     try {
+       if(token === null) {
+        token = localStorage.getItem('tokenPolicia');
+      }
       const response = await fetch(apiUrl + '/Policia/' + policiaId.toString(), {
         method: 'DELETE',
-        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+        headers: { 'Authorization': `Bearer ${token}` }
       });
       if (!response.ok) throw new Error('Error al borrar la información del policia');
       await cargarDatosPolicias();

@@ -20,11 +20,14 @@ export interface Multa {
 export const useListadoMultas = defineStore('listadoMultas', () => {
   const apiUrl = `http://localhost:8001`;
   const infoMultas = reactive<Array<Multa>>([]);
-  
+  let token = localStorage.getItem('token');
   async function cargarDatosMultas() {
     try {
+       if(token === null) {
+        token = localStorage.getItem('tokenPolicia');
+      }
       const response = await fetch(apiUrl + '/Multa', {
-        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` } 
+        headers: { 'Authorization': `Bearer ${token}` } 
       } );
       if (!response.ok) throw new Error('Error al cargar los datos de las multas');
       const data = await response.json();
@@ -39,8 +42,11 @@ export const useListadoMultas = defineStore('listadoMultas', () => {
 
   async function cargarDatosMultasId(multaId : number) {
     try {
+       if(token === null) {
+        token = localStorage.getItem('tokenPolicia');
+      }
       const response = await fetch(apiUrl + '/Multa/' + multaId.toString(),{
-        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+        headers: { 'Authorization': `Bearer ${token}` }
       
       } );
       if (!response.ok) throw new Error('Error al cargar los datos de las multas');
@@ -57,10 +63,12 @@ export const useListadoMultas = defineStore('listadoMultas', () => {
 
 async function guardarMulta(multa : Multa) {
   try {
-
+     if(token === null) {
+        token = localStorage.getItem('tokenPolicia');
+      }
     const response = await fetch(apiUrl + '/Multa', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${localStorage.getItem('token')}` },
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
       body: JSON.stringify(multa),
     });
 
@@ -106,9 +114,12 @@ function formatearFecha(fecha: string) {
 
 async function actualizarMulta(multa : Multa) { 
   try {
+     if(token === null) {
+        token = localStorage.getItem('tokenPolicia');
+      }
     const response = await fetch(apiUrl + '/Multa', {
       method: 'PUT',
-      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${localStorage.getItem('token')}`},
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
       body: JSON.stringify(multa),
     });
 
@@ -125,9 +136,12 @@ async function actualizarMulta(multa : Multa) {
 
 async function borrarDatosMulta(multaId: number) {
     try {
+       if(token === null) {
+        token = localStorage.getItem('tokenPolicia');
+      }
       const response = await fetch(apiUrl + '/Multa/' + multaId.toString(), {
         method: 'DELETE',
-        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+        headers: { 'Authorization': `Bearer ${token}` }
       });
       if (!response.ok) throw new Error('Error al borrar la información de la multa');
       await cargarDatosMultas();

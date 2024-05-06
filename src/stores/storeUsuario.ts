@@ -26,10 +26,13 @@ export const useListadoUsuarios = defineStore('listadoUsuarios', () => {
     contrasena: '',
   });
 
-
+  let token = localStorage.getItem('token');
   async function cargarDatosUsuarios() {
     try {
-      const token = localStorage.getItem('token');
+       if(token === null) {
+        token = localStorage.getItem('tokenPolicia');
+      }
+      
       const response = await fetch(apiUrl + '/Usuario',{
         headers: { 'Authorization': `Bearer ${token}` }
       });
@@ -46,7 +49,9 @@ export const useListadoUsuarios = defineStore('listadoUsuarios', () => {
 
   async function cargarDatosUsuariosId(usuarioId: number) {
     try {
-      const token = localStorage.getItem('token');
+       if(token === null) {
+        token = localStorage.getItem('tokenPolicia');
+      }
       const response = await fetch(apiUrl + '/Usuario/' + usuarioId.toString(),{
         headers: { 'Authorization': `Bearer ${token}` }
       });
@@ -64,7 +69,9 @@ export const useListadoUsuarios = defineStore('listadoUsuarios', () => {
 
   async function guardarUsuario() {
     try {
-      const token = localStorage.getItem('token');
+       if(token === null) {
+        token = localStorage.getItem('tokenPolicia');
+      }
       const response = await fetch(apiUrl + '/Usuario', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
@@ -83,7 +90,9 @@ export const useListadoUsuarios = defineStore('listadoUsuarios', () => {
   }
 
   async function registroUsuario() {
-    const token = localStorage.getItem('token');
+     if(token === null) {
+        token = localStorage.getItem('tokenPolicia');
+      }
     const url = `${apiUrl}/Usuario/Register`;
     try {
       const response = await fetch(url, {
@@ -141,7 +150,9 @@ export const useListadoUsuarios = defineStore('listadoUsuarios', () => {
 
   async function actualizarUsuario(usuario: Usuario) {
     try {
-      const token = localStorage.getItem('token');
+       if(token === null) {
+        token = localStorage.getItem('tokenPolicia');
+      }
       const response = await fetch(apiUrl + '/Usuario', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
@@ -161,7 +172,9 @@ export const useListadoUsuarios = defineStore('listadoUsuarios', () => {
 
   async function borrarDatosUsuario(usuarioId: number) {
     try {
-      const token = localStorage.getItem('token');
+       if(token === null) {
+        token = localStorage.getItem('tokenPolicia');
+      }
       const response = await fetch(apiUrl + '/Usuario/' + usuarioId.toString(), {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }

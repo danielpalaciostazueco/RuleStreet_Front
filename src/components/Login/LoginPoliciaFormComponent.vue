@@ -12,7 +12,7 @@ const router = useRouter();
 
 const submitForm = async () => {
     try {
-        await store.LoginUsuario();
+        await store.LoginPolicia();
     } catch (error) {
         console.error('Error al enviar formulario:', error);
     }
@@ -22,13 +22,11 @@ const submitForm = async () => {
     <div class="register_container">
         <form @submit.prevent="submitForm" class="register_formulario">
             <h2>Iniciar sesión</h2>
-            <input type="text" v-model="store.Datos.dni" placeholder="Dni Completo">
-            <input type="text" v-model="store.Datos.nombreUsuario" placeholder="Nombre de usuario">
-            <input type="password" v-model="store.Datos.contrasena" placeholder="Contraseña">
+            <input type="text" v-model="store.DatosPolicia.numeroPlaca" placeholder="Número de placa">
+
+            <input type="password" v-model="store.DatosPolicia.contrasena" placeholder="Contraseña">
             <button type="submit">Enviar</button>
-            <p>¿No tienes cuenta? <RouterLink to="/register">Regístrate</RouterLink>
-            </p>
-            <p>¿Eres policía? <RouterLink to="/loginPolicia">Ir al login para la policia</RouterLink>
+            <p>¿Eres un ciudadano? <RouterLink to="/login">Ir al login</RouterLink>
             </p>
         </form>
     </div>
