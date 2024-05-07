@@ -52,6 +52,11 @@ const routes = [
     path: '/:catchAll(.*)',
     redirect: '/notFound',
   },
+  {
+    path: '/busquedaCaptura',
+    name: 'bsuquedaCaptura',
+    component: () => import('../views/BusquedaCapturaView.vue'),
+  },
 ];
 
 const router = createRouter({
