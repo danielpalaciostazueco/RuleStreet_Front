@@ -44,6 +44,7 @@ export interface Ciudadano {
 export const useListadoCiudadanos = defineStore('listadoCiduadanos', () => {
   const apiUrl = `http://localhost:8001`;
   const infoCiudadanos = reactive<Array<Ciudadano>>([]);
+  const infoCiudadanosBusquedaCaptura = reactive<Array<Ciudadano>>([]);
   let token = localStorage.getItem('token');
   async function cargarDatosCiudadanos() {
     try {
@@ -64,6 +65,27 @@ export const useListadoCiudadanos = defineStore('listadoCiduadanos', () => {
       console.error('Error al cargar la información de los ciudadanos:', error);
     }
   }
+
+
+
+  async function cargarDatosCiudadanosBusquedaCaptura() {
+    try {
+      
+      const response = await fetch(apiUrl + '/Ciudadano/BusquedaCaptura', {
+        headers: {  }
+
+      });
+      if (!response.ok) throw new Error('Error al cargar los datos de los ciudadanos que están en busqueda y captura');
+      const data = await response.json();
+      infoCiudadanosBusquedaCaptura.splice(0, infoCiudadanosBusquedaCaptura.length);
+      data.forEach((ciudadano: Ciudadano) => {
+        infoCiudadanosBusquedaCaptura.push(ciudadano);
+      });
+    } catch (error) {
+      console.error('Error al cargar la información de los ciudadanos en búsqueda y captura:', error);
+    }
+  }
+
 
   async function cargarDatosCiudadanosId(ciudadanoId: number) {
     try {
@@ -177,5 +199,5 @@ export const useListadoCiudadanos = defineStore('listadoCiduadanos', () => {
     }
   }
 
-  return { cargarDatosCiudadanos, cargarDatosCiudadanosId, borrarDatosCiudadano, actualizarCiudadano, infoCiudadanos, guardarCiudadano };
+  return { cargarDatosCiudadanos, cargarDatosCiudadanosId, borrarDatosCiudadano, actualizarCiudadano, infoCiudadanos, guardarCiudadano, cargarDatosCiudadanosBusquedaCaptura, infoCiudadanosBusquedaCaptura};
 });
