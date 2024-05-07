@@ -12,9 +12,9 @@ const submitForm = async () => {
 <template>
     <form @submit.prevent="submitForm" class="register_formulario">
         <h2>Regístrate</h2>
-        <input type="text" v-model="store.Datos.nombre" placeholder="Nombre Completo">
-        <input type="text" v-model="store.Datos.nombreUsuario" placeholder="Nombre de usuario">
-        <input type="password" v-model="store.Datos.contrasena" placeholder="Contraseña">
+        <input type="text" v-model="store.DatosRegistro.dni" placeholder="Dni Completo">
+        <input type="text" v-model="store.DatosRegistro.nombreUsuario" placeholder="Nombre de usuario">
+        <input type="password" v-model="store.DatosRegistro.contrasena" placeholder="Contraseña">
         <button type="submit">Enviar</button>
         <p>¿Tienes una cuenta? <RouterLink class="register_cuenta" to="/login">Inicia sesión</RouterLink>
         </p>

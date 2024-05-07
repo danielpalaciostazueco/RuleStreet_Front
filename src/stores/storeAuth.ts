@@ -55,6 +55,14 @@ export const useListadoAuth = defineStore('listadoAuth', () => {
     contrasena: '',
   });
 
+  
+  const DatosRegistro = ref({
+    idUsuario: 0,
+    dni: '',
+    nombreUsuario: '',
+    contrasena: '',
+  });
+
   const DatosPolicia = ref({
     numeroPlaca: '',
     contrasena : '',
@@ -121,15 +129,15 @@ export const useListadoAuth = defineStore('listadoAuth', () => {
           'Content-Type': 'application/json',
           
         },
-        body: JSON.stringify(Datos.value),
+        body: JSON.stringify(DatosRegistro.value),
 
       });
-
+      router.push('/login');
       if (response.ok) {
         const usuarioRegistrado: Usuario = await response.json();
         infoUsuarios = usuarioRegistrado;
         localStorage.setItem('usuario', JSON.stringify(usuarioRegistrado));
-        router.push('/login');
+  
       } else {
         console.error('Error en el registro:', response.statusText);
       }
@@ -167,5 +175,5 @@ export const useListadoAuth = defineStore('listadoAuth', () => {
   }
 
 
-  return { LoginUsuario, registroUsuario, formatearFecha, infoUsuarios, Datos, DatosPolicia,LoginPolicia, infoPolicias};
+  return { LoginUsuario, registroUsuario, formatearFecha, infoUsuarios, Datos, DatosPolicia,LoginPolicia, infoPolicias, DatosRegistro};
 });
