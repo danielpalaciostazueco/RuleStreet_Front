@@ -41,10 +41,22 @@ export interface Ciudadano {
   vehiculos: Vehiculo[];
 }
 
+interface Deudores{
+  idCiudadano: number;
+  nombre: string;
+  apellidos: string;
+  dni: string;
+  genero: string;
+  nacionalidad: string;
+  fechaNacimiento: Date;
+  pagada: boolean;
+}
+
 export const useListadoCiudadanos = defineStore('listadoCiduadanos', () => {
   const apiUrl = `http://localhost:8001`;
   const infoCiudadanos = reactive<Array<Ciudadano>>([]);
   const infoCiudadanosBusquedaCaptura = reactive<Array<Ciudadano>>([]);
+  const infoDeudores = reactive<Array<Deudores>>([]);
   let token = localStorage.getItem('token');
   async function cargarDatosCiudadanos() {
     try {
@@ -67,6 +79,25 @@ export const useListadoCiudadanos = defineStore('listadoCiduadanos', () => {
   }
 
 
+  async function cargarDatosCiudadanosDeudores() {
+    try {
+       if(token === null) {
+        token = localStorage.getItem('tokenPolicia');
+      }
+      const response = await fetch(apiUrl + '/Ciudadano/Deudores', {
+        headers: { 'Authorization': `Bearer ${token}` }
+
+      });
+      if (!response.ok) throw new Error('Error al cargar los datos de los ciudadanos deudores');
+      const data = await response.json();
+      infoDeudores.splice(0, infoDeudores.length);
+      data.forEach((deudores : Deudores) => {
+        infoDeudores.push(deudores);
+      });
+    } catch (error) {
+      console.error('Error al cargar la información de los ciudadanos deudores:', error);
+    }
+  }
 
   async function cargarDatosCiudadanosBusquedaCaptura() {
     try {
@@ -199,5 +230,5 @@ export const useListadoCiudadanos = defineStore('listadoCiduadanos', () => {
     }
   }
 
-  return { cargarDatosCiudadanos, cargarDatosCiudadanosId, borrarDatosCiudadano, actualizarCiudadano, infoCiudadanos, guardarCiudadano, cargarDatosCiudadanosBusquedaCaptura, infoCiudadanosBusquedaCaptura};
+  return { cargarDatosCiudadanos, cargarDatosCiudadanosId, borrarDatosCiudadano, actualizarCiudadano, infoCiudadanos, guardarCiudadano, cargarDatosCiudadanosBusquedaCaptura, infoCiudadanosBusquedaCaptura, cargarDatosCiudadanosDeudores, infoDeudores};
 });

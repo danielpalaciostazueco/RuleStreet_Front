@@ -54,8 +54,13 @@ const routes = [
   },
   {
     path: '/busquedaCaptura',
-    name: 'bsuquedaCaptura',
+    name: 'busquedaCaptura',
     component: () => import('../views/BusquedaCapturaView.vue'),
+  },
+  {
+    path: '/busquedaDeudores',
+    name: 'busquedaDeudores',
+    component: () => import('../views/BusquedaDeudoresView.vue'),
   },
 ];
 
