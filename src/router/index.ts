@@ -23,6 +23,11 @@ const routes = [
     component: () => import('../views/BusquedaVehiculoView.vue'),
   },
   {
+    path: '/ayuntamientoEventos',
+    name: 'ayuntamientoEventos',
+    component: () => import('../views/AyuntamientoView.vue'),
+  },
+  {
     path: '/busquedaCiudadano/:id?', 
     name: 'busquedaCiudadano',
     component: () => import('../views/BusquedaCiudadanoView.vue'),

@@ -4,7 +4,8 @@ import { defineStore } from 'pinia';
 import { reactive } from 'vue';
 import { useListadoAuth } from './storeAuth';
 const storeAuth = useListadoAuth();
-
+const tokenUsuario = storeAuth.tokenUsuario;
+const tokenPolicia = storeAuth.tokenPolicia;
 
 export interface CodigoPenal {
   idCodigoPenal: number;
@@ -19,12 +20,14 @@ export interface CodigoPenal {
 export const useListadoCodigoPenal = defineStore('listadoCodigoPenal', () => {
   const apiUrl = `http://localhost:8001`;
   const infoCodigoPenal = reactive<Array<CodigoPenal>>([]);
-  let token 
+  let token = '';
   async function cargarDatosCodigoPenal() {
     try {
-      if(storeAuth.tokenUsuario === null) {
-        token = storeAuth.tokenPolicia;
-    }
+        if (tokenUsuario !== null) {
+          token = tokenUsuario ?? '';
+      } else {
+        token = tokenPolicia ?? '';
+      }
       const response = await fetch(apiUrl + '/CodigoPenal', {
         headers: { 'Authorization': `Bearer ${token}` }
       });
@@ -42,9 +45,11 @@ export const useListadoCodigoPenal = defineStore('listadoCodigoPenal', () => {
 
   async function cargarDatosCodigoPenalId(codigoPenalId: number) {
     try {
-      if(storeAuth.tokenUsuario === null) {
-        token = storeAuth.tokenPolicia;
-    }
+       if (tokenUsuario !== null) {
+         token = tokenUsuario ?? '';
+      } else {
+        token = tokenPolicia ?? '';
+      }
       const response = await fetch(apiUrl + '/CodigoPenal/' + codigoPenalId.toString(), {
         headers: { 'Authorization': `Bearer ${token}` }
       });
@@ -97,9 +102,11 @@ export const useListadoCodigoPenal = defineStore('listadoCodigoPenal', () => {
 
   async function borrarDatosCodigoPenal(cpId: number) {
     try {
-      if(storeAuth.tokenUsuario === null) {
-        token = storeAuth.tokenPolicia;
-    }
+       if (tokenUsuario !== null) {
+          token = tokenUsuario ?? '';
+      } else {
+        token = tokenPolicia ?? '';
+      }
       const response = await fetch(apiUrl + '/CodigoPenal/' + cpId.toString(), {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` },

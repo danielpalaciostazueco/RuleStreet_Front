@@ -4,6 +4,9 @@ import { defineStore } from 'pinia';
 import { reactive } from 'vue';
 import { useListadoAuth } from './storeAuth';
 const storeAuth = useListadoAuth();
+const tokenUsuario = storeAuth.tokenUsuario;
+const tokenPolicia = storeAuth.tokenPolicia;
+
 
 export interface Rango {
     idRange : number;
@@ -17,12 +20,14 @@ export interface Rango {
 export const useListadoRangos = defineStore('listadoRangos', () => {
   const apiUrl = `http://localhost:8001`;
   const infoRangos = reactive<Array<Rango>>([]);
-  let token 
+  let token = ''
   async function cargarDatosCiudadanos() {
     try {
-      if(storeAuth.tokenUsuario === null) {
-        token = storeAuth.tokenPolicia;
-    }
+      if (tokenUsuario !== null) {
+          token = tokenUsuario ?? '';
+      } else {
+        token = tokenPolicia ?? '';
+      }
       const response = await fetch(apiUrl + '/Rango' ,{
         headers: { 'Authorization': `Bearer ${token}` } 
       });
@@ -40,9 +45,11 @@ export const useListadoRangos = defineStore('listadoRangos', () => {
 
   async function cargarDatosCiudadanosId(rangoId: number) {
     try {
-      if(storeAuth.tokenUsuario === null) {
-        token = storeAuth.tokenPolicia;
-    }
+       if (tokenUsuario !== null) {
+         token = tokenUsuario ?? '';
+      } else {
+        token = tokenPolicia ?? '';
+      }
       const response = await fetch(apiUrl + '/Rango/' +rangoId.toString(), {
         headers: { 'Authorization': `Bearer ${token}` } 
       });
@@ -89,9 +96,11 @@ function formatearFecha(fecha: string) {
 
 async function actualizarCiudadano(rango : Rango) { 
   try {
-    if(storeAuth.tokenUsuario === null) {
-      token = storeAuth.tokenPolicia;
-  }
+     if (tokenUsuario !== null) {
+        token = tokenUsuario ?? '';
+      } else {
+        token = tokenPolicia ?? '';
+      }
     const response = await fetch(apiUrl + '/Rango', {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' , 'Authorization': `Bearer ${token}` },

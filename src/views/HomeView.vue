@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import CardContainer from '../components/Home/HomeContenedorComponente.vue';
-
+import { useListadoAuth } from '@/stores/storeAuth';
+const store = useListadoAuth();
 const cards = ref([
   {
     id: 1,
@@ -98,13 +99,11 @@ const cardsSesion = ref([
   }
 ]);
 
-function borrarToken(){
-  localStorage.removeItem('token');
-  localStorage.removeItem('tokenPolicia');
-  localStorage.removeItem('tokenAyuntamiento');
-  console.log(localStorage.getItem('token'))
-  console.log(localStorage.getItem('tokenPolicia'))
-  console.log(localStorage.getItem('tokenAyuntamiento'))
+function borrarToken() {
+
+  store.tokenAyuntamiento = undefined;
+  store.tokenPolicia = undefined;
+  store.tokenUsuario = undefined;
 
 }
 
@@ -113,7 +112,7 @@ function borrarToken(){
 <template>
   <div class="home_container">
     <CardContainer :cards="cards" />
-    <CardContainer :cards="cardsSesion" @click="borrarToken"/>
+    <CardContainer :cards="cardsSesion" @click="borrarToken" />
   </div>
 </template>
 

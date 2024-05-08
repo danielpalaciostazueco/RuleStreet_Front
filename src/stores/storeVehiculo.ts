@@ -4,6 +4,9 @@ import { defineStore } from 'pinia';
 import { reactive } from 'vue';
 import { useListadoAuth } from './storeAuth';
 const storeAuth = useListadoAuth();
+const tokenUsuario = storeAuth.tokenUsuario;
+const tokenPolicia = storeAuth.tokenPolicia;
+
 
 export interface Vehiculo {
   idVehiculo : number;
@@ -20,12 +23,14 @@ export const useListadoVehiculos = defineStore('listadoVehiculos', () => {
   const apiUrl = `http://localhost:8001`;
   const infoVehiculos = reactive<Array<Vehiculo>>([]);
   
-  let token 
+  let token = ''
   async function cargarDatosVehiculos() {
     try {
-      if(storeAuth.tokenUsuario === null) {
-        token = storeAuth.tokenPolicia;
-    }
+      if (tokenUsuario !== null) {
+        token = tokenUsuario ?? '';
+      } else {
+        token = tokenPolicia ?? '';
+      }
         const response = await fetch(apiUrl + '/Vehiculo', {
             headers: { 'Authorization': `Bearer ${token}` } 
         });
@@ -42,9 +47,11 @@ export const useListadoVehiculos = defineStore('listadoVehiculos', () => {
 
   async function cargarDatosVehiculosId(vehiculoId: number) {
     try {
-      if(storeAuth.tokenUsuario === null) {
-        token = storeAuth.tokenPolicia;
-    }
+      if (tokenUsuario !== null) {
+        token = tokenUsuario ?? '';
+      } else {
+        token = tokenPolicia ?? '';
+      }
       const response = await fetch(apiUrl + '/Vehiculo/' + vehiculoId.toString(), {
         headers: { 'Authorization': `Bearer ${token}` }
       });
@@ -65,9 +72,11 @@ export const useListadoVehiculos = defineStore('listadoVehiculos', () => {
 async function guardarObra(vehiculo : Vehiculo) {
   try {
   
-    if(storeAuth.tokenUsuario === null) {
-      token = storeAuth.tokenPolicia;
-  }
+    if (tokenUsuario !== null) {
+        token = tokenUsuario ?? '';
+      } else {
+        token = tokenPolicia ?? '';
+      }
     const response = await fetch(apiUrl + '/Vehiculo', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
@@ -114,9 +123,11 @@ function formatearFecha(fecha: string) {
 
 async function actualizarVehiculo(vehiculo : Vehiculo) {
   try {
-    if(storeAuth.tokenUsuario === null) {
-      token = storeAuth.tokenPolicia;
-  }
+    if (tokenUsuario !== null) {
+        token = tokenUsuario ?? '';
+      } else {
+        token = tokenPolicia ?? '';
+      }
     const response = await fetch(apiUrl + '/Vehiculo', {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
@@ -137,9 +148,11 @@ async function actualizarVehiculo(vehiculo : Vehiculo) {
   async function borrarDatosVehiculos(vehiculoId: number) {
     
     try {
-      if(storeAuth.tokenUsuario === null) {
-        token = storeAuth.tokenPolicia;
-    }
+    if (tokenUsuario !== null) {
+        token = tokenUsuario ?? '';
+      } else {
+        token = tokenPolicia ?? '';
+      }
       const response = await fetch(apiUrl + '/Vehiculo/' + vehiculoId.toString(), {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }

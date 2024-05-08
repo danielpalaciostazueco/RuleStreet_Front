@@ -5,6 +5,8 @@ import { defineStore } from 'pinia';
 import { reactive, ref } from 'vue';
 import { useListadoAuth } from './storeAuth';
 const storeAuth = useListadoAuth();
+const tokenUsuario = storeAuth.tokenUsuario;
+const tokenPolicia = storeAuth.tokenPolicia;
 
 export interface Usuario {
   idUsuario: number;
@@ -27,12 +29,14 @@ export const useListadoUsuarios = defineStore('listadoUsuarios', () => {
     contrasena: '',
   });
 
-  let token 
+  let token = ''
   async function cargarDatosUsuarios() {
     try {
-      if(storeAuth.tokenUsuario === null) {
-        token = storeAuth.tokenPolicia;
-    }
+       if (tokenUsuario !== null) {
+        token = tokenUsuario ?? '';
+      } else {
+        token = tokenPolicia ?? '';
+      }
       
       const response = await fetch(apiUrl + '/Usuario',{
         headers: { 'Authorization': `Bearer ${token}` }
@@ -50,9 +54,12 @@ export const useListadoUsuarios = defineStore('listadoUsuarios', () => {
 
   async function cargarDatosUsuariosId(usuarioId: number) {
     try {
-      if(storeAuth.tokenUsuario === null) {
-        token = storeAuth.tokenPolicia;
-    }
+       if (tokenUsuario !== null) {
+        token = tokenUsuario ?? '';
+      } else {
+        token = tokenPolicia ?? '';
+      }
+      
       const response = await fetch(apiUrl + '/Usuario/' + usuarioId.toString(),{
         headers: { 'Authorization': `Bearer ${token}` }
       });
@@ -70,9 +77,12 @@ export const useListadoUsuarios = defineStore('listadoUsuarios', () => {
 
   async function guardarUsuario() {
     try {
-      if(storeAuth.tokenUsuario === null) {
-        token = storeAuth.tokenPolicia;
-    }
+       if (tokenUsuario !== null) {
+        token = tokenUsuario ?? '';
+      } else {
+        token = tokenPolicia ?? '';
+      }
+      
       const response = await fetch(apiUrl + '/Usuario', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
@@ -91,9 +101,12 @@ export const useListadoUsuarios = defineStore('listadoUsuarios', () => {
   }
 
   async function registroUsuario() {
-    if(storeAuth.tokenUsuario === null) {
-      token = storeAuth.tokenPolicia;
-  }
+    if (tokenUsuario !== null) {
+        token = tokenUsuario ?? '';
+      } else {
+        token = tokenPolicia ?? '';
+      }
+      
     const url = `${apiUrl}/Usuario/Register`;
     try {
       const response = await fetch(url, {
@@ -151,9 +164,12 @@ export const useListadoUsuarios = defineStore('listadoUsuarios', () => {
 
   async function actualizarUsuario(usuario: Usuario) {
     try {
-      if(storeAuth.tokenUsuario === null) {
-        token = storeAuth.tokenPolicia;
-    }
+     if (tokenUsuario !== null) {
+        token = tokenUsuario ?? '';
+      } else {
+        token = tokenPolicia ?? '';
+      }
+      
       const response = await fetch(apiUrl + '/Usuario', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
@@ -173,9 +189,12 @@ export const useListadoUsuarios = defineStore('listadoUsuarios', () => {
 
   async function borrarDatosUsuario(usuarioId: number) {
     try {
-      if(storeAuth.tokenUsuario === null) {
-        token = storeAuth.tokenPolicia;
-    }
+       if (tokenUsuario !== null) {
+        token = tokenUsuario ?? '';
+      } else {
+        token = tokenPolicia ?? '';
+      }
+      
       const response = await fetch(apiUrl + '/Usuario/' + usuarioId.toString(), {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }
