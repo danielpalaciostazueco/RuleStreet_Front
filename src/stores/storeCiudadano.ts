@@ -2,7 +2,8 @@
 
 import { defineStore } from 'pinia';
 import { reactive } from 'vue';
-
+import { useListadoAuth } from './storeAuth';
+const storeAuth = useListadoAuth();
 interface Vehiculo {
   idVehiculo: number;
   matricula: string;
@@ -57,12 +58,12 @@ export const useListadoCiudadanos = defineStore('listadoCiduadanos', () => {
   const infoCiudadanos = reactive<Array<Ciudadano>>([]);
   const infoCiudadanosBusquedaCaptura = reactive<Array<Ciudadano>>([]);
   const infoDeudores = reactive<Array<Deudores>>([]);
-  let token = localStorage.getItem('token');
+  let token 
   async function cargarDatosCiudadanos() {
     try {
-       if(token === null) {
-        token = localStorage.getItem('tokenPolicia');
-      }
+      if(storeAuth.tokenUsuario === null) {
+        token = storeAuth.tokenPolicia;
+    }
       const response = await fetch(apiUrl + '/Ciudadano', {
         headers: { 'Authorization': `Bearer ${token}` }
 
@@ -81,9 +82,9 @@ export const useListadoCiudadanos = defineStore('listadoCiduadanos', () => {
 
   async function cargarDatosCiudadanosDeudores() {
     try {
-       if(token === null) {
-        token = localStorage.getItem('tokenPolicia');
-      }
+      if(storeAuth.tokenUsuario === null) {
+        token = storeAuth.tokenPolicia;
+    }
       const response = await fetch(apiUrl + '/Ciudadano/Deudores', {
         headers: { 'Authorization': `Bearer ${token}` }
 
@@ -120,9 +121,9 @@ export const useListadoCiudadanos = defineStore('listadoCiduadanos', () => {
 
   async function cargarDatosCiudadanosId(ciudadanoId: number) {
     try {
-       if(token === null) {
-        token = localStorage.getItem('tokenPolicia');
-      }
+      if(storeAuth.tokenUsuario === null) {
+        token = storeAuth.tokenPolicia;
+    }
       const response = await fetch(apiUrl + '/Ciudadano/' + ciudadanoId.toString(), {
         headers: { 'Authorization': `Bearer ${token}` }
       });
@@ -143,9 +144,9 @@ export const useListadoCiudadanos = defineStore('listadoCiduadanos', () => {
 
   async function guardarCiudadano(ciudadano: Ciudadano) {
     try {
-       if(token === null) {
-        token = localStorage.getItem('tokenPolicia');
-      }
+      if(storeAuth.tokenUsuario === null) {
+        token = storeAuth.tokenPolicia;
+    }
       const response = await fetch(apiUrl + '/Ciudadano', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
@@ -193,9 +194,9 @@ export const useListadoCiudadanos = defineStore('listadoCiduadanos', () => {
 
 
   async function actualizarCiudadano(ciudadano: Ciudadano) {
-     if(token === null) {
-        token = localStorage.getItem('tokenPolicia');
-      }
+    if(storeAuth.tokenUsuario === null) {
+      token = storeAuth.tokenPolicia;
+  }
     try {
       const response = await fetch(apiUrl + '/Ciudadano', {
         method: 'PUT',
@@ -215,9 +216,9 @@ export const useListadoCiudadanos = defineStore('listadoCiduadanos', () => {
   }
 
   async function borrarDatosCiudadano(ciudadanoId: number) {
-     if(token === null) {
-        token = localStorage.getItem('tokenPolicia');
-      }
+    if(storeAuth.tokenUsuario === null) {
+      token = storeAuth.tokenPolicia;
+  }
     try {
       const response = await fetch(apiUrl + '/Ciduadano/' + ciudadanoId.toString(), {
         method: 'DELETE',

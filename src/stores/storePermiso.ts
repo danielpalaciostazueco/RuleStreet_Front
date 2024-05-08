@@ -2,7 +2,8 @@
 
 import { defineStore } from 'pinia';
 import { reactive } from 'vue';
-
+import { useListadoAuth } from './storeAuth';
+const storeAuth = useListadoAuth();
 
 export interface Permiso {
   idPermiso : number ;
@@ -14,12 +15,12 @@ export interface Permiso {
 export const useListadoPermisos = defineStore('listadoPermisos', () => {
   const apiUrl = `http://localhost:8001`;
   const infoPermiso = reactive<Array<Permiso>>([]);
-  let token = localStorage.getItem('token');
+  let token 
   async function cargarDatosPermisos() {
     try {
-       if(token === null) {
-        token = localStorage.getItem('tokenPolicia');
-      }
+      if(storeAuth.tokenUsuario === null) {
+        token = storeAuth.tokenPolicia;
+    }
       const response = await fetch(apiUrl + '/Permiso', {
         headers: { 'Authorization': `Bearer ${token}` }
       
@@ -37,9 +38,9 @@ export const useListadoPermisos = defineStore('listadoPermisos', () => {
 
   async function cargarDatosPermisosId(permisoId: number) {
     try {
-       if(token === null) {
-        token = localStorage.getItem('tokenPolicia');
-      }
+      if(storeAuth.tokenUsuario === null) {
+        token = storeAuth.tokenPolicia;
+    }
       const response = await fetch(apiUrl + '/Multa/' + permisoId.toString(), {
         headers: { 'Authorization': `Bearer ${token}` }
       
@@ -86,9 +87,9 @@ function formatearFecha(fecha: string) {
 
 async function actualizarMulta(permiso : Permiso) { 
   try {
-     if(token === null) {
-        token = localStorage.getItem('tokenPolicia');
-      }
+    if(storeAuth.tokenUsuario === null) {
+      token = storeAuth.tokenPolicia;
+  }
     const response = await fetch(apiUrl + '/Permiso', {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
@@ -108,9 +109,9 @@ async function actualizarMulta(permiso : Permiso) {
 
 async function borrarDatosMulta(permisoId: number) {
     try {
-       if(token === null) {
-        token = localStorage.getItem('tokenPolicia');
-      }
+      if(storeAuth.tokenUsuario === null) {
+        token = storeAuth.tokenPolicia;
+    }
       const response = await fetch(apiUrl + '/Permiso/' + permisoId.toString(), {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }
