@@ -2,7 +2,8 @@
 
 import { defineStore } from 'pinia';
 import { reactive } from 'vue';
-
+import { useListadoAuth } from './storeAuth';
+const storeAuth = useListadoAuth();
 
 export interface Denuncia{
    idDenuncia : number;
@@ -17,12 +18,12 @@ export interface Denuncia{
 export const useListadoDenuncias = defineStore('listadoDenuncias', () => {
   const apiUrl = `http://localhost:8001`;
   const infoDenuncias = reactive<Array<Denuncia>>([]);
-  let token = localStorage.getItem('token');
+  let token ;
   async function cargarDatosDenuncias() {
     try {
-       if(token === null) {
-        token = localStorage.getItem('tokenPolicia');
-      }
+      if(storeAuth.tokenUsuario === null) {
+        token = storeAuth.tokenPolicia;
+    }
       const response = await fetch(apiUrl + '/Denuncia' ,{
 
         headers: { 'Authorization': `Bearer ${token}` } 
@@ -40,9 +41,9 @@ export const useListadoDenuncias = defineStore('listadoDenuncias', () => {
   }
 
   async function cargarDatosDenunciasId(denunciaId : number) {
-     if(token === null) {
-        token = localStorage.getItem('tokenPolicia');
-      }
+    if(storeAuth.tokenUsuario === null) {
+      token = storeAuth.tokenPolicia;
+  }
     try {
       const response = await fetch(apiUrl + '/Denuncia/' + denunciaId.toString() , {
         headers: { 'Authorization': `Bearer ${token}` } 
@@ -62,9 +63,9 @@ export const useListadoDenuncias = defineStore('listadoDenuncias', () => {
 async function guardarDenuncia(denuncia : Denuncia) {
  
   try {
- if(token === null) {
-        token = localStorage.getItem('tokenPolicia');
-      }
+    if(storeAuth.tokenUsuario === null) {
+      token = storeAuth.tokenPolicia;
+  }
     const response = await fetch(apiUrl + '/Denuncia', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
@@ -113,9 +114,9 @@ function formatearFecha(fecha: string) {
 
 async function actualizarDenuncia(denuncia : Denuncia) { 
   try {
-     if(token === null) {
-        token = localStorage.getItem('tokenPolicia');
-      }
+    if(storeAuth.tokenUsuario === null) {
+      token = storeAuth.tokenPolicia;
+  }
     const response = await fetch(apiUrl + '/Denuncia', {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' , 'Authorization': `Bearer ${token}`},
@@ -135,9 +136,9 @@ async function actualizarDenuncia(denuncia : Denuncia) {
 
 async function borrarDatosDenuncia(denunciaId: number) {
     try {
-       if(token === null) {
-        token = localStorage.getItem('tokenPolicia');
-      }
+      if(storeAuth.tokenUsuario === null) {
+        token = storeAuth.tokenPolicia;
+    }
       const response = await fetch(apiUrl + '/Denuncia/' + denunciaId.toString(), {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }

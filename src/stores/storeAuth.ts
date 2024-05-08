@@ -23,9 +23,19 @@ interface Policia {
    isPolicia : boolean;
 }
 
+interface Ayuntamiento{
+  idUsuarioAyuntamiento: number;
+  dni: string;
+  contrasena: string;
+}
 
 
 export const useListadoAuth = defineStore('listadoAuth', () => {
+
+  let tokenUsuario;
+  let tokenPolicia;
+  let tokenAyuntamiento;
+
 
 
   const apiUrl = `http://localhost:8001`;
@@ -44,6 +54,13 @@ export const useListadoAuth = defineStore('listadoAuth', () => {
       rango : 0,
       numeroPlaca : "",
       isPolicia : false
+    };
+
+
+    let infoAyuntamiento: Ayuntamiento = {
+      idUsuarioAyuntamiento: 0,
+      dni: "",
+      contrasena: ""
     };
 
 
@@ -68,6 +85,12 @@ export const useListadoAuth = defineStore('listadoAuth', () => {
     contrasena : '',
   });
 
+
+  const DatosAyuntamiento = ref({
+    dni: '',
+    contrasena: '',
+  });
+
   async function LoginPolicia() {
     try {
         const response = await fetch(apiUrl + '/Auth/Login/Policia', {
@@ -80,17 +103,17 @@ export const useListadoAuth = defineStore('listadoAuth', () => {
 
         if (!response.ok) {
             const errorBody = await response.text();
-            throw new Error(`Error al guardar la información del usuario: ${errorBody}`);
+            throw new Error(`Error al guardar la información del usuario de policia: ${errorBody}`);
         }
 
-        const token = await response.text(); 
-        localStorage.setItem('tokenPolicia', token);
+        tokenPolicia = await response.text(); 
+        
 
-        infoPolicias = jwtDecode(token) as { idPolicia: number, idCiudadano: number, rango: number, numeroPlaca: string, isPolicia: boolean};
+        infoPolicias = jwtDecode(tokenPolicia) as { idPolicia: number, idCiudadano: number, rango: number, numeroPlaca: string, isPolicia: boolean};
         
         router.push('/');
     } catch (error) {
-        console.error('Error al guardar la información del usuario:', error);
+        console.error('Error al guardar la información del usuario de policia:', error);
     }
 }
 
@@ -108,12 +131,12 @@ export const useListadoAuth = defineStore('listadoAuth', () => {
             throw new Error(`Error al guardar la información del usuario: ${errorBody}`);
         }
 
-        const token = await response.text(); 
-        localStorage.setItem('token', token);
+        tokenUsuario = await response.text(); 
+       
         
       
 
-        infoUsuarios = jwtDecode(token) as { idUsuario: number, idPolicia: number, idCiudadano: number, nombreUsuario: string, contrasena: string, isPolicia: boolean };
+        infoUsuarios = jwtDecode(tokenUsuario) as { idUsuario: number, idPolicia: number, idCiudadano: number, nombreUsuario: string, contrasena: string, isPolicia: boolean };
         
         router.push('/');
     } catch (error) {
@@ -174,6 +197,30 @@ export const useListadoAuth = defineStore('listadoAuth', () => {
     }
   }
 
+  async function LoginAyuntamiento() {
+    try {
+        const response = await fetch(apiUrl + '/Auth/Login/Ayuntamiento', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json'},
+            body: JSON.stringify(DatosAyuntamiento.value),
+        });
 
-  return { LoginUsuario, registroUsuario, formatearFecha, infoUsuarios, Datos, DatosPolicia,LoginPolicia, infoPolicias, DatosRegistro};
+        if (!response.ok) {
+            const errorBody = await response.text();
+            throw new Error(`Error al guardar la información del usuario del ayuntamiento: ${errorBody}`);
+        }
+
+        tokenAyuntamiento = await response.text(); 
+       
+        
+      
+
+        infoAyuntamiento = jwtDecode(tokenAyuntamiento) as { idUsuarioAyuntamiento: number, dni: string, contrasena: string};
+        router.push('/');
+    } catch (error) {
+        console.error('Error al guardar la información del usuario del ayuntamiento:', error);
+    }
+}
+
+  return { LoginUsuario, registroUsuario, formatearFecha, infoUsuarios, Datos, DatosPolicia,LoginPolicia, infoPolicias, DatosRegistro, DatosAyuntamiento, LoginAyuntamiento, infoAyuntamiento, tokenAyuntamiento, tokenUsuario, tokenPolicia};
 });

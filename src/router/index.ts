@@ -38,10 +38,15 @@ const routes = [
     name: 'login',
     component: () => import('../views/LoginView.vue'),
   },
- {
+  {
     path: '/loginPolicia',
     name: 'loginPolicia',
     component: () => import('../views/LoginPoliciaView.vue'),
+  },
+  {
+    path: '/loginAyuntamiento',
+    name: 'loginPolicia',
+    component: () => import('../views/LoginAyuntamientoView.vue'),
   },
   {
     path: '/register',
