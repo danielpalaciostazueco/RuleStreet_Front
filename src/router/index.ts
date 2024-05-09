@@ -50,7 +50,7 @@ const routes = [
   },
   {
     path: '/loginAyuntamiento',
-    name: 'loginPolicia',
+    name: 'loginAyuntamiento',
     component: () => import('../views/LoginAyuntamientoView.vue'),
   },
   {

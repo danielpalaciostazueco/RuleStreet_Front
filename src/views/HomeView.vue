@@ -99,7 +99,11 @@ const cardsSesion = ref([
   }
 ]);
 
-
+function borrarToken(){
+  localStorage.removeItem('tokenUsuario');
+  localStorage.removeItem('tokenPolicia');
+  localStorage.removeItem('tokenAyuntamiento');
+}
 </script>
 
 <template>
