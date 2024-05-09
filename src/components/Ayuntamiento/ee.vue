@@ -5,35 +5,31 @@
             <div class="card-content">
                 <h2>{{ evento.descripcion }}</h2>
                 <div class="card-date">
-                    Fecha: {{ fechaFormato(evento.fecha) }}
+                    Fecha: {{ evento.fecha | fechaFormato }}
                 </div>
-
             </div>
         </div>
     </div>
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed } from 'vue';
 import { useListadoEvento } from '@/stores/storeEventos';
 
-const store = useListadoEvento();
-const { infoEventos } = store;
 
-// Llamada a cargarDatosEventos cuando el componente se monta
+const { infoEventos } = useListadoEvento();
+
+
 onMounted(() => {
     store.cargarDatosEventos();
 });
 
 // Formateador de fechas
 const fechaFormato = fecha => {
-    if (!fecha) return 'Fecha no disponible'; // Asegurarse de que la fecha no es null/undefined/vacío
     const fechaObj = new Date(fecha);
-    if (isNaN(fechaObj.getTime())) return 'Fecha inválida'; // Comprobar si la fecha es válida
     const opciones = { year: 'numeric', month: 'long', day: 'numeric' };
     return fechaObj.toLocaleDateString('es-ES', opciones);
 };
-
 </script>
 
 <style scoped>

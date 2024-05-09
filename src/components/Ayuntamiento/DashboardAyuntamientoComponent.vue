@@ -1,6 +1,5 @@
 <template>
     <div class="contenedor-botones">
-
         <RouterLink to="/" class="boton-idioma">pagina principal</RouterLink>
     </div>
     <div class="gestion-obras">
@@ -9,8 +8,10 @@
         <table class="tabla-obras">
             <thead>
                 <tr>
-                    <th>Imagen</th>
-                    <th>descripción</th>
+                    <th>ID</th> <!-- Corregido de Imagen a ID -->
+                    <th>Descripción</th>
+                    <th>Fecha</th> <!-- Agregado el título de Fecha -->
+                    <th>Imagen</th> <!-- Movido Imagen aquí -->
                 </tr>
             </thead>
             <tbody>
@@ -18,10 +19,13 @@
                     <td>{{ evento.idEventos }}</td>
                     <td>{{ evento.descripcion }}</td>
                     <td>{{ evento.fecha }}</td>
-                    <td>{{ evento.imagen }}</td>
-                      <td>
+                    <td>
+                        <img :src="evento.imagen" alt="Imagen del evento" style="width: 100px; height: auto;">
+                        <!-- Asegurarse de mostrar la imagen -->
+                    </td>
+                    <td>
                         <button @click="editarEvento(evento)">Editar</button>
-                        <button @click="borrarEvento(eventoEditando.idEventos)">Borrar</button>
+                        <button @click="borrarEvento(evento.idEventos)">Borrar</button>
                     </td>
                 </tr>
             </tbody>
@@ -36,6 +40,7 @@
         </div>
     </div>
 </template>
+
 
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue';
@@ -66,21 +71,21 @@ const editarEvento = (obra: any) => {
 };
 
 const guardarActualizarEvento = () => {
-
     const Datos = {
-        idEventos: eventoEditando.idEventos || 0, 
+        idEventos: eventoEditando.idEventos || 0,
         descripcion: eventoEditando.descripcion,
         imagen: eventoEditando.imagen,
-        fecha: eventoEditando.fecha,    
+        fecha: eventoEditando.fecha,
     };
 
     if (eventoEditando.idEventos) {
-        store.actualizarEventos(Datos);
+        store.actualizarEventos({ ...Datos, fecha: new Date(Datos.fecha) });
     } else {
-        store.guardarEvento(Datos);
+        store.guardarEvento({ ...Datos, fecha: new Date(Datos.fecha) });
     }
     cerrarFormulario();
 };
+
 
 
 const borrarEvento = (obraID: number) => {

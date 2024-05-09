@@ -13,12 +13,7 @@ export interface Evento {
    fecha : Date;
 }
 
-const  eventoEditando = reactive<Evento>({
-  idEventos: 0,
-  imagen: '',
-  descripcion: '',
-  fecha: new Date()
-});
+
 export const useListadoEvento = defineStore('listadoEventos', () => {
 
   const  eventoEditando = reactive<Evento>({
@@ -120,7 +115,7 @@ async function actualizarEventos(evento : Evento) {
   
   try {
     token = localStorage.getItem('tokenAyuntamiento') ?? '';
-    const response = await fetch(apiUrl + '/Evento', {
+    const response = await fetch(apiUrl + '/Evento/' + evento.idEventos, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
       body: JSON.stringify(evento),
