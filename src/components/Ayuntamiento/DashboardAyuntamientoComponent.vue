@@ -5,7 +5,7 @@
     </div>
     <div class="gestion-obras">
         <h2 class="titulo">gestion</h2>
-        <button @click="nuevaObra" class="boton-agregar">crear</button>
+        <button @click="nuevoEvento" class="boton-agregar">crear</button>
         <table class="tabla-obras">
             <thead>
                 <tr>
@@ -14,35 +14,24 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="obra in obras" :key="obra.obraID">
-                    <td>{{ obra.obraID }}</td>
-                    <td>{{ obra.nombre }}</td>
-                    <td>{{ obra.descripcion }}</td>
-                    <td>{{ obra.autores }}</td>
-                    <td>{{ obra.duracion }}</td>
-                    <td>{{ obra.actores }}</td>
-                    <td>
-                        <ul>
-                            <li v-for="imagen in obra.imagenes.split(',')" :key="imagen">{{ imagen }}</li>
-                        </ul>
-                    </td>
-                    <td>{{ obra.fechaUno }}</td>
-                    <td>{{ obra.fechaDos }}</td>
-                    <td>{{ obra.fechaTres }}</td>
-                    <td><img :src="obra.cartel" alt="Cartel" style="width: 100px; height: auto;" /></td>
-                    <td>
-                        <button @click="editarObra(obra)">{{ $t('AdminPanel.edit') }}</button>
-                        <button @click="borrarObra(obra.obraID)">{{ $t('AdminPanel.cancel') }}</button>
+                <tr v-for="evento in store.infoEventos" :key="evento.idEventos">
+                    <td>{{ evento.idEventos }}</td>
+                    <td>{{ evento.descripcion }}</td>
+                    <td>{{ evento.fecha }}</td>
+                    <td>{{ evento.imagen }}</td>
+                      <td>
+                        <button @click="editarEvento(evento)">Editar</button>
+                        <button @click="borrarEvento(eventoEditando.idEventos)">Borrar</button>
                     </td>
                 </tr>
             </tbody>
         </table>
         <div v-if="mostrarFormulario" class="formulario">
-            <input v-model="obraEditando.nombre" placeholder="Imagen" />
-            <input v-model="obraEditando.autores" placeholder="Descripción" />
-            <input type="datetime-local" v-model="obraEditando.fechaUno" placeholder="Fecha" />
+            <input v-model="eventoEditando.imagen" placeholder="Imagen" />
+            <input v-model="eventoEditando.descripcion" placeholder="Descripción" />
+            <input type="datetime-local" v-model="eventoEditando.fecha" placeholder="Fecha" />
 
-            <button @click="guardarActualizarObra">Guardar</button>
+            <button @click="guardarActualizarEvento">Guardar</button>
             <button @click="cerrarFormulario">Cancelar</button>
         </div>
     </div>
@@ -50,7 +39,7 @@
 
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue';
-import { useListadoObrasAdminStore } from '../store/Admin-Store';
+import { useListadoEvento } from '@/stores/storeEventos';
 
 /*import { useI18n } from 'vue-i18n';
 const store = useListadoObrasAdminStore();
@@ -62,50 +51,40 @@ const idiomaCambiado = () => {
 }*/
 const mostrarFormulario = ref(false);
 
+const store = useListadoEvento();
+const obras = store.infoEventos;
+const eventoEditando = store.eventoEditando;
 
-const obras = store.obras;
-const obraEditando = store.obraEditando;
-
-const nuevaObra = () => {
-    store.resetObraEditando();
+const nuevoEvento = () => {
+    store.resetEventoEditando();
     mostrarFormulario.value = true;
 };
 
-const editarObra = (obra: any) => {
-    Object.assign(obraEditando, obra);
+const editarEvento = (obra: any) => {
+    Object.assign(eventoEditando, obra);
     mostrarFormulario.value = true;
 };
 
-const guardarActualizarObra = () => {
+const guardarActualizarEvento = () => {
 
     const Datos = {
-        obraID: obraEditando.obraID || 0,
-        nombre: obraEditando.nombre,
-        descripcion: obraEditando.descripcion,
-        autores: obraEditando.autores,
-        duracion: obraEditando.duracion,
-        actores: obraEditando.actores,
-        imagenes: obraEditando.imagenes,
-        fechaUno: obraEditando.fechaUno,
-        fechaDos: obraEditando.fechaDos,
-        fechaTres: obraEditando.fechaTres,
-        cartel: obraEditando.cartel
+        idEventos: eventoEditando.idEventos || 0, 
+        descripcion: eventoEditando.descripcion,
+        imagen: eventoEditando.imagen,
+        fecha: eventoEditando.fecha,    
     };
 
-
-
-
-    if (obraEditando.obraID) {
-        store.actualizarObra(Datos);
+    if (eventoEditando.idEventos) {
+        store.actualizarEventos(Datos);
     } else {
-        store.guardarObra(Datos);
+        store.guardarEvento(Datos);
     }
     cerrarFormulario();
 };
 
 
-const borrarObra = (obraID: number) => {
-    store.borrarObra(obraID);
+const borrarEvento = (obraID: number) => {
+    store.borrarDatosEvento(obraID);
 };
 
 const cerrarFormulario = () => {
@@ -113,7 +92,7 @@ const cerrarFormulario = () => {
 };
 
 onMounted(() => {
-    store.cargarObras();
+    store.cargarDatosEventos();
 });
 </script>
 <style scoped>
