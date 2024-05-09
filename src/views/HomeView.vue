@@ -99,13 +99,6 @@ const cardsSesion = ref([
   }
 ]);
 
-function borrarToken() {
-
-  store.tokenAyuntamiento = undefined;
-  store.tokenPolicia = undefined;
-  store.tokenUsuario = undefined;
-
-}
 
 </script>
 

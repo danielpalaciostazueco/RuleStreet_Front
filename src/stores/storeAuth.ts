@@ -32,9 +32,6 @@ interface Ayuntamiento{
 
 export const useListadoAuth = defineStore('listadoAuth', () => {
 
-  let tokenUsuario;
-  let tokenPolicia;
-  let tokenAyuntamiento;
 
 
 
@@ -106,16 +103,17 @@ export const useListadoAuth = defineStore('listadoAuth', () => {
             throw new Error(`Error al guardar la información del usuario de policia: ${errorBody}`);
         }
 
-        tokenPolicia = await response.text(); 
-        
+        const token  = await response.text(); 
+        localStorage.setItem('tokenPolicia', token);
 
-        infoPolicias = jwtDecode(tokenPolicia) as { idPolicia: number, idCiudadano: number, rango: number, numeroPlaca: string, isPolicia: boolean};
+        infoPolicias = jwtDecode(token) as { idPolicia: number, idCiudadano: number, rango: number, numeroPlaca: string, isPolicia: boolean};
         
         router.push('/');
     } catch (error) {
         console.error('Error al guardar la información del usuario de policia:', error);
     }
 }
+
 
 
   async function LoginUsuario() {
@@ -125,19 +123,14 @@ export const useListadoAuth = defineStore('listadoAuth', () => {
             headers: { 'Content-Type': 'application/json'},
             body: JSON.stringify(Datos.value),
         });
-
+        const token = await response.text(); 
+        localStorage.setItem('tokenUsuario', token);
+        infoUsuarios = jwtDecode(token) as { idUsuario: number, idPolicia: number, idCiudadano: number, nombreUsuario: string, contrasena: string, isPolicia: boolean };
+       
         if (!response.ok) {
             const errorBody = await response.text();
             throw new Error(`Error al guardar la información del usuario: ${errorBody}`);
-        }
-
-        tokenUsuario = await response.text(); 
-       
-        
-      
-
-        infoUsuarios = jwtDecode(tokenUsuario) as { idUsuario: number, idPolicia: number, idCiudadano: number, nombreUsuario: string, contrasena: string, isPolicia: boolean };
-        
+        }    
         router.push('/');
     } catch (error) {
         console.error('Error al guardar la información del usuario:', error);
@@ -210,17 +203,17 @@ export const useListadoAuth = defineStore('listadoAuth', () => {
             throw new Error(`Error al guardar la información del usuario del ayuntamiento: ${errorBody}`);
         }
 
-        tokenAyuntamiento = await response.text(); 
-       
+        const token = await response.text(); 
+        localStorage.setItem('tokenAyuntamiento', token);
         
       
 
-        infoAyuntamiento = jwtDecode(tokenAyuntamiento) as { idUsuarioAyuntamiento: number, dni: string, contrasena: string};
+        infoAyuntamiento = jwtDecode(token) as { idUsuarioAyuntamiento: number, dni: string, contrasena: string};
         router.push('/');
     } catch (error) {
         console.error('Error al guardar la información del usuario del ayuntamiento:', error);
     }
 }
 
-  return { LoginUsuario, registroUsuario, formatearFecha, infoUsuarios, Datos, DatosPolicia,LoginPolicia, infoPolicias, DatosRegistro, DatosAyuntamiento, LoginAyuntamiento, infoAyuntamiento, tokenAyuntamiento, tokenUsuario, tokenPolicia};
+  return { LoginUsuario, registroUsuario, formatearFecha, infoUsuarios, Datos, DatosPolicia,LoginPolicia, infoPolicias, DatosRegistro, DatosAyuntamiento, LoginAyuntamiento, infoAyuntamiento};
 });

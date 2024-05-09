@@ -4,8 +4,7 @@ import { defineStore } from 'pinia';
 import { reactive } from 'vue';
 import { useListadoAuth } from './storeAuth';
 const storeAuth = useListadoAuth();
-const tokenUsuario = storeAuth.tokenUsuario;
-const tokenPolicia = storeAuth.tokenPolicia;
+
 
 export interface Policia {
    idPolicia : number;
@@ -21,10 +20,10 @@ export const useListadoPolicias = defineStore('listadoPolicias', () => {
   let token = "";
   async function cargarDatosPolicias() {
     try {
-       if (tokenUsuario !== null) {
-         token = tokenUsuario ?? '';
+      if (localStorage.getItem('tokenUsuario') !== null) {
+        token = localStorage.getItem('tokenUsuario') ?? '';
       } else {
-        token = tokenPolicia ?? '';
+        token = localStorage.getItem('tokenPolicia') ?? '';
       }
       const response = await fetch(apiUrl + '/Policia' ,{
         headers: { 'Authorization': `Bearer ${token}` } 
@@ -43,10 +42,10 @@ export const useListadoPolicias = defineStore('listadoPolicias', () => {
 
   async function cargarDatosPoliciasId(policiaId : number) {
     try {
-      if (tokenUsuario !== null) {
-          token = tokenUsuario ?? '';
+      if (localStorage.getItem('tokenUsuario') !== null) {
+        token = localStorage.getItem('tokenUsuario') ?? '';
       } else {
-        token = tokenPolicia ?? '';
+        token = localStorage.getItem('tokenPolicia') ?? '';
       }
       const response = await fetch(apiUrl + '/Policia/' + policiaId.toString(), {
         headers: { 'Authorization': `Bearer ${token}` } 
@@ -66,11 +65,11 @@ export const useListadoPolicias = defineStore('listadoPolicias', () => {
 
 async function guardarPolicia(policia : Policia) {
   try {
-    if (tokenUsuario !== null) {
-        token = tokenUsuario ?? '';
-      } else {
-        token = tokenPolicia ?? '';
-      }
+    if (localStorage.getItem('tokenUsuario') !== null) {
+      token = localStorage.getItem('tokenUsuario') ?? '';
+    } else {
+      token = localStorage.getItem('tokenPolicia') ?? '';
+    }
     const response = await fetch(apiUrl + '/Policia', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
@@ -120,11 +119,11 @@ function formatearFecha(fecha: string) {
 async function actualizarPolicia(policia : Policia) { 
   
   try {
-     if (tokenUsuario !== null) {
-      token = tokenUsuario ?? '';
-      } else {
-        token = tokenPolicia ?? '';
-      }
+    if (localStorage.getItem('tokenUsuario') !== null) {
+      token = localStorage.getItem('tokenUsuario') ?? '';
+    } else {
+      token = localStorage.getItem('tokenPolicia') ?? '';
+    }
     const response = await fetch(apiUrl + '/Policia', {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
@@ -144,10 +143,10 @@ async function actualizarPolicia(policia : Policia) {
 
 async function borrarDatosPolicia(policiaId: number) {
     try {
-       if (tokenUsuario !== null) {
-         token = tokenUsuario ?? '';
+      if (localStorage.getItem('tokenUsuario') !== null) {
+        token = localStorage.getItem('tokenUsuario') ?? '';
       } else {
-        token = tokenPolicia ?? '';
+        token = localStorage.getItem('tokenPolicia') ?? '';
       }
       const response = await fetch(apiUrl + '/Policia/' + policiaId.toString(), {
         method: 'DELETE',

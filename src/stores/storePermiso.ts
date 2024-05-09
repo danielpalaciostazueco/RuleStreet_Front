@@ -4,8 +4,7 @@ import { defineStore } from 'pinia';
 import { reactive } from 'vue';
 import { useListadoAuth } from './storeAuth';
 const storeAuth = useListadoAuth();
-const tokenUsuario = storeAuth.tokenUsuario;
-const tokenPolicia = storeAuth.tokenPolicia;
+
 export interface Permiso {
   idPermiso : number ;
   nombre : string | null;
@@ -19,10 +18,10 @@ export const useListadoPermisos = defineStore('listadoPermisos', () => {
   let token = ''
   async function cargarDatosPermisos() {
     try {
-        if (tokenUsuario !== null) {
-          token = tokenUsuario ?? '';
+      if (localStorage.getItem('tokenUsuario') !== null) {
+        token = localStorage.getItem('tokenUsuario') ?? '';
       } else {
-        token = tokenPolicia ?? '';
+        token = localStorage.getItem('tokenPolicia') ?? '';
       }
       const response = await fetch(apiUrl + '/Permiso', {
         headers: { 'Authorization': `Bearer ${token}` }
@@ -41,10 +40,10 @@ export const useListadoPermisos = defineStore('listadoPermisos', () => {
 
   async function cargarDatosPermisosId(permisoId: number) {
     try {
-       if (tokenUsuario !== null) {
-          token = tokenUsuario ?? '';
+      if (localStorage.getItem('tokenUsuario') !== null) {
+        token = localStorage.getItem('tokenUsuario') ?? '';
       } else {
-        token = tokenPolicia ?? '';
+        token = localStorage.getItem('tokenPolicia') ?? '';
       }
       const response = await fetch(apiUrl + '/Multa/' + permisoId.toString(), {
         headers: { 'Authorization': `Bearer ${token}` }
@@ -92,11 +91,11 @@ function formatearFecha(fecha: string) {
 
 async function actualizarMulta(permiso : Permiso) { 
   try {
-      if (tokenUsuario !== null) {
-         token = tokenUsuario ?? '';
-      } else {
-        token = tokenPolicia ?? '';
-      }
+    if (localStorage.getItem('tokenUsuario') !== null) {
+      token = localStorage.getItem('tokenUsuario') ?? '';
+    } else {
+      token = localStorage.getItem('tokenPolicia') ?? '';
+    }
     const response = await fetch(apiUrl + '/Permiso', {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
@@ -116,10 +115,10 @@ async function actualizarMulta(permiso : Permiso) {
 
 async function borrarDatosMulta(permisoId: number) {
     try {
-        if (tokenUsuario !== null) {
-          token = tokenUsuario ?? '';
+      if (localStorage.getItem('tokenUsuario') !== null) {
+        token = localStorage.getItem('tokenUsuario') ?? '';
       } else {
-        token = tokenPolicia ?? '';
+        token = localStorage.getItem('tokenPolicia') ?? '';
       }
       const response = await fetch(apiUrl + '/Permiso/' + permisoId.toString(), {
         method: 'DELETE',

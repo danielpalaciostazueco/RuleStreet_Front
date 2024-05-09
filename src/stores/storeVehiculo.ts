@@ -4,8 +4,6 @@ import { defineStore } from 'pinia';
 import { reactive } from 'vue';
 import { useListadoAuth } from './storeAuth';
 const storeAuth = useListadoAuth();
-const tokenUsuario = storeAuth.tokenUsuario;
-const tokenPolicia = storeAuth.tokenPolicia;
 
 
 export interface Vehiculo {
@@ -26,10 +24,10 @@ export const useListadoVehiculos = defineStore('listadoVehiculos', () => {
   let token = ''
   async function cargarDatosVehiculos() {
     try {
-      if (tokenUsuario !== null) {
-        token = tokenUsuario ?? '';
+      if (localStorage.getItem('tokenUsuario') !== null) {
+        token = localStorage.getItem('tokenUsuario') ?? '';
       } else {
-        token = tokenPolicia ?? '';
+        token = localStorage.getItem('tokenPolicia') ?? '';
       }
         const response = await fetch(apiUrl + '/Vehiculo', {
             headers: { 'Authorization': `Bearer ${token}` } 
@@ -47,10 +45,10 @@ export const useListadoVehiculos = defineStore('listadoVehiculos', () => {
 
   async function cargarDatosVehiculosId(vehiculoId: number) {
     try {
-      if (tokenUsuario !== null) {
-        token = tokenUsuario ?? '';
+      if (localStorage.getItem('tokenUsuario') !== null) {
+        token = localStorage.getItem('tokenUsuario') ?? '';
       } else {
-        token = tokenPolicia ?? '';
+        token = localStorage.getItem('tokenPolicia') ?? '';
       }
       const response = await fetch(apiUrl + '/Vehiculo/' + vehiculoId.toString(), {
         headers: { 'Authorization': `Bearer ${token}` }
@@ -72,11 +70,11 @@ export const useListadoVehiculos = defineStore('listadoVehiculos', () => {
 async function guardarObra(vehiculo : Vehiculo) {
   try {
   
-    if (tokenUsuario !== null) {
-        token = tokenUsuario ?? '';
-      } else {
-        token = tokenPolicia ?? '';
-      }
+    if (localStorage.getItem('tokenUsuario') !== null) {
+      token = localStorage.getItem('tokenUsuario') ?? '';
+    } else {
+      token = localStorage.getItem('tokenPolicia') ?? '';
+    }
     const response = await fetch(apiUrl + '/Vehiculo', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
@@ -123,11 +121,11 @@ function formatearFecha(fecha: string) {
 
 async function actualizarVehiculo(vehiculo : Vehiculo) {
   try {
-    if (tokenUsuario !== null) {
-        token = tokenUsuario ?? '';
-      } else {
-        token = tokenPolicia ?? '';
-      }
+    if (localStorage.getItem('tokenUsuario') !== null) {
+      token = localStorage.getItem('tokenUsuario') ?? '';
+    } else {
+      token = localStorage.getItem('tokenPolicia') ?? '';
+    }
     const response = await fetch(apiUrl + '/Vehiculo', {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
@@ -148,10 +146,10 @@ async function actualizarVehiculo(vehiculo : Vehiculo) {
   async function borrarDatosVehiculos(vehiculoId: number) {
     
     try {
-    if (tokenUsuario !== null) {
-        token = tokenUsuario ?? '';
+      if (localStorage.getItem('tokenUsuario') !== null) {
+        token = localStorage.getItem('tokenUsuario') ?? '';
       } else {
-        token = tokenPolicia ?? '';
+        token = localStorage.getItem('tokenPolicia') ?? '';
       }
       const response = await fetch(apiUrl + '/Vehiculo/' + vehiculoId.toString(), {
         method: 'DELETE',

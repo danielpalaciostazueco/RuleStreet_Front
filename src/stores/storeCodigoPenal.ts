@@ -4,8 +4,7 @@ import { defineStore } from 'pinia';
 import { reactive } from 'vue';
 import { useListadoAuth } from './storeAuth';
 const storeAuth = useListadoAuth();
-const tokenUsuario = storeAuth.tokenUsuario;
-const tokenPolicia = storeAuth.tokenPolicia;
+
 
 export interface CodigoPenal {
   idCodigoPenal: number;
@@ -23,10 +22,10 @@ export const useListadoCodigoPenal = defineStore('listadoCodigoPenal', () => {
   let token = '';
   async function cargarDatosCodigoPenal() {
     try {
-        if (tokenUsuario !== null) {
-          token = tokenUsuario ?? '';
+      if (localStorage.getItem('tokenUsuario') !== null) {
+        token = localStorage.getItem('tokenUsuario') ?? '';
       } else {
-        token = tokenPolicia ?? '';
+        token = localStorage.getItem('tokenPolicia') ?? '';
       }
       const response = await fetch(apiUrl + '/CodigoPenal', {
         headers: { 'Authorization': `Bearer ${token}` }
@@ -45,10 +44,10 @@ export const useListadoCodigoPenal = defineStore('listadoCodigoPenal', () => {
 
   async function cargarDatosCodigoPenalId(codigoPenalId: number) {
     try {
-       if (tokenUsuario !== null) {
-         token = tokenUsuario ?? '';
+      if (localStorage.getItem('tokenUsuario') !== null) {
+        token = localStorage.getItem('tokenUsuario') ?? '';
       } else {
-        token = tokenPolicia ?? '';
+        token = localStorage.getItem('tokenPolicia') ?? '';
       }
       const response = await fetch(apiUrl + '/CodigoPenal/' + codigoPenalId.toString(), {
         headers: { 'Authorization': `Bearer ${token}` }
@@ -102,10 +101,10 @@ export const useListadoCodigoPenal = defineStore('listadoCodigoPenal', () => {
 
   async function borrarDatosCodigoPenal(cpId: number) {
     try {
-       if (tokenUsuario !== null) {
-          token = tokenUsuario ?? '';
+      if (localStorage.getItem('tokenUsuario') !== null) {
+        token = localStorage.getItem('tokenUsuario') ?? '';
       } else {
-        token = tokenPolicia ?? '';
+        token = localStorage.getItem('tokenPolicia') ?? '';
       }
       const response = await fetch(apiUrl + '/CodigoPenal/' + cpId.toString(), {
         method: 'DELETE',

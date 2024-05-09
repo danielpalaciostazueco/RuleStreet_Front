@@ -4,8 +4,7 @@ import { defineStore } from 'pinia';
 import { reactive } from 'vue';
 import { useListadoAuth } from './storeAuth';
 const storeAuth = useListadoAuth();
-const tokenUsuario = storeAuth.tokenUsuario;
-const tokenPolicia = storeAuth.tokenPolicia;
+
 
 
 export interface Rango {
@@ -23,10 +22,10 @@ export const useListadoRangos = defineStore('listadoRangos', () => {
   let token = ''
   async function cargarDatosCiudadanos() {
     try {
-      if (tokenUsuario !== null) {
-          token = tokenUsuario ?? '';
+      if (localStorage.getItem('tokenUsuario') !== null) {
+        token = localStorage.getItem('tokenUsuario') ?? '';
       } else {
-        token = tokenPolicia ?? '';
+        token = localStorage.getItem('tokenPolicia') ?? '';
       }
       const response = await fetch(apiUrl + '/Rango' ,{
         headers: { 'Authorization': `Bearer ${token}` } 
@@ -45,10 +44,10 @@ export const useListadoRangos = defineStore('listadoRangos', () => {
 
   async function cargarDatosCiudadanosId(rangoId: number) {
     try {
-       if (tokenUsuario !== null) {
-         token = tokenUsuario ?? '';
+      if (localStorage.getItem('tokenUsuario') !== null) {
+        token = localStorage.getItem('tokenUsuario') ?? '';
       } else {
-        token = tokenPolicia ?? '';
+        token = localStorage.getItem('tokenPolicia') ?? '';
       }
       const response = await fetch(apiUrl + '/Rango/' +rangoId.toString(), {
         headers: { 'Authorization': `Bearer ${token}` } 
@@ -96,11 +95,11 @@ function formatearFecha(fecha: string) {
 
 async function actualizarCiudadano(rango : Rango) { 
   try {
-     if (tokenUsuario !== null) {
-        token = tokenUsuario ?? '';
-      } else {
-        token = tokenPolicia ?? '';
-      }
+    if (localStorage.getItem('tokenUsuario') !== null) {
+      token = localStorage.getItem('tokenUsuario') ?? '';
+    } else {
+      token = localStorage.getItem('tokenPolicia') ?? '';
+    }
     const response = await fetch(apiUrl + '/Rango', {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' , 'Authorization': `Bearer ${token}` },

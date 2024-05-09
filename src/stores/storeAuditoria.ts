@@ -4,8 +4,7 @@ import { defineStore } from 'pinia';
 import { reactive } from 'vue';
 import { useListadoAuth } from './storeAuth';
 const storeAuth = useListadoAuth();
-const tokenUsuario = storeAuth.tokenUsuario;
-const tokenPolicia = storeAuth.tokenPolicia;
+
 
 export interface Auditoria {
     idAuditoria : number;
@@ -23,10 +22,10 @@ export const useListadoAuditorias = defineStore('listadoAuditorias', () => {
   async function cargarDatosAuditorias() {
     try {
       
-      if (tokenUsuario === null) {
-        token = tokenUsuario;
+      if (localStorage.getItem('tokenUsuario') !== null) {
+        token = localStorage.getItem('tokenUsuario') ?? '';
       } else {
-        token = tokenPolicia ?? '';
+        token = localStorage.getItem('tokenPolicia') ?? '';
       }
       const response = await fetch(apiUrl + '/Auditoria', {
         headers: { 'Authorization': `Bearer ${token}` } 
@@ -43,11 +42,11 @@ export const useListadoAuditorias = defineStore('listadoAuditorias', () => {
   }
 
   async function cargarDatosAuditoriasId(auditoriaId : number) {
-       if (tokenUsuario === null) {
-        token = tokenUsuario;
-      } else {
-        token = tokenPolicia ?? '';
-      }
+    if (localStorage.getItem('tokenUsuario') !== null) {
+      token = localStorage.getItem('tokenUsuario') ?? '';
+    } else {
+      token = localStorage.getItem('tokenPolicia') ?? '';
+    }
     try {
       const response = await fetch(apiUrl + '/Auditoria/' + auditoriaId.toString(), {
         headers: { 'Authorization': `Bearer ${token}` } 
@@ -65,11 +64,11 @@ export const useListadoAuditorias = defineStore('listadoAuditorias', () => {
 
 
 async function guardarPolicia(auditoria : Auditoria) {
-        if (tokenUsuario === null) {
-        token = tokenUsuario;
-      } else {
-        token = tokenPolicia ?? '';
-      }
+  if (localStorage.getItem('tokenUsuario') !== null) {
+    token = localStorage.getItem('tokenUsuario') ?? '';
+  } else {
+    token = localStorage.getItem('tokenPolicia') ?? '';
+  }
   try {
 
     const response = await fetch(apiUrl + '/Auditoria', {
@@ -119,11 +118,11 @@ function formatearFecha(fecha: string) {
 
 
 async function actualizarPolicia(auditoria : Auditoria) { 
-     if (tokenUsuario !== null) {
-         token = tokenUsuario ?? '';
-      } else {
-        token = tokenPolicia ?? '';
-      }
+  if (localStorage.getItem('tokenUsuario') !== null) {
+    token = localStorage.getItem('tokenUsuario') ?? '';
+  } else {
+    token = localStorage.getItem('tokenPolicia') ?? '';
+  }
   try {
     const response = await fetch(apiUrl + '/Auditoria', {
       method: 'PUT',
@@ -143,11 +142,11 @@ async function actualizarPolicia(auditoria : Auditoria) {
 }
 
 async function borrarDatosPolicia(auditoriaId: number) {
-     if (tokenUsuario !== null) {
-         token = tokenUsuario ?? '';
-      } else {
-        token = tokenPolicia ?? '';
-      }
+  if (localStorage.getItem('tokenUsuario') !== null) {
+    token = localStorage.getItem('tokenUsuario') ?? '';
+  } else {
+    token = localStorage.getItem('tokenPolicia') ?? '';
+  }
     try {
       const response = await fetch(apiUrl + '/Auditoria/' + auditoriaId.toString(), {
         method: 'DELETE',
