@@ -5,6 +5,7 @@ import { reactive } from 'vue';
 import { useListadoAuth } from './storeAuth';
 const storeAuth = useListadoAuth();
 
+
 export interface Policia {
    idPolicia : number;
    idCiudadano : number;
@@ -16,12 +17,14 @@ export interface Policia {
 export const useListadoPolicias = defineStore('listadoPolicias', () => {
   const apiUrl = `http://localhost:8001`;
   const infoPolicias = reactive<Array<Policia>>([]);
-  let token 
+  let token = "";
   async function cargarDatosPolicias() {
     try {
-      if(storeAuth.tokenUsuario === null) {
-        token = storeAuth.tokenPolicia;
-    }
+      if (localStorage.getItem('tokenUsuario') !== null) {
+        token = localStorage.getItem('tokenUsuario') ?? '';
+      } else {
+        token = localStorage.getItem('tokenPolicia') ?? '';
+      }
       const response = await fetch(apiUrl + '/Policia' ,{
         headers: { 'Authorization': `Bearer ${token}` } 
       
@@ -39,9 +42,11 @@ export const useListadoPolicias = defineStore('listadoPolicias', () => {
 
   async function cargarDatosPoliciasId(policiaId : number) {
     try {
-      if(storeAuth.tokenUsuario === null) {
-        token = storeAuth.tokenPolicia;
-    }
+      if (localStorage.getItem('tokenUsuario') !== null) {
+        token = localStorage.getItem('tokenUsuario') ?? '';
+      } else {
+        token = localStorage.getItem('tokenPolicia') ?? '';
+      }
       const response = await fetch(apiUrl + '/Policia/' + policiaId.toString(), {
         headers: { 'Authorization': `Bearer ${token}` } 
       });
@@ -60,9 +65,11 @@ export const useListadoPolicias = defineStore('listadoPolicias', () => {
 
 async function guardarPolicia(policia : Policia) {
   try {
-    if(storeAuth.tokenUsuario === null) {
-      token = storeAuth.tokenPolicia;
-  }
+    if (localStorage.getItem('tokenUsuario') !== null) {
+      token = localStorage.getItem('tokenUsuario') ?? '';
+    } else {
+      token = localStorage.getItem('tokenPolicia') ?? '';
+    }
     const response = await fetch(apiUrl + '/Policia', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
@@ -112,9 +119,11 @@ function formatearFecha(fecha: string) {
 async function actualizarPolicia(policia : Policia) { 
   
   try {
-    if(storeAuth.tokenUsuario === null) {
-      token = storeAuth.tokenPolicia;
-  }
+    if (localStorage.getItem('tokenUsuario') !== null) {
+      token = localStorage.getItem('tokenUsuario') ?? '';
+    } else {
+      token = localStorage.getItem('tokenPolicia') ?? '';
+    }
     const response = await fetch(apiUrl + '/Policia', {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
@@ -134,9 +143,11 @@ async function actualizarPolicia(policia : Policia) {
 
 async function borrarDatosPolicia(policiaId: number) {
     try {
-      if(storeAuth.tokenUsuario === null) {
-        token = storeAuth.tokenPolicia;
-    }
+      if (localStorage.getItem('tokenUsuario') !== null) {
+        token = localStorage.getItem('tokenUsuario') ?? '';
+      } else {
+        token = localStorage.getItem('tokenPolicia') ?? '';
+      }
       const response = await fetch(apiUrl + '/Policia/' + policiaId.toString(), {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }

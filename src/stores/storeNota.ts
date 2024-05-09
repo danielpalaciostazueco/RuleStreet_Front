@@ -5,6 +5,7 @@ import { reactive } from 'vue';
 import { useListadoAuth } from './storeAuth';
 const storeAuth = useListadoAuth();
 
+
 export interface Nota {
 
    idNota : number ;
@@ -19,13 +20,15 @@ export interface Nota {
 export const useListadoNotas = defineStore('listadoNotas', () => {
   const apiUrl = `http://localhost:8001`;
   const infoNotas = reactive<Array<Nota>>([]);
-  let token 
+  let token = ''
    
   async function cargarDatosNotas() {
     try {
-      if(storeAuth.tokenUsuario === null) {
-        token = storeAuth.tokenPolicia;
-    }
+      if (localStorage.getItem('tokenUsuario') !== null) {
+        token = localStorage.getItem('tokenUsuario') ?? '';
+      } else {
+        token = localStorage.getItem('tokenPolicia') ?? '';
+      }
       const response = await fetch(apiUrl + '/Nota', {
         headers: { 'Authorization': `Bearer ${token}` } 
       
@@ -43,9 +46,11 @@ export const useListadoNotas = defineStore('listadoNotas', () => {
 
   async function cargarDatosNotasId(notaId : number) {
     try {
-      if(storeAuth.tokenUsuario === null) {
-        token = storeAuth.tokenPolicia;
-    }
+      if (localStorage.getItem('tokenUsuario') !== null) {
+        token = localStorage.getItem('tokenUsuario') ?? '';
+      } else {
+        token = localStorage.getItem('tokenPolicia') ?? '';
+      }
       const response = await fetch(apiUrl + '/Nota/' + notaId.toString(), {
         headers: { 'Authorization': `Bearer ${token}` } 
       });
@@ -64,9 +69,11 @@ export const useListadoNotas = defineStore('listadoNotas', () => {
 
 async function guardarNotas(nota : Nota) {
   try {
-    if(storeAuth.tokenUsuario === null) {
-      token = storeAuth.tokenPolicia;
-  }
+    if (localStorage.getItem('tokenUsuario') !== null) {
+      token = localStorage.getItem('tokenUsuario') ?? '';
+    } else {
+      token = localStorage.getItem('tokenPolicia') ?? '';
+    }
     const response = await fetch(apiUrl + '/Nota', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
@@ -115,9 +122,11 @@ function formatearFecha(fecha: string) {
 
 async function actualizarNotas(nota : Nota) { 
   try {
-    if(storeAuth.tokenUsuario === null) {
-      token = storeAuth.tokenPolicia;
-  }
+    if (localStorage.getItem('tokenUsuario') !== null) {
+      token = localStorage.getItem('tokenUsuario') ?? '';
+    } else {
+      token = localStorage.getItem('tokenPolicia') ?? '';
+    }
     const response = await fetch(apiUrl + '/Nota', {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
@@ -137,9 +146,11 @@ async function actualizarNotas(nota : Nota) {
 
 async function borrarDatosNotas(notaId: number) {
     try {
-      if(storeAuth.tokenUsuario === null) {
-        token = storeAuth.tokenPolicia;
-    }
+      if (localStorage.getItem('tokenUsuario') !== null) {
+        token = localStorage.getItem('tokenUsuario') ?? '';
+      } else {
+        token = localStorage.getItem('tokenPolicia') ?? '';
+      }
       const response = await fetch(apiUrl + '/Nota/' + notaId.toString(), {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }

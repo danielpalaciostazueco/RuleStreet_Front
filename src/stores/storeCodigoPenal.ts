@@ -19,12 +19,14 @@ export interface CodigoPenal {
 export const useListadoCodigoPenal = defineStore('listadoCodigoPenal', () => {
   const apiUrl = `http://localhost:8001`;
   const infoCodigoPenal = reactive<Array<CodigoPenal>>([]);
-  let token 
+  let token = '';
   async function cargarDatosCodigoPenal() {
     try {
-      if(storeAuth.tokenUsuario === null) {
-        token = storeAuth.tokenPolicia;
-    }
+      if (localStorage.getItem('tokenUsuario') !== null) {
+        token = localStorage.getItem('tokenUsuario') ?? '';
+      } else {
+        token = localStorage.getItem('tokenPolicia') ?? '';
+      }
       const response = await fetch(apiUrl + '/CodigoPenal', {
         headers: { 'Authorization': `Bearer ${token}` }
       });
@@ -42,9 +44,11 @@ export const useListadoCodigoPenal = defineStore('listadoCodigoPenal', () => {
 
   async function cargarDatosCodigoPenalId(codigoPenalId: number) {
     try {
-      if(storeAuth.tokenUsuario === null) {
-        token = storeAuth.tokenPolicia;
-    }
+      if (localStorage.getItem('tokenUsuario') !== null) {
+        token = localStorage.getItem('tokenUsuario') ?? '';
+      } else {
+        token = localStorage.getItem('tokenPolicia') ?? '';
+      }
       const response = await fetch(apiUrl + '/CodigoPenal/' + codigoPenalId.toString(), {
         headers: { 'Authorization': `Bearer ${token}` }
       });
@@ -97,9 +101,11 @@ export const useListadoCodigoPenal = defineStore('listadoCodigoPenal', () => {
 
   async function borrarDatosCodigoPenal(cpId: number) {
     try {
-      if(storeAuth.tokenUsuario === null) {
-        token = storeAuth.tokenPolicia;
-    }
+      if (localStorage.getItem('tokenUsuario') !== null) {
+        token = localStorage.getItem('tokenUsuario') ?? '';
+      } else {
+        token = localStorage.getItem('tokenPolicia') ?? '';
+      }
       const response = await fetch(apiUrl + '/CodigoPenal/' + cpId.toString(), {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` },
