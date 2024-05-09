@@ -197,15 +197,18 @@ export const useListadoAuth = defineStore('listadoAuth', () => {
             headers: { 'Content-Type': 'application/json'},
             body: JSON.stringify(DatosAyuntamiento.value),
         });
+        const token = await response.text(); 
+        
+        localStorage.setItem('tokenAyuntamiento', token);
 
+        console.log(localStorage.getItem('tokenAyuntamiento'));
+        
         if (!response.ok) {
             const errorBody = await response.text();
             throw new Error(`Error al guardar la información del usuario del ayuntamiento: ${errorBody}`);
         }
 
-        const token = await response.text(); 
-        localStorage.setItem('tokenAyuntamiento', token);
-        
+     
       
 
         infoAyuntamiento = jwtDecode(token) as { idUsuarioAyuntamiento: number, dni: string, contrasena: string};

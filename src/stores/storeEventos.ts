@@ -15,12 +15,19 @@ export interface Evento {
 
 
 export const useListadoEvento = defineStore('listadoEventos', () => {
+
+  const  eventoEditando = reactive<Evento>({
+    idEventos: 0,
+    imagen: '',
+    descripcion: '',
+    fecha: new Date()
+  });
   const apiUrl = `http://localhost:8001`;
   const infoEventos = reactive<Array<Evento>>([]);
   let token = "";
   async function cargarDatosEventos() {
     try {
-      token = localStorage.getItem('tokenAyuntamiento ') ?? '';
+      token = localStorage.getItem('tokenAyuntamiento') ?? '';
       const response = await fetch(apiUrl + '/Evento' ,{
         headers: { 'Authorization': `Bearer ${token}` } 
       
@@ -108,7 +115,7 @@ async function actualizarEventos(evento : Evento) {
   
   try {
     token = localStorage.getItem('tokenAyuntamiento') ?? '';
-    const response = await fetch(apiUrl + '/Evento', {
+    const response = await fetch(apiUrl + '/Evento/' + evento.idEventos, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
       body: JSON.stringify(evento),
@@ -139,5 +146,18 @@ async function borrarDatosEvento(eventoId: number) {
     }
   }
 
-  return {cargarDatosEventos, infoEventos, cargarDatosEventosId, guardarEvento, formatearFecha, actualizarEventos, borrarDatosEvento};
+  function setObraEditando(evento: Evento) {
+    Object.assign(eventoEditando, evento);
+  }
+
+  function resetEventoEditando() {
+    Object.assign(eventoEditando, {
+      idEventos: 0,
+      imagen: '',
+      descripcion: '',
+      fecha: new Date()
+    });
+  }
+
+  return {cargarDatosEventos, infoEventos, cargarDatosEventosId, guardarEvento, formatearFecha, actualizarEventos, borrarDatosEvento, eventoEditando,resetEventoEditando};
 });
