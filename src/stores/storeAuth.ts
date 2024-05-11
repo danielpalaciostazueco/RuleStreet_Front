@@ -7,26 +7,26 @@ import jwtDecode from 'jwt-decode';
 
 
 export interface Usuario {
-  idUsuario: number;
-  idPolicia: number;
-  idCiudadano: number;
-  nombreUsuario: string;
-  contrasena: string;
-  isPolicia: boolean;
+ IdUsuario: number;
+  IdPolicia: number;
+  IdCiudadano: number;
+ NombreUsuario: string;
+ Contrasena: string;
+ IsPolicia: boolean;
 }
 
 interface Policia {
-   idPolicia : number;
-   idCiudadano : number;
-   rango : number;
-   numeroPlaca : string;
-   isPolicia : boolean;
+   IdPolicia : number;
+   IdCiudadano : number;
+   Rango : number;
+   NumeroPlaca: string;
+  IsPolicia : boolean;
 }
 
 interface Ayuntamiento{
-  idUsuarioAyuntamiento: number;
-  dni: string;
-  contrasena: string;
+ IdUsuarioAyuntamiento: number;
+  Dni: string;
+ Contrasena: string;
 }
 
 
@@ -37,105 +37,97 @@ export const useListadoAuth = defineStore('listadoAuth', () => {
 
   const apiUrl = `http://localhost:8001`;
   let infoUsuarios: Usuario = {
-    idUsuario: 0,
-    idPolicia: 0,
-    idCiudadano: 0,
-    nombreUsuario: "",
-    contrasena: "",
-    isPolicia: false
+   IdUsuario: 0,
+    IdPolicia: 0,
+    IdCiudadano: 0,
+   NombreUsuario: "",
+   Contrasena: "",
+   IsPolicia: false
   };
 
     let infoPolicias: Policia = { 
-      idPolicia : 0,
-      idCiudadano : 0,
-      rango : 0,
-      numeroPlaca : "",
-      isPolicia : false
+      IdPolicia : 0,
+      IdCiudadano : 0,
+      Rango : 0,
+      NumeroPlaca: "",
+     IsPolicia : false
     };
 
 
     let infoAyuntamiento: Ayuntamiento = {
-      idUsuarioAyuntamiento: 0,
-      dni: "",
-      contrasena: ""
+     IdUsuarioAyuntamiento: 0,
+      Dni: "",
+     Contrasena: ""
     };
 
 
 
 
   const Datos = ref({
-    dni: '',
-    nombreUsuario: '',
-    contrasena: '',
+    Dni: '',
+   NombreUsuario: '',
+   Contrasena: '',
   });
 
   
   const DatosRegistro = ref({
-    idUsuario: 0,
-    dni: '',
-    nombreUsuario: '',
-    contrasena: '',
+   IdUsuario: 0,
+    Dni: '',
+   NombreUsuario: '',
+   Contrasena: '',
   });
 
   const DatosPolicia = ref({
     numeroPlaca: '',
-    contrasena : '',
+   Contrasena : '',
   });
 
 
   const DatosAyuntamiento = ref({
-    dni: '',
-    contrasena: '',
+    Dni: '',
+   Contrasena: '',
   });
+
+  async function resetAndAssign(decoded : any, target : any) {
+    Object.keys(target).forEach(key => target[key] = 0); 
+    Object.assign(target, decoded);
+  }
 
   async function LoginPolicia() {
     try {
-        const response = await fetch(apiUrl + '/Auth/Login/Policia', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json', 
-            },
-            body: JSON.stringify(DatosPolicia.value),
-        });
-
-        if (!response.ok) {
-            const errorBody = await response.text();
-            throw new Error(`Error al guardar la información del usuario de policia: ${errorBody}`);
-        }
-
-        const token  = await response.text(); 
-        localStorage.setItem('tokenPolicia', token);
-
-        infoPolicias = jwtDecode(token) as { idPolicia: number, idCiudadano: number, rango: number, numeroPlaca: string, isPolicia: boolean};
-        
-        router.push('/');
+      const response = await fetch(`${apiUrl}/Auth/Login/Policia`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(DatosPolicia.value)
+      });
+      if (!response.ok) throw new Error(`Error en la solicitud: ${await response.text()}`);
+      const token = await response.text();
+      localStorage.setItem('tokenPolicia', token);
+      resetAndAssign(jwtDecode(token), infoPolicias);
+      router.push('/');
     } catch (error) {
-        console.error('Error al guardar la información del usuario de policia:', error);
+      console.error('Error en LoginPolicia:', error);
     }
-}
+  }
 
-
-
-  async function LoginUsuario() {
+async function LoginUsuario() {
     try {
-        const response = await fetch(apiUrl + '/Auth/Login', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json'},
-            body: JSON.stringify(Datos.value),
-        });
-        const token = await response.text(); 
-        localStorage.setItem('tokenUsuario', token);
-        infoUsuarios = jwtDecode(token) as { idUsuario: number, idPolicia: number, idCiudadano: number, nombreUsuario: string, contrasena: string, isPolicia: boolean };
-       
-        if (!response.ok) {
-            const errorBody = await response.text();
-            throw new Error(`Error al guardar la información del usuario: ${errorBody}`);
-        }    
-        router.push('/');
+      const response = await fetch(`${apiUrl}/Auth/Login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(Datos.value)
+      });
+      if (!response.ok) throw new Error(`Error en la solicitud: ${await response.text()}`);
+      const token = await response.text();
+      localStorage.setItem('tokenUsuario', token);
+      resetAndAssign(jwtDecode(token), infoUsuarios);
+      router.push('/');
     } catch (error) {
-        console.error('Error al guardar la información del usuario:', error);
+      console.error('Error en LoginUsuario:', error);
     }
-}
+  }
+
+
   async function registroUsuario() {
     const url = `${apiUrl}/Auth/Register`;
     try {
@@ -189,34 +181,22 @@ export const useListadoAuth = defineStore('listadoAuth', () => {
       return '';
     }
   }
-
-  async function LoginAyuntamiento() {
+async function LoginAyuntamiento() {
     try {
-        const response = await fetch(apiUrl + '/Auth/Login/Ayuntamiento', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json'},
-            body: JSON.stringify(DatosAyuntamiento.value),
-        });
-        const token = await response.text(); 
-        
-        localStorage.setItem('tokenAyuntamiento', token);
-
-        console.log(localStorage.getItem('tokenAyuntamiento'));
-        
-        if (!response.ok) {
-            const errorBody = await response.text();
-            throw new Error(`Error al guardar la información del usuario del ayuntamiento: ${errorBody}`);
-        }
-
-     
-      
-
-        infoAyuntamiento = jwtDecode(token) as { idUsuarioAyuntamiento: number, dni: string, contrasena: string};
-        router.push('/');
+      const response = await fetch(`${apiUrl}/Auth/Login/Ayuntamiento`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(DatosAyuntamiento.value)
+      });
+      if (!response.ok) throw new Error(`Error en la solicitud: ${await response.text()}`);
+      const token = await response.text();
+      localStorage.setItem('tokenAyuntamiento', token);
+      resetAndAssign(jwtDecode(token), infoAyuntamiento);
+      router.push('/');
     } catch (error) {
-        console.error('Error al guardar la información del usuario del ayuntamiento:', error);
+      console.error('Error en LoginAyuntamiento:', error);
     }
-}
+  }
 
   return { LoginUsuario, registroUsuario, formatearFecha, infoUsuarios, Datos, DatosPolicia,LoginPolicia, infoPolicias, DatosRegistro, DatosAyuntamiento, LoginAyuntamiento, infoAyuntamiento};
 });
