@@ -25,7 +25,7 @@ const routes = [
   {
     path: '/ayuntamientoEventos',
     name: 'ayuntamientoEventos',
-    component: () => import('../views/AyuntamientoView.vue'),
+    component: () => import('@/views/AyuntamientoView.vue'),
   },
   {
     path: '/ayuntamientoDashboard',
