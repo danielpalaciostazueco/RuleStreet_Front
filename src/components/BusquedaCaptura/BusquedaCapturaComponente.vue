@@ -32,7 +32,7 @@
       <tbody>
         <tr v-for="ciudadano in filteredCiudadanos" :key="ciudadano.idCiudadano">
           <td><img :src="ciudadano.fotoUrl" alt="Foto del ciudadano" /></td>
-          <td v-if="filterField">{{ ciudadano[filterField] }}</td>
+          <td v-if="filterField">{{ ciudadano[filterField as keyof typeof ciudadano] }}</td>
           <td v-if="filterField !== 'nombre'">{{ ciudadano.nombre }}</td>
           <td v-if="filterField !== 'apellidos'">{{ ciudadano.apellidos }}</td>
           <td v-if="filterField !== 'dni'">{{ ciudadano.dni }}</td>
@@ -44,23 +44,34 @@
       </tbody>
     </table>
   </div>
+  <button @click="exportToExcel">Exportar a Excel</button>
 </template>
-
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, ref, onMounted } from 'vue';
 import { useListadoCiudadanos } from '@/stores/storeCiudadano';
+import * as XLSX from 'xlsx';
 
-const { infoCiudadanosBusquedaCaptura, cargarDatosCiudadanosBusquedaCaptura } = useListadoCiudadanos();
+
+const store = useListadoCiudadanos();
+const { infoCiudadanosBusquedaCaptura, cargarDatosCiudadanosBusquedaCaptura } = store;
 const searchQuery = ref('');
-const filterField = ref('nombre');  
-const filteredCiudadanos = computed(() => {
-  const searchLower = searchQuery.value.toLowerCase();
-  return infoCiudadanosBusquedaCaptura.filter(ciudadano => {
-    return String(ciudadano[filterField.value]).toLowerCase().includes(searchLower);
-  });
+const filterField = ref('nombre');
+
+onMounted(async () => {
+  await cargarDatosCiudadanosBusquedaCaptura();
 });
 
-function fieldDisplayName(field) {
+const filteredCiudadanos = computed(() => {
+  const searchLower = searchQuery.value.toLowerCase();
+  return infoCiudadanosBusquedaCaptura.filter(ciudadano =>
+    ciudadano.nombre.toLowerCase().includes(searchLower) ||
+    ciudadano.apellidos.toLowerCase().includes(searchLower) ||
+    ciudadano.genero.toLowerCase().includes(searchLower) ||
+    ciudadano.dni.toLowerCase().includes(searchLower)
+  );
+});
+
+function fieldDisplayName(field: any) {
   const names = {
     nombre: 'Nombre',
     apellidos: 'Apellidos',
@@ -73,8 +84,23 @@ function fieldDisplayName(field) {
   return names[field] || field;
 }
 
-cargarDatosCiudadanosBusquedaCaptura();
+const exportToExcel = () => {
+  const ws = XLSX.utils.json_to_sheet(filteredCiudadanos.value.map(ciudadano => ({
+    Nombre: ciudadano.nombre,
+    Apellidos: ciudadano.apellidos,
+    DNI: ciudadano.dni,
+    Género: ciudadano.genero,
+    Nacionalidad: ciudadano.nacionalidad,
+    Fecha_de_Nacimiento: ciudadano.fechaNacimiento,
+    Peligroso: ciudadano.isPeligroso ? 'Sí' : 'No'
+  })));
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, "Ciudadanos");
+  XLSX.writeFile(wb, "Listado_de_Ciudadanos.xlsx");
+};
+
 </script>
+
 <style scoped>
 table {
   width: 100%;
@@ -84,7 +110,8 @@ table {
   overflow: hidden;
 }
 
-th, td {
+th,
+td {
   border-bottom: 1px solid #ccc;
   padding: 12px 8px;
   text-align: left;
@@ -92,13 +119,15 @@ th, td {
 }
 
 th {
-  background-color: #0056b3; /* Azul oscuro */
+  background-color: #0056b3;
+  /* Azul oscuro */
   color: white;
   font-size: 16px;
 }
 
 td {
-  background-color: #e7f0fd; /* Azul claro */
+  background-color: #e7f0fd;
+  /* Azul claro */
 }
 
 img {
@@ -107,7 +136,8 @@ img {
   border-radius: 50%;
 }
 
-input, select {
+input,
+select {
   margin-bottom: 10px;
   width: calc(100% - 16px);
   padding: 8px;
@@ -130,17 +160,25 @@ input::placeholder {
 }
 
 tr:hover {
-  background-color: #ccefff; /* Azul muy claro para hover */
+  background-color: #ccefff;
+  /* Azul muy claro para hover */
 }
 
 /* Estilo para resaltar la importancia de la columna de "Peligroso" */
 td:nth-last-child(1) {
   font-weight: bold;
-  color: #c10000; /* Rojo para indicar peligro */
+  color: #c10000;
+  /* Rojo para indicar peligro */
 }
 
 @media (max-width: 768px) {
-  table, thead, tbody, th, td, tr {
+
+  table,
+  thead,
+  tbody,
+  th,
+  td,
+  tr {
     display: block;
   }
 
@@ -169,7 +207,8 @@ td:nth-last-child(1) {
     content: attr(data-label);
   }
 
-  select, input {
+  select,
+  input {
     width: 100%;
   }
 }

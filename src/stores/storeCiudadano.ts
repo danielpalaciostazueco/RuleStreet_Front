@@ -39,6 +39,7 @@ export interface Ciudadano {
   isPoli: boolean;
   isBusquedaYCaptura: boolean;
   isPeligroso: boolean;
+  diaIntroducidoListaCaptura: Date;
   multas: Multa[];
   vehiculos: Vehiculo[];
 }
