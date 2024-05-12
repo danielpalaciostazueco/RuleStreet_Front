@@ -39,11 +39,6 @@ const routes = [
     props: true
   },
   {
-    path: '/notFound',
-    name: '404',
-    component: () => import('../views/404View.vue'),
-  },
-  {
     path: '/login',
     name: 'login',
     component: () => import('../views/LoginView.vue'),
@@ -64,10 +59,6 @@ const routes = [
     component: () => import('@/views/RegisterView.vue'),
   },
   {
-    path: '/:catchAll(.*)',
-    redirect: '/notFound',
-  },
-  {
     path: '/busquedaCaptura',
     name: 'busquedaCaptura',
     component: () => import('../views/BusquedaCapturaView.vue'),
@@ -76,6 +67,20 @@ const routes = [
     path: '/busquedaDeudores',
     name: 'busquedaDeudores',
     component: () => import('../views/BusquedaDeudoresView.vue'),
+  },
+  {
+    path: '/agentes',
+    name: 'busquedaPolicia',
+    component: () => import('../views/BusquedaPoliciaView.vue'),
+  },
+  {
+    path: '/notFound',
+    name: '404',
+    component: () => import('../views/404View.vue'),
+  },
+  {
+    path: '/:catchAll(.*)',
+    redirect: '/notFound',
   },
 ];
 
