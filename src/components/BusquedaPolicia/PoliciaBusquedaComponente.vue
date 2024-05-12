@@ -4,48 +4,45 @@ import { useListadoPolicias } from '@/stores/storePolicia';
 import PoliciaList from '@/components/BusquedaPolicia/ListaPoliciaComponente.vue';
 
 export default defineComponent({
-  components: {
-  PoliciaList
-  },
-  setup() {
-    const store = useListadoPolicias();
+    components: {
+        PoliciaList
+    },
+    setup() {
+        const store = useListadoPolicias();
 
-    onMounted(() => {
-        store.cargarDatosPolicias();
-    });
+        onMounted(() => {
+            store.cargarDatosPolicias();
+        });
 
-    interface Policia {
-      idPolicia: number,
-      idCiudadano: number,
-      rango: string,
-      numeroPlaca: string
-    }
-
-    const hasSearched = ref(false);
-    const searchQuery = ref('');
-    const Policia = ref<Policia[]>([]);  
-
-    function searchPolicia() {
-        hasSearched.value = true;
-        if (searchQuery.value.trim()) {
-            Policia.value = store.infoPolicias.map(policia  => ({
-                idPolicia: policia.idPolicia,
-                idCiudadano: policia.idCiudadano,
-                rango: policia.rango.toString(),
-                numeroPlaca: policia.numeroPlaca
-            }));               
-        } else {
-            Policia.value = [];
+        interface Policia {
+            idPolicia: number,
+            idCiudadano: number,
+            rango: string,
+            numeroPlaca: string
         }
-    }
 
-    return {
-      hasSearched,
-      searchQuery,
-      Policia,
-      searchPolicia
-    };
-  }
+        const hasSearched = ref(false);
+        const searchQuery = ref('');
+        const Policia = ref<Policia[]>([]);
+
+        function searchPolicia() {
+            hasSearched.value = true;
+            if (searchQuery.value.trim()) {
+                Policia.value = store.infoPolicias.filter(policia =>
+                    policia.ciudadano.nombre.toLowerCase().includes(searchQuery.value.toLowerCase())
+                );
+            } else {
+                Policia.value = [];
+            }
+        }
+
+        return {
+            hasSearched,
+            searchQuery,
+            Policia,
+            searchPolicia
+        };
+    }
 });
 
 </script>
@@ -64,7 +61,7 @@ export default defineComponent({
                 </svg>
             </button>
         </div>
-        <PoliciaList :Policia="Policia " />
+        <PoliciaList :policias="Policia" />
     </div>
 </template>
 

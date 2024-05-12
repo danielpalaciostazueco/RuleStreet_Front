@@ -15,7 +15,13 @@ export default defineComponent({
 <template>
     <div class="policia_menu_izquierda_contenedor">
         <div class="policia_contenedor_tarjeta" v-if="policias && policias.length > 0">
-            <policia-card v-for="poli in policias" :key="poli.idPolicia" :policia="poli" />
+            <policia-card v-for="poli in policias" :key="poli.idPolicia" :policia="{
+                idPolicia: poli.idPolicia,
+                nombre: poli.ciudadano.nombre,
+                apellidos: poli.ciudadano.apellidos,
+                rango: poli.rango,
+                numeroPlaca: poli.numeroPlaca
+            }" />
         </div>
         <p v-else>No se encontraron resultados para tu búsqueda.</p>
     </div>
@@ -37,7 +43,6 @@ export default defineComponent({
     padding-right: 2rem;
     height: 100%;
     overflow-y: auto;
-    align-items: center;
 }
 
 .policia_menu_izquierda_contenedor p {

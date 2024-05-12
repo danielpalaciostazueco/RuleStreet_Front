@@ -69,7 +69,7 @@ const routes = [
     component: () => import('../views/BusquedaDeudoresView.vue'),
   },
   {
-    path: '/agentes',
+    path: '/agentes/:id?',
     name: 'busquedaPolicia',
     component: () => import('../views/BusquedaPoliciaView.vue'),
   },
