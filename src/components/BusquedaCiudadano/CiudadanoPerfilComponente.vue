@@ -4,6 +4,7 @@ import ReturnButton from '@/components/ComponentesGenerales/BotonPaginaPrincipal
 import Modal from '@/components/BusquedaCiudadano/CiudadanoMultasComponente.vue';
 import { useRoute } from 'vue-router';
 import { useListadoCiudadanos } from '@/stores/storeCiudadano';
+import { useListadoPolicias } from '@/stores/storePolicia';
 
 interface Vehiculo {
     idVehiculo: number;
@@ -51,8 +52,15 @@ export default defineComponent({
     setup() {
         const route = useRoute();
         const store = useListadoCiudadanos();
+        const storePolicias = useListadoPolicias();
         const citizenId = ref(parseInt(parseRouteParam(route.params.id) || '0'));
         const showModal = ref(false);
+
+        const reloadCitizenDetails = () => {
+            if (citizenId.value) {
+                store.cargarDatosCiudadanosId(citizenId.value);
+            }
+        };
 
         const citizenDetails = computed<Ciudadano>(() => {
             return store.infoCiudadanos.find(c => c.idCiudadano === citizenId.value) || {
@@ -74,6 +82,11 @@ export default defineComponent({
             };
         });
 
+        const getNombrePolicia = (idPolicia: any) => {
+            const policia = storePolicias.infoPolicias.find(p => p.idPolicia === idPolicia);
+            return policia ? policia.ciudadano.nombre + " " + policia.ciudadano.apellidos : 'Desconocido';
+        };
+
         const openModal = () => {
             showModal.value = true;
         };
@@ -86,7 +99,8 @@ export default defineComponent({
             }
         }, { immediate: true });
 
-        onMounted(() => {
+        onMounted(async () => {
+            await storePolicias.cargarDatosPolicias();
             if (citizenId.value) {
                 store.cargarDatosCiudadanosId(citizenId.value);
             }
@@ -96,7 +110,9 @@ export default defineComponent({
             citizenDetails,
             citizenId,
             showModal,
-            openModal
+            openModal,
+            reloadCitizenDetails,
+            getNombrePolicia
         };
     }
 });
@@ -216,8 +232,8 @@ function parseRouteParam(param: string | string[]): string {
                                 <div class="ciudadano_perfil_multas">
                                     <p @click="showModal = true">+ AÑADIR MULTA</p>
                                 </div>
-                                <Modal :visible="showModal" @update:visible="showModal = $event" />
-
+                                <Modal :visible="showModal" @update:visible="showModal = $event"
+                                    @onModalClose="reloadCitizenDetails" />
                             </div>
                             <template v-if="citizenDetails.multas && citizenDetails.multas.length > 0">
                                 <div class="notas_container">
@@ -227,11 +243,10 @@ function parseRouteParam(param: string | string[]): string {
                                             <p>{{ new Date(multa.fecha).toLocaleDateString() }} - {{ new
                                                 Date(multa.fecha).toLocaleTimeString() }}</p>
                                         </div>
-                                        <p>{{ multa.articuloPenal }}</p>
+                                        <p>{{ multa.codigoPenal.articulo }}</p>
                                         <div class="tarjeta_multa_info">
                                             <div class="tarjeta_multa_iconos">
-                                                <!-- añadir informacion del policia en el back en la parte de multas -->
-                                                <p>{{ multa.idPolicia }}</p>
+                                                <p>{{ getNombrePolicia(multa.idPolicia) }}</p>
                                                 <svg class="tarjeta_multa_icono" xmlns="http://www.w3.org/2000/svg"
                                                     viewBox="0 0 448 512">
                                                     <path
@@ -244,16 +259,15 @@ function parseRouteParam(param: string | string[]): string {
                                                     <path
                                                         d="M48.1 240c-.1 2.7-.1 5.3-.1 8v16c0 2.7 0 5.3 .1 8H32c-17.7 0-32 14.3-32 32s14.3 32 32 32H60.3C89.9 419.9 170 480 264 480h24c17.7 0 32-14.3 32-32s-14.3-32-32-32H264c-57.9 0-108.2-32.4-133.9-80H256c17.7 0 32-14.3 32-32s-14.3-32-32-32H112.2c-.1-2.6-.2-5.3-.2-8V248c0-2.7 .1-5.4 .2-8H256c17.7 0 32-14.3 32-32s-14.3-32-32-32H130.1c25.7-47.6 76-80 133.9-80h24c17.7 0 32-14.3 32-32s-14.3-32-32-32H264C170 32 89.9 92.1 60.3 176H32c-17.7 0-32 14.3-32 32s14.3 32 32 32H48.1z" />
                                                 </svg>
-                                                <p>{{ multa.precio }}</p>
+                                                <p>{{ multa.codigoPenal.precio }}</p>
                                             </div>
                                             <div class="tarjeta_multa_iconos">
-                                                <!-- cambiar esto por meses cuando se junte codigo penal y multas en el back -->
                                                 <svg class="tarjeta_multa_icono" xmlns="http://www.w3.org/2000/svg"
                                                     viewBox="0 0 512 512">
                                                     <path
                                                         d="M318.6 9.4c-12.5-12.5-32.8-12.5-45.3 0l-120 120c-12.5 12.5-12.5 32.8 0 45.3l16 16c12.5 12.5 32.8 12.5 45.3 0l4-4L325.4 293.4l-4 4c-12.5 12.5-12.5 32.8 0 45.3l16 16c12.5 12.5 32.8 12.5 45.3 0l120-120c12.5-12.5 12.5-32.8 0-45.3l-16-16c-12.5-12.5-32.8-12.5-45.3 0l-4 4L330.6 74.6l4-4c12.5-12.5 12.5-32.8 0-45.3l-16-16zm-152 288c-12.5-12.5-32.8-12.5-45.3 0l-112 112c-12.5 12.5-12.5 32.8 0 45.3l48 48c12.5 12.5 32.8 12.5 45.3 0l112-112c12.5-12.5 12.5-32.8 0-45.3l-1.4-1.4L272 285.3 226.7 240 168 298.7l-1.4-1.4z" />
                                                 </svg>
-                                                <p>{{ multa.pagada ? 'Pagada' : 'Pendiente' }}</p>
+                                                <p>{{ multa.codigoPenal.sentencia }}</p>
                                             </div>
                                         </div>
                                     </div>

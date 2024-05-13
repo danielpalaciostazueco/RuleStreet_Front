@@ -12,7 +12,7 @@ export default defineComponent({
             default: false
         }
     },
-    emits: ['update:visible'],
+    emits: ['update:visible', 'onModalClose'],
     setup(props, { emit }) {
         const route = useRoute();
         const idCiudadano = ref(0);
@@ -49,6 +49,8 @@ export default defineComponent({
             articuloSeleccionado.value = { idCodigoPenal: 0, articulo: '', descripcion: '', precio: 0, sentencia: '' };
             filtro.value = '';
             emit('update:visible', false);
+            emit('onModalClose');
+
         };
 
         const guardarId = async (id: number) => {
