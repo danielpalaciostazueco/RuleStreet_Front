@@ -31,7 +31,7 @@
       </thead>
       <tbody>
         <tr v-for="ciudadano in filteredCiudadanos" :key="ciudadano.idCiudadano">
-          <td><img :src="ciudadano.fotoUrl" alt="Foto del ciudadano" /></td>
+          <td><img :src="ciudadano.imagenUrl" alt="Foto del ciudadano" /></td>
           <td v-if="filterField">{{ ciudadano[filterField as keyof typeof ciudadano] }}</td>
           <td v-if="filterField !== 'nombre'">{{ ciudadano.nombre }}</td>
           <td v-if="filterField !== 'apellidos'">{{ ciudadano.apellidos }}</td>

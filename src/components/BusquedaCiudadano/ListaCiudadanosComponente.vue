@@ -25,7 +25,7 @@ export default defineComponent({
                 id: citizen.idCiudadano,
                 name: citizen.nombre,
                 dni: citizen.dni,
-                photo: citizen.foto
+                photo: citizen.imagenUrl
             }" />
         </div>
         <p v-else>No se encontraron resultados para tu búsqueda.</p>
