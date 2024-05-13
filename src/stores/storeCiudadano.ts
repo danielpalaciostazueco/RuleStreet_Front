@@ -38,6 +38,7 @@ export interface Ciudadano {
   numeroCuentaBancaria: string;
   isPoli: boolean;
   isBusquedaYCaptura: boolean;
+  imagenUrl : string;
   isPeligroso: boolean;
   diaIntroducidoListaCaptura: Date;
   multas: Multa[];
@@ -53,6 +54,7 @@ interface Deudores{
   nacionalidad: string;
   fechaNacimiento: Date;
   pagada: boolean;
+  imagenUrl : string;
 }
 
 export const useListadoCiudadanos = defineStore('listadoCiduadanos', () => {
