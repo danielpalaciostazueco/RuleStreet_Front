@@ -69,6 +69,11 @@ const routes = [
     component: () => import('@/views/RegisterView.vue'),
   },
   {
+    path: '/codigoPenal',
+    name: 'codigoPenal',
+    component: () => import('@/views/CodigoPenalView.vue'),
+  },
+  {
     path: '/:catchAll(.*)',
     redirect: '/notFound',
   },
