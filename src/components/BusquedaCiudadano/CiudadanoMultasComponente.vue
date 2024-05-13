@@ -1,6 +1,9 @@
 <script lang="ts">
 import { computed, defineComponent, onMounted, ref } from 'vue';
 import { useListadoCodigoPenal } from '@/stores/storeCodigoPenal';
+import { useListadoAuth } from '@/stores/storeAuth';
+import { useListadoMultas } from '@/stores/storeMulta';
+import { useRoute } from 'vue-router';
 
 export default defineComponent({
     props: {
@@ -11,28 +14,40 @@ export default defineComponent({
     },
     emits: ['update:visible'],
     setup(props, { emit }) {
+        const route = useRoute();
+        const idCiudadano = ref(0);
+
         const newMulta = ref({
             descripcion: '',
             monto: 0
         });
 
         const { cargarDatosCodigoPenal, infoCodigoPenal, cargarDatosCodigoPenalId } = useListadoCodigoPenal();
+        const { infoPolicias, loadPoliceInfo } = useListadoAuth();
+        const { guardarMulta } = useListadoMultas();
         const articuloSeleccionado = ref({
+            idCodigoPenal: 0,
             articulo: '',
             descripcion: '',
             precio: 0,
             sentencia: ''
         });
+
         const filtro = ref('');
 
         onMounted(async () => {
+            loadPoliceInfo();
             await cargarDatosCodigoPenal();
+            const path = window.location.pathname;
+            const segments = path.split('/');
+            const lastSegment = segments.pop() || segments.pop();
+            idCiudadano.value = parseInt(lastSegment, 10);
         });
 
         const close = () => {
             newMulta.value = { descripcion: '', monto: 0 };
-            articuloSeleccionado.value = { articulo: '', descripcion: '', precio: 0, sentencia: '' };
-            filtro.value = ''; 
+            articuloSeleccionado.value = { idCodigoPenal: 0, articulo: '', descripcion: '', precio: 0, sentencia: '' };
+            filtro.value = '';
             emit('update:visible', false);
         };
 
@@ -41,6 +56,20 @@ export default defineComponent({
             if (response) {
                 articuloSeleccionado.value = response;
             }
+        };
+
+        const submitMulta = async () => {
+            const multaData = {
+                idMulta: 0,
+                idPolicia: infoPolicias.IdPolicia,
+                fecha: new Date().toISOString(),
+                idCodigoPenal: articuloSeleccionado.value.idCodigoPenal,
+                pagada: false,
+                descripcion: articuloSeleccionado.value.descripcion,
+                idCiudadano: idCiudadano.value
+            };
+            await guardarMulta(multaData);
+            close();
         };
 
         const articulosFiltrados = computed(() => {
@@ -53,7 +82,7 @@ export default defineComponent({
             newMulta,
             infoCodigoPenal,
             articulosFiltrados,
-            submitMulta: close,
+            submitMulta,
             close,
             guardarId,
             articuloSeleccionado,
@@ -61,7 +90,6 @@ export default defineComponent({
         };
     }
 });
-
 </script>
 
 <template>
@@ -110,7 +138,7 @@ export default defineComponent({
                         </div>
                     </div>
                     <div class="boton_container">
-                        <button class="modal_boton">Añadir</button>
+                        <button class="modal_boton" @click="submitMulta">Añadir Multa</button>
                     </div>
                 </div>
             </div>
