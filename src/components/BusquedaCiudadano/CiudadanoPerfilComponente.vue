@@ -42,10 +42,11 @@ interface Ciudadano {
     isPeligroso: boolean;
     multas: Multa[];
     vehiculos: Vehiculo[];
+    imagenUrl: string;
 }
 
 export default defineComponent({
-    
+
     components: {
         ReturnButton,
         Modal
@@ -55,7 +56,7 @@ export default defineComponent({
         const store = useListadoCiudadanos();
         const citizenId = ref(parseInt(parseRouteParam(route.params.id) || '0'));
         const showModal = ref(false);
-        const  nameRoute = route.name;
+        const nameRoute = route.name;
 
         const citizenDetails = computed<Ciudadano>(() => {
             return store.infoCiudadanos.find(c => c.idCiudadano === citizenId.value) || {
@@ -73,7 +74,8 @@ export default defineComponent({
                 isBusquedaYCaptura: false,
                 isPeligroso: false,
                 multas: [],
-                vehiculos: []
+                vehiculos: [],
+                imagenUrl: ''
             };
         });
 
@@ -89,21 +91,21 @@ export default defineComponent({
             }
         }, { immediate: true });
 
-      
 
-    onMounted(() => {
-    if (route.name === 'perfilCiudadano') {
-        store.cargarDatosCiudadanosId(citizenId.value);
-        const ciudadanoMenuDerecha = document.querySelector('.ciudadano_menu_derecha');
-        if (ciudadanoMenuDerecha) {
-            const ciudadanoMenuDerecha = document.querySelector('.ciudadano_menu_derecha') as HTMLElement;
-            ciudadanoMenuDerecha.style.marginLeft = '32vh';
-            document.body.style.backgroundColor = 'var(--colorFondo)';
-        }
-    } else {
-        store.cargarDatosCiudadanosId(citizenId.value);
-    }
-});
+
+        onMounted(() => {
+            if (route.name === 'perfilCiudadano') {
+                store.cargarDatosCiudadanosId(citizenId.value);
+                const ciudadanoMenuDerecha = document.querySelector('.ciudadano_menu_derecha');
+                if (ciudadanoMenuDerecha) {
+                    const ciudadanoMenuDerecha = document.querySelector('.ciudadano_menu_derecha') as HTMLElement;
+                    ciudadanoMenuDerecha.style.marginLeft = '32vh';
+                    document.body.style.backgroundColor = 'var(--colorFondo)';
+                }
+            } else {
+                store.cargarDatosCiudadanosId(citizenId.value);
+            }
+        });
         return {
             citizenDetails,
             citizenId,
@@ -129,7 +131,7 @@ function parseRouteParam(param: string | string[]): string {
             <template v-else>
                 <div class="ciudadano_perfil_usuario">
                     <div class="ciudadano_perfil_usuario_izquierda">
-                        <img src="https://via.placeholder.com/150" alt="">
+
                     </div>
                     <div class="ciudadano_perfil_usuario_derecha">
                         <div class="ciudadano_tarjeta">
@@ -202,7 +204,7 @@ function parseRouteParam(param: string | string[]): string {
                                 </svg>
                                 <p>NOTAS</p>
                             </div>
-                           
+
                             <div class="notas_container">
                                 <div class="tarjeta_otros">
                                     <p>NO HAY NOTAS REGISTRADAS</p>
@@ -227,7 +229,8 @@ function parseRouteParam(param: string | string[]): string {
                                 </svg>
                                 <p>MULTAS</p>
                                 <div class="ciudadano_perfil_multas">
-                                    <p v-if="nameRoute !== 'perfilCiudadano'" @click="showModal = true">+ AÑADIR MULTA</p>
+                                    <p v-if="nameRoute !== 'perfilCiudadano'" @click="showModal = true">+ AÑADIR MULTA
+                                    </p>
                                 </div>
                                 <Modal :visible="showModal" @update:visible="showModal = $event" />
 
@@ -328,9 +331,8 @@ function parseRouteParam(param: string | string[]): string {
 </template>
 
 <style scoped>
-#body{
+#body {}
 
-}
 .ciudadano_menu_derecha {
     background-color: var(--colorFondoCiudadano2);
     width: 70%;
