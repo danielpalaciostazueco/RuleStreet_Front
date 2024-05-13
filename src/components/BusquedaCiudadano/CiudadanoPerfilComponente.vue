@@ -4,6 +4,7 @@ import ReturnButton from '@/components/ComponentesGenerales/BotonPaginaPrincipal
 import Modal from '@/components/BusquedaCiudadano/CiudadanoMultasComponente.vue';
 import { useRoute } from 'vue-router';
 import { useListadoCiudadanos } from '@/stores/storeCiudadano';
+import router from '@/router';
 
 interface Vehiculo {
     idVehiculo: number;
@@ -44,6 +45,7 @@ interface Ciudadano {
 }
 
 export default defineComponent({
+    
     components: {
         ReturnButton,
         Modal
@@ -53,6 +55,7 @@ export default defineComponent({
         const store = useListadoCiudadanos();
         const citizenId = ref(parseInt(parseRouteParam(route.params.id) || '0'));
         const showModal = ref(false);
+        const  nameRoute = route.name;
 
         const citizenDetails = computed<Ciudadano>(() => {
             return store.infoCiudadanos.find(c => c.idCiudadano === citizenId.value) || {
@@ -86,17 +89,27 @@ export default defineComponent({
             }
         }, { immediate: true });
 
-        onMounted(() => {
-            if (citizenId.value) {
-                store.cargarDatosCiudadanosId(citizenId.value);
-            }
-        });
+      
 
+    onMounted(() => {
+    if (route.name === 'perfilCiudadano') {
+        store.cargarDatosCiudadanosId(citizenId.value);
+        const ciudadanoMenuDerecha = document.querySelector('.ciudadano_menu_derecha');
+        if (ciudadanoMenuDerecha) {
+            const ciudadanoMenuDerecha = document.querySelector('.ciudadano_menu_derecha') as HTMLElement;
+            ciudadanoMenuDerecha.style.marginLeft = '32vh';
+            document.body.style.backgroundColor = 'var(--colorFondo)';
+        }
+    } else {
+        store.cargarDatosCiudadanosId(citizenId.value);
+    }
+});
         return {
             citizenDetails,
             citizenId,
             showModal,
-            openModal
+            openModal,
+            nameRoute
         };
     }
 });
@@ -104,8 +117,8 @@ export default defineComponent({
 function parseRouteParam(param: string | string[]): string {
     return Array.isArray(param) ? param[0] : param || '0';
 }
-</script>
 
+</script>
 <template>
     <div class="ciudadano_menu_derecha">
         <div class="ciudadano_menu_derecha_titulo">
@@ -189,7 +202,7 @@ function parseRouteParam(param: string | string[]): string {
                                 </svg>
                                 <p>NOTAS</p>
                             </div>
-                            <!-- añadir en el back las notas en el ciudadano -->
+                           
                             <div class="notas_container">
                                 <div class="tarjeta_otros">
                                     <p>NO HAY NOTAS REGISTRADAS</p>
@@ -214,7 +227,7 @@ function parseRouteParam(param: string | string[]): string {
                                 </svg>
                                 <p>MULTAS</p>
                                 <div class="ciudadano_perfil_multas">
-                                    <p @click="showModal = true">+ AÑADIR MULTA</p>
+                                    <p v-if="nameRoute !== 'perfilCiudadano'" @click="showModal = true">+ AÑADIR MULTA</p>
                                 </div>
                                 <Modal :visible="showModal" @update:visible="showModal = $event" />
 
@@ -230,7 +243,6 @@ function parseRouteParam(param: string | string[]): string {
                                         <p>{{ multa.articuloPenal }}</p>
                                         <div class="tarjeta_multa_info">
                                             <div class="tarjeta_multa_iconos">
-                                                <!-- añadir informacion del policia en el back en la parte de multas -->
                                                 <p>{{ multa.idPolicia }}</p>
                                                 <svg class="tarjeta_multa_icono" xmlns="http://www.w3.org/2000/svg"
                                                     viewBox="0 0 448 512">
@@ -247,7 +259,6 @@ function parseRouteParam(param: string | string[]): string {
                                                 <p>{{ multa.precio }}</p>
                                             </div>
                                             <div class="tarjeta_multa_iconos">
-                                                <!-- cambiar esto por meses cuando se junte codigo penal y multas en el back -->
                                                 <svg class="tarjeta_multa_icono" xmlns="http://www.w3.org/2000/svg"
                                                     viewBox="0 0 512 512">
                                                     <path
@@ -271,7 +282,6 @@ function parseRouteParam(param: string | string[]): string {
 
                     <div class="ciudadano_perfil_otros_container">
                         <div class="ciudadano_perfil_notasdiv">
-                            <!-- añadir en el back las denuncias en el ciudadano -->
                             <div class="ciudadano_perfil_notasdiv_titulo">
                                 <svg class="ciudadano_icono" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
                                     <path
@@ -318,6 +328,9 @@ function parseRouteParam(param: string | string[]): string {
 </template>
 
 <style scoped>
+#body{
+
+}
 .ciudadano_menu_derecha {
     background-color: var(--colorFondoCiudadano2);
     width: 70%;

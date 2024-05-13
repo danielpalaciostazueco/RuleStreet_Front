@@ -16,6 +16,11 @@ const routes = [
     path: '/busquedaVehiculo',
     name: 'busquedaVehiculo',
     component: () => import('../views/BusquedaVehiculoView.vue'),
+  }, 
+  {
+    path: '/perfilCiudadano/:id?',
+    name: 'perfilCiudadano',
+    component: () => import('../views/PerfilCiudadanoView.vue'),
   },
   {
     path: '/busquedaVehiculo/:id?',
@@ -23,9 +28,9 @@ const routes = [
     component: () => import('../views/BusquedaVehiculoView.vue'),
   },
   {
-    path: '/ayuntamientoEventos',
-    name: 'ayuntamientoEventos',
-    component: () => import('@/views/AyuntamientoView.vue'),
+    path: '/ayuntamientoEvento',
+    name: 'ayuntamientoEvento',
+    component: () => import('@/views/AyuntamientoEventoView.vue'),
   },
   {
     path: '/ayuntamientoDashboard',
@@ -82,6 +87,67 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes,
+});
+
+
+router.beforeEach((to, from, next) => {
+  if (to.name === 'busquedaCiudadano' && localStorage.getItem('tokenPolicia') === null) {
+    if (from.name !== 'home') {
+      next({ name: 'home' });
+    } else {
+      next(false); 
+    }
+  } else {
+    next(); 
+  }
+});
+
+router.beforeEach((to, from, next) => {
+  if (to.name === 'busquedaVehiculo' && localStorage.getItem('tokenPolicia') === null) {
+    if (from.name !== 'home') {
+      next({ name: 'home' });
+    } else {
+      next(false);
+    }
+  } else {
+    next(); 
+  }
+});
+
+router.beforeEach((to, from, next) => {
+  if (to.name === 'perfilCiudadano' && localStorage.getItem('tokenUsuario') === null) {
+    if (from.name !== 'home') {
+      next({ name: 'home' });
+    } else {
+      next(false);
+    }
+  } else {
+    next(); 
+  }
+});
+
+router.beforeEach((to, from, next) => {
+  if (to.name === 'ayuntamientoDashboard' && localStorage.getItem('tokenAyuntamiento') === null) {
+    if (from.name !== 'home') {
+      next({ name: 'home' });
+    } else {
+      next(false);
+    }
+  } else {
+    next(); 
+  }
+});
+
+router.beforeEach((to, from, next) => {
+  if (to.name === 'busquedaDeudores' && localStorage.getItem('tokenPolicia') === null) {
+    if (from.name !== 'home') {
+      next({ name: 'home' });
+    } else {
+      next(false);
+    }
+  } else {
+    next(); 
+  }
 });
 
 export default router;
