@@ -4,6 +4,7 @@ import ReturnButton from '@/components/ComponentesGenerales/BotonPaginaPrincipal
 import { useRoute } from 'vue-router';
 import { useListadoPolicias } from '@/stores/storePolicia';
 import type { Policia } from '@/stores/storePolicia';
+import { useListadoMultas } from '@/stores/storeMulta';
 
 export default defineComponent({
     components: {
@@ -12,6 +13,7 @@ export default defineComponent({
     setup() {
         const route = useRoute();
         const store = useListadoPolicias();
+        const storeMultas = useListadoMultas();
         const policiaId = ref(parseInt(route.params.id as string || '0'));
 
         const policiaDetails = computed<Policia>(() => {
@@ -26,23 +28,28 @@ export default defineComponent({
             };
         });
 
+        const multas = computed(() => storeMultas.infoMultas);
+
         watch(() => route.params.id, (newId) => {
             const parsedId = parseInt(newId as string);
             if (parsedId) {
                 policiaId.value = parsedId;
                 store.cargarDatosPoliciasId(parsedId);
+                storeMultas.cargarDatosMultas(parsedId);
             }
         }, { immediate: true });
 
         onMounted(() => {
             if (policiaId.value) {
                 store.cargarDatosPoliciasId(policiaId.value);
+                storeMultas.cargarDatosMultas(policiaId.value);
             }
         });
 
         return {
             policiaDetails,
-            policiaId
+            policiaId,
+            multas
         };
     }
 });
@@ -55,7 +62,7 @@ export default defineComponent({
             <h2>PERFIL DEL POLICIA</h2>
         </div>
         <div class="policia_perfil">
-            <p v-if="!policiaId">SELECCIONA UN CIUDADANO PARA CARGAR LA INFORMACIÓN</p>
+            <p v-if="!policiaId">SELECCIONA UN POLICIA PARA CARGAR LA INFORMACIÓN</p>
             <template v-else>
                 <div class="policia_perfil_usuario">
                     <div class="policia_perfil_usuario_izquierda">
@@ -103,60 +110,103 @@ export default defineComponent({
                 <div class="policia_perfil_info">
                     <div class="policia_perfil_info_izquierda">
                         <h2>RANGO</h2>
-                        <div class="ciudadano_perfil_boton">
-                            <p>{{ policiaDetails.rango.nombre }}</p>
+                        <div class="policia_perfil_boton">
+                            <h2>{{ policiaDetails.rango.nombre }}</h2>
                         </div>
                     </div>
                     <div class="policia_perfil_info_derecha">
                         <h2>NUMERO DE PLACA</h2>
-                        <div class="ciudadano_perfil_boton">
-                            <p>{{ policiaDetails.numeroPlaca }}</p>
+                        <div class="policia_perfil_boton">
+                            <h2>{{ policiaDetails.numeroPlaca }}</h2>
                         </div>
                     </div>
                 </div>
-                <div class="ciudadano_perfil_otros">
-                    <div class="ciudadano_perfil_otros_container">
-                        <div class="ciudadano_perfil_notasdiv">
-                            <svg class="ciudadano_icono" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
-                                <path
-                                    d="M64 32C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H288V368c0-26.5 21.5-48 48-48H448V96c0-35.3-28.7-64-64-64H64zM448 352H402.7 336c-8.8 0-16 7.2-16 16v66.7V480l32-32 64-64 32-32z" />
-                            </svg>
-                            <p>NOTAS</p>
+                <div class="policia_perfil_otros">
+                    <div class="policia_perfil_otros_container">
+                        <div class="policia_perfil_notasdiv">
+                            <div class="policia_perfil_notasdiv_titulo">
+                                <svg class="policia_icono" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                                    <path
+                                        d="M64 32C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H288V368c0-26.5 21.5-48 48-48H448V96c0-35.3-28.7-64-64-64H64zM448 352H402.7 336c-8.8 0-16 7.2-16 16v66.7V480l32-32 64-64 32-32z" />
+                                </svg>
+                                <p>NOTAS</p>
+                            </div>
+                            <!-- añadir en el back las notas en el policia -->
+                            <div class="notas_container">
+                                <div class="tarjeta_otros">
+                                    <p>NO HAY NOTAS REGISTRADAS</p>
+                                </div>
+                                <div class="tarjeta_otros">
+                                    <div class="tarjeta_otros_cabecera">
+                                        <h1>Nota 1</h1>
+                                        <p>1/5/24</p>
+                                    </div>
+                                    <p>Este usuario tiene una nota</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="ciudadano_perfil_otros_container">
-                        <div class="ciudadano_perfil_notasdiv">
-                            <svg class="ciudadano_icono" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
-                                <path
-                                    d="M96 0C43 0 0 43 0 96V416c0 53 43 96 96 96H384h32c17.7 0 32-14.3 32-32s-14.3-32-32-32V384c17.7 0 32-14.3 32-32V32c0-17.7-14.3-32-32-32H384 96zm0 384H352v64H96c-17.7 0-32-14.3-32-32s14.3-32 32-32zm32-240c0-8.8 7.2-16 16-16H336c8.8 0 16 7.2 16 16s-7.2 16-16 16H144c-8.8 0-16-7.2-16-16zm16 48H336c8.8 0 16 7.2 16 16s-7.2 16-16 16H144c-8.8 0-16-7.2-16-16s7.2-16 16-16z" />
-                            </svg>
 
-                        </div>
-                        <div class="ciudadano_perfil_multas">
-                            <p>INFORMES</p>
+                    <div class="policia_perfil_otros_container">
+                        <div class="policia_perfil_notasdiv">
+                            <div class="policia_perfil_notasdiv_titulo">
+                                <svg class="policia_icono" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                                    <path
+                                        d="M64 32C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H288V368c0-26.5 21.5-48 48-48H448V96c0-35.3-28.7-64-64-64H64zM448 352H402.7 336c-8.8 0-16 7.2-16 16v66.7V480l32-32 64-64 32-32z" />
+                                </svg>
+                                <p>DENUNCIAS</p>
+                            </div>
+                            <!-- añadir en el back las denuncias en el policia -->
+                            <div class="notas_container">
+                                <div class="tarjeta_otros">
+                                    <p>NO HAY DENUNCIAS REGISTRADAS</p>
+                                </div>
+                                <div class="tarjeta_otros">
+                                    <div class="tarjeta_otros_cabecera">
+                                        <h1>Nota 1</h1>
+                                        <p>1/5/24</p>
+                                    </div>
+                                    <p>Este usuario tiene una nota</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="ciudadano_perfil_otros_container">
-                        <div class="ciudadano_perfil_notasdiv">
-                            <svg class="ciudadano_icono" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
-                                <path
-                                    d="M576 128c0-35.3-28.7-64-64-64H64C28.7 64 0 92.7 0 128V384c0 35.3 28.7 64 64 64l352 0 0-128c0-17.7 14.3-32 32-32H576V128zM448 448L576 320H448l0 128zM96 128a32 32 0 1 1 0 64 32 32 0 1 1 0-64z" />
-                            </svg>
-                            <p>DENUNCIAS</p>
-                        </div>
-                    </div>
-                    <div class="ciudadano_perfil_otros_container">
-                        <div class="ciudadano_perfil_notasdiv">
-                            <svg class="ciudadano_icono" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-                                <path
-                                    d="M135.2 117.4L109.1 192H402.9l-26.1-74.6C372.3 104.6 360.2 96 346.6 96H165.4c-13.6 0-25.7 8.6-30.2 21.4zM39.6 196.8L74.8 96.3C88.3 57.8 124.6 32 165.4 32H346.6c40.8 0 77.1 25.8 90.6 64.3l35.2 100.5c23.2 9.6 39.6 32.5 39.6 59.2V400v48c0 17.7-14.3 32-32 32H448c-17.7 0-32-14.3-32-32V400H96v48c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32V400 256c0-26.7 16.4-49.6 39.6-59.2zM128 288a32 32 0 1 0 -64 0 32 32 0 1 0 64 0zm288 32a32 32 0 1 0 0-64 32 32 0 1 0 0 64z" />
-                            </svg>
-                            <p>VEHICULOS</p>
+
+                    <div class="policia_perfil_otros_container">
+                        <div class="policia_perfil_notasdiv">
+                            <div class="policia_perfil_notasdiv_titulo">
+                                <svg class="policia_icono" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                                    <path
+                                        d="M96 0C43 0 0 43 0 96V416c0 53 43 96 96 96H384h32c17.7 0 32-14.3 32-32s-14.3-32-32-32V384c17.7 0 32-14.3 32-32V32c0-17.7-14.3-32-32-32H384 96zm0 384H352v64H96c-17.7 0-32-14.3-32-32s14.3-32 32-32zm32-240c0-8.8 7.2-16 16-16H336c8.8 0 16 7.2 16 16s-7.2 16-16 16H144c-8.8 0-16-7.2-16-16zm16 48H336c8.8 0 16 7.2 16 16s-7.2 16-16 16H144c-8.8 0-16-7.2-16-16s7.2-16 16-16z" />
+                                </svg>
+                                <p>MULTAS</p>
+                            </div>
+                            <template v-if="multas && multas.length > 0">
+                                <div class="notas_container">
+                                    <div v-for="multa in multas" :key="multa.idMulta" class="tarjeta_multa">
+                                        <div class="tarjeta_otros_cabecera">
+                                            <p>{{ new Date(multa.fecha).toLocaleDateString() }} - {{ new
+                                                Date(multa.fecha).toLocaleTimeString() }}</p>
+                                        </div>
+                                        <p>{{ multa.articuloPenal }}</p>
+                                        <div class="tarjeta_multa_info">
+                                            <p>ID Policía: {{ multa.idPolicia }}</p>
+                                            <p>Precio: {{ multa.precio }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </template>
+                            <template v-else>
+                                <div class="notas_container">
+                                    <div class="tarjeta_multa_titulo">
+                                        <p>NO HAY MULTAS REGISTRADAS</p>
+                                    </div>
+                                </div>
+                            </template>
                         </div>
                     </div>
                 </div>
             </template>
-
             <return-button />
         </div>
     </div>
@@ -251,6 +301,7 @@ export default defineComponent({
     padding-left: 0.5rem;
     padding-right: 0.5rem;
     align-items: center;
+    border-radius: 0.7rem;
 }
 
 .policia_perfil_info_izquierda {
@@ -261,6 +312,7 @@ export default defineComponent({
     padding-left: 0.5rem;
     padding-right: 0.5rem;
     align-items: center;
+    border-radius: 0.7rem;
 }
 
 .policia_perfil_info_izquierda h2 {
@@ -271,30 +323,48 @@ export default defineComponent({
     color: var(--colorTextoTarjeta);
 }
 
-.ciudadano_perfil_otros {
+.policia_perfil_boton h2 {
+    background-color: var(--colorTituloTarjetaPoliciaRango);
+    padding: 0.5rem;
+    border-radius: 0.4rem;
+}
+
+.policia_perfil_otros {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
     gap: 1rem;
     justify-content: center;
-    align-items: center;
+    align-items: start;
     width: 100%;
 }
 
-.ciudadano_perfil_otros_container {
+.policia_perfil_otros_container {
     display: flex;
     background-color: var(--colorBusquedaCiudadanoTarjeta);
     border-radius: 0.7rem;
     width: 100%;
     height: 20rem;
-
 }
 
-.ciudadano_icono {
+.policia_perfil_otros_container:nth-child(1),
+.policia_perfil_otros_container:nth-child(2) {
+    grid-row: 1;
+}
+
+.policia_perfil_otros_container:nth-child(3) {
+    grid-column: 1 / span 2;
+    grid-row: 2;
+}
+
+
+.policia_icono {
     width: 2rem;
     height: 1rem;
+    fill: var(--colorBlanco);
 }
 
-.ciudadano_perfil_notasdiv {
+.policia_perfil_notasdiv {
     display: flex;
     width: 100%;
     padding: 1rem;
@@ -302,17 +372,17 @@ export default defineComponent({
     flex-direction: column;
 }
 
-.ciudadano_perfil_notasdiv p {
+.policia_perfil_notasdiv p {
     font-size: 16px;
 }
 
-.ciudadano_perfil_multas {
+.policia_perfil_multas {
     display: flex;
     width: 100%;
     justify-content: flex-end;
 }
 
-.ciudadano_perfil_multas p {
+.policia_perfil_multas p {
     font-size: 16px;
 }
 
@@ -330,7 +400,7 @@ export default defineComponent({
     color: var(--colorTextoTarjeta);
 }
 
-.ciudadano_perfil_notasdiv_titulo {
+.policia_perfil_notasdiv_titulo {
     display: flex;
 }
 
