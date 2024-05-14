@@ -87,6 +87,7 @@ const routes = [
     name: 'busquedaDeudores',
     component: () => import('../views/BusquedaDeudoresView.vue'),
   },
+  
 ];
 
 const router = createRouter({

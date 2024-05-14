@@ -22,10 +22,11 @@ const submitForm = async () => {
     <div class="register_container">
         <form @submit.prevent="submitForm" class="register_formulario">
             <h2>Iniciar sesión</h2>
-            <input type="text" v-model="store.DatosAyuntamiento.dni" placeholder="Dni Completo">
-             <input type="password" v-model="store.DatosAyuntamiento.contrasena" placeholder="Contraseña">
+            <input type="text" v-model="store.DatosAyuntamiento.Dni" placeholder="Dni Completo">
+            <input type="password" v-model="store.DatosAyuntamiento.Contrasena" placeholder="Contraseña">
             <button type="submit">Enviar</button>
-            <p><RouterLink to="/">Volver a la página principal</RouterLink>
+            <p>
+                <RouterLink to="/">Volver a la página principal</RouterLink>
             </p>
         </form>
     </div>

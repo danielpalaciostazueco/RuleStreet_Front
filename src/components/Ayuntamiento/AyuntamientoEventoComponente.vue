@@ -14,6 +14,7 @@
         </div>
     </div>
 </template>
+
 <script lang="ts" setup>
 import { onMounted } from 'vue';
 import { useListadoEvento } from '@/stores/storeEventos';
@@ -43,54 +44,30 @@ const fechaFormato = (fecha: string | Date): string => {
 
 <style scoped>
 .info-container {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: space-around;
-    padding: 20px;
-    gap: 20px;
+    @apply flex flex-wrap justify-around p-5 gap-5;
 }
 
 .no-events {
-    width: 100%;
-    text-align: center;
-    color: #666;
-    font-size: 18px;
+    @apply w-full text-center text-gray-600 text-lg;
 }
 
 .info-card {
-    width: calc(33.333% - 20px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    background-color: white;
+    @apply w-full md:w-1/2 lg:w-1/3 shadow-lg rounded-lg overflow-hidden flex flex-col bg-white;
 }
 
 .card-image {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
+    @apply w-full h-48 object-cover;
 }
 
 .card-content {
-    padding: 15px;
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    @apply p-4 flex-grow flex flex-col justify-between;
 }
 
 .card-content h2 {
-    font-size: 20px;
-    color: #333;
+    @apply text-xl text-gray-800;
 }
 
 .card-date {
-    font-size: 16px;
-    color: #888;
-    margin-top: 10px;
-    self-align: end;
+    @apply text-base text-gray-600 mt-2 self-end;
 }
 </style>
