@@ -61,253 +61,180 @@ export default defineComponent({
         };
     }
 });
-
 </script>
-
 <template>
-    <div v-if="visible" class="modal_fondo" @click.self="close">
-        <div class="modal_container">
-            <div class="modal_izquierda">
-                <div class="modal_titulo">
-                    <h1>CODIGO PENAL</h1>
-                </div>
-                <div>
-                    <input class="model_buscador" type="text" v-model="filtro"
-                        placeholder="Buscar en el código criminal...">
-                </div>
-                <div class="model_tabla">
-                    <div class="model_tabla_encabezado">ARTICULO</div>
-                    <div class="model_tabla_encabezado">DESCRIPCIÓN</div>
-                    <div class="model_tabla_encabezado">CANTIDAD</div>
-                    <div class="model_tabla_encabezado">SENTENCIA</div>
-                    <div class="model_tabla_encabezado">Añadir</div>
-
-                    <div v-for="item in articulosFiltrados" :key="item.idCodigoPenal" class="model_tabla_fila">
-                        <div class="model_tabla_item">{{ item.articulo }}</div>
-                        <div class="model_tabla_item_texto">{{ item.descripcion }}</div>
-                        <div class="model_tabla_item">{{ item.precio }}</div>
-                        <div class="model_tabla_item">{{ item.sentencia }}</div>
-                        <div class="model_tabla_item_filtro" @click="guardarId(item.idCodigoPenal)">Añadir</div>
-                    </div>
-
-                </div>
-            </div>
-            <div class="modal_derecha">
-                <div class="modal_titulo">
-                    <h1>MAS</h1>
-                </div>
-                <div class="modal_derecha_div">
-                    <div class="modal_derecha_container">
-                        <p>CONCEPTO DE MULTA</p>
-                        <div class="modal_derecha_container_tarjeta" v-if="articuloSeleccionado.articulo">
-                            <div class="izquierda">
-                                <p>{{ articuloSeleccionado.articulo }}</p>
-                            </div>
-                            <div class="derecha">
-                                <p>{{ articuloSeleccionado.sentencia }}</p>
-                                <p>{{ articuloSeleccionado.precio }}€</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="boton_container">
-                        <button class="modal_boton">Añadir</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+  <div v-if="visible" class="fixed w-full h-full bg-[color:var(--colorFondoPantallaModal)] flex justify-center items-center left-0 top-0" @click.self="close">
+      <div class="w-[90%] h-[90%] md:w-[70%] md:h-[50rem] flex flex-col md:flex-row gap-4 md:gap-8 p-4 md:p-5 rounded-[10px] bg-[color:var(--colorFondoModal)]">
+          <div class="flex w-full md:w-3/5 flex-col gap-4 md:gap-8">
+              <div class="w-full">
+                  <h1 class="bg-[color:var(--colorTituloModal)] flex items-center h-12 md:h-16 justify-center text-[color:var(--colorBlanco)] rounded-[0.7rem]">CODIGO PENAL</h1>
+              </div>
+              <div>
+                  <input class="w-full h-8 md:h-10 bg-[color:var(--colorNegro)] text-[color:var(--colorBlanco)] pl-4 md:pl-8 rounded-[0.7rem] border-[none] outline-none" type="text" v-model="filtro" placeholder="Buscar en el código criminal...">
+              </div>
+              <div class="overflow-y-auto">
+                  <table class="w-full border-collapse">
+                      <thead>
+                          <tr class="bg-[color:var(--colorNegro)] text-[color:var(--colorBlanco)]">
+                              <th class="p-2 md:p-3">ARTICULO</th>
+                              <th class="p-2 md:p-3">DESCRIPCIÓN</th>
+                              <th class="p-2 md:p-3">CANTIDAD</th>
+                              <th class="p-2 md:p-3">SENTENCIA</th>
+                              <th class="p-2 md:p-3">Añadir</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                          <tr v-for="item in articulosFiltrados" :key="item.idCodigoPenal" class="bg-[color:var(--colorFondoTablaModal)] text-[color:var(--colorTextoTarjeta)] hover:bg-gray-200">
+                              <td class="p-2 md:p-3">{{ item.articulo }}</td>
+                              <td class="p-2 md:p-3">{{ item.descripcion }}</td>
+                              <td class="p-2 md:p-3">{{ item.precio }}</td>
+                              <td class="p-2 md:p-3">{{ item.sentencia }}</td>
+                              <td class="p-2 md:p-3 cursor-pointer" @click="guardarId(item.idCodigoPenal)">Añadir</td>
+                          </tr>
+                      </tbody>
+                  </table>
+              </div>
+          </div>
+          <div class="flex w-full md:w-2/5 flex-col gap-4 md:gap-8 mt-4 md:mt-0">
+              <div class="w-full">
+                  <h1 class="bg-[color:var(--colorTituloModal)] flex items-center h-12 md:h-16 justify-center text-[color:var(--colorBlanco)] rounded-[0.7rem]">MAS</h1>
+              </div>
+              <div class="bg-[color:var(--colorFondoTablaModal)] h-full flex flex-col gap-4 md:gap-8 justify-between p-4 md:p-8">
+                  <div class="flex flex-col gap-4 md:gap-8">
+                      <p class="text-[color:var(--colorTextoTarjeta)]">CONCEPTO DE MULTA</p>
+                      <div class="flex justify-between bg-[color:var(--colorTarjetaModal)] border border-[color:var(--colorBlanco)] w-full h-10 md:h-12 items-center px-2 md:px-4 rounded-[0.2rem] border-solid" v-if="articuloSeleccionado.articulo">
+                          <div class="flex gap-2 md:gap-4">
+                              <p>{{ articuloSeleccionado.articulo }}</p>
+                              <p>{{ articuloSeleccionado.sentencia }}</p>
+                          </div>
+                          <div>
+                              <p>{{ articuloSeleccionado.precio }}€</p>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="flex justify-center w-full">
+                      <button class="w-20 md:w-24 h-8 md:h-10 bg-[color:var(--colorTarjetaModal)] text-[color:var(--colorTextoTarjeta)] border-[none] hover:cursor-pointer hover:text-[color:var(--colorBlanco)] hover:bg-[color:var(--colorFondoPantallaModal)]">Añadir</button>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
 </template>
 
 <style scoped>
 .modal_fondo {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: var(--colorFondoPantallaModal);
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  @apply fixed w-full h-full bg-[color:var(--colorFondoPantallaModal)] flex justify-center items-center left-0 top-0;
 }
 
 .modal_container {
-    background: var(--colorFondoModal);
-    padding: 20px;
-    border-radius: 10px;
-    width: 70%;
-    height: 50rem;
-    display: flex;
-    gap: 2rem;
+  @apply w-[90%] h-[90%] md:w-[70%] md:h-[50rem] flex flex-col md:flex-row gap-4 md:gap-8 p-4 md:p-5 rounded-[10px] bg-[color:var(--colorFondoModal)];
 }
 
 .modal_izquierda {
-    display: flex;
-    width: 60%;
-    flex-direction: column;
-    gap: 2rem;
+  @apply flex w-full md:w-3/5 flex-col gap-4 md:gap-8;
 }
 
 .modal_derecha {
-    display: flex;
-    width: 40%;
-    flex-direction: column;
-    gap: 2rem;
+  @apply flex w-full md:w-2/5 flex-col gap-4 md:gap-8 mt-4 md:mt-0;
 }
 
 .modal_titulo {
-    width: 100%;
+  @apply w-full;
 }
 
 .modal_titulo h1 {
-    background-color: var(--colorTituloModal);
-    border-radius: 0.7rem;
-    display: flex;
-    align-items: center;
-    height: 4rem;
-    justify-content: center;
-    color: var(--colorBlanco);
+  @apply bg-[color:var(--colorTituloModal)] flex items-center h-12 md:h-16 justify-center text-[color:var(--colorBlanco)] rounded-[0.7rem];
 }
 
 .model_buscador {
-    width: 100%;
-    border-radius: 0.7rem;
-    height: 1.5rem;
-    background-color: var(--colorNegro);
-    outline: none;
-    border: none;
-    padding-left: 2rem;
-    color: var(--colorBlanco);
+  @apply w-full h-8 md:h-10 bg-[color:var(--colorNegro)] text-[color:var(--colorBlanco)] pl-4 md:pl-8 rounded-[0.7rem] border-[none] outline-none;
 }
 
 .model_buscador::placeholder {
-    color: var(--colorTextoTarjeta);
+  @apply text-[color:var(--colorTextoTarjeta)];
 }
 
 .model_tabla {
-    display: grid;
-    grid-template-columns: 0.5fr 5fr 0.5fr 0.5fr 0.5fr;
-    gap: 0.5rem;
-    width: 100%;
-    overflow-y: auto;
-    padding: 10px;
+  @apply w-full border-collapse;
 }
 
-.model_tabla::-webkit-scrollbar {
-    width: 8px;
+.model_tabla th, .model_tabla td {
+  @apply p-2 md:p-3 text-left;
 }
 
-.model_tabla::-webkit-scrollbar-thumb {
-    background-color: var(--colorBlanco);
-    border-radius: 4px;
+.model_tabla th {
+  @apply bg-[color:var(--colorNegro)] text-[color:var(--colorBlanco)];
 }
 
-.model_tabla::-webkit-scrollbar-thumb:hover {
-    background-color: var(--colorFondoTablaModal);
-    cursor: pointer;
+.model_tabla tr:nth-child(even) {
+  @apply bg-[color:var(--colorFondoTablaModal)];
 }
 
-.model_tabla_encabezado {
-    font-weight: bold;
-    padding: 12px;
-    background-color: var(--colorNegro);
-    color: var(--colorBlanco);
-    text-align: center;
+.model_tabla tr:hover {
+  @apply bg-gray-200;
 }
 
-.model_tabla_fila {
-    display: contents;
+@media (max-width: 768px) {
+  .modal_container {
+    @apply w-[90%] h-[90%] flex flex-col gap-4;
+  }
+
+  .modal_izquierda, .modal_derecha {
+    @apply w-full;
+  }
+
+  .modal_derecha {
+    @apply mt-4;
+  }
+
+  .model_tabla th, .model_tabla td {
+    @apply text-sm p-2;
+  }
+
+  .model_buscador {
+    @apply h-8;
+  }
+
+  .modal_derecha_container_tarjeta {
+    @apply text-sm px-2;
+  }
+
+  .modal_boton {
+    @apply w-20 h-8 text-sm;
+  }
 }
 
-.model_tabla_item {
-    padding: 10px;
-    background-color: var(--colorFondoTablaModal);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--colorTextoTarjeta);
-}
+@media (max-width: 480px) {
+  .modal_container {
+    @apply w-[95%] h-[90%] flex flex-col gap-2 p-2;
+  }
 
-.model_tabla_item_filtro {
-    padding: 10px;
-    background-color: var(--colorFondoTablaModal);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--colorTextoTarjeta);
-}
+  .model_tabla {
+    @apply block;
+  }
 
-.model_tabla_item_filtro:hover {
-    cursor: pointer;
-}
+  .model_tabla th, .model_tabla td {
+    @apply block text-xs p-1;
+  }
 
-.model_tabla_item:hover,
-.model_tabla_item_texto:hover {
-    cursor: default;
-}
+  .model_tabla tr {
+    @apply flex flex-col mb-2;
+  }
 
-.model_tabla_item_texto {
-    padding: 10px;
-    background-color: var(--colorFondoTablaModal);
-    display: flex;
-    align-items: center;
-    color: var(--colorTextoTarjeta);
-}
+  .modal_derecha {
+    @apply mt-4;
+  }
 
-.modal_derecha_div {
-    background-color: var(--colorFondoTablaModal);
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-    padding: 2rem;
-    justify-content: space-between;
-}
+  .model_buscador {
+    @apply h-8;
+  }
 
-.modal_derecha_div p {
-    color: var(--colorTextoTarjeta);
-}
+  .modal_derecha_container_tarjeta {
+    @apply text-xs px-1;
+  }
 
-.modal_derecha_container {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-}
-
-.modal_derecha_container_tarjeta {
-    display: flex;
-    justify-content: space-between;
-    background-color: var(--colorTarjetaModal);
-    border: 1px solid var(--colorBlanco);
-    width: 100%;
-    height: 2rem;
-    align-items: center;
-    border-radius: 0.2rem;
-    padding: 0rem 1rem 0rem 1rem;
-}
-
-.derecha {
-    display: flex;
-    gap: 1rem;
-}
-
-.modal_boton {
-    width: 6rem;
-    height: 1.5rem;
-    background-color: var(--colorTarjetaModal);
-    color: var(--colorTextoTarjeta);
-    border: none;
-}
-
-.modal_boton:hover {
-    cursor: pointer;
-    color: var(--colorBlanco);
-    background-color: var(--colorFondoPantallaModal);
-}
-
-.boton_container {
-    display: flex;
-    justify-content: center;
-    width: 100%;
+  .modal_boton {
+    @apply w-16 h-6 text-xs;
+  }
 }
 </style>

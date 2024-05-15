@@ -1,6 +1,8 @@
 <template>
-    <div id="chart-container"></div>
-    <BotonPaginaPrincipalComponente />
+    <div class="p-4">
+        <div id="chart-container" class="relative h-96 overflow-hidden rounded-lg shadow-lg bg-gradient-to-br from-white to-gray-200"></div>
+        <BotonPaginaPrincipalComponente />
+    </div>
 </template>
 
 <script setup lang="ts">
@@ -13,7 +15,6 @@ const store = useListadoCiudadanos();
 const { infoCiudadanosBusquedaCaptura, cargarDatosCiudadanosBusquedaCaptura } = store;
 const searchQuery = ref('');
 const filterField = ref('nombre');
-
 
 const ciudadanosPorDia = computed(() => {
     const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
@@ -34,16 +35,29 @@ function fieldDisplayName(field: keyof { [key: string]: string }) {
     };
     return names[field] || field;
 }
+
 onMounted(() => {
     cargarDatosCiudadanosBusquedaCaptura().then(() => {
         const chartContainer = document.getElementById('chart-container');
         if (chartContainer) {
             const chart = echarts.init(chartContainer);
+
+            // Configuración del título según el tamaño de la pantalla
+            const isMobile = window.innerWidth <= 768;
+            const titleFontSize = isMobile ? 14 : 18;
+            const subTitleFontSize = isMobile ? 10 : 12;
+
             const option = {
                 title: {
                     text: 'Ciudadanos en Búsqueda y Captura por Día',
                     subtext: 'Distribución semanal',
-                    left: 'center'
+                    left: 'center',
+                    textStyle: {
+                        fontSize: titleFontSize
+                    },
+                    subtextStyle: {
+                        fontSize: subTitleFontSize
+                    }
                 },
                 tooltip: {
                     trigger: 'axis'
@@ -78,16 +92,16 @@ onMounted(() => {
         }
     });
 });
-
 </script>
 
 <style scoped>
 #chart-container {
-    position: relative;
-    height: 500px;
-    overflow: hidden;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-    background: linear-gradient(to bottom right, #ffffff, #f1f1f1);
+    @apply relative h-96 overflow-hidden rounded-lg shadow-lg bg-gradient-to-br from-white to-gray-200;
+}
+
+@media (max-width: 768px) {
+    #chart-container {
+        @apply h-64; /* Ajustar la altura para dispositivos móviles */
+    }
 }
 </style>

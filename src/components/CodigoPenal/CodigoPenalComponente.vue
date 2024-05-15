@@ -1,9 +1,7 @@
-
 <script lang="ts">
 import { defineComponent, ref, onMounted, computed } from 'vue';
 import { useListadoCodigoPenal } from '@/stores/storeCodigoPenal';
 import TituloComponente from '@/components/ComponentesGenerales/TituloComponente.vue';
-
 
 export default defineComponent({
   setup() {
@@ -30,104 +28,110 @@ export default defineComponent({
   }
 });
 </script>
+
 <template>
   <body>
-  <TituloComponente />
-  <div class="body-container">
-    <div class="codigo-penal-container">
-      <TitleBar title="Código Penal" />
-      <input type="text" v-model="filtro" placeholder="Buscar en el código penal..." class="search-input" />
-      <div class="table-wrapper">
-        <table>
-          <thead>
-            <tr>
-              <th>Artículo</th>
-              <th>Descripción</th>
-              <th>Cantidad</th>
-              <th>Sentencia</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="codigo in filtrarCodigos" :key="codigo.idCodigoPenal">
-              <td>{{ codigo.articulo }}</td>
-              <td>{{ codigo.descripcion }}</td>
-              <td>${{ codigo.precio }}</td>
-              <td>{{ codigo.sentencia }}</td>
-            </tr>
-          </tbody>
-        </table>
+    <TituloComponente />
+    <div class="body-container">
+      <div class="codigo-penal-container">
+        <TitleBar title="Código Penal" />
+        <input type="text" v-model="filtro" placeholder="Buscar en el código penal..." class="search-input" />
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Artículo</th>
+                <th>Descripción</th>
+                <th>Cantidad</th>
+                <th>Sentencia</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="codigo in filtrarCodigos" :key="codigo.idCodigoPenal">
+                <td>{{ codigo.articulo }}</td>
+                <td>{{ codigo.descripcion }}</td>
+                <td>${{ codigo.precio }}</td>
+                <td>{{ codigo.sentencia }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
-  </div>
   </body>
 </template>
 
 <style scoped>
 html, body {
-  height: 500vh;
-  margin: 0; 
-  background-color: var(--colorFondo); 
+  @apply h-[500vh] bg-[color:var(--colorFondo)] m-0;
 }
-
 .body-container {
-
-  display: flex;
-  flex-direction: column;
-  background-color: var(--colorFondo); 
+  @apply flex flex-col bg-[color:var(--colorFondo)];
 }
-
 .codigo-penal-container {
-  width: 80%;
-  margin: auto;
-  padding: 20px;
-  background-color: var(--colorFondoCiudadano);
-  color: var(--colorBlanco);
+  @apply w-4/5 bg-[color:var(--colorFondoCiudadano)] text-[color:var(--colorBlanco)] shadow-[0_4px_8px_rgba(0,0,0,0.1)] grow m-auto p-5 rounded-[10px];
   font-family: Arial, sans-serif;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
-  flex-grow: 1;
 }
 .search-input {
-  margin: 20px 0;
-  padding: 10px;
-  width: 100%;
-  box-sizing: border-box;
-  border: 1px solid var(--colorBlanco);
-  background-color: rgb(70, 69, 69);
-  color: white; 
-  border-radius: 5px;
+  @apply w-full box-border border border-[color:var(--colorBlanco)] bg-[rgb(70,69,69)] text-[white] mx-0 my-5 p-2.5 rounded-[5px] border-solid;
 }
-
-
 .table-wrapper {
-  overflow-x: auto;
+  @apply overflow-x-auto;
 }
-
 table {
-  width: 100%;
-  border-spacing: 10px; 
-  border-collapse: separate;
-  border-radius: 10px;
-  overflow: hidden;
+  @apply w-full overflow-hidden rounded-[10px] border-separate;
+  --tw-border-spacing-x: 0.625rem;
+  --tw-border-spacing-y: 0.625rem;
 }
 
 th, td {
-  padding: 10px;
-  text-align: left;
-  border-bottom: 1px solid var(--colorFondoCiudadano);
-  background-color: #525C67;
-  width: 20px;
+  @apply text-left border-b-[color:var(--colorFondoCiudadano)] bg-[#525C67] w-5 p-2.5 border-b border-solid;
 }
-
 th {
-  background-color:rgb(36, 35, 35);
+  @apply bg-[rgb(36,35,35)];
 }
-
 tbody tr:hover {
-  background-color: var(--colorFondoCiudadano2);
+  @apply bg-[color:var(--colorFondoCiudadano2)];
+}
+tbody tr:last-child td {
+  @apply border-b-[none];
 }
 
-tbody tr:last-child td {
-  border-bottom: none;
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .codigo-penal-container {
+    @apply w-[90%];
+  }
+  th, td {
+    @apply text-xs p-2;
+  }
+  .search-input {
+    @apply text-xs p-2;
+  }
+}
+
+@media (max-width: 768px) {
+  .codigo-penal-container {
+    @apply w-full;
+  }
+  th, td {
+    @apply text-xs p-1;
+  }
+  .search-input {
+    @apply text-xs p-1;
+  }
+}
+
+@media (max-width: 480px) {
+  .codigo-penal-container {
+    @apply w-full;
+  }
+  th, td {
+    @apply text-xs p-1;
+  }
+  .search-input {
+    @apply text-xs p-1;
+  }
+
 }
 </style>

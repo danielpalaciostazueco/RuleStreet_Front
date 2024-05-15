@@ -16,14 +16,10 @@ export default defineComponent({
 
 <style scoped>
 .ciudadano_titulo {
-    background-color: var(--colorFondoCiudadano);
-    width: 80%;
-    border-radius: 0.5rem;
-    display: flex;
-    justify-content: center;
+  @apply bg-[color:var(--colorFondoCiudadano)] w-4/5 flex justify-center rounded-lg;
+}
+.ciudadano_titulo h1 {
+  @apply text-[color:var(--colorTextoTarjeta)];
 }
 
-.ciudadano_titulo h1 {
-    color: var(--colorTextoTarjeta);
-}
 </style>

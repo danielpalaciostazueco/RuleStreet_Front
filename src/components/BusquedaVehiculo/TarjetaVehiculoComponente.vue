@@ -45,24 +45,14 @@ setup(props) {
 
 
 <style scoped>
-.tarjeta{
-    display: flex;
-    background-color: var(--colorBlanco);
-    width: 100%;
-    height: 5rem;
-    align-items: center;
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
-    gap: 0.5rem;
+.tarjeta {
+  @apply flex bg-[color:var(--colorBlanco)] w-full h-20 items-center gap-2 px-2;
 }
-
 .tarjeta p {
-    color: black;
+  @apply text-[black];
+}
+.tarjeta_imagen {
+  @apply w-16 h-16 rounded-lg;
 }
 
-.tarjeta_imagen {
-    width: 4rem;
-    height: 4rem;
-    border-radius: 0.5rem;
-}
 </style>

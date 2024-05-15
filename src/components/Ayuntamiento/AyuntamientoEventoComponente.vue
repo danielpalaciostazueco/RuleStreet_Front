@@ -1,13 +1,13 @@
 <template>
-    <div class="info-container">
-        <div v-if="infoEventos.length === 0" class="no-events">
+    <div class="info-container flex flex-wrap justify-around p-5 gap-5">
+        <div v-if="infoEventos.length === 0" class="no-events w-full text-center text-textoTarjeta text-lg">
             <h2>No hay eventos disponibles en este momento.</h2>
         </div>
-        <div class="info-card" v-for="evento in infoEventos" :key="evento.idEventos">
-            <img :src="evento.imagen" :alt="evento.descripcion" class="card-image">
-            <div class="card-content">
-                <h2>{{ evento.descripcion }}</h2>
-                <p class="card-date">
+        <div class="info-card w-[calc(33.333%-20px)] shadow-lg rounded-lg overflow-hidden flex flex-col bg-white" v-for="evento in infoEventos" :key="evento.idEventos">
+            <img :src="evento.imagen" :alt="evento.descripcion" class="card-image w-full h-52 object-cover">
+            <div class="card-content p-4 flex-grow flex flex-col justify-between">
+                <h2 class="text-xl text-tituloModal">{{ evento.descripcion }}</h2>
+                <p class="card-date text-base text-negro mt-2 self-end">
                     Fecha: {{ fechaFormato(evento.fecha) }}
                 </p>
             </div>
@@ -41,22 +41,24 @@ const fechaFormato = (fecha: string | Date): string => {
     return fechaObj.toLocaleDateString('es-ES', opciones);
 };
 </script>
-
 <style scoped>
 .info-container {
     @apply flex flex-wrap justify-around p-5 gap-5;
 }
 
 .no-events {
-    @apply w-full text-center text-gray-600 text-lg;
+    @apply w-full text-center text-textoTarjeta text-lg;
 }
 
 .info-card {
-    @apply w-full md:w-1/2 lg:w-1/3 shadow-lg rounded-lg overflow-hidden flex flex-col bg-white;
+    @apply shadow-lg rounded-lg overflow-hidden flex flex-col bg-white;
+    width: calc(33.333% - 20px);
+    transition: width 0.3s ease;
 }
 
 .card-image {
-    @apply w-full h-48 object-cover;
+    @apply w-full object-cover;
+    height: calc(200px + 1vw); 
 }
 
 .card-content {
@@ -64,10 +66,36 @@ const fechaFormato = (fecha: string | Date): string => {
 }
 
 .card-content h2 {
-    @apply text-xl text-gray-800;
+    @apply text-xl text-tituloModal;
 }
 
 .card-date {
-    @apply text-base text-gray-600 mt-2 self-end;
+    @apply text-base text-negro mt-2 self-end;
 }
+
+@media (max-width: 1024px) {
+  .info-card {
+    @apply w-[calc(50%_-_20px)];
+  }
+  .card-image {
+    @apply h-[calc(150px_+_1vw)];
+  }
+}
+@media (max-width: 768px) {
+  .info-card {
+    @apply w-[calc(100%_-_20px)];
+  }
+  .card-image {
+    @apply h-[calc(120px_+_1vw)];
+  }
+}
+@media (max-width: 480px) {
+  .info-card {
+    @apply w-[calc(100%_-_20px)];
+  }
+  .card-image {
+    @apply h-[calc(100px_+_1vw)];
+  }
+}
+
 </style>

@@ -70,69 +70,30 @@ export default defineComponent({
 
 <style scoped>
 .vehiculo_menu_izquierda {
-    background-color: var(--colorFondoCiudadano2);
-    width: 25%;
-    display: flex;
-    flex-direction: column;
-    border-radius: 0.5rem;
-    padding-top: 2rem;
-    padding-bottom: 2rem;
-    gap: 2rem;
+  @apply bg-[color:var(--colorFondoCiudadano2)] w-3/12 flex flex-col gap-8 py-8 rounded-lg;
 }
-
 .vehiculo_menu_izquierda_titulo {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  @apply flex justify-center items-center;
 }
-
 .vehiculo_menu_izquierda_titulo h2 {
-    background-color: var(--colorFondoCiudadano);
-    border-radius: 0.7rem;
-    height: 2.5rem;
-    color: var(--colorTextoTarjeta);
-    display: flex;
-    align-items: center;
-    width: 90%;
-    display: flex;
-    justify-content: center;
+  @apply bg-[color:var(--colorFondoCiudadano)] h-10 text-[color:var(--colorTextoTarjeta)] flex items-center w-[90%] flex justify-center rounded-[0.7rem];
 }
-
 .vehiculo_busqueda {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  @apply flex items-center justify-center;
 }
-
 .vehiculo_busqueda input {
-    height: 2rem;
-    outline: none;
-    background-color: var(--colorBusquedaCiudadanoBusqueda);
-    border: 1px solid var(--colorBusquedaCiudadanoBusqueda);
-    color: var(--colorBlanco);
-    padding-left: 1rem;
+  @apply h-8 bg-[color:var(--colorBusquedaCiudadanoBusqueda)] border border-[color:var(--colorBusquedaCiudadanoBusqueda)] text-[color:var(--colorBlanco)] pl-4 border-solid;
+  outline: none;
 }
-
 .vehiculo_busqueda input::placeholder {
-    color: var(--colorBlanco);
+  @apply text-[color:var(--colorBlanco)];
 }
-
 .vehiculo_busqueda button {
-    width: 5rem;
-    height: 2rem;
-    background-color: var(--colorBotonBusquedaCiudadano);
-    border: none;
+  @apply w-20 h-8 bg-[color:var(--colorBotonBusquedaCiudadano)] border-[none] hover:bg-[color:var(--colorBotonBusquedaCiudadanoActivo)] hover:cursor-pointer;
 }
-
-.vehiculo_busqueda button:hover {
-    background-color: var(--colorBotonBusquedaCiudadanoActivo);
-    cursor: pointer;
-}
-
 .vehiculo_icono {
-    width: 1rem;
-    height: 1rem;
-    fill: var(--colorSvg);
-    transition: transform 0.3s ease, width 0.3s ease, height 0.3s ease;
+  @apply w-4 h-4 fill-[var(--colorSvg)];
+  transition: transform 0.3s ease, width 0.3s ease, height 0.3s ease;
 }
+
 </style>

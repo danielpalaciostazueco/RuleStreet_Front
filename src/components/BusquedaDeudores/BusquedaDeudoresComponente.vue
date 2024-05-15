@@ -10,41 +10,42 @@
         <option value="dni">DNI</option>
         <option value="genero">Género</option>
         <option value="nacionalidad">Nacionalidad</option>
-        <option value="fechaNacimiento">Fecha de Nacimiento</option>
+  
         <option value="pagada">Deuda Pagada</option>
       </select>
     </div>
 
-    <table>
-      <thead>
-        <tr>
-          <th>Foto</th>
-          <th v-if="filterField">{{ fieldDisplayName(filterField) }}</th>
-          <th v-if="filterField !== 'nombre'">Nombre</th>
-          <th v-if="filterField !== 'apellidos'">Apellidos</th>
-          <th v-if="filterField !== 'dni'">DNI</th>
-          <th v-if="filterField !== 'genero'">Género</th>
-          <th v-if="filterField !== 'nacionalidad'">Nacionalidad</th>
-          <th v-if="filterField !== 'fechaNacimiento'">Fecha de Nacimiento</th>
-          <th v-if="filterField !== 'pagada'">Deuda Pagada</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="deudor in filteredDeudores" :key="deudor.idCiudadano">
-          <td><img :src="deudor.imagenUrl" alt="Foto del deudor" /></td>
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>Foto</th>
+            <th v-if="filterField">{{ fieldDisplayName(filterField) }}</th>
+            <th v-if="filterField !== 'nombre'">Nombre</th>
+            <th v-if="filterField !== 'apellidos'">Apellidos</th>
+            <th v-if="filterField !== 'dni'">DNI</th>
+            <th v-if="filterField !== 'genero'">Género</th>
+            <th v-if="filterField !== 'nacionalidad'">Nacionalidad</th>
+            <th v-if="filterField !== 'pagada'">Deuda Pagada</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="deudor in filteredDeudores" :key="deudor.idCiudadano">
+            <td><img :src="deudor.imagenUrl" alt="Foto del deudor" /></td>
             <td v-if="filterField">{{ deudor[filterField as keyof typeof deudor] }}</td>
-          <td v-if="filterField !== 'nombre'">{{ deudor.nombre }}</td>
-          <td v-if="filterField !== 'apellidos'">{{ deudor.apellidos }}</td>
-          <td v-if="filterField !== 'dni'">{{ deudor.dni }}</td>
-          <td v-if="filterField !== 'genero'">{{ deudor.genero }}</td>
-          <td v-if="filterField !== 'nacionalidad'">{{ deudor.nacionalidad }}</td>
-          <td v-if="filterField !== 'fechaNacimiento'">{{ deudor.fechaNacimiento }}</td>
-          <td v-if="filterField !== 'pagada'">{{ deudor.pagada ? 'Sí' : 'No' }}</td>
-        </tr>
-      </tbody>
-    </table>
+            <td v-if="filterField !== 'nombre'">{{ deudor.nombre }}</td>
+            <td v-if="filterField !== 'apellidos'">{{ deudor.apellidos }}</td>
+            <td v-if="filterField !== 'dni'">{{ deudor.dni }}</td>
+            <td v-if="filterField !== 'genero'">{{ deudor.genero }}</td>
+            <td v-if="filterField !== 'nacionalidad'">{{ deudor.nacionalidad }}</td>
+   
+            <td v-if="filterField !== 'pagada'">{{ deudor.pagada ? 'Sí' : 'No' }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <button @click="exportToExcel">Exportar a Excel</button>
   </div>
-  <button @click="exportToExcel">Exportar a Excel</button>
 </template>
 
 <script setup lang="ts">
@@ -69,7 +70,6 @@ function fieldDisplayName(field: any) {
     dni: 'DNI',
     genero: 'Género',
     nacionalidad: 'Nacionalidad',
-    fechaNacimiento: 'Fecha de Nacimiento',
     pagada: 'Deuda Pagada'
   };
   return names[field] || field;
@@ -81,7 +81,7 @@ const exportToExcel = () => {
     DNI: deudor.dni,
     Género: deudor.genero,
     Nacionalidad: deudor.nacionalidad,
-    Fecha_de_Nacimiento: deudor.fechaNacimiento,
+
     Deuda_Pagada: deudor.pagada ? 'Sí' : 'No'
   }));
   const ws = XLSX.utils.json_to_sheet(dataToExport);
@@ -91,115 +91,99 @@ const exportToExcel = () => {
 };
 cargarDatosCiudadanosDeudores();
 </script>
+
 <style scoped>
 table {
-  width: 100%;
-  border-collapse: collapse;
-  background-color: #f1f8ff;
-  border-radius: 8px;
-  overflow: hidden;
+  @apply w-full bg-[#f1f8ff] overflow-hidden rounded-lg border-collapse;
 }
-
 th,
 td {
-  border-bottom: 1px solid #ccc;
-  padding: 12px 8px;
-  text-align: left;
-  color: #333;
+  @apply text-left text-[#333] px-2 py-3 border-b-[#ccc] border-b border-solid;
 }
-
 th {
-  background-color: #0056b3;
-  /* Azul oscuro */
-  color: white;
-  font-size: 16px;
-}
+  @apply bg-[#0056b3] text-[white] text-base;
 
+  /* Azul oscuro */
+}
 td {
-  background-color: #e7f0fd;
+  @apply bg-[#e7f0fd];
+
   /* Azul claro */
 }
-
 img {
-  width: 60px;
-  height: auto;
-  border-radius: 50%;
+  @apply w-[60px] h-auto rounded-[50%];
 }
-
 input,
 select {
-  margin-bottom: 10px;
-  width: calc(100% - 16px);
-  padding: 8px;
-  border-radius: 4px;
-  border: 1px solid #ccc;
+  @apply w-[calc(100%_-_16px)] rounded border mb-2.5 p-2 border-solid border-[#ccc];
 }
-
 input {
-  background-color: white;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  @apply bg-[white] shadow-[0_2px_5px_rgba(0,0,0,0.1)];
 }
-
 select {
-  background-color: #e7f0fd;
-  color: #333;
+  @apply bg-[#e7f0fd] text-[#333];
 }
-
 input::placeholder {
-  color: #aaa;
+  @apply text-[#aaa];
 }
-
 tr:hover {
-  background-color: #ccefff;
-  /* Azul muy claro para hover */
+  @apply bg-[#ccefff];
+
+
 }
 
-/* Estilo para resaltar la importancia de la columna de "Peligroso" */
+
 td:nth-last-child(1) {
-  font-weight: bold;
-  color: #c10000;
-  /* Rojo para indicar peligro */
+  @apply font-[bold] text-[#c10000];
+
+
+}
+
+.table-wrapper {
+  @apply overflow-x-auto;
+}
+
+table {
+  @apply min-w-[600px];
+}
+
+
+@media (max-width: 1024px) {
+  table {
+    @apply min-w-[500px];
+  }
+  th,
+  td {
+    @apply text-sm px-2 py-1.5;
+  }
+  img {
+    @apply w-[50px];
+  }
 }
 
 @media (max-width: 768px) {
-
-  table,
-  thead,
-  tbody,
+  table {
+    @apply min-w-[400px];
+  }
   th,
-  td,
-  tr {
-    display: block;
-  }
-
-  thead tr {
-    position: absolute;
-    top: -9999px;
-    left: -9999px;
-  }
-
   td {
-    position: relative;
-    padding-left: 50%;
-    text-align: right;
-    border: none;
+    @apply text-xs px-1.5 py-1;
   }
-
-  td:before {
-    position: absolute;
-    top: 6px;
-    left: 6px;
-    width: 45%;
-    padding-right: 10px;
-    white-space: nowrap;
-    font-weight: bold;
-    text-align: left;
-    content: attr(data-label);
+  img {
+    @apply w-[40px];
   }
+}
 
-  select,
-  input {
-    width: 100%;
+@media (max-width: 480px) {
+  table {
+    @apply min-w-[300px];
+  }
+  th,
+  td {
+    @apply text-xs px-1 py-0.5;
+  }
+  img {
+    @apply w-[30px];
   }
 }
 </style>

@@ -25,22 +25,10 @@ export default defineComponent({
 
 <style scoped>
 .ciudadano_container {
-    padding: 2rem;
-    background-color: var(--colorFondo);
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 3rem;
+  @apply bg-[color:var(--colorFondo)] min-h-screen flex flex-col items-center justify-center gap-12 p-8;
 }
-
-
 .ciudadano_menu {
-    display: flex;
-    flex-direction: row;
-    width: 80%;
-    gap: 2rem;
-    height: 90rem;
+  @apply flex flex-row w-4/5 gap-8 h-[90rem];
 }
+
 </style>

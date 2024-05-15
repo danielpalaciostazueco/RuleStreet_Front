@@ -20,50 +20,21 @@ defineProps({
 
 <style scoped>
 .home_caja {
-  flex: 0 0 15rem;
-  height: 10rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  background-color: var(--colorFondoTarjeta);
-  width: 15rem;
-  border-radius: 10%;
-  justify-content: center;
-  align-items: center;
+  @apply flex-[0_0_15rem] h-40 flex flex-col gap-4 bg-[color:var(--colorFondoTarjeta)] w-60 justify-center items-center overflow-hidden no-underline rounded-[10%] scale-100 hover:cursor-pointer hover:bg-[color:var(--colorFondoTarjetaSelecionado)] hover:shadow-[0_0_10px_var(--colorFondoTarjetaSelecionado)] hover:scale-105;
   transition: transform 0.3s ease, opacity 0.3s ease;
-  transform: scale(1);
-  overflow: hidden;
-  text-decoration: none;
 }
-
-.home_caja:hover {
-  transform: scale(1.05);
-  cursor: pointer;
-  background-color: var(--colorFondoTarjetaSelecionado);
-  box-shadow: 0 0 10px var(--colorFondoTarjetaSelecionado);
-}
-
 .home_caja:hover .home_icono {
-  transform: scale(1.2);
-  width: 100%;
-  height: 50%;
+  @apply w-full h-3/6 scale-[1.2];
 }
-
 .home_caja:hover p {
-  opacity: 0;
-  transition: opacity 0.3s ease;
+  @apply opacity-0 transition-opacity duration-[0.3s] ease-[ease];
 }
-
 .home_icono {
-  width: 5rem;
-  height: 4rem;
-  fill: var(--colorSvg);
+  @apply w-20 h-16 fill-[var(--colorSvg)];
   transition: transform 0.3s ease, width 0.3s ease, height 0.3s ease;
 }
-
 .home_caja p {
-  color: var(--colorTextoTarjeta);
-  transition: opacity 0.3s ease;
-  margin: 0;
+  @apply text-[color:var(--colorTextoTarjeta)] transition-opacity duration-[0.3s] ease-[ease] m-0;
 }
+
 </style>

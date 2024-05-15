@@ -122,196 +122,93 @@ export default defineComponent({
 
 <style>
 .ciudadano_menu_izquierda_contenedor {
-    display: flex;
-    flex-direction: column;
-    border-radius: 0.5rem;
-    padding-left: 2rem;
-    padding-right: 2rem;
-    height: 100%;
-    overflow-y: auto;
-    align-items: center;
+  @apply flex flex-col h-full overflow-y-auto items-center px-8 rounded-lg;
 }
-
 .ciudadano_menu_izquierda_contenedor p {
-    color: var(--colorTextoTarjeta);
+  @apply text-[color:var(--colorTextoTarjeta)];
 }
-
 .ciudadano_menu_izquierda_contenedor::-webkit-scrollbar {
-    width: 8px;
+  @apply w-2;
 }
-
 .ciudadano_menu_izquierda_contenedor::-webkit-scrollbar-track {
-    background-color: var(--colorFondoCiudadano2);
+  @apply bg-[color:var(--colorFondoCiudadano2)];
 }
-
 .ciudadano_menu_izquierda_contenedor::-webkit-scrollbar-thumb {
-    background-color: var(--colorBlanco);
-    border-radius: 4px;
+  @apply bg-[color:var(--colorBlanco)] rounded hover:bg-[color:var(--colorFondoCiudadano)];
 }
-
-.ciudadano_menu_izquierda_contenedor::-webkit-scrollbar-thumb:hover {
-    background-color: var(--colorFondoCiudadano);
-}
-
 .ciudadano_perfil_usuario {
-    display: flex;
-    width: 100%;
-    gap: 3rem;
+  @apply flex w-full gap-12;
 }
-
 .ciudadano_perfil_usuario_izquierda {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  @apply flex justify-center items-center;
 }
-
 .ciudadano_perfil_usuario_izquierda img {
-    width: 15rem;
-    height: 15rem;
+  @apply w-60 h-60;
 }
-
 .ciudadano_perfil_usuario_derecha {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1rem;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
+  @apply grid grid-cols-[repeat(3,1fr)] gap-4 justify-center items-center w-full;
 }
-
 .ciudadano_tarjeta {
-    background-color: var(--colorBusquedaCiudadanoTarjeta);
-    border-radius: 0.7rem;
-    width: 12rem;
-    height: 4rem;
-    display: flex;
-    flex-direction: column;
-    padding-left: 2rem;
-    justify-content: center;
-    gap: 0.5rem;
+  @apply bg-[color:var(--colorBusquedaCiudadanoTarjeta)] w-48 h-16 flex flex-col justify-center gap-2 pl-8 rounded-[0.7rem];
 }
-
 .ciudadano_tarjeta p {
-    font-size: 16px;
+  @apply text-base;
 }
-
 .ciudadano_perfil_botones {
-    display: flex;
-    gap: 2rem;
-    background-color: var(--colorBusquedaCiudadanoTarjeta);
-    width: 100%;
-    height: 8rem;
-    border-radius: 0.7rem;
-    justify-content: center;
-    align-items: center;
+  @apply flex gap-8 bg-[color:var(--colorBusquedaCiudadanoTarjeta)] w-full h-32 justify-center items-center rounded-[0.7rem];
 }
-
 .ciudadano_perfil_boton input[type="radio"] {
-    display: none;
+  @apply hidden;
 }
-
 .ciudadano_perfil_boton label {
-    display: inline-block;
-    width: 13rem;
-    padding: 10px;
-    text-align: center;
-    color: var(--colorBlanco);
-    background-color: var(--colorBusquedaCiudadanoTarjeta);
-    cursor: pointer;
-    border: 1px solid var(--colorTextoTarjeta);
-    color: var(--colorTextoTarjeta)
+  @apply inline-block w-52 text-center text-[color:var(--colorBlanco)] bg-[color:var(--colorBusquedaCiudadanoTarjeta)] cursor-pointer border border-[color:var(--colorTextoTarjeta)] text-[color:var(--colorTextoTarjeta)] p-2.5 border-solid;
 }
-
-#no_izquierda:checked+label,
-#no_derecha:checked+label {
-    background-color: var(--colorBusquedaCiudadanoPerfilBoton);
-    color: var(--colorTextoTarjeta)
+#no_izquierda:checked + label,
+#no_derecha:checked + label {
+  @apply bg-[color:var(--colorBusquedaCiudadanoPerfilBoton)] text-[color:var(--colorTextoTarjeta)];
 }
-
-#yes_izquierda:checked+label,
-#yes_derecha:checked+label {
-    background-color: var(--colorBusquedaCiudadanoPerfilBoton);
-    color: var(--colorTextoTarjeta)
+#yes_izquierda:checked + label,
+#yes_derecha:checked + label {
+  @apply bg-[color:var(--colorBusquedaCiudadanoPerfilBoton)] text-[color:var(--colorTextoTarjeta)];
 }
-
 .ciudadano_perfil_botones_derecha {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1rem;
+  @apply flex flex-col items-center gap-4;
 }
-
 .ciudadano_perfil_botones_izquierda {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1rem;
+  @apply flex flex-col items-center gap-4;
 }
-
 .ciudadano_perfil_botones_derecha h2 {
-    color: var(--colorTextoTarjeta);
+  @apply text-[color:var(--colorTextoTarjeta)];
 }
-
 .ciudadano_perfil_botones_izquierda h2 {
-    color: var(--colorTextoTarjeta);
+  @apply text-[color:var(--colorTextoTarjeta)];
 }
-
 .ciudadano_perfil_otros {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1rem;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
+  @apply grid grid-cols-[repeat(2,1fr)] gap-4 justify-center items-center w-full;
 }
-
 .ciudadano_perfil_otros_container {
-    display: flex;
-    background-color: var(--colorBusquedaCiudadanoTarjeta);
-    border-radius: 0.7rem;
-    width: 100%;
-    height: 20rem;
-    
+  @apply flex bg-[color:var(--colorBusquedaCiudadanoTarjeta)] w-full h-80 rounded-[0.7rem];
 }
-
 .ciudadano_icono {
-    width: 2rem;
-    height: 1rem;
+  @apply w-8 h-4;
 }
-
 .ciudadano_perfil_notasdiv {
-    display: flex;
-    width: 100%;
-    padding: 1rem;
-    gap: 0.5rem;
+  @apply flex w-full gap-2 p-4;
 }
-
 .ciudadano_perfil_notasdiv p {
-    font-size: 16px;
+  @apply text-base;
 }
-
-.ciudadano_perfil_multas{
-    display: flex;
-    width: 100%;
-    justify-content: flex-end;
-    padding: 1rem;
+.ciudadano_perfil_multas {
+  @apply flex w-full justify-end p-4;
 }
-
-.ciudadano_perfil_multas p{
-    font-size: 16px;
+.ciudadano_perfil_multas p {
+  @apply text-base;
 }
-
 .ciudadano_perfil {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 2rem;
-    flex-direction: column;
-    justify-content: space-between;
-    height: 100%;
+  @apply flex items-center justify-center flex-col justify-between h-full p-8;
+}
+.ciudadano_perfil p {
+  @apply text-[color:var(--colorTextoTarjeta)];
 }
 
-.ciudadano_perfil p {
-    color: var(--colorTextoTarjeta);
-}
 </style>

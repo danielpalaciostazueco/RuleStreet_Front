@@ -63,14 +63,14 @@ export default defineComponent({
 </script>
 
 <template>
-    <div class="vehiculo_menu_izquierda">
-        <div class="vehiculo_menu_izquierda_titulo">
+    <div class="ciudadano_menu_izquierda">
+        <div class="ciudadano_menu_izquierda_titulo">
             <h2>LISTA DE VEHICULOS</h2>
         </div>
-        <div class="vehiculo_busqueda">
+        <div class="ciudadano_busqueda">
             <input type="text" placeholder="Vehiculo" v-model="searchQuery">
             <button @click="searchVehicles">
-                <svg class="vehiculo_icono" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                <svg class="ciudadano_icono" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                     <path
                         d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z" />
                 </svg>
@@ -79,71 +79,131 @@ export default defineComponent({
         <VehicleList :vehicles="filteredVehicles" @vehicle-selected="handleVehicleSelected" />
     </div>
 </template>
+
 <style scoped>
-.vehiculo_menu_izquierda {
-    background-color: var(--colorFondoCiudadano2);
-    width: 25%;
-    display: flex;
-    flex-direction: column;
-    border-radius: 0.5rem;
-    padding-top: 2rem;
-    padding-bottom: 2rem;
-    gap: 2rem;
+.ciudadano_menu_izquierda {
+  @apply bg-[color:var(--colorFondoCiudadano2)] w-[25%] flex flex-col gap-4 py-4 rounded-lg;
 }
 
-.vehiculo_menu_izquierda_titulo {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.ciudadano_menu_izquierda_titulo {
+  @apply flex justify-center items-center;
 }
 
-.vehiculo_menu_izquierda_titulo h2 {
-    background-color: var(--colorFondoCiudadano);
-    border-radius: 0.7rem;
-    height: 2.5rem;
-    color: var(--colorTextoTarjeta);
-    display: flex;
-    align-items: center;
-    width: 90%;
-    display: flex;
-    justify-content: center;
+.ciudadano_menu_izquierda_titulo h2 {
+  @apply bg-[color:var(--colorFondoCiudadano)] h-8 text-[color:var(--colorTextoTarjeta)] flex items-center w-3/4 flex justify-center text-base rounded-[0.5rem];
 }
 
-.vehiculo_busqueda {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.ciudadano_busqueda {
+  @apply flex items-center justify-center;
 }
 
-.vehiculo_busqueda input {
-    height: 2rem;
-    outline: none;
-    background-color: var(--colorBusquedaCiudadanoBusqueda);
-    border: 1px solid var(--colorBusquedaCiudadanoBusqueda);
-    color: var(--colorBlanco);
-    padding-left: 1rem;
+.ciudadano_busqueda input {
+  @apply h-6 bg-[color:var(--colorBusquedaCiudadanoBusqueda)] border border-[color:var(--colorBusquedaCiudadanoBusqueda)] text-[color:var(--colorBlanco)] pl-2 border-solid;
+  outline: none;
 }
 
-.vehiculo_busqueda input::placeholder {
-    color: var(--colorBlanco);
+.ciudadano_busqueda input::placeholder {
+  @apply text-[color:var(--colorBlanco)];
 }
 
-.vehiculo_busqueda button {
-    width: 5rem;
-    height: 2rem;
-    background-color: var(--colorBotonBusquedaCiudadano);
-    border: none;
+.ciudadano_busqueda button {
+  @apply w-16 h-6 bg-[color:var(--colorBotonBusquedaCiudadano)] border-[none] hover:bg-[color:var(--colorBotonBusquedaCiudadanoActivo)] hover:cursor-pointer;
 }
 
-.vehiculo_busqueda button:hover {
-    background-color: var(--colorBotonBusquedaCiudadanoActivo);
-    cursor: pointer;
+.ciudadano_icono {
+  @apply w-3 h-3 fill-[var(--colorSvg)];
+  transition: transform 0.3s ease, width 0.3s ease, height 0.3s ease;
 }
 
-.vehiculo_icono {
-    width: 1rem;
-    height: 1rem;
-    fill: var(--colorSvg);
-    transition: transform 0.3s ease, width 0.3s ease, height 0.3s ease;
+.ciudadano_lista {
+  @apply overflow-y-auto max-h-[30rem] 
+}
+
+/* Responsive design */
+@media (max-width: 1024px) {
+  .ciudadano_menu_izquierda {
+    @apply w-[40%];
+  }
+
+  .ciudadano_menu_izquierda_titulo h2 {
+    @apply text-sm;
+  }
+
+  .ciudadano_busqueda input {
+    @apply text-xs;
+  }
+
+  .ciudadano_busqueda button {
+    @apply w-14 h-6;
+  }
+
+  .ciudadano_icono {
+    @apply w-2.5 h-2.5;
+  }
+
+  .ciudadano_lista {
+    @apply max-h-[20rem];
+  }
+}
+
+@media (max-width: 768px) {
+  .ciudadano_menu_izquierda {
+    @apply w-full;
+    padding: 2px; 
+  }
+
+  .ciudadano_menu_izquierda_titulo h2 {
+    @apply text-xs;
+    width: 80%;
+  }
+
+  .ciudadano_busqueda {
+    @apply flex-col gap-1; 
+  }
+
+  .ciudadano_busqueda input {
+    @apply w-full text-xs;
+  }
+
+  .ciudadano_busqueda button {
+    @apply w-full h-6;
+  }
+
+  .ciudadano_icono {
+    @apply w-2.5 h-2.5;
+  }
+
+  .ciudadano_lista {
+    @apply max-h-[15rem];
+  }
+}
+
+@media (max-width: 480px) {
+  .ciudadano_menu_izquierda {
+    @apply w-full py-2;
+  }
+
+  .ciudadano_menu_izquierda_titulo h2 {
+    @apply text-xs;
+  }
+
+  .ciudadano_busqueda input {
+    @apply w-full text-xs;
+  }
+
+  .ciudadano_busqueda button {
+    @apply w-full h-6;
+  }
+
+  .ciudadano_icono {
+    @apply w-2 h-2;
+  }
+
+  .ciudadano_lista {
+    @apply max-h-[10rem];
+  }
+  
 }
 </style>
+
+
