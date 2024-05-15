@@ -24,7 +24,7 @@ const submitForm = async () => {
             <h2>Iniciar sesión</h2>
             <input type="text" v-model="store.DatosPolicia.numeroPlaca" placeholder="Número de placa">
 
-            <input type="password" v-model="store.DatosPolicia.contrasena" placeholder="Contraseña">
+            <input type="password" v-model="store.DatosPolicia.Contrasena" placeholder="Contraseña">
             <button type="submit">Enviar</button>
             <p>¿Eres un ciudadano? <RouterLink to="/login">Ir al login</RouterLink>
             </p>

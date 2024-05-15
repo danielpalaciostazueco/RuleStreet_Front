@@ -83,10 +83,16 @@ const routes = [
     component: () => import('../views/BusquedaCapturaView.vue'),
   },
   {
+    path: '/graficaBusquedaCaptura',
+    name: 'graficaBusquedaCaptura',
+    component: () => import('../views/GraficaBusquedaCapturaView.vue'),
+  },
+  {
     path: '/busquedaDeudores',
     name: 'busquedaDeudores',
     component: () => import('../views/BusquedaDeudoresView.vue'),
   },
+  
 ];
 
 const router = createRouter({

@@ -180,12 +180,7 @@ const tokenUsuario = localStorage.getItem('tokenUsuario');
 
 <style scoped>
 .home_container {
-  background-color: var(--colorFondo);
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  gap: 4rem;
+  @apply bg-[color:var(--colorFondo)] min-h-screen flex justify-center items-center flex-col gap-16;
 }
+
 </style>

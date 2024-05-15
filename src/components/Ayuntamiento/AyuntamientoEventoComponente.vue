@@ -1,19 +1,20 @@
 <template>
-    <div class="info-container">
-        <div v-if="infoEventos.length === 0" class="no-events">
+    <div class="info-container flex flex-wrap justify-around p-5 gap-5">
+        <div v-if="infoEventos.length === 0" class="no-events w-full text-center text-textoTarjeta text-lg">
             <h2>No hay eventos disponibles en este momento.</h2>
         </div>
-        <div class="info-card" v-for="evento in infoEventos" :key="evento.idEventos">
-            <img :src="evento.imagen" :alt="evento.descripcion" class="card-image">
-            <div class="card-content">
-                <h2>{{ evento.descripcion }}</h2>
-                <p class="card-date">
+        <div class="info-card w-[calc(33.333%-20px)] shadow-lg rounded-lg overflow-hidden flex flex-col bg-white" v-for="evento in infoEventos" :key="evento.idEventos">
+            <img :src="evento.imagen" :alt="evento.descripcion" class="card-image w-full h-52 object-cover">
+            <div class="card-content p-4 flex-grow flex flex-col justify-between">
+                <h2 class="text-xl text-tituloModal">{{ evento.descripcion }}</h2>
+                <p class="card-date text-base text-negro mt-2 self-end">
                     Fecha: {{ fechaFormato(evento.fecha) }}
                 </p>
             </div>
         </div>
     </div>
 </template>
+
 <script lang="ts" setup>
 import { onMounted } from 'vue';
 import { useListadoEvento } from '@/stores/storeEventos';
@@ -40,57 +41,61 @@ const fechaFormato = (fecha: string | Date): string => {
     return fechaObj.toLocaleDateString('es-ES', opciones);
 };
 </script>
-
 <style scoped>
 .info-container {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: space-around;
-    padding: 20px;
-    gap: 20px;
+    @apply flex flex-wrap justify-around p-5 gap-5;
 }
 
 .no-events {
-    width: 100%;
-    text-align: center;
-    color: #666;
-    font-size: 18px;
+    @apply w-full text-center text-textoTarjeta text-lg;
 }
 
 .info-card {
+    @apply shadow-lg rounded-lg overflow-hidden flex flex-col bg-white;
     width: calc(33.333% - 20px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    background-color: white;
+    transition: width 0.3s ease;
 }
 
 .card-image {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
+    @apply w-full object-cover;
+    height: calc(200px + 1vw); 
 }
 
 .card-content {
-    padding: 15px;
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    @apply p-4 flex-grow flex flex-col justify-between;
 }
 
 .card-content h2 {
-    font-size: 20px;
-    color: #333;
+    @apply text-xl text-tituloModal;
 }
 
 .card-date {
-    font-size: 16px;
-    color: #888;
-    margin-top: 10px;
-    self-align: end;
+    @apply text-base text-negro mt-2 self-end;
 }
+
+@media (max-width: 1024px) {
+  .info-card {
+    @apply w-[calc(50%_-_20px)];
+  }
+  .card-image {
+    @apply h-[calc(150px_+_1vw)];
+  }
+}
+@media (max-width: 768px) {
+  .info-card {
+    @apply w-[calc(100%_-_20px)];
+  }
+  .card-image {
+    @apply h-[calc(120px_+_1vw)];
+  }
+}
+@media (max-width: 480px) {
+  .info-card {
+    @apply w-[calc(100%_-_20px)];
+  }
+  .card-image {
+    @apply h-[calc(100px_+_1vw)];
+  }
+}
+
 </style>

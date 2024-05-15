@@ -22,3 +22,7 @@
   --colorFondoTablaModal: #474747;
   --colorTarjetaModal: #626262;
 }
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

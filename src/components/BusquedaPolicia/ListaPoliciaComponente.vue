@@ -23,155 +23,66 @@ export default defineComponent({
 
 <style scoped>
 .vehicle_menu_derecha {
-    background-color: var(--colorFondoCiudadano2);
-    width: 75%;
-    display: flex;
-    flex-direction: column;
-    border-radius: 0.5rem;
-    padding-top: 2rem;
-    padding-bottom: 2rem;
-    gap: 2rem;
+  @apply bg-[color:var(--colorFondoCiudadano2)] w-9/12 flex flex-col gap-8 py-8 rounded-lg;
 }
-
 .vehicle_menu_derecha_titulo {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  @apply flex justify-center items-center;
 }
-
 .vehicle_menu_derecha_titulo h2 {
-    background-color: var(--colorFondoCiudadano);
-    border-radius: 0.7rem;
-    height: 2.5rem;
-    color: var(--colorTextoTarjeta);
-    display: flex;
-    align-items: center;
-    width: 80%;
-    display: flex;
-    justify-content: center;
+  @apply bg-[color:var(--colorFondoCiudadano)] h-10 text-[color:var(--colorTextoTarjeta)] flex items-center w-4/5 flex justify-center rounded-[0.7rem];
 }
-
 .vehicle_perfil {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 2rem;
-    flex-direction: column;
-    justify-content: space-between;
-    height: 100%;
+  @apply flex items-center justify-center flex-col justify-between h-full p-8;
 }
-
 .vehicle_perfil p {
-    color: var(--colorTextoTarjeta);
-    font-size: 2.5rem;
+  @apply text-[color:var(--colorTextoTarjeta)] text-[2.5rem];
 }
-
 .vehicle_boton_contenedor {
-    display: flex;
-    justify-content: center;
+  @apply flex justify-center;
 }
-
-.vehicle_contenedor_tarjeta{
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
+.vehicle_contenedor_tarjeta {
+  @apply flex flex-col gap-8;
 }
-
 .vehiculo_menu_izquierda {
-    background-color: var(--colorFondoCiudadano2);
-    width: 25%;
-    display: flex;
-    flex-direction: column;
-    border-radius: 0.5rem;
-    padding-top: 2rem;
-    padding-bottom: 2rem;
-    gap: 2rem;
+  @apply bg-[color:var(--colorFondoCiudadano2)] w-3/12 flex flex-col gap-8 py-8 rounded-lg;
 }
-
 .vehiculo_menu_izquierda_titulo {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  @apply flex justify-center items-center;
 }
-
 .vehiculo_menu_izquierda_titulo h2 {
-    background-color: var(--colorFondoCiudadano);
-    border-radius: 0.7rem;
-    height: 2.5rem;
-    color: var(--colorTextoTarjeta);
-    display: flex;
-    align-items: center;
-    width: 90%;
-    display: flex;
-    justify-content: center;
+  @apply bg-[color:var(--colorFondoCiudadano)] h-10 text-[color:var(--colorTextoTarjeta)] flex items-center w-[90%] flex justify-center rounded-[0.7rem];
 }
-
 .vehiculo_busqueda {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  @apply flex items-center justify-center;
 }
-
 .vehiculo_busqueda input {
-    height: 2rem;
-    outline: none;
-    background-color: var(--colorBusquedaCiudadanoBusqueda);
-    border: 1px solid var(--colorBusquedaCiudadanoBusqueda);
-    color: var(--colorBlanco);
-    padding-left: 1rem;
+  @apply h-8 bg-[color:var(--colorBusquedaCiudadanoBusqueda)] border border-[color:var(--colorBusquedaCiudadanoBusqueda)] text-[color:var(--colorBlanco)] pl-4 border-solid;
+  outline: none;
 }
-
 .vehiculo_busqueda input::placeholder {
-    color: var(--colorBlanco);
+  @apply text-[color:var(--colorBlanco)];
 }
-
 .vehiculo_busqueda button {
-    width: 5rem;
-    height: 2rem;
-    background-color: var(--colorBotonBusquedaCiudadano);
-    border: none;
+  @apply w-20 h-8 bg-[color:var(--colorBotonBusquedaCiudadano)] border-[none] hover:bg-[color:var(--colorBotonBusquedaCiudadanoActivo)] hover:cursor-pointer;
 }
-
-.vehiculo_busqueda button:hover {
-    background-color: var(--colorBotonBusquedaCiudadanoActivo);
-    cursor: pointer;
-}
-
 .vehiculo_icono {
-    width: 1rem;
-    height: 1rem;
-    fill: var(--colorSvg);
-    transition: transform 0.3s ease, width 0.3s ease, height 0.3s ease;
+  @apply w-4 h-4 fill-[var(--colorSvg)];
+  transition: transform 0.3s ease, width 0.3s ease, height 0.3s ease;
 }
 vehiculo_menu_izquierda_contenedor {
-    display: flex;
-    flex-direction: column;
-    border-radius: 0.5rem;
-    padding-left: 2rem;
-    padding-right: 2rem;
-    height: 100%;
-    overflow-y: auto;
-    align-items: center;
+  @apply flex flex-col h-full overflow-y-auto items-center px-8 rounded-lg;
 }
-
 .vehiculo_menu_izquierda_contenedor p {
-    color: var(--colorTextoTarjeta);
+  @apply text-[color:var(--colorTextoTarjeta)];
 }
-
 .vehiculo_menu_izquierda_contenedor::-webkit-scrollbar {
-    width: 8px;
+  @apply w-2;
 }
-
 .vehiculo_menu_izquierda_contenedor::-webkit-scrollbar-track {
-    background-color: var(--colorFondoCiudadano2);
+  @apply bg-[color:var(--colorFondoCiudadano2)];
 }
-
 .vehiculo_menu_izquierda_contenedor::-webkit-scrollbar-thumb {
-    background-color: var(--colorBlanco);
-    border-radius: 4px;
+  @apply bg-[color:var(--colorBlanco)] rounded hover:bg-[color:var(--colorFondoCiudadano)];
 }
 
-.vehiculo_menu_izquierda_contenedor::-webkit-scrollbar-thumb:hover {
-    background-color: var(--colorFondoCiudadano);
-}
 </style>

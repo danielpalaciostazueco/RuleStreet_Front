@@ -11,7 +11,7 @@ export default defineComponent({
     },
     setup() {
         const router = useRouter();
-        // const authStore = useAuthStore();
+        //  const authStore = useAuthStore();
 
         const onLoginSuccess = () => {
             router.push('/');
@@ -22,13 +22,11 @@ export default defineComponent({
 });
 </script>
 
-<template>
-    <div class="login_section">
-        <LoginForm @login-success="onLoginSuccess" />
-    </div>
+<template class="flex flex-col">
+    <LoginForm @login-success="onLoginSuccess" class="" />
 </template>
 
-<style scoped>
+<!-- <style scoped>
 * {
     padding: 0;
     margin: 0;
@@ -1317,4 +1315,6 @@ export default defineComponent({
     background-color: var(--botonActivo);
     border: 0;
 }
-</style>
+
+*/
+</style> -->

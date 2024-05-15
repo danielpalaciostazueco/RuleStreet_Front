@@ -102,118 +102,85 @@ onMounted(() => {
 </script>
 <style scoped>
 .gestion-obras {
-    padding: 20px;
-    font-family: Arial, sans-serif;
+  @apply p-5 font-sans;
 }
-
 .titulo {
-    text-align: center;
-    margin-bottom: 20px;
+  @apply text-center mb-5;
 }
-
 .boton-idioma {
-    display: inline-block;
-    height: 30px;
-    font-family: Playfair Display, serif;
-    font-weight: 700;
-    background-color: #216ce7;
-    border-radius: 20px;
-    text-decoration: none;
-    border: solid 2px black;
-    color: black;
+  @apply inline-block h-8 font-serif font-bold bg-blue-600 rounded-full text-black border-2 border-black no-underline;
 }
-
 .contenedor-botones {
-    display: flex;
-    justify-content: flex-end;
-    margin-bottom: 20px;
+  @apply flex justify-end mb-5;
 }
-
 .boton-agregar,
 .boton-editar,
 .boton-borrar {
-    background-color: #1E3367;
-    color: white;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-right: 5px;
+  @apply bg-blue-900 text-white px-3 py-2 rounded-lg cursor-pointer mr-1;
 }
-
 .boton-agregar:hover,
 .boton-editar:hover,
 .boton-borrar:hover {
-    background-color: #152c50;
+  @apply bg-blue-800;
 }
-
+.tabla-wrapper {
+  @apply overflow-x-auto;
+}
 .tabla-obras {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 20px;
+  @apply text-[calc(12px_+_0.5vw)];
+  @apply w-full bg-white rounded-lg border-collapse text-sm lg:text-base;
 }
-
 .tabla-obras th,
 .tabla-obras td {
-    border: 1px solid #ddd;
-    padding: 8px;
-    text-align: left;
+  @apply border p-2 lg:p-4 text-left;
 }
-
 .tabla-obras th {
-    background-color: #1E3367;
-    color: white;
+  @apply bg-blue-900 text-white;
 }
-
+.tabla-obras td {
+  @apply bg-blue-100;
+}
 .tabla-obras tr:nth-child(even) {
-    background-color: #f2f2f2;
+  @apply bg-blue-50;
 }
-
 .tabla-obras tr:hover {
-    background-color: #ddd;
+  @apply bg-blue-200;
 }
-
-@media (max-width: 1500px) {
-
-    .tabla-obras,
-    .tabla-obras tbody,
-    .tabla-obras th,
-    .tabla-obras td,
-    .tabla-obras tr {
-        display: block;
-    }
-
-    .tabla-obras thead {
-        display: none;
-    }
-
-    .tabla-obras tr {
-        margin-bottom: 15px;
-        border: 1px solid #ddd;
-    }
-
-    .tabla-obras td {
-        padding-left: 50%;
-        text-align: right;
-        position: relative;
-    }
-
-    .tabla-obras td::before {}
-
-    .tabla-obras td {
-        border: none;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding-left: 10px;
-        text-align: left;
-    }
-
-    .formulario {
-
-        display: flex;
-        flex-direction: column;
-    }
+.img-evento {
+  @apply w-[calc(60px_+_2vw)] h-auto;
 
 }
+.input-formulario {
+  @apply w-full mb-4 p-2 border rounded;
+}
+.boton-formulario {
+  @apply bg-blue-900 text-white px-3 py-2 rounded-lg cursor-pointer mr-2;
+}
+@media (max-width: 768px) {
+  .tabla-obras {
+    @apply text-xs;
+  }
+  .tabla-obras th,
+  .tabla-obras td {
+    @apply p-2;
+  }
+  .img-evento {
+    @apply w-[calc(50px_+_2vw)];
+
+  }
+}
+@media (max-width: 480px) {
+  .tabla-obras {
+    @apply text-xs;
+  }
+  .tabla-obras th,
+  .tabla-obras td {
+    @apply p-1;
+  }
+  .img-evento {
+    @apply w-[calc(40px_+_2vw)];
+ 
+  }
+}
+
 </style>
