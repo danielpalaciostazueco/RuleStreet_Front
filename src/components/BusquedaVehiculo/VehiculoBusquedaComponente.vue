@@ -112,8 +112,11 @@ export default defineComponent({
 
 .ciudadano_icono {
   @apply w-3 h-3 fill-[var(--colorSvg)];
-  transition: transform 0.3s ease, width 0.3s ease, height 0.3s ease;
+  height: 0.5rem;
+        width: 0.5rem;
+        margin-left: 10px;
 }
+
 
 .ciudadano_lista {
   @apply overflow-y-auto max-h-[30rem] 
@@ -138,8 +141,10 @@ export default defineComponent({
   }
 
   .ciudadano_icono {
-    @apply w-2.5 h-2.5;
-  }
+        height: 0.5rem;
+        width: 0.5rem;
+        margin-left: 10px;
+    }
 
   .ciudadano_lista {
     @apply max-h-[20rem];
@@ -156,26 +161,31 @@ export default defineComponent({
     @apply text-xs;
     width: 80%;
   }
-
-  .ciudadano_busqueda {
-    @apply flex-col gap-1; 
-  }
+  .ciudadano_busqueda[data-v-cd57284e] {
+        /* flex-direction: column; */
+        gap: 0.25rem;
+    }
 
   .ciudadano_busqueda input {
     @apply w-full text-xs;
   }
 
-  .ciudadano_busqueda button {
-    @apply w-full h-6;
-  }
+  .ciudadano_busqueda button[data-v-cd57284e] {
+        height: 1.5rem;
+        width: 10%;
+    }
 
-  .ciudadano_icono {
-    @apply w-2.5 h-2.5;
-  }
+  
 
   .ciudadano_lista {
     @apply max-h-[15rem];
   }
+.ciudadano_icono {
+        height: 0.5rem;
+        width: 0.5rem;
+        margin-left: 10px;
+    }
+
 }
 
 @media (max-width: 480px) {
@@ -191,13 +201,15 @@ export default defineComponent({
     @apply w-full text-xs;
   }
 
-  .ciudadano_busqueda button {
-    @apply w-full h-6;
-  }
-
-  .ciudadano_icono {
-    @apply w-2 h-2;
-  }
+  .ciudadano_busqueda button[data-v-845bb2b1] {
+        height: 1.5rem;
+        width: 10%;
+    }
+    .ciudadano_icono[data-v-845bb2b1] {
+        height: 0.5rem;
+        width: 0.5rem;
+        margin-left: 10px;
+    }
 
   .ciudadano_lista {
     @apply max-h-[10rem];

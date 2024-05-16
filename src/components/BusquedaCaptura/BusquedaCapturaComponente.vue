@@ -1,46 +1,46 @@
 <template>
-  <div>
-    <input v-model="searchQuery" placeholder="Buscar ciudadano..." @input="filterCiudadanos" />
-
-    <div>
-      Filtrar por:
-      <select v-model="filterField" @change="filterCiudadanos">
-        <option value="nombre">Nombre</option>
-        <option value="apellidos">Apellidos</option>
-        <option value="dni">DNI</option>
-        <option value="genero">Género</option>
-        <option value="nacionalidad">Nacionalidad</option>
-        <option value="isPeligroso">Es peligroso</option>
-      </select>
+  <div class="container mx-auto p-4">
+    <div class="search-section mb-4">
+      <input v-model="searchQuery" placeholder="Buscar ciudadano..." @input="filterCiudadanos" class="search-input" />
+      <div class="filter-section mt-2">
+        <label for="filterField" class="mr-2">Filtrar por:</label>
+        <select v-model="filterField" @change="filterCiudadanos" class="filter-select">
+          <option value="nombre">Nombre</option>
+          <option value="apellidos">Apellidos</option>
+          <option value="dni">DNI</option>
+          <option value="genero">Género</option>
+          <option value="nacionalidad">Nacionalidad</option>
+          <option value="isPeligroso">Es peligroso</option>
+        </select>
+      </div>
     </div>
-
-    <div class="table-wrapper">
-      <table>
+    <div class="table-wrapper shadow-lg rounded-lg overflow-hidden">
+      <table class="table-auto w-full">
         <thead>
-          <tr>
-            <th>Foto</th>
-            <th v-if="filterField">{{ fieldDisplayName(filterField) }}</th>
-            <th v-if="filterField !== 'nombre'">Nombre</th>
-            <th v-if="filterField !== 'apellidos'">Apellidos</th>
-            <th v-if="filterField !== 'genero'">Género</th>
-            <th v-if="filterField !== 'nacionalidad'">Nacionalidad</th>
-            <th v-if="filterField !== 'isPeligroso'">Peligroso</th>
+          <tr class="bg-blue-800 text-white">
+            <th class="px-4 py-2">Foto</th>
+            <th v-if="filterField" class="px-4 py-2">{{ fieldDisplayName(filterField) }}</th>
+            <th v-if="filterField !== 'nombre'" class="px-4 py-2">Nombre</th>
+            <th v-if="filterField !== 'apellidos'" class="px-4 py-2">Apellidos</th>
+            <th v-if="filterField !== 'genero'" class="px-4 py-2">Género</th>
+            <th v-if="filterField !== 'nacionalidad'" class="px-4 py-2">Nacionalidad</th>
+            <th v-if="filterField !== 'isPeligroso'" class="px-4 py-2">Peligroso</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="ciudadano in filteredCiudadanos" :key="ciudadano.idCiudadano">
-            <td><img :src="ciudadano.imagenUrl" alt="Foto del ciudadano" /></td>
-            <td v-if="filterField">{{ ciudadano[filterField as keyof typeof ciudadano] }}</td>
-            <td v-if="filterField !== 'nombre'">{{ ciudadano.nombre }}</td>
-            <td v-if="filterField !== 'apellidos'">{{ ciudadano.apellidos }}</td>
-            <td v-if="filterField !== 'genero'">{{ ciudadano.genero }}</td>
-            <td v-if="filterField !== 'nacionalidad'">{{ ciudadano.nacionalidad }}</td>
-            <td v-if="filterField !== 'isPeligroso'">{{ ciudadano.isPeligroso ? 'Sí' : 'No' }}</td>
+          <tr v-for="ciudadano in filteredCiudadanos" :key="ciudadano.idCiudadano" class="hover:bg-blue-100">
+            <td class="px-4 py-2"><img :src="ciudadano.imagenUrl" alt="Foto del ciudadano" class="rounded-full w-12 h-12 object-cover" /></td>
+            <td v-if="filterField" class="px-4 py-2">{{ ciudadano[filterField as keyof typeof ciudadano] }}</td>
+            <td v-if="filterField !== 'nombre'" class="px-4 py-2">{{ ciudadano.nombre }}</td>
+            <td v-if="filterField !== 'apellidos'" class="px-4 py-2">{{ ciudadano.apellidos }}</td>
+            <td v-if="filterField !== 'genero'" class="px-4 py-2">{{ ciudadano.genero }}</td>
+            <td v-if="filterField !== 'nacionalidad'" class="px-4 py-2">{{ ciudadano.nacionalidad }}</td>
+            <td v-if="filterField !== 'isPeligroso'" class="px-4 py-2">{{ ciudadano.isPeligroso ? 'Sí' : 'No' }}</td>
           </tr>
         </tbody>
       </table>
     </div>
-    <button @click="exportToExcel">Exportar a Excel</button>
+    <button @click="exportToExcel" class="export-button mt-4">Exportar a Excel</button>
   </div>
 </template>
 
@@ -94,66 +94,59 @@ const exportToExcel = () => {
 </script>
 
 <style scoped>
-table {
-  @apply w-full bg-[#f1f8ff] overflow-hidden rounded-lg border-collapse;
-  font-size: calc(12px + 0.5vw); 
+.container {
+  @apply mx-auto p-4;
 }
-th,
-td {
-  @apply text-left text-[#333] px-2 py-3 border-b border-b-[#ccc] border-solid;
+.search-section {
+  @apply mb-4;
+}
+.search-input {
+  @apply w-full p-2 mb-2 border rounded focus:outline-none focus:border-blue-600;
+}
+.filter-section {
+  @apply mt-2;
+}
+.filter-select {
+  @apply p-2 border rounded focus:outline-none focus:border-blue-600;
+}
+.table-wrapper {
+  @apply shadow-lg rounded-lg overflow-hidden;
+}
+table {
+  @apply table-auto w-full;
+}
+th, td {
+  @apply px-4 py-2;
 }
 th {
-  @apply bg-[#0056b3] text-white text-base;
+  @apply bg-blue-800 text-white;
 }
-td {
-  @apply bg-[#e7f0fd];
+tbody tr:hover {
+  @apply bg-blue-100;
 }
 img {
-  @apply w-[calc(30px+2vw)] h-auto rounded-full;
+  @apply rounded-full w-12 h-12 object-cover;
 }
-input,
-select {
-  @apply w-[calc(100%-16px)] rounded border border-[#ccc] mb-2.5 p-2;
+.export-button {
+  @apply mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg cursor-pointer transition-all duration-300 ease-in-out;
 }
-input {
-  @apply bg-white shadow-[0_2px_5px_rgba(0,0,0,0.1)];
+.export-button:hover {
+  @apply bg-blue-700;
 }
-select {
-  @apply bg-[#e7f0fd] text-[#333];
-}
-input::placeholder {
-  @apply text-[#aaa];
-}
-tr:hover {
-  @apply bg-[#ccefff];
-}
-td:nth-last-child(1) {
-  @apply font-bold text-[#c10000];
-}
-
-.table-wrapper {
-  @apply overflow-x-auto min-w-full;
-}
-
 @media (max-width: 768px) {
-  th,
-  td {
-    @apply text-sm px-2 py-1.5;
-    font-size: calc(10px + 1vw); 
+  th, td {
+    @apply text-sm;
   }
   img {
-    @apply w-[calc(20px+2vw)]; 
+    @apply w-10 h-10;
   }
 }
-
 @media (max-width: 480px) {
-  th,
-  td {
-    @apply text-xs px-1.5 py-1;
-    font-size: calc(8px + 1vw); 
+  th, td {
+    @apply text-xs;
   }
   img {
-    @apply w-[calc(15px+2vw)]; 
+    @apply w-8 h-8;
   }
 }
 </style>

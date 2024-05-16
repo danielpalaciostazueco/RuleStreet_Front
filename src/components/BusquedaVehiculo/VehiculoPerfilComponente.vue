@@ -360,6 +360,11 @@ function parseRouteParam(param: string | string[]): string {
     @apply w-full;
   }
 
+  #no_izquierda:checked + label[data-v-4a66fcd6], #no_derecha:checked + label[data-v-4a66fcd6] {
+    background-color: var(--colorBusquedaCiudadanoPerfilBoton);
+    color: var(--colorTextoTarjeta);
+    margin-left: 20px;
+}
   .ciudadano_menu_derecha_titulo h2 {
     @apply text-xs;
   }
@@ -367,16 +372,42 @@ function parseRouteParam(param: string | string[]): string {
   .ciudadano_tarjeta p {
     @apply text-xs;
   }
+  .ciudadano_boton[data-v-edd735a0] {
+    display: flex;
+    height: 2rem;
+    width: 5rem;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--colorBotonBusquedaCiudadano);
+    color: var(--colorTextoTarjeta);
+    text-decoration-line: none;
+    margin-top: 1rem;
+  }
 
+  .ciudadano_perfil_boton label[data-v-4a66fcd6] {
+    display: inline-block;
+    width: 13rem;
+    cursor: pointer;
+    border-width: 1px;
+    border-style: solid;
+    border-color: var(--colorTextoTarjeta);
+    background-color: var(--colorBusquedaCiudadanoTarjeta);
+    padding: 0.625rem;
+    text-align: center;
+    color: var(--colorBlanco);
+    color: var(--colorTextoTarjeta);
+    margin-left: 20px;
+}
   .ciudadano_perfil_usuario_derecha {
     @apply grid-cols-1;
   }
 
-  .ciudadano_perfil_botones {
-    @apply flex-col h-auto gap-2;
-    margin-top: 1rem;
-  }
-
+  .ciudadano_perfil_botones[data-v-4a66fcd6] {
+        height: 10rem;
+        flex-direction: column;
+        gap: 0.5rem;
+        margin-top: 1rem;
+    }
   .ciudadano_perfil_otros {
     @apply grid-cols-1;
   }

@@ -2,6 +2,7 @@
 import { defineComponent, ref, onMounted, computed } from 'vue';
 import { useListadoCodigoPenal } from '@/stores/storeCodigoPenal';
 import TituloComponente from '@/components/ComponentesGenerales/TituloComponente.vue';
+import BotonPaginaPrincipalComponente from '../ComponentesGenerales/BotonPaginaPrincipalComponente.vue';
 
 export default defineComponent({
   setup() {
@@ -58,6 +59,7 @@ export default defineComponent({
         </div>
       </div>
     </div>
+    <BotonPaginaPrincipalComponente />
   </body>
 </template>
 

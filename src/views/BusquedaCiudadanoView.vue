@@ -42,8 +42,10 @@ export default defineComponent({
     </template>
 
 <style scoped>
+html,
 body {
   @apply bg-[color:var(--colorFondo)];
+  
 }
 
 .ciudadano_container {
@@ -70,10 +72,16 @@ body {
 }
 
 @media screen and (max-width: 480px) {
+html,
+body {
+  @apply bg-[color:var(--colorFondo)];
+  height: 460vh;
+}
   .ciudadano_menu {
     @apply flex-col w-full;
     min-height: auto;
     gap: 4; /* Reduce gap between elements for small screens */
+    
   }
 }
 </style>
