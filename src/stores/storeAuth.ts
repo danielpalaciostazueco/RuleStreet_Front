@@ -7,85 +7,89 @@ import jwtDecode from 'jwt-decode';
 
 
 export interface Usuario {
- IdUsuario: number;
+  IdUsuario: number;
   IdPolicia: number;
   IdCiudadano: number;
- NombreUsuario: string;
- Contrasena: string;
- IsPolicia: boolean;
+  NombreUsuario: string;
+  Contrasena: string;
+  IsPolicia: boolean;
 }
 
 interface Policia {
-   IdPolicia : number;
-   IdCiudadano : number;
-   Rango : number;
-   NumeroPlaca: string;
-  IsPolicia : boolean;
+  IdPolicia: number;
+  IdCiudadano: number;
+  Rango: number;
+  NumeroPlaca: string;
+  IsPolicia: boolean;
 }
 
-interface Ayuntamiento{
- IdUsuarioAyuntamiento: number;
+interface Ayuntamiento {
+  IdUsuarioAyuntamiento: number;
   Dni: string;
- Contrasena: string;
+  Contrasena: string;
 }
 
 
 export const useListadoAuth = defineStore('listadoAuth', () => {
+
+
+
+
   const apiUrl = `http://localhost:8001`;
   let infoUsuarios: Usuario = {
-   IdUsuario: 0,
+    IdUsuario: 0,
     IdPolicia: 0,
     IdCiudadano: 0,
-   NombreUsuario: "",
-   Contrasena: "",
-   IsPolicia: false
+    NombreUsuario: "",
+    Contrasena: "",
+    IsPolicia: false
   };
 
-    let infoPolicias: Policia = { 
-      IdPolicia : 0,
-      IdCiudadano : 0,
-      Rango : 0,
-      NumeroPlaca: "",
-     IsPolicia : false
-    };
+  let infoPolicias: Policia = {
+    IdPolicia: 0,
+    IdCiudadano: 0,
+    Rango: 0,
+    NumeroPlaca: "",
+    IsPolicia: false
+  };
 
 
-    let infoAyuntamiento: Ayuntamiento = {
-     IdUsuarioAyuntamiento: 0,
-      Dni: "",
-     Contrasena: ""
-    };
+  let infoAyuntamiento: Ayuntamiento = {
+    IdUsuarioAyuntamiento: 0,
+    Dni: "",
+    Contrasena: ""
+  };
 
 
 
 
   const Datos = ref({
     Dni: '',
-   NombreUsuario: '',
-   Contrasena: '',
+    NombreUsuario: '',
+    Contrasena: '',
   });
 
-  
+
   const DatosRegistro = ref({
-   IdUsuario: 0,
+    IdUsuario: 0,
     Dni: '',
-   NombreUsuario: '',
-   Contrasena: '',
+    NombreUsuario: '',
+    Contrasena: '',
   });
 
   const DatosPolicia = ref({
     numeroPlaca: '',
-   Contrasena : '',
+    Contrasena: '',
   });
 
 
   const DatosAyuntamiento = ref({
     Dni: '',
-   Contrasena: '',
+    Contrasena: '',
   });
 
-  async function resetAndAssign(decoded : any, target : any) {
-    Object.keys(target).forEach(key => target[key] = 0); 
+  async function resetAndAssign(decoded: any, target: any) {
+    Object.keys(target).forEach(key => target[key] = 0);
     Object.assign(target, decoded);
   }
 
@@ -106,7 +110,19 @@ export const useListadoAuth = defineStore('listadoAuth', () => {
     }
   }
 
-async function LoginUsuario() {
+  function loadPoliceInfo() {
+    const token = localStorage.getItem('tokenPolicia');
+    if (token) {
+      try {
+        const decoded = jwtDecode(token);
+        resetAndAssign(decoded, infoPolicias);
+      } catch (error) {
+        console.error('Error al decodificar el token:', error);
+      }
+    }
+  }
+
+  async function LoginUsuario() {
     try {
       const response = await fetch(`${apiUrl}/Auth/Login`, {
         method: 'POST',
@@ -131,7 +147,7 @@ async function LoginUsuario() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          
+
         },
         body: JSON.stringify(DatosRegistro.value),
 
@@ -141,7 +157,7 @@ async function LoginUsuario() {
         const usuarioRegistrado: Usuario = await response.json();
         infoUsuarios = usuarioRegistrado;
         localStorage.setItem('usuario', JSON.stringify(usuarioRegistrado));
-  
+
       } else {
         console.error('Error en el registro:', response.statusText);
       }
@@ -177,7 +193,7 @@ async function LoginUsuario() {
       return '';
     }
   }
-async function LoginAyuntamiento() {
+  async function LoginAyuntamiento() {
     try {
       const response = await fetch(`${apiUrl}/Auth/Login/Ayuntamiento`, {
         method: 'POST',
@@ -194,5 +210,8 @@ async function LoginAyuntamiento() {
     }
   }
 
-  return { LoginUsuario, registroUsuario, formatearFecha, infoUsuarios, Datos, DatosPolicia,LoginPolicia, infoPolicias, DatosRegistro, DatosAyuntamiento, LoginAyuntamiento, infoAyuntamiento};
+  return {
+    infoUsuarios, Datos, DatosRegistro, DatosPolicia, infoPolicias, DatosAyuntamiento, infoAyuntamiento,
+    LoginUsuario, LoginPolicia, LoginAyuntamiento, registroUsuario, formatearFecha, loadPoliceInfo
+  };
 });
