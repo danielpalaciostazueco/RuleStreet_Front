@@ -23,7 +23,6 @@
             <th v-if="filterField">{{ fieldDisplayName(filterField) }}</th>
             <th v-if="filterField !== 'nombre'">Nombre</th>
             <th v-if="filterField !== 'apellidos'">Apellidos</th>
-            <th v-if="filterField !== 'dni'">DNI</th>
             <th v-if="filterField !== 'genero'">Género</th>
             <th v-if="filterField !== 'nacionalidad'">Nacionalidad</th>
             <th v-if="filterField !== 'pagada'">Deuda Pagada</th>
@@ -35,7 +34,6 @@
             <td v-if="filterField">{{ deudor[filterField as keyof typeof deudor] }}</td>
             <td v-if="filterField !== 'nombre'">{{ deudor.nombre }}</td>
             <td v-if="filterField !== 'apellidos'">{{ deudor.apellidos }}</td>
-            <td v-if="filterField !== 'dni'">{{ deudor.dni }}</td>
             <td v-if="filterField !== 'genero'">{{ deudor.genero }}</td>
             <td v-if="filterField !== 'nacionalidad'">{{ deudor.nacionalidad }}</td>
    
@@ -67,7 +65,6 @@ function fieldDisplayName(field: any) {
   const names = {
     nombre: 'Nombre',
     apellidos: 'Apellidos',
-    dni: 'DNI',
     genero: 'Género',
     nacionalidad: 'Nacionalidad',
     pagada: 'Deuda Pagada'
@@ -78,7 +75,6 @@ const exportToExcel = () => {
   const dataToExport = filteredDeudores.value.map(deudor => ({
     Nombre: deudor.nombre,
     Apellidos: deudor.apellidos,
-    DNI: deudor.dni,
     Género: deudor.genero,
     Nacionalidad: deudor.nacionalidad,
 

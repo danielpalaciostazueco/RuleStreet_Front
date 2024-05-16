@@ -559,6 +559,11 @@ function parseRouteParam(param: string | string[]): string {
   .ciudadano_perfil_otros_container[data-v-a5cac0f2] {
   @apply flex h-80 w-full bg-[color:var(--colorBusquedaCiudadanoTarjeta)] mt-[2re] mt-4 rounded-[0.7rem];
 }
+.ciudadano_busqueda[data-v-845bb2b1] {
+        /* flex-direction: column; */
+        gap: 0.25rem;
+    }
+
 }
 
 @media (max-width: 480px) {
@@ -593,7 +598,45 @@ function parseRouteParam(param: string | string[]): string {
   .tarjeta_otros, .tarjeta_multa, .tarjeta_multa_pagada {
     @apply h-auto p-2;
   }
+
+  .ciudadano_perfil_boton label[data-v-a5cac0f2] {
+    display: inline-block;
+    width: 13rem;
+    cursor: pointer;
+    border-width: 1px;
+    border-style: solid;
+    border-color: var(--colorTextoTarjeta);
+    background-color: var(--colorBusquedaCiudadanoTarjeta);
+    padding: 0.625rem;
+    text-align: center;
+    color: var(--colorBlanco);
+    color: var(--colorTextoTarjeta);
+    margin-left: 20px;
 }
+
+  #no_izquierda:checked + label[data-v-a5cac0f2], #no_derecha:checked + label[data-v-a5cac0f2] {
+    background-color: var(--colorBusquedaCiudadanoPerfilBoton);
+    color: var(--colorTextoTarjeta);
+    margin-left: 20px;
+}
+.ciudadano_boton[data-v-edd735a0] {
+    display: flex;
+    height: 2rem;
+    width: 5rem;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--colorBotonBusquedaCiudadano);
+    color: var(--colorTextoTarjeta);
+    text-decoration-line: none;
+    margin-top: 1rem;
+}
+.ciudadano_busqueda {
+        /* flex-direction: column; */
+        gap: 0.25rem;
+    }
+
+}
+
 
 @media (max-width: 400px) {
   .ciudadano_menu_derecha {
@@ -607,14 +650,35 @@ function parseRouteParam(param: string | string[]): string {
   .ciudadano_tarjeta p {
     @apply text-xs;
   }
-
+  .ciudadano_perfil_boton label[data-v-a5cac0f2] {
+    display: inline-block;
+    width: 13rem;
+    cursor: pointer;
+    border-width: 1px;
+    border-style: solid;
+    border-color: var(--colorTextoTarjeta);
+    background-color: var(--colorBusquedaCiudadanoTarjeta);
+    padding: 0.625rem;
+    text-align: center;
+    color: var(--colorBlanco);
+    color: var(--colorTextoTarjeta);
+    margin-left: 20px;
+}
+  #no_izquierda:checked + label[data-v-a5cac0f2], #no_derecha:checked + label[data-v-a5cac0f2] {
+    background-color: var(--colorBusquedaCiudadanoPerfilBoton);
+    color: var(--colorTextoTarjeta);
+    margin-left: 20px;
+}
   .ciudadano_perfil_usuario_derecha {
     @apply grid-cols-1;
   }
 
-  .ciudadano_perfil_botones[data-v-a5cac0f2] {
-  @apply h-auto flex-col gap-2 mt-4;
-}
+  .ciudadano_perfil_botones[data-v-a5cac0f2][data-v-a5cac0f2] {
+        margin-top: 1rem;
+        height: 19rem;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
 
   .ciudadano_perfil_otros {
     @apply grid-cols-1;
@@ -635,5 +699,21 @@ function parseRouteParam(param: string | string[]): string {
   .ciudadano_perfil_usuario_izquierda img {
     @apply w-40 h-40;
   }
+  .ciudadano_boton[data-v-edd735a0] {
+    display: flex;
+    height: 2rem;
+    width: 5rem;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--colorBotonBusquedaCiudadano);
+    color: var(--colorTextoTarjeta);
+    text-decoration-line: none;
+    margin-top: 1rem;
+}
+.ciudadano_busqueda {
+        /* flex-direction: column; */
+        gap: 0.25rem;
+    }
+
 }
 </style>

@@ -42,8 +42,10 @@ export default defineComponent({
     </template>
 
 <style scoped>
+html,
 body {
   @apply bg-[color:var(--colorFondo)];
+  height: 460vh;
 }
 
 .ciudadano_container {
