@@ -15,38 +15,25 @@ export default defineComponent({
 <template>
     <div class="notFound_sectionContainer">
         <img class="notFound_img" :src="icono" alt="Icono">
-        <h1>404</h1>
-        <p>Página no encontrada</p>
+        <h1 class="notFound_h1">404</h1>
+        <p class="notFound_p">Página no encontrada</p>
     </div>
 </template>
 
 <style scoped>
 .notFound_sectionContainer {
-    min-height: 100vh;
-    justify-content: center;
-    display: flex;
-    background-color: var(--colorFondo);
-    color: var(--colorSvg);
-    flex-direction: column;
-    align-items: center;
-    gap: 2rem;
+    @apply min-h-screen flex flex-col items-center justify-center bg-[var(--colorFondo)] text-[var(--colorSvg)] gap-8;
 }
 
-.notFound_sectionContainer p {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    font-size: 1.5rem;
+.notFound_p {
+    @apply w-full flex justify-center text-lg md:text-xl lg:text-2xl;
 }
 
-.notFound_sectionContainer h1 {
-    display: flex;
-    justify-content: center;
-    font-size: 5rem;
+.notFound_h1 {
+    @apply flex justify-center text-6xl md:text-7xl lg:text-8xl;
 }
 
 .notFound_img {
-    width: 12rem;
-    height: 12rem;
+    @apply w-48 h-48 md:w-64 md:h-64 lg:w-72 lg:h-72;
 }
 </style>

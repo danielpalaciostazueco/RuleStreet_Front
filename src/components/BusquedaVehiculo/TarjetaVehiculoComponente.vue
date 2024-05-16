@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent,  type PropType } from 'vue';
+import { defineComponent, type PropType } from 'vue';
 import { useRouter } from 'vue-router';
 
 
@@ -10,16 +10,17 @@ export default defineComponent({
                 idVehiculo: number;
                 matricula: string;
                 modelo: string;
+                marca: string;
                 Photo: string;
                 color: string;
-                
+
             }>,
             required: true
         }
     },
 
 
-setup(props) {
+    setup(props) {
         const router = useRouter();
 
         const navigateToVehicle = () => {
@@ -32,37 +33,25 @@ setup(props) {
 </script>
 
 <template>
-    <div  class="tarjeta" @click="navigateToVehicle">
+    <div class="tarjeta" @click="navigateToVehicle">
         <img class="tarjeta_imagen" :src="vehicle.Photo" alt="Foto del Vehiculo" />
         <div>
-            
-            <h3>{{ vehicle.idVehiculo }}</h3>
-            <p>Modelo: {{ vehicle.modelo }}</p>
-            <p>Matrícula: {{ vehicle.matricula }}</p>       
+            <p>{{ vehicle.marca }} {{ vehicle.modelo }} - {{ vehicle.matricula }}</p>
+            <p>{{ vehicle.ciudadano.nombre }} </p>
         </div>
     </div>
 </template>
 
 
 <style scoped>
-.tarjeta{
-    display: flex;
-    background-color: var(--colorBlanco);
-    width: 100%;
-    height: 5rem;
-    align-items: center;
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
-    gap: 0.5rem;
+.tarjeta {
+  @apply flex bg-[color:var(--colorBlanco)] w-full h-20 items-center gap-2 px-2;
 }
-
 .tarjeta p {
-    color: black;
+  @apply text-[black];
+}
+.tarjeta_imagen {
+  @apply w-16 h-16 rounded-lg;
 }
 
-.tarjeta_imagen {
-    width: 4rem;
-    height: 4rem;
-    border-radius: 0.5rem;
-}
 </style>

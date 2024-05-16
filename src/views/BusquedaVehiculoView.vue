@@ -32,32 +32,49 @@ export default defineComponent({
 </script>
 
 <template>
-    <div class="vehiculo_container">
+    <div class="ciudadano_container">
         <title-bar title="BUSCAR VEHICULO" />
-        <div class="vehiculo_menu">
+        <div class="ciudadano_menu">
             <search-panel />
             <profile-section />
         </div>
     </div>
 </template>
 
+
 <style scoped>
-.vehiculo_container {
-    background-color: var(--colorFondo);
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 3rem;
+body {
+  @apply bg-[color:var(--colorFondo)];
 }
 
+.ciudadano_container {
+  @apply bg-[color:var(--colorFondo)] min-h-screen flex flex-col items-center justify-center gap-12 p-8;
+}
 
-.vehiculo_menu {
-    display: flex;
-    flex-direction: row;
-    width: 80%;
-    gap: 2rem;
-    height: 50rem;
+.ciudadano_menu {
+  @apply flex flex-row w-full gap-8;
+
+}
+
+@media screen and (max-width: 1024px) {
+  .ciudadano_menu {
+    @apply flex-col;
+    min-height: auto;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .ciudadano_menu {
+    @apply flex-col w-full;
+    min-height: auto;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .ciudadano_menu {
+    @apply flex-col w-full;
+    min-height: auto;
+    gap: 4; /* Reduce gap between elements for small screens */
+  }
 }
 </style>
