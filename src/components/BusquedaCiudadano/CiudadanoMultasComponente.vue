@@ -1,6 +1,9 @@
 <script lang="ts">
 import { computed, defineComponent, onMounted, ref } from 'vue';
 import { useListadoCodigoPenal } from '@/stores/storeCodigoPenal';
+import { useListadoAuth } from '@/stores/storeAuth';
+import { useListadoMultas } from '@/stores/storeMulta';
+import { useRoute } from 'vue-router';
 
 export default defineComponent({
     props: {
@@ -9,31 +12,45 @@ export default defineComponent({
             default: false
         }
     },
-    emits: ['update:visible'],
+    emits: ['update:visible', 'onModalClose'],
     setup(props, { emit }) {
+        const route = useRoute();
+        const idCiudadano = ref(0);
+
         const newMulta = ref({
             descripcion: '',
             monto: 0
         });
 
         const { cargarDatosCodigoPenal, infoCodigoPenal, cargarDatosCodigoPenalId } = useListadoCodigoPenal();
+        const { infoPolicias, loadPoliceInfo } = useListadoAuth();
+        const { guardarMulta } = useListadoMultas();
         const articuloSeleccionado = ref({
+            idCodigoPenal: 0,
             articulo: '',
             descripcion: '',
             precio: 0,
             sentencia: ''
         });
+
         const filtro = ref('');
 
         onMounted(async () => {
+            loadPoliceInfo();
             await cargarDatosCodigoPenal();
+            const path = window.location.pathname;
+            const segments = path.split('/');
+            const lastSegment = segments.pop() || segments.pop();
+            idCiudadano.value = parseInt(lastSegment, 10);
         });
 
         const close = () => {
             newMulta.value = { descripcion: '', monto: 0 };
-            articuloSeleccionado.value = { articulo: '', descripcion: '', precio: 0, sentencia: '' };
-            filtro.value = ''; 
+            articuloSeleccionado.value = { idCodigoPenal: 0, articulo: '', descripcion: '', precio: 0, sentencia: '' };
+            filtro.value = '';
             emit('update:visible', false);
+            emit('onModalClose');
+
         };
 
         const guardarId = async (id: number) => {
@@ -41,6 +58,20 @@ export default defineComponent({
             if (response) {
                 articuloSeleccionado.value = response;
             }
+        };
+
+        const submitMulta = async () => {
+            const multaData = {
+                idMulta: 0,
+                idPolicia: infoPolicias.IdPolicia,
+                fecha: new Date().toISOString(),
+                idCodigoPenal: articuloSeleccionado.value.idCodigoPenal,
+                pagada: false,
+                descripcion: articuloSeleccionado.value.descripcion,
+                idCiudadano: idCiudadano.value
+            };
+            await guardarMulta(multaData);
+            close();
         };
 
         const articulosFiltrados = computed(() => {
@@ -53,7 +84,7 @@ export default defineComponent({
             newMulta,
             infoCodigoPenal,
             articulosFiltrados,
-            submitMulta: close,
+            submitMulta,
             close,
             guardarId,
             articuloSeleccionado,
@@ -63,62 +94,60 @@ export default defineComponent({
 });
 </script>
 <template>
-  <div v-if="visible" class="fixed w-full h-full bg-[color:var(--colorFondoPantallaModal)] flex justify-center items-center left-0 top-0" @click.self="close">
-      <div class="w-[90%] h-[90%] md:w-[70%] md:h-[50rem] flex flex-col md:flex-row gap-4 md:gap-8 p-4 md:p-5 rounded-[10px] bg-[color:var(--colorFondoModal)]">
-          <div class="flex w-full md:w-3/5 flex-col gap-4 md:gap-8">
-              <div class="w-full">
-                  <h1 class="bg-[color:var(--colorTituloModal)] flex items-center h-12 md:h-16 justify-center text-[color:var(--colorBlanco)] rounded-[0.7rem]">CODIGO PENAL</h1>
-              </div>
-              <div>
-                  <input class="w-full h-8 md:h-10 bg-[color:var(--colorNegro)] text-[color:var(--colorBlanco)] pl-4 md:pl-8 rounded-[0.7rem] border-[none] outline-none" type="text" v-model="filtro" placeholder="Buscar en el código criminal...">
-              </div>
-              <div class="overflow-y-auto">
-                  <table class="w-full border-collapse">
-                      <thead>
-                          <tr class="bg-[color:var(--colorNegro)] text-[color:var(--colorBlanco)]">
-                              <th class="p-2 md:p-3">ARTICULO</th>
-                              <th class="p-2 md:p-3">DESCRIPCIÓN</th>
-                              <th class="p-2 md:p-3">CANTIDAD</th>
-                              <th class="p-2 md:p-3">SENTENCIA</th>
-                              <th class="p-2 md:p-3">Añadir</th>
-                          </tr>
-                      </thead>
-                      <tbody>
-                          <tr v-for="item in articulosFiltrados" :key="item.idCodigoPenal" class="bg-[color:var(--colorFondoTablaModal)] text-[color:var(--colorTextoTarjeta)] hover:bg-gray-200">
-                              <td class="p-2 md:p-3">{{ item.articulo }}</td>
-                              <td class="p-2 md:p-3">{{ item.descripcion }}</td>
-                              <td class="p-2 md:p-3">{{ item.precio }}</td>
-                              <td class="p-2 md:p-3">{{ item.sentencia }}</td>
-                              <td class="p-2 md:p-3 cursor-pointer" @click="guardarId(item.idCodigoPenal)">Añadir</td>
-                          </tr>
-                      </tbody>
-                  </table>
-              </div>
-          </div>
-          <div class="flex w-full md:w-2/5 flex-col gap-4 md:gap-8 mt-4 md:mt-0">
-              <div class="w-full">
-                  <h1 class="bg-[color:var(--colorTituloModal)] flex items-center h-12 md:h-16 justify-center text-[color:var(--colorBlanco)] rounded-[0.7rem]">MAS</h1>
-              </div>
-              <div class="bg-[color:var(--colorFondoTablaModal)] h-full flex flex-col gap-4 md:gap-8 justify-between p-4 md:p-8">
-                  <div class="flex flex-col gap-4 md:gap-8">
-                      <p class="text-[color:var(--colorTextoTarjeta)]">CONCEPTO DE MULTA</p>
-                      <div class="flex justify-between bg-[color:var(--colorTarjetaModal)] border border-[color:var(--colorBlanco)] w-full h-10 md:h-12 items-center px-2 md:px-4 rounded-[0.2rem] border-solid" v-if="articuloSeleccionado.articulo">
-                          <div class="flex gap-2 md:gap-4">
-                              <p>{{ articuloSeleccionado.articulo }}</p>
-                              <p>{{ articuloSeleccionado.sentencia }}</p>
-                          </div>
-                          <div>
-                              <p>{{ articuloSeleccionado.precio }}€</p>
-                          </div>
-                      </div>
-                  </div>
-                  <div class="flex justify-center w-full">
-                      <button class="w-20 md:w-24 h-8 md:h-10 bg-[color:var(--colorTarjetaModal)] text-[color:var(--colorTextoTarjeta)] border-[none] hover:cursor-pointer hover:text-[color:var(--colorBlanco)] hover:bg-[color:var(--colorFondoPantallaModal)]">Añadir</button>
-                  </div>
-              </div>
-          </div>
-      </div>
-  </div>
+
+    <div v-if="visible" class="modal_fondo" @click.self="close">
+        <div class="modal_container">
+            <div class="modal_izquierda">
+                <div class="modal_titulo">
+                    <h1>CODIGO PENAL</h1>
+                </div>
+                <div>
+                    <input class="model_buscador" type="text" v-model="filtro"
+                        placeholder="Buscar en el código criminal...">
+                </div>
+                <div class="model_tabla">
+                    <div class="model_tabla_encabezado">ARTICULO</div>
+                    <div class="model_tabla_encabezado">DESCRIPCIÓN</div>
+                    <div class="model_tabla_encabezado">CANTIDAD</div>
+                    <div class="model_tabla_encabezado">SENTENCIA</div>
+                    <div class="model_tabla_encabezado">Añadir</div>
+
+                    <div v-for="item in articulosFiltrados" :key="item.idCodigoPenal" class="model_tabla_fila">
+                        <div class="model_tabla_item">{{ item.articulo }}</div>
+                        <div class="model_tabla_item_texto">{{ item.descripcion }}</div>
+                        <div class="model_tabla_item">{{ item.precio }}</div>
+                        <div class="model_tabla_item">{{ item.sentencia }}</div>
+                        <div class="model_tabla_item_filtro" @click="guardarId(item.idCodigoPenal)">Añadir</div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="modal_derecha">
+                <div class="modal_titulo">
+                    <h1>MAS</h1>
+                </div>
+                <div class="modal_derecha_div">
+                    <div class="modal_derecha_container">
+                        <p>CONCEPTO DE MULTA</p>
+                        <div class="modal_derecha_container_tarjeta" v-if="articuloSeleccionado.articulo">
+                            <div class="izquierda">
+                                <p>{{ articuloSeleccionado.articulo }}</p>
+                            </div>
+                            <div class="derecha">
+                                <p>{{ articuloSeleccionado.sentencia }}</p>
+                                <p>{{ articuloSeleccionado.precio }}€</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="boton_container">
+                        <button class="modal_boton" @click="submitMulta">Añadir Multa</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+  
 </template>
 
 <style scoped>
