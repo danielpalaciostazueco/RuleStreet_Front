@@ -28,6 +28,7 @@ export default defineComponent({
 
 <template>
     <div class="tarjeta" @click="navigateToCitizen">
+        <!-- poner foto en el back -->
         <img class="tarjeta_imagen" :src="citizen.photo || 'https://via.placeholder.com/150'"
             alt="Foto del Ciudadano" />
         <div>
@@ -41,13 +42,23 @@ export default defineComponent({
 
 <style scoped>
 .tarjeta {
-  @apply flex bg-[color:var(--colorBlanco)] w-full h-20 items-center gap-2 px-2;
-}
-.tarjeta p {
-  @apply text-[black];
-}
-.tarjeta_imagen {
-  @apply w-16 h-16 rounded-lg;
+    display: flex;
+    background-color: var(--colorBlanco);
+    width: 100%;
+    height: 5rem;
+    align-items: center;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    gap: 0.5rem;
 }
 
+.tarjeta p {
+    color: black;
+}
+
+.tarjeta_imagen {
+    width: 4rem;
+    height: 4rem;
+    border-radius: 0.5rem;
+}
 </style>
