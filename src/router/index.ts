@@ -7,17 +7,6 @@ const routes = [
     component: () => import('../views/HomeView.vue'),
   },
   {
-    path: '/busquedaCiudadano',
-    name: 'busquedaCiudadano',
-    component: () => import('../views/BusquedaCiudadanoView.vue'),
-  },
-  
-  {
-    path: '/busquedaVehiculo',
-    name: 'busquedaVehiculo',
-    component: () => import('../views/BusquedaVehiculoView.vue'),
-  }, 
-  {
     path: '/perfilCiudadano/:id?',
     name: 'perfilCiudadano',
     component: () => import('../views/PerfilCiudadanoView.vue'),
@@ -44,11 +33,6 @@ const routes = [
     props: true
   },
   {
-    path: '/notFound',
-    name: '404',
-    component: () => import('../views/404View.vue'),
-  },
-  {
     path: '/login',
     name: 'login',
     component: () => import('../views/LoginView.vue'),
@@ -69,15 +53,6 @@ const routes = [
     component: () => import('@/views/RegisterView.vue'),
   },
   {
-    path: '/codigoPenal',
-    name: 'codigoPenal',
-    component: () => import('@/views/CodigoPenalView.vue'),
-  },
-  {
-    path: '/:catchAll(.*)',
-    redirect: '/notFound',
-  },
-  {
     path: '/busquedaCaptura',
     name: 'busquedaCaptura',
     component: () => import('../views/BusquedaCapturaView.vue'),
@@ -92,7 +67,20 @@ const routes = [
     name: 'busquedaDeudores',
     component: () => import('../views/BusquedaDeudoresView.vue'),
   },
-  
+  {
+    path: '/agentes/:id?',
+    name: 'busquedaPolicia',
+    component: () => import('../views/BusquedaPoliciaView.vue'),
+  },
+  {
+    path: '/notFound',
+    name: '404',
+    component: () => import('../views/404View.vue'),
+  },
+  {
+    path: '/:catchAll(.*)',
+    redirect: '/notFound',
+  },
 ];
 
 const router = createRouter({

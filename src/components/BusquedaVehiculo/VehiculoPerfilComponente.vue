@@ -69,45 +69,45 @@ function parseRouteParam(param: string | string[]): string {
 
 
 <template>
-    <div class="ciudadano_menu_derecha">
-        <div class="ciudadano_menu_derecha_titulo">
-            <h2>PERFIL DEL VEHICULO</h2>
+    <div class="vehiculo_menu_derecha">
+        <div class="vehiculo_menu_derecha_titulo">
+            <h2>DATOS DEL VEHICULO</h2>
         </div>
-        <div class="ciudadano_perfil">
+        <div class="vehiculo_perfil">
             <p v-if="!vehicleid">SELECIONA UN VEHICULO PARA CARGAR LA INFORMACIÓN</p>
             <template v-else>
-                <div class="ciudadano_perfil_usuario">
-                <div class="ciudadano_perfil_usuario_izquierda">
+                <div class="vehiculo_perfil_usuario">
+                <div class="vehiculo_perfil_usuario_izquierda">
                     <img src="https://via.placeholder.com/150" alt="">
                 </div>
-                <div class="ciudadano_perfil_usuario_derecha">
-                    <div class="ciudadano_tarjeta">
+                <div class="vehiculo_perfil_usuario_derecha">
+                    <div class="vehiculo_tarjeta">
                         <p>Matricula</p>
                         <p>{{ vehicleDetails.matricula }}</p>
                     </div>
-                    <div class="ciudadano_tarjeta">
+                    <div class="vehiculo_tarjeta">
                         <p>Modelo</p>
                         <p>{{ vehicleDetails.modelo }}</p>
                     </div>
-                    <div class="ciudadano_tarjeta">
+                    <div class="vehiculo_tarjeta">
                         <p>Marca</p>
                         <p>{{ vehicleDetails.marca }}</p>
                     </div>
-                    <div class="ciudadano_tarjeta">
+                    <div class="vehiculo_tarjeta">
                         <p>Color</p>
                         <p>{{ vehicleDetails.color }}</p>
                     </div>
-                    <div class="ciudadano_tarjeta">
+                    <div class="vehiculo_tarjeta">
                         <p>Dueño</p>
                         <p>{{ vehicleDetails.ciudadano.nombre }}</p>
                     </div>
 
                 </div>
             </div>
-            <div class="ciudadano_perfil_botones">
-                <div class="ciudadano_perfil_botones_izquierda">
+            <div class="vehiculo_perfil_botones">
+                <div class="vehiculo_perfil_botones_izquierda">
                     <h2>EN BUSQUEDA Y CAPTURA</h2>
-                    <div class="ciudadano_perfil_boton">
+                    <div class="vehiculo_perfil_boton">
                         <input type="radio" id="no_izquierda" name="response_izquierda" checked>
                         <label for="no_izquierda">No</label>
                         <input type="radio" id="yes_izquierda" name="response_izquierda">
@@ -120,6 +120,9 @@ function parseRouteParam(param: string | string[]): string {
         </div>
     </div>
 </template>
+
+
+
 
 <style scoped>
 .ciudadano_menu_derecha {
@@ -169,6 +172,7 @@ function parseRouteParam(param: string | string[]): string {
 
 .ciudadano_perfil_boton label {
   @apply inline-block w-52 text-center text-[color:var(--colorBlanco)] bg-[color:var(--colorBusquedaCiudadanoTarjeta)] cursor-pointer border border-[color:var(--colorTextoTarjeta)] text-[color:var(--colorTextoTarjeta)] p-2.5 border-solid;
+
 }
 
 #no_izquierda:checked + label,
@@ -180,6 +184,16 @@ function parseRouteParam(param: string | string[]): string {
 #yes_derecha:checked + label {
   @apply bg-[color:var(--colorBusquedaCiudadanoPerfilBoton)] text-[color:var(--colorTextoTarjeta)];
 }
+
+
+.vehiculo_perfil_botones_izquierda {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.vehiculo_perfil_botones_izquierda h2 {
 
 .ciudadano_perfil_botones_derecha {
   @apply flex flex-col items-center gap-4;

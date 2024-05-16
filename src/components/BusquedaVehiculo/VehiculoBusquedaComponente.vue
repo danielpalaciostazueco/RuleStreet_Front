@@ -1,68 +1,44 @@
 <script lang="ts">
-import { defineComponent, onMounted, ref, watch } from 'vue';
-import { useListadoVehiculos } from '@/stores/storeVehiculo';
+import { defineComponent, ref, onMounted } from 'vue';
 import VehicleList from '@/components/BusquedaVehiculo/ListaVehiculoComponente.vue';
-
-interface Vehicle {
-      idVehiculo: number;
-      matricula: string;
-      marca: string;
-      modelo: string;
-      color: string;
-      idCiudadano: number;
-      Photo: string;
-    }
+import { useListadoVehiculos } from '@/stores/storeVehiculo';
 
 export default defineComponent({
   components: {
     VehicleList
   },
   setup() {
-    const store = useListadoVehiculos();
-
-    
+    const { infoVehiculos, cargarDatosVehiculos } = useListadoVehiculos();
     const searchQuery = ref('');
-    const allVehicles = ref<Vehicle[]>([]);  
-    const filteredVehicles = ref<Vehicle[]>([]);
-    const selectedVehicle = ref<Vehicle | null>(null);  
+    const filteredVehicles = ref([]);
 
     onMounted(async () => {
-      await store.cargarDatosVehiculos();
-      allVehicles.value = store.infoVehiculos.map(vehiculo => ({
-        idVehiculo: vehiculo.idVehiculo,
-        matricula: vehiculo.matricula,
-        marca: vehiculo.marca,
-        modelo: vehiculo.modelo,
-        color: vehiculo.color,
-        idCiudadano: vehiculo.idCiudadano,
-        Photo: ''  
-      }));
-      filteredVehicles.value = [...allVehicles.value];
+      await cargarDatosVehiculos();
     });
 
-    watch(searchQuery, (newQuery) => {
-      if (newQuery.trim()) {
-        filteredVehicles.value = allVehicles.value.filter(vehiculo => vehiculo.matricula.toLowerCase().includes(newQuery.toLowerCase()));
+    function searchVehicles() {
+      if (searchQuery.value.trim()) {
+        filteredVehicles.value = infoVehiculos.filter(vehicle =>
+          vehicle.matricula.toLowerCase().includes(searchQuery.value.toLowerCase())
+        );
       } else {
-        filteredVehicles.value = [...allVehicles.value];
+        filteredVehicles.value = [];
       }
-    }, { immediate: true });
+    }
 
-    const handleVehicleSelected = (vehicle: Vehicle) => {
-      selectedVehicle.value = vehicle;
-      console.log(selectedVehicle.value);  
-    };
-
-    return {
-      searchQuery,
-      filteredVehicles,
-      handleVehicleSelected
-    };
+    return { filteredVehicles, searchVehicles, searchQuery };
   }
 });
 </script>
 
+
+
 <template>
+
+  <div class="vehiculo_menu_izquierda">
+    <div class="vehiculo_menu_izquierda_titulo">
+      <h2>LISTA DE VEHICULOS</h2>
+
     <div class="ciudadano_menu_izquierda">
         <div class="ciudadano_menu_izquierda_titulo">
             <h2>LISTA DE VEHICULOS</h2>
@@ -77,10 +53,13 @@ export default defineComponent({
             </button>
         </div>
         <VehicleList :vehicles="filteredVehicles" @vehicle-selected="handleVehicleSelected" />
+
     </div>
+</div>
 </template>
 
 <style scoped>
+
 .ciudadano_menu_izquierda {
   @apply bg-[color:var(--colorFondoCiudadano2)] w-[25%] flex flex-col gap-4 py-4 rounded-lg;
 }
@@ -215,6 +194,7 @@ export default defineComponent({
     @apply max-h-[10rem];
   }
   
+
 }
 </style>
 

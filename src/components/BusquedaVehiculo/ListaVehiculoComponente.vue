@@ -5,13 +5,13 @@ import type { Vehiculo } from '@/stores/storeVehiculo';
 
 export default defineComponent({
     components: {
-       VehicleCard
+        VehicleCard
     },
     props: {
         vehicles: Array as PropType<Vehiculo[]>
     }
-   
-    
+
+
 });
 </script>
 
@@ -19,13 +19,23 @@ export default defineComponent({
 <template>
     <div class="vehiculo_menu_izquierda_contenedor">
         <div class="vehiculo_contenedor_tarjeta" v-if="vehicles && vehicles.length > 0">
-            <VehicleCard v-for="vehicle in vehicles" :key="vehicle.idVehiculo" :vehicle="{ idVehiculo: vehicle.idVehiculo, matricula: vehicle.matricula, modelo: vehicle.modelo, color: vehicle.color,  Photo: vehicle.photo }" :vehicles="vehicles" />
+            <VehicleCard v-for="vehicle in vehicles" :key="vehicle.idVehiculo" :vehicle="{
+                idVehiculo: vehicle.idVehiculo,
+                matricula: vehicle.matricula,
+                modelo: vehicle.modelo,
+                marca: vehicle.marca,
+                color: vehicle.color,
+                Photo: vehicle.Photo,  
+                ciudadano: vehicle.ciudadano
+            }" />
+
         </div>
         <p v-else>REALIZA UNA BUSQUEDA PARA MOSTRAR RESULTADOS</p>
     </div>
 </template>
 
 <style scoped>
+
 .vehicle_menu_derecha {
   @apply bg-[color:var(--colorFondoCiudadano2)] w-9/12 flex flex-col gap-8 py-8 rounded-lg;
 }
@@ -75,6 +85,7 @@ export default defineComponent({
 }
 vehiculo_menu_izquierda_contenedor {
   @apply flex flex-col h-full overflow-y-auto items-center px-8 rounded-lg;
+
 }
 .vehiculo_menu_izquierda_contenedor p {
   @apply text-[color:var(--colorTextoTarjeta)];
