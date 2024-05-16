@@ -28,6 +28,7 @@ export default defineComponent({
 </template>
 
 <style scoped>
+
 .policia_contenedor_tarjeta {
     display: flex;
     flex-direction: column;
@@ -65,4 +66,6 @@ export default defineComponent({
 .policia_menu_izquierda_contenedor::-webkit-scrollbar-thumb:hover {
     background-color: var(--colorFondoCiudadano);
 }
+
+
 </style>

@@ -66,6 +66,7 @@ export default defineComponent({
 </template>
 
 <style scoped>
+
 .policia_menu_izquierda {
     background-color: var(--colorFondoCiudadano2);
     width: 25%;
@@ -131,5 +132,7 @@ export default defineComponent({
     height: 1rem;
     fill: var(--colorSvg);
     transition: transform 0.3s ease, width 0.3s ease, height 0.3s ease;
+
 }
+
 </style>

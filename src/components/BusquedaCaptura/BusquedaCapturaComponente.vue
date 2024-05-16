@@ -1,56 +1,53 @@
 <template>
-  <div>
-    <input v-model="searchQuery" placeholder="Buscar ciudadano..." @input="filterCiudadanos" />
-
-    <div>
-      Filtrar por:
-      <select v-model="filterField" @change="filterCiudadanos">
-        <option value="nombre">Nombre</option>
-        <option value="apellidos">Apellidos</option>
-        <option value="dni">DNI</option>
-        <option value="genero">Género</option>
-        <option value="nacionalidad">Nacionalidad</option>
-        <option value="fechaNacimiento">Fecha de Nacimiento</option>
-        <option value="isPeligroso">Es peligroso</option>
-      </select>
+  <div class="container mx-auto p-4">
+    <div class="search-section mb-4">
+      <input v-model="searchQuery" placeholder="Buscar ciudadano..." @input="filterCiudadanos" class="search-input" />
+      <div class="filter-section mt-2">
+        <label for="filterField" class="mr-2">Filtrar por:</label>
+        <select v-model="filterField" @change="filterCiudadanos" class="filter-select">
+          <option value="nombre">Nombre</option>
+          <option value="apellidos">Apellidos</option>
+          <option value="dni">DNI</option>
+          <option value="genero">Género</option>
+          <option value="nacionalidad">Nacionalidad</option>
+          <option value="isPeligroso">Es peligroso</option>
+        </select>
+      </div>
     </div>
-
-    <table>
-      <thead>
-        <tr>
-          <th>Foto</th>
-          <th v-if="filterField">{{ fieldDisplayName(filterField) }}</th>
-          <th v-if="filterField !== 'nombre'">Nombre</th>
-          <th v-if="filterField !== 'apellidos'">Apellidos</th>
-          <th v-if="filterField !== 'dni'">DNI</th>
-          <th v-if="filterField !== 'genero'">Género</th>
-          <th v-if="filterField !== 'nacionalidad'">Nacionalidad</th>
-          <th v-if="filterField !== 'fechaNacimiento'">Fecha de Nacimiento</th>
-          <th v-if="filterField !== 'isPeligroso'">Peligroso</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="ciudadano in filteredCiudadanos" :key="ciudadano.idCiudadano">
-          <td><img :src="ciudadano.fotoUrl" alt="Foto del ciudadano" /></td>
-          <td v-if="filterField">{{ ciudadano[filterField as keyof typeof ciudadano] }}</td>
-          <td v-if="filterField !== 'nombre'">{{ ciudadano.nombre }}</td>
-          <td v-if="filterField !== 'apellidos'">{{ ciudadano.apellidos }}</td>
-          <td v-if="filterField !== 'dni'">{{ ciudadano.dni }}</td>
-          <td v-if="filterField !== 'genero'">{{ ciudadano.genero }}</td>
-          <td v-if="filterField !== 'nacionalidad'">{{ ciudadano.nacionalidad }}</td>
-          <td v-if="filterField !== 'fechaNacimiento'">{{ ciudadano.fechaNacimiento }}</td>
-          <td v-if="filterField !== 'isPeligroso'">{{ ciudadano.isPeligroso ? 'Sí' : 'No' }}</td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="table-wrapper shadow-lg rounded-lg overflow-hidden">
+      <table class="table-auto w-full">
+        <thead>
+          <tr class="bg-blue-800 text-white">
+            <th class="px-4 py-2">Foto</th>
+            <th v-if="filterField" class="px-4 py-2">{{ fieldDisplayName(filterField) }}</th>
+            <th v-if="filterField !== 'nombre'" class="px-4 py-2">Nombre</th>
+            <th v-if="filterField !== 'apellidos'" class="px-4 py-2">Apellidos</th>
+            <th v-if="filterField !== 'genero'" class="px-4 py-2">Género</th>
+            <th v-if="filterField !== 'nacionalidad'" class="px-4 py-2">Nacionalidad</th>
+            <th v-if="filterField !== 'isPeligroso'" class="px-4 py-2">Peligroso</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="ciudadano in filteredCiudadanos" :key="ciudadano.idCiudadano" class="hover:bg-blue-100">
+            <td class="px-4 py-2"><img :src="ciudadano.imagenUrl" alt="Foto del ciudadano" class="rounded-full w-12 h-12 object-cover" /></td>
+            <td v-if="filterField" class="px-4 py-2">{{ ciudadano[filterField as keyof typeof ciudadano] }}</td>
+            <td v-if="filterField !== 'nombre'" class="px-4 py-2">{{ ciudadano.nombre }}</td>
+            <td v-if="filterField !== 'apellidos'" class="px-4 py-2">{{ ciudadano.apellidos }}</td>
+            <td v-if="filterField !== 'genero'" class="px-4 py-2">{{ ciudadano.genero }}</td>
+            <td v-if="filterField !== 'nacionalidad'" class="px-4 py-2">{{ ciudadano.nacionalidad }}</td>
+            <td v-if="filterField !== 'isPeligroso'" class="px-4 py-2">{{ ciudadano.isPeligroso ? 'Sí' : 'No' }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <button @click="exportToExcel" class="export-button mt-4">Exportar a Excel</button>
   </div>
-  <button @click="exportToExcel">Exportar a Excel</button>
 </template>
+
 <script setup lang="ts">
 import { computed, ref, onMounted } from 'vue';
 import { useListadoCiudadanos } from '@/stores/storeCiudadano';
 import * as XLSX from 'xlsx';
-
 
 const store = useListadoCiudadanos();
 const { infoCiudadanosBusquedaCaptura, cargarDatosCiudadanosBusquedaCaptura } = store;
@@ -75,10 +72,8 @@ function fieldDisplayName(field: any) {
   const names = {
     nombre: 'Nombre',
     apellidos: 'Apellidos',
-    dni: 'DNI',
     genero: 'Género',
     nacionalidad: 'Nacionalidad',
-    fechaNacimiento: 'Fecha de Nacimiento',
     isPeligroso: 'Peligroso'
   };
   return names[field] || field;
@@ -88,128 +83,70 @@ const exportToExcel = () => {
   const ws = XLSX.utils.json_to_sheet(filteredCiudadanos.value.map(ciudadano => ({
     Nombre: ciudadano.nombre,
     Apellidos: ciudadano.apellidos,
-    DNI: ciudadano.dni,
     Género: ciudadano.genero,
     Nacionalidad: ciudadano.nacionalidad,
-    Fecha_de_Nacimiento: ciudadano.fechaNacimiento,
     Peligroso: ciudadano.isPeligroso ? 'Sí' : 'No'
   })));
   const wb = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(wb, ws, "Ciudadanos");
   XLSX.writeFile(wb, "Listado_de_Ciudadanos.xlsx");
 };
-
 </script>
 
 <style scoped>
+.container {
+  @apply mx-auto p-4;
+}
+.search-section {
+  @apply mb-4;
+}
+.search-input {
+  @apply w-full p-2 mb-2 border rounded focus:outline-none focus:border-blue-600;
+}
+.filter-section {
+  @apply mt-2;
+}
+.filter-select {
+  @apply p-2 border rounded focus:outline-none focus:border-blue-600;
+}
+.table-wrapper {
+  @apply shadow-lg rounded-lg overflow-hidden;
+}
 table {
-  width: 100%;
-  border-collapse: collapse;
-  background-color: #f1f8ff;
-  border-radius: 8px;
-  overflow: hidden;
+  @apply table-auto w-full;
 }
-
-th,
-td {
-  border-bottom: 1px solid #ccc;
-  padding: 12px 8px;
-  text-align: left;
-  color: #333;
+th, td {
+  @apply px-4 py-2;
 }
-
 th {
-  background-color: #0056b3;
-  /* Azul oscuro */
-  color: white;
-  font-size: 16px;
+  @apply bg-blue-800 text-white;
 }
-
-td {
-  background-color: #e7f0fd;
-  /* Azul claro */
+tbody tr:hover {
+  @apply bg-blue-100;
 }
-
 img {
-  width: 60px;
-  height: auto;
-  border-radius: 50%;
+  @apply rounded-full w-12 h-12 object-cover;
 }
-
-input,
-select {
-  margin-bottom: 10px;
-  width: calc(100% - 16px);
-  padding: 8px;
-  border-radius: 4px;
-  border: 1px solid #ccc;
+.export-button {
+  @apply mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg cursor-pointer transition-all duration-300 ease-in-out;
 }
-
-input {
-  background-color: white;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+.export-button:hover {
+  @apply bg-blue-700;
 }
-
-select {
-  background-color: #e7f0fd;
-  color: #333;
-}
-
-input::placeholder {
-  color: #aaa;
-}
-
-tr:hover {
-  background-color: #ccefff;
-  /* Azul muy claro para hover */
-}
-
-/* Estilo para resaltar la importancia de la columna de "Peligroso" */
-td:nth-last-child(1) {
-  font-weight: bold;
-  color: #c10000;
-  /* Rojo para indicar peligro */
-}
-
 @media (max-width: 768px) {
-
-  table,
-  thead,
-  tbody,
-  th,
-  td,
-  tr {
-    display: block;
+  th, td {
+    @apply text-sm;
   }
-
-  thead tr {
-    position: absolute;
-    top: -9999px;
-    left: -9999px;
+  img {
+    @apply w-10 h-10;
   }
-
-  td {
-    position: relative;
-    padding-left: 50%;
-    text-align: right;
-    border: none;
+}
+@media (max-width: 480px) {
+  th, td {
+    @apply text-xs;
   }
-
-  td:before {
-    position: absolute;
-    top: 6px;
-    left: 6px;
-    width: 45%;
-    padding-right: 10px;
-    white-space: nowrap;
-    font-weight: bold;
-    text-align: left;
-    content: attr(data-label);
-  }
-
-  select,
-  input {
-    width: 100%;
+  img {
+    @apply w-8 h-8;
   }
 }
 </style>

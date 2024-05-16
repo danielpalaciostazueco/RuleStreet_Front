@@ -25,3 +25,7 @@
   --colorTarjetaBusqueda: #b0b6be;
   --colorTituloTarjetaPoliciaRango: #141a22;
 }
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

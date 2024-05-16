@@ -44,25 +44,17 @@ export default defineComponent({
 
 <style scoped>
 .tarjeta {
-    display: flex;
-    background-color: var(--colorTarjetaBusqueda);
-    width: 100%;
-    height: 5rem;
-    align-items: center;
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
-    gap: 0.5rem;
-}
 
+  @apply flex bg-[color:var(--colorBlanco)] w-full h-20 items-center gap-2 px-2;
+
+}
 .tarjeta p {
-    color: black;
+  @apply text-[black];
+}
+.tarjeta_imagen {
+  @apply w-16 h-16 rounded-lg;
 }
 
-.tarjeta_imagen {
-    width: 4rem;
-    height: 4rem;
-    border-radius: 0.5rem;
-}
 
 .rango {
     display: flex;
@@ -75,4 +67,5 @@ export default defineComponent({
     border-radius: 0.4rem;
     padding: 0.25rem 0.25rem;
 }
+
 </style>

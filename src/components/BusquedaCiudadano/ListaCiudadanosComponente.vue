@@ -25,7 +25,7 @@ export default defineComponent({
                 id: citizen.idCiudadano,
                 name: citizen.nombre,
                 dni: citizen.dni,
-                photo: citizen.foto
+                photo: citizen.imagenUrl
             }" />
         </div>
         <p v-else>No se encontraron resultados para tu búsqueda.</p>
@@ -35,44 +35,25 @@ export default defineComponent({
 <style scoped>
 
 .ciudadano_menu_izquierda_contenedor {
-    display: flex;
-    flex-direction: column;
-    border-radius: 0.5rem;
-    padding-left: 2rem;
-    padding-right: 2rem;
-    height: 100%;
-    overflow-y: auto;
+  @apply flex flex-col h-full overflow-y-auto px-8 rounded-lg;
 }
-
 .ciudadano_menu_izquierda_contenedor p {
-    color: var(--colorTextoTarjeta);
+  @apply text-[color:var(--colorTextoTarjeta)];
 }
-
 .ciudadano_menu_izquierda_contenedor::-webkit-scrollbar {
-    width: 8px;
+  @apply w-2;
 }
-
 .ciudadano_menu_izquierda_contenedor::-webkit-scrollbar-track {
-    background-color: var(--colorFondoCiudadano2);
+  @apply bg-[color:var(--colorFondoCiudadano2)];
 }
-
 .ciudadano_menu_izquierda_contenedor::-webkit-scrollbar-thumb {
-    background-color: var(--colorBlanco);
-    border-radius: 4px;
+  @apply bg-[color:var(--colorBlanco)] rounded hover:bg-[color:var(--colorFondoCiudadano)];
 }
-
-.ciudadano_menu_izquierda_contenedor::-webkit-scrollbar-thumb:hover {
-    background-color: var(--colorFondoCiudadano);
-}
-
 .ciudadano_boton_contenedor {
-    display: flex;
-    justify-content: center;
+  @apply flex justify-center;
+}
+.ciudadano_contenedor_tarjetas {
+  @apply flex flex-col gap-8;
 }
 
-.ciudadano_contenedor_tarjetas {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-}
 </style>

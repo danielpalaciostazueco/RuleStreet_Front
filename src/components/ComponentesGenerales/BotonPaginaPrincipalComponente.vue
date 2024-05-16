@@ -10,18 +10,7 @@ export default defineComponent({});
 
 <style scoped>
 .ciudadano_boton {
-    background-color: var(--colorBotonBusquedaCiudadano);
-    width: 5rem;
-    height: 2rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: var(--colorTextoTarjeta);
-    text-decoration: none;
+  @apply bg-[color:var(--colorBotonBusquedaCiudadano)] w-20 h-8 flex justify-center items-center text-[color:var(--colorTextoTarjeta)] no-underline hover:bg-[color:var(--colorBotonBusquedaCiudadanoActivo)] hover:text-[color:var(--colorBlanco)];
 }
 
-.ciudadano_boton:hover {
-    background-color: var(--colorBotonBusquedaCiudadanoActivo);
-    color: var(--colorBlanco);
-}
 </style>

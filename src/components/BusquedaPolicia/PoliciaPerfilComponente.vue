@@ -213,6 +213,8 @@ export default defineComponent({
 </template>
 
 <style>
+
+
 .policia_menu_derecha {
     background-color: var(--colorFondoCiudadano2);
     width: 70%;
@@ -502,4 +504,5 @@ export default defineComponent({
     display: flex;
     align-items: center;
 }
+
 </style>
