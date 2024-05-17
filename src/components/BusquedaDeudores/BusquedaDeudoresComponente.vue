@@ -10,7 +10,7 @@
           <option value="dni">DNI</option>
           <option value="genero">Género</option>
           <option value="nacionalidad">Nacionalidad</option>
-          <option value="pagada">Cantidad/option>
+            <option value="cantidad">Cantidad</option>
         </select>
       </div>
     </div>
