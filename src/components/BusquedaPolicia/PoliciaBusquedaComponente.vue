@@ -64,75 +64,105 @@ export default defineComponent({
         <PoliciaList :policias="Policia" />
     </div>
 </template>
-
 <style scoped>
-
 .policia_menu_izquierda {
-    background-color: var(--colorFondoCiudadano2);
-    width: 25%;
-    display: flex;
-    flex-direction: column;
-    border-radius: 0.5rem;
-    padding-top: 2rem;
-    padding-bottom: 2rem;
-    gap: 2rem;
+  @apply bg-[color:var(--colorFondoCiudadano2)] w-[25%] flex flex-col gap-4 py-4 rounded-lg;
 }
-
 .policia_menu_izquierda_titulo {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  @apply flex justify-center items-center;
 }
-
 .policia_menu_izquierda_titulo h2 {
-    background-color: var(--colorFondoCiudadano);
-    border-radius: 0.7rem;
-    height: 2.5rem;
-    color: var(--colorTextoTarjeta);
-    display: flex;
-    align-items: center;
-    width: 90%;
-    display: flex;
-    justify-content: center;
+  @apply bg-[color:var(--colorFondoCiudadano)] h-8 text-[color:var(--colorTextoTarjeta)] flex items-center w-3/4 flex justify-center text-base rounded-[0.5rem];
 }
-
 .policia_busqueda {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  @apply flex items-center justify-center;
 }
-
 .policia_busqueda input {
-    height: 2rem;
-    outline: none;
-    background-color: var(--colorBusquedaCiudadanoBusqueda);
-    border: 1px solid var(--colorBusquedaCiudadanoBusqueda);
-    color: var(--colorBlanco);
-    padding-left: 1rem;
+  @apply h-6 bg-[color:var(--colorBusquedaCiudadanoBusqueda)] border border-[color:var(--colorBusquedaCiudadanoBusqueda)] text-[color:var(--colorBlanco)] pl-2 border-solid;
+  outline: none;
 }
-
 .policia_busqueda input::placeholder {
-    color: var(--colorBlanco);
+  @apply text-[color:var(--colorBlanco)];
 }
-
-.policia_busqueda button {
-    width: 5rem;
-    height: 2rem;
-    background-color: var(--colorBotonBusquedaCiudadano);
-    border: none;
+.policia_busqueda button[data-v-bfd5f251][data-v-bfd5f251] {
+  @apply h-6 w-[15%] bg-[color:var(--colorBusquedaCiudadanoPerfilBoton)];
 }
-
-.policia_busqueda button:hover {
-    background-color: var(--colorBotonBusquedaCiudadanoActivo);
-    cursor: pointer;
-}
-
 .policia_icono {
-    width: 1rem;
-    height: 1rem;
-    fill: var(--colorSvg);
+  @apply h-3 w-3 fill-[var(--colorSvg)] ml-6;
+  transition: transform 0.3s ease, width 0.3s ease, height 0.3s ease;
+}
+.policia_lista {
+  @apply overflow-y-auto max-h-[30rem];
+}
+@media (max-width: 1024px) {
+  .policia_menu_izquierda {
+    @apply w-[100%];
+  }
+  .policia_menu_izquierda_titulo h2 {
+    @apply text-sm;
+  }
+  .policia_busqueda input {
+    @apply text-xs;
+  }
+  .policia_busqueda button {
+    @apply h-6 w-[5%] bg-[color:var(--colorBusquedaCiudadanoPerfilBoton)];
+  }
+  .policia_icono {
+    @apply ml-2.5;
+    @apply w-3 h-3 fill-[var(--colorSvg)];
     transition: transform 0.3s ease, width 0.3s ease, height 0.3s ease;
-
+  }
+  .policia_lista {
+    @apply max-h-[20rem];
+  }
+}
+@media (max-width: 768px) {
+  .policia_menu_izquierda {
+    @apply p-0.5;
+    @apply w-full;
+  }
+  .policia_menu_izquierda_titulo h2 {
+    @apply w-4/5;
+    @apply text-xs;
+  }
+  .policia_busqueda {
+    @apply gap-1;
+  }
+  .policia_busqueda input {
+    @apply w-full text-xs;
+  }
+  .policia_busqueda button {
+    @apply h-6 w-[5%] bg-[color:var(--colorBusquedaCiudadanoPerfilBoton)];
+  }
+  .policia_icono {
+    @apply w-2.5 h-2.5;
+  }
+  .policia_lista {
+    @apply max-h-[15rem];
+  }
+}
+@media (max-width: 480px) {
+  .policia_menu_izquierda {
+    @apply w-full py-2;
+  }
+  .policia_menu_izquierda_titulo h2 {
+    @apply text-xs;
+  }
+  .policia_menu_izquierda_contenedor {
+    @apply max-h-[200px] overflow-y-auto;
+  }
+  .policia_busqueda input {
+    @apply w-full text-xs;
+  }
+  .policia_busqueda button[data-v-845bb2b1] {
+    @apply h-6 w-[10%] bg-[color:var(--colorBusquedaCiudadanoPerfilBoton)];
+  }
+  .policia_icono[data-v-845bb2b1] {
+    @apply h-2 w-2 ml-2.5;
+  }
+  .policia_lista {
+    @apply max-h-[10rem];
+  }
 }
 
 </style>

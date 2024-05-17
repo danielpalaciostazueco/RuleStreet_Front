@@ -30,42 +30,25 @@ export default defineComponent({
 <style scoped>
 
 .policia_contenedor_tarjeta {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
+  @apply flex flex-col gap-8;
 }
-
-
 .policia_menu_izquierda_contenedor {
-    display: flex;
-    flex-direction: column;
-    border-radius: 0.5rem;
-    padding-left: 2rem;
-    padding-right: 2rem;
-    height: 100%;
-    overflow-y: auto;
+  @apply flex flex-col h-full overflow-y-auto px-8 rounded-lg;
 }
-
 .policia_menu_izquierda_contenedor p {
-    color: var(--colorTextoTarjeta);
+  @apply text-[color:var(--colorTextoTarjeta)];
 }
-
 .policia_menu_izquierda_contenedor::-webkit-scrollbar {
-    width: 8px;
+  @apply w-2;
 }
-
 .policia_menu_izquierda_contenedor::-webkit-scrollbar-track {
-    background-color: var(--colorFondoCiudadano2);
+  @apply bg-[color:var(--colorFondoCiudadano2)];
 }
-
 .vpolicia_menu_izquierda_contenedor::-webkit-scrollbar-thumb {
-    background-color: var(--colorBlanco);
-    border-radius: 4px;
+  @apply bg-[color:var(--colorBlanco)] rounded;
 }
-
 .policia_menu_izquierda_contenedor::-webkit-scrollbar-thumb:hover {
-    background-color: var(--colorFondoCiudadano);
+  @apply bg-[color:var(--colorFondoCiudadano)];
 }
-
 
 </style>
