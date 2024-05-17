@@ -10,7 +10,7 @@
           <option value="dni">DNI</option>
           <option value="genero">Género</option>
           <option value="nacionalidad">Nacionalidad</option>
-          <option value="pagada">Deuda Pagada</option>
+          <option value="pagada">Cantidad/option>
         </select>
       </div>
     </div>
@@ -24,7 +24,7 @@
             <th v-if="filterField !== 'apellidos'" class="px-4 py-2">Apellidos</th>
             <th v-if="filterField !== 'genero'" class="px-4 py-2">Género</th>
             <th v-if="filterField !== 'nacionalidad'" class="px-4 py-2">Nacionalidad</th>
-            <th v-if="filterField !== 'pagada'" class="px-4 py-2">Deuda Pagada</th>
+            <th v-if="filterField !== 'cantidad'" class="px-4 py-2">Cantidad</th>
           </tr>
         </thead>
         <tbody>
@@ -35,7 +35,7 @@
             <td v-if="filterField !== 'apellidos'" class="px-4 py-2">{{ deudor.apellidos }}</td>
             <td v-if="filterField !== 'genero'" class="px-4 py-2">{{ deudor.genero }}</td>
             <td v-if="filterField !== 'nacionalidad'" class="px-4 py-2">{{ deudor.nacionalidad }}</td>
-            <td v-if="filterField !== 'pagada'" class="px-4 py-2">{{ deudor.pagada ? 'Sí' : 'No' }}</td>
+            <td v-if="filterField !== 'cantidad'" class="px-4 py-2">{{ deudor.cantidad}}</td>
           </tr>
         </tbody>
       </table>
@@ -70,7 +70,7 @@ function fieldDisplayName(field: any) {
     apellidos: 'Apellidos',
     genero: 'Género',
     nacionalidad: 'Nacionalidad',
-    pagada: 'Deuda Pagada'
+    cantidad: 'Cantidad',
   };
   return names[field] || field;
 }
@@ -81,7 +81,7 @@ const exportToExcel = () => {
     Apellidos: deudor.apellidos,
     Género: deudor.genero,
     Nacionalidad: deudor.nacionalidad,
-    Deuda_Pagada: deudor.pagada ? 'Sí' : 'No'
+    Cantidad: deudor.cantidad,
   }));
   const ws = XLSX.utils.json_to_sheet(dataToExport);
   const wb = XLSX.utils.book_new();

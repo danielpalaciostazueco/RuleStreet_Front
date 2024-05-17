@@ -53,7 +53,7 @@ interface Deudores{
   genero: string;
   nacionalidad: string;
   fechaNacimiento: Date;
-  pagada: boolean;
+  cantidad: number;
   imagenUrl : string;
 }
 
