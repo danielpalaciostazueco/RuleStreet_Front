@@ -43,102 +43,44 @@ export default defineComponent({
 
 <style scoped>
 .vehiculo_container {
-  background-color: var(--colorFondo);
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 3rem;
+  @apply bg-[color:var(--colorFondo)] min-h-screen flex flex-col items-center justify-center gap-12;
 }
 
-
 .vehiculo_menu {
-  display: flex;
-  flex-direction: row;
-  width: 80%;
-  gap: 2rem;
-  height: 50rem;
+  @apply flex flex-row w-4/5 gap-8 h-[50rem];
 }
 
 @media (max-width: 1497px) {
   .vehiculo_perfil_usuario {
-    display: flex;
-    width: 100%;
-    gap: 3rem;
-    flex-direction: column;
+    @apply flex w-full gap-12 flex-col;
   }
 
   .vehiculo_perfil_botones {
-    display: flex;
-    gap: 2rem;
-    background-color: var(--colorBusquedaCiudadanoTarjeta);
-    width: 100%;
-    height: 8rem;
-    border-radius: 0.7rem;
-    justify-content: center;
-    align-items: center;
-    margin-top: 25px;
+    @apply flex gap-8 bg-[color:var(--colorBusquedaCiudadanoTarjeta)] w-full h-32 justify-center items-center mt-[25px] rounded-[0.7rem];
   }
 
   .ciudadano_boton {
-    display: flex;
-    height: 2rem;
-    width: 5rem;
-    align-items: center;
-    justify-content: center;
-    background-color: var(--colorBotonBusquedaCiudadano);
-    color: var(--colorTextoTarjeta);
-    text-decoration-line: none;
-    margin-top: 5px;
+    @apply flex h-8 w-20 items-center justify-center bg-[color:var(--colorBotonBusquedaCiudadano)] text-[color:var(--colorTextoTarjeta)] no-underline mt-[5px];
   }
-
 }
 
 @media (max-width: 1120px) {
-
   .vehiculo_menu {
-    display: flex;
-    flex-direction: column;
-    width: 80%;
-    gap: 2rem;
-    height: 50rem;
+    @apply flex flex-col w-4/5 gap-8 h-[50rem];
   }
 
   .vehiculo_menu_izquierda {
-    background-color: var(--colorFondoCiudadano2);
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    border-radius: 0.5rem;
-    padding-top: 2rem;
-    padding-bottom: 2rem;
-    gap: 2rem;
+    @apply bg-[color:var(--colorFondoCiudadano2)] w-full flex flex-col gap-8 py-8 rounded-lg;
   }
 
   .vehiculo_menu_derecha {
-    background-color: var(--colorFondoCiudadano2);
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    border-radius: 0.5rem;
-    padding-top: 2rem;
-    padding-bottom: 2rem;
-    gap: 2rem;
+    @apply bg-[color:var(--colorFondoCiudadano2)] w-full flex flex-col gap-8 py-8 rounded-lg;
   }
 }
 
-
 @media (max-width: 787px) {
-
   .vehiculo_perfil_usuario_derecha {
-    display: flex;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1rem;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    flex-direction: column;
+    @apply flex grid-cols-[repeat(3, 1fr)] gap-4 justify-center items-center w-full flex-col;
   }
 }
 </style>s

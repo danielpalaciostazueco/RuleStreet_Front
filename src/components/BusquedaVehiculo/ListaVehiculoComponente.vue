@@ -35,60 +35,42 @@ export default defineComponent({
 </template>
 <style scoped>
 .vehiculo_contenedor_tarjeta {
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
+  @apply flex flex-col gap-8;
 }
 
 .vehiculo_menu_izquierda_contenedor {
-  display: flex;
-  flex-direction: column;
-  border-radius: 0.5rem;
-  padding-left: 2rem;
-  padding-right: 2rem;
-  height: 100%;
-  overflow-y: auto;
+  @apply flex flex-col h-full overflow-y-auto px-8 rounded-lg;
 }
 
 .vehiculo_menu_izquierda_contenedor p {
-  color: var(--colorTextoTarjeta);
+  @apply text-[color:var(--colorTextoTarjeta)];
 }
 
 .vehiculo_menu_izquierda_contenedor::-webkit-scrollbar {
-  width: 8px;
+  @apply w-2;
 }
 
 .vehiculo_menu_izquierda_contenedor::-webkit-scrollbar-track {
-  background-color: var(--colorFondoCiudadano2);
+  @apply bg-[color:var(--colorFondoCiudadano2)];
 }
 
 .vehiculo_menu_izquierda_contenedor::-webkit-scrollbar-thumb {
-  background-color: var(--colorBlanco);
-  border-radius: 4px;
+  @apply bg-[color:var(--colorBlanco)] rounded hover:bg-[color:var(--colorFondoCiudadano)];
 }
-
-.vehiculo_menu_izquierda_contenedor::-webkit-scrollbar-thumb:hover {
-  background-color: var(--colorFondoCiudadano);
-}
-
 
 @media (max-width: 768px) {
   .vehiculo_menu_izquierda_contenedor {
-    padding-left: 1rem;
-    padding-right: 1rem;
+    @apply px-4;
   }
 }
 
 @media (max-width: 480px) {
   .vehiculo_menu_izquierda_contenedor {
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
+    @apply px-2;
   }
 
   .vehiculo_contenedor_tarjeta {
-    max-height: 10rem;
-
-    overflow-y: auto;
+    @apply max-h-40 overflow-y-auto;
   }
 }
 </style>
