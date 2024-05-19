@@ -6,75 +6,81 @@ import ProfileSection from '@/components/BusquedaVehiculo/VehiculoPerfilComponen
 import { useRoute } from 'vue-router';
 
 export default defineComponent({
-    
-    components: {
-        TitleBar,
-        SearchPanel,
-        ProfileSection
-    },
-    setup() {
-        const selectedVehicleId = ref<number>(0);
-        const route = useRoute();
 
-        const handleSelectVehicle = (id: number) => {
-            selectedVehicleId.value = id;
-        };
+  components: {
+    TitleBar,
+    SearchPanel,
+    ProfileSection
+  },
+  setup() {
+    const selectedVehicleId = ref<number>(0);
+    const route = useRoute();
 
-        const containerHeight = computed(() => {
-            return route.path.includes('/busquedaVehiculo/');
-        });
+    const handleSelectVehicle = (id: number) => {
+      selectedVehicleId.value = id;
+    };
 
-        return { selectedVehicleId, handleSelectVehicle, containerHeight };
-    }
+    const containerHeight = computed(() => {
+      return route.path.includes('/busquedaVehiculo/');
+    });
+
+    return { selectedVehicleId, handleSelectVehicle, containerHeight };
+  }
 });
 
 
 </script>
 
 <template>
-    <div class="ciudadano_container">
-        <title-bar title="BUSCAR VEHICULO" />
-        <div class="ciudadano_menu">
-            <search-panel />
-            <profile-section />
-        </div>
+  <div class="vehiculo_container">
+    <title-bar title="BUSCAR VEHICULO" />
+    <div class="vehiculo_menu">
+      <search-panel />
+      <profile-section />
     </div>
+  </div>
 </template>
 
-
 <style scoped>
-body {
-  @apply bg-[color:var(--colorFondo)];
+.vehiculo_container {
+  @apply bg-[color:var(--colorFondo)] min-h-screen flex flex-col items-center justify-center gap-12;
 }
 
-.ciudadano_container {
-  @apply bg-[color:var(--colorFondo)] min-h-screen flex flex-col items-center justify-center gap-12 p-8;
+.vehiculo_menu {
+  @apply flex flex-row w-4/5 gap-8 h-[50rem];
 }
 
-.ciudadano_menu {
-  @apply flex flex-row w-full gap-8;
+@media (max-width: 1497px) {
+  .vehiculo_perfil_usuario {
+    @apply flex w-full gap-12 flex-col;
+  }
 
-}
+  .vehiculo_perfil_botones {
+    @apply flex gap-8 bg-[color:var(--colorBusquedaCiudadanoTarjeta)] w-full h-32 justify-center items-center mt-[25px] rounded-[0.7rem];
+  }
 
-@media screen and (max-width: 1024px) {
-  .ciudadano_menu {
-    @apply flex-col;
-    min-height: auto;
+  .ciudadano_boton {
+    @apply flex h-8 w-20 items-center justify-center bg-[color:var(--colorBotonBusquedaCiudadano)] text-[color:var(--colorTextoTarjeta)] no-underline mt-[5px];
   }
 }
 
-@media screen and (max-width: 768px) {
-  .ciudadano_menu {
-    @apply flex-col w-full;
-    min-height: auto;
+@media (max-width: 1120px) {
+  .vehiculo_menu {
+    @apply flex flex-col w-4/5 gap-8 h-[50rem];
+  }
+
+  .vehiculo_menu_izquierda {
+    @apply bg-[color:var(--colorFondoCiudadano2)] w-full flex flex-col gap-8 py-8 rounded-lg;
+  }
+
+  .vehiculo_menu_derecha {
+    @apply bg-[color:var(--colorFondoCiudadano2)] w-full flex flex-col gap-8 py-8 rounded-lg;
   }
 }
 
-@media screen and (max-width: 480px) {
-  .ciudadano_menu {
-    @apply flex-col w-full;
-    min-height: auto;
-    gap: 4; /* Reduce gap between elements for small screens */
+@media (max-width: 787px) {
+  .vehiculo_perfil_usuario_derecha {
+    @apply flex grid-cols-[repeat(3, 1fr)] gap-4 justify-center items-center w-full flex-col;
   }
 }
-</style>
+</style>s

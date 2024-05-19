@@ -44,9 +44,7 @@ export default defineComponent({
 
 <style scoped>
 .tarjeta {
-
   @apply flex bg-[color:var(--colorBlanco)] w-full h-20 items-center gap-2 px-2;
-
 }
 .tarjeta p {
   @apply text-[black];
@@ -54,18 +52,12 @@ export default defineComponent({
 .tarjeta_imagen {
   @apply w-16 h-16 rounded-lg;
 }
-
-
 .rango {
-    display: flex;
-    align-items: center;
+  @apply flex items-center;
+}
+.rango p {
+  @apply text-[color:var(--colorBlanco)] bg-[color:var(--colorTarjetaPoliciaRango)] p-1 rounded-[0.4rem];
 }
 
-.rango p{
-    color: var(--colorBlanco);
-    background-color: var(--colorTarjetaPoliciaRango);
-    border-radius: 0.4rem;
-    padding: 0.25rem 0.25rem;
-}
 
 </style>

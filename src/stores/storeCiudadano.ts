@@ -53,7 +53,7 @@ interface Deudores{
   genero: string;
   nacionalidad: string;
   fechaNacimiento: Date;
-  pagada: boolean;
+  cantidad: number;
   imagenUrl : string;
 }
 
@@ -93,7 +93,7 @@ export const useListadoCiudadanos = defineStore('listadoCiduadanos', () => {
       } else {
         token = localStorage.getItem('tokenPolicia') ?? '';
       }
-      const response = await fetch(apiUrl + '/Ciudadano/Deudores', {
+      const response = await fetch(apiUrl + '/Deudores', {
         headers: { 'Authorization': `Bearer ${token}` }
 
       });
@@ -111,7 +111,7 @@ export const useListadoCiudadanos = defineStore('listadoCiduadanos', () => {
   async function cargarDatosCiudadanosBusquedaCaptura() {
     try {
       
-      const response = await fetch(apiUrl + '/Ciudadano/BusquedaCaptura', {
+      const response = await fetch(apiUrl + 'BusquedaCaptura', {
         headers: {  }
 
       });

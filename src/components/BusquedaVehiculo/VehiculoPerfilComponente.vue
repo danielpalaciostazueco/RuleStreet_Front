@@ -122,138 +122,120 @@ function parseRouteParam(param: string | string[]): string {
 </template>
 <style scoped>
 .vehiculo_menu_derecha {
-  background-color: var(--colorFondoCiudadano2);
-  width: 75%;
-  display: flex;
-  flex-direction: column;
-  border-radius: 0.5rem;
-  padding-top: 2rem;
-  padding-bottom: 2rem;
-  gap: 2rem;
+  @apply bg-[color:var(--colorFondoCiudadano2)] w-9/12 flex flex-col gap-8 py-8 rounded-lg;
 }
 
 .vehiculo_menu_derecha_titulo {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  @apply flex justify-center items-center;
 }
 
 .vehiculo_menu_derecha_titulo h2 {
-  background-color: var(--colorFondoCiudadano);
-  border-radius: 0.7rem;
-  height: 2.5rem;
-  color: var(--colorTextoTarjeta);
-  display: flex;
-  align-items: center;
-  width: 80%;
-  display: flex;
-  justify-content: center;
+  @apply bg-[color:var(--colorFondoCiudadano)] h-10 text-[color:var(--colorTextoTarjeta)] flex items-center w-4/5 flex justify-center rounded-[0.7rem];
 }
 
 .vehiculo_perfil {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 2rem;
-  flex-direction: column;
-  justify-content: space-between;
-  height: 100%;
+  @apply flex items-center justify-center flex-col justify-between h-full p-8;
 }
 
 .vehiculo_perfil p {
-  color: var(--colorTextoTarjeta);
+  @apply text-[color:var(--colorTextoTarjeta)];
 }
 
 .vehiculo_perfil_usuario {
-  display: flex;
-  width: 100%;
-  gap: 3rem;
+  @apply flex w-full gap-12;
 }
 
 .vehiculo_perfil_usuario_izquierda {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  @apply flex justify-center items-center;
 }
 
 .vehiculo_perfil_usuario_izquierda img {
-  width: 15rem;
-  height: 15rem;
+  @apply w-60 h-60;
 }
 
-
 .vehiculo_perfil_usuario_derecha {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1rem;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
+  @apply grid grid-cols-[repeat(3, 1fr)] gap-4 justify-center items-center w-full;
 }
 
 .vehiculo_tarjeta {
-  background-color: var(--colorBusquedaCiudadanoTarjeta);
-  border-radius: 0.7rem;
-  width: 12rem;
-  height: 4rem;
-  display: flex;
-  flex-direction: column;
-  padding-left: 2rem;
-  justify-content: center;
-  gap: 0.5rem;
+  @apply bg-[color:var(--colorBusquedaCiudadanoTarjeta)] w-48 h-16 flex flex-col justify-center gap-2 pl-8 rounded-[0.7rem];
 }
 
 .vehiculo_tarjeta p {
-  font-size: 16px;
+  @apply text-base;
 }
 
 .vehiculo_perfil_botones {
-  display: flex;
-  gap: 2rem;
-  background-color: var(--colorBusquedaCiudadanoTarjeta);
-  width: 100%;
-  height: 8rem;
-  border-radius: 0.7rem;
-  justify-content: center;
-  align-items: center;
+  @apply flex gap-8 bg-[color:var(--colorBusquedaCiudadanoTarjeta)] w-full h-32 justify-center items-center rounded-[0.7rem];
 }
 
 .vehiculo_perfil_boton input[type="radio"] {
-  display: none;
+  @apply hidden;
 }
 
 .vehiculo_perfil_boton label {
-  display: inline-block;
-  width: 13rem;
-  padding: 10px;
-  text-align: center;
-  color: var(--colorBlanco);
-  background-color: var(--colorBusquedaCiudadanoTarjeta);
-  cursor: pointer;
-  border: 1px solid var(--colorTextoTarjeta);
-  color: var(--colorTextoTarjeta)
+  @apply inline-block w-52 text-center text-[color:var(--colorBlanco)] bg-[color:var(--colorBusquedaCiudadanoTarjeta)] cursor-pointer border border-[color:var(--colorTextoTarjeta)] text-[color:var(--colorTextoTarjeta)] p-2.5 border-solid;
 }
 
 #no_izquierda:checked+label,
 #no_derecha:checked+label {
-  background-color: var(--colorBusquedaCiudadanoPerfilBoton);
-  color: var(--colorTextoTarjeta)
+  @apply bg-[color:var(--colorBusquedaCiudadanoPerfilBoton)] text-[color:var(--colorTextoTarjeta)];
 }
 
 #yes_izquierda:checked+label,
 #yes_derecha:checked+label {
-  background-color: var(--colorBusquedaCiudadanoPerfilBoton);
-  color: var(--colorTextoTarjeta)
+  @apply bg-[color:var(--colorBusquedaCiudadanoPerfilBoton)] text-[color:var(--colorTextoTarjeta)];
 }
 
 .vehiculo_perfil_botones_izquierda {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1rem;
+  @apply flex flex-col items-center gap-4;
 }
 
 .vehiculo_perfil_botones_izquierda h2 {
-  color: var(--colorTextoTarjeta);
+  @apply text-[color:var(--colorTextoTarjeta)];
+}
+
+@media (max-width: 1497px) {
+  .vehiculo_perfil_usuario {
+    @apply flex w-full gap-12 flex-col;
+  }
+
+  .vehiculo_perfil_botones {
+    @apply flex gap-8 bg-[color:var(--colorBusquedaCiudadanoTarjeta)] w-full h-32 justify-center items-center mt-[25px] rounded-[0.7rem];
+  }
+
+  .ciudadano_boton {
+    @apply flex h-8 w-20 items-center justify-center bg-[color:var(--colorBotonBusquedaCiudadano)] text-[color:var(--colorTextoTarjeta)] no-underline mt-[5px];
+  }
+}
+
+@media (max-width: 1120px) {
+  .vehiculo_menu {
+    @apply flex flex-col w-4/5 gap-8 h-[50rem];
+  }
+
+  .vehiculo_menu_izquierda {
+    @apply bg-[color:var(--colorFondoCiudadano2)] w-full flex flex-col gap-8 py-8 rounded-lg;
+  }
+
+  .vehiculo_menu_derecha {
+    @apply bg-[color:var(--colorFondoCiudadano2)] w-full flex flex-col gap-8 py-8 rounded-lg;
+  }
+}
+
+@media (max-width: 787px) {
+  .vehiculo_perfil_usuario_derecha {
+    @apply flex grid-cols-[repeat(3, 1fr)] gap-4 justify-center items-center w-full flex-col;
+  }
+}
+
+@media (max-width: 620px) {
+  .vehiculo_perfil_boton {
+    @apply flex flex-col mb-1.5;
+  }
+
+  .vehiculo_perfil_botones {
+    @apply flex gap-8 bg-[color:var(--colorBusquedaCiudadanoTarjeta)] w-full h-36 justify-center items-center mt-[25px] rounded-[0.7rem];
+  }
 }
 </style>

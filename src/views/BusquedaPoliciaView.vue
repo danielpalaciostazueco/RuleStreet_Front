@@ -23,32 +23,77 @@ export default defineComponent({
 </script>
 
 <template>
-  <div class="policia_container">
+  <body>
+    <div class="policia_container">
     <title-bar title="BUSCAR POLICIA" />
     <div class="policia_menu" :style="{ height: containerHeight }">
       <search-panel />
       <profile-section />
     </div>
   </div>
+  </body>
 </template>
-
 <style scoped>
+template,
+html,
+body {
+  @apply bg-[color:var(--colorFondo)];
+  height: 120%;
+  
+}
+
 .policia_container {
-  padding: 2rem;
-  background-color: var(--colorFondo);
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 3rem;
+  @apply bg-[color:var(--colorFondo)] min-h-screen flex flex-col items-center justify-center gap-12 p-8;
 }
 
 .policia_menu {
-  display: flex;
-  flex-direction: row;
-  width: 80%;
-  gap: 2rem;
+  @apply flex flex-row w-full gap-8;
+ 
+}
+.policia_icono[data-v-bfd5f251] {
+    /* margin-left: 1.5rem; */
+    height: 0.75rem;
+    width: 0.75rem;
+    fill: var(--colorSvg);
+    transition: transform 0.3s ease, width 0.3s ease, height 0.3s ease;
+}
+
+
+@media screen and (max-width: 1329px) {
+  .policia_menu {
+  @apply min-h-[auto];
+  @apply flex-col;
+}
+.policia_menu_izquierda[data-v-bfd5f251] {
+  @apply flex w-full flex-col gap-4 bg-[color:var(--colorFondoCiudadano2)] py-4 rounded-lg;
+}
+.policia_busqueda button[data-v-bfd5f251][data-v-bfd5f251][data-v-bfd5f251] {
+  @apply h-6 w-[5%] bg-[color:var(--colorBusquedaCiudadanoPerfilBoton)];
+}
+
+}
+
+@media screen and (max-width: 768px) {
+  .policia_menu {
+    @apply flex-col w-full;
+    min-height: auto;
+  }
+  
+}
+
+@media screen and (max-width: 480px) {
+html,
+body {
+  @apply bg-[color:var(--colorFondo)];
+  height: 465vh;
+}
+  .policia_menu {
+    @apply flex-col w-full;
+    min-height: auto;
+    gap: 4; 
+    
+  }
 }
 </style>
+
 

@@ -87,72 +87,130 @@ export default defineComponent({
   </div>
 </template>
 
-<style>
+
+<style scoped>
 .ciudadano_menu_izquierda {
-  background-color: var(--colorFondoCiudadano2);
-  width: 30%;
-  display: flex;
-  flex-direction: column;
-  border-radius: 0.5rem;
-  padding-top: 2rem;
-  padding-bottom: 2rem;
-  gap: 2rem;
+  @apply bg-[color:var(--colorFondoCiudadano2)] w-[25%] flex flex-col gap-4 py-4 rounded-lg;
 }
 
 .ciudadano_menu_izquierda_titulo {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  @apply flex justify-center items-center;
 }
 
 .ciudadano_menu_izquierda_titulo h2 {
-  background-color: var(--colorFondoCiudadano);
-  border-radius: 0.7rem;
-  height: 2.5rem;
-  color: var(--colorTextoTarjeta);
-  display: flex;
-  align-items: center;
-  width: 80%;
-  display: flex;
-  justify-content: center;
-  font-size: 18px;
+  @apply bg-[color:var(--colorFondoCiudadano)] h-8 text-[color:var(--colorTextoTarjeta)] flex items-center w-3/4 flex justify-center text-base rounded-[0.5rem];
 }
 
 .ciudadano_busqueda {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  @apply flex items-center justify-center;
 }
 
 .ciudadano_busqueda input {
-  height: 2rem;
+  @apply h-6 bg-[color:var(--colorBusquedaCiudadanoBusqueda)] border border-[color:var(--colorBusquedaCiudadanoBusqueda)] text-[color:var(--colorBlanco)] pl-2 border-solid;
   outline: none;
-  background-color: var(--colorBusquedaCiudadanoBusqueda);
-  border: 1px solid var(--colorBusquedaCiudadanoBusqueda);
-  color: var(--colorBlanco);
-  padding-left: 1rem;
 }
 
 .ciudadano_busqueda input::placeholder {
-  color: var(--colorBlanco);
+  @apply text-[color:var(--colorBlanco)];
 }
 
-.ciudadano_busqueda button {
-  width: 5rem;
-  height: 2rem;
-  background-color: var(--colorBotonBusquedaCiudadano);
-  border: none;
-}
-
-.ciudadano_busqueda button:hover {
-  background-color: var(--colorBotonBusquedaCiudadanoActivo);
-  cursor: pointer;
+.ciudadano_busqueda button[data-v-845bb2b1] {
+  @apply h-6 w-8 bg-[color:var(--colorBotonBusquedaCiudadano)] border-[none];
 }
 
 .ciudadano_icono {
-  width: 1rem;
-  height: 1rem;
-  fill: var(--colorSvg);
+  @apply ml-2.5;
+  @apply w-3 h-3 fill-[var(--colorSvg)];
   transition: transform 0.3s ease, width 0.3s ease, height 0.3s ease;
+}
+
+.ciudadano_lista {
+  @apply overflow-y-auto max-h-[30rem];
+}
+
+@media (max-width: 1024px) {
+  .ciudadano_menu_izquierda {
+    @apply w-[100%];
+  }
+
+  .ciudadano_menu_izquierda_titulo h2 {
+    @apply text-sm;
+  }
+
+  .ciudadano_busqueda input {
+    @apply text-xs;
+  }
+
+  .ciudadano_busqueda button[data-v-845bb2b1] {
+    @apply h-6 w-8;
+  }
+
+  .ciudadano_icono {
+    @apply ml-2.5;
+    @apply w-3 h-3 fill-[var(--colorSvg)];
+    transition: transform 0.3s ease, width 0.3s ease, height 0.3s ease;
+  }
+
+  .ciudadano_lista {
+    @apply max-h-[20rem];
+  }
+}
+
+@media (max-width: 768px) {
+  .ciudadano_menu_izquierda {
+    @apply p-0.5;
+    @apply w-full;
+  }
+
+  .ciudadano_menu_izquierda_titulo h2 {
+    @apply w-4/5;
+    @apply text-xs;
+  }
+
+  .ciudadano_busqueda input {
+    @apply w-full text-xs;
+  }
+
+  .ciudadano_busqueda button {
+    @apply w-full h-6;
+  }
+
+  .ciudadano_icono {
+    @apply w-2.5 h-2.5;
+  }
+
+  .ciudadano_lista {
+    @apply max-h-[15rem];
+  }
+}
+
+@media (max-width: 480px) {
+  .ciudadano_menu_izquierda {
+    @apply w-full py-2;
+  }
+
+  .ciudadano_menu_izquierda_titulo h2 {
+    @apply text-xs;
+  }
+
+  .ciudadano_menu_izquierda_contenedor {
+    @apply max-h-[200px] overflow-y-auto;
+  }
+
+  .ciudadano_busqueda input {
+    @apply w-full text-xs;
+  }
+
+  .ciudadano_busqueda button[data-v-845bb2b1] {
+    @apply h-6 w-[10%];
+  }
+
+  .ciudadano_icono[data-v-845bb2b1] {
+    @apply h-2 w-2 ml-2.5;
+  }
+
+  .ciudadano_lista {
+    @apply max-h-[10rem];
+  }
 }
 </style>

@@ -213,296 +213,175 @@ export default defineComponent({
 </template>
 
 <style>
-
-
 .policia_menu_derecha {
-    background-color: var(--colorFondoCiudadano2);
-    width: 70%;
-    display: flex;
-    flex-direction: column;
-    border-radius: 0.5rem;
-    padding-top: 2rem;
-    padding-bottom: 2rem;
-    gap: 2rem;
+  @apply bg-[color:var(--colorFondoCiudadano2)] w-[70%] flex flex-col gap-8 py-8 rounded-lg;
 }
-
+.policia_menu {
+  @apply flex w-full gap-8;
+}
 .policia_menu_derecha_titulo {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  @apply flex justify-center items-center;
 }
-
 .policia_menu_derecha_titulo h2 {
-    background-color: var(--colorFondoCiudadano);
-    border-radius: 0.7rem;
-    height: 2.5rem;
-    color: var(--colorTextoTarjeta);
-    display: flex;
-    align-items: center;
-    width: 80%;
-    display: flex;
-    justify-content: center;
-    font-size: 18px;
+  @apply bg-[color:var(--colorFondoCiudadano)] h-10 text-[color:var(--colorTextoTarjeta)] flex items-center w-4/5 flex justify-center text-lg rounded-[0.7rem];
 }
-
 .policia_perfil_usuario {
-    display: flex;
-    width: 100%;
-    gap: 3rem;
+  @apply flex w-full gap-12;
 }
-
 .policia_perfil_usuario_izquierda {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  @apply flex justify-center items-center;
 }
-
 .policia_perfil_usuario_izquierda img {
-    width: 15rem;
-    height: 15rem;
+  @apply w-60 h-60;
 }
-
 .policia_perfil_usuario_derecha {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1rem;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
+  @apply grid grid-cols-[repeat(3,1fr)] gap-4 justify-center items-center w-full;
 }
-
 .policia_tarjeta {
-    background-color: var(--colorBusquedaCiudadanoTarjeta);
-    border-radius: 0.7rem;
-    width: 12rem;
-    height: 4rem;
-    display: flex;
-    flex-direction: column;
-    padding-left: 2rem;
-    justify-content: center;
-    gap: 0.5rem;
+  @apply bg-[color:var(--colorBusquedaCiudadanoTarjeta)] w-48 h-16 flex flex-col justify-center gap-2 pl-8 rounded-[0.7rem];
 }
-
 .policia_tarjeta p {
-    font-size: 16px;
+  @apply text-base;
 }
-
 .policia_perfil_info {
-    display: flex;
-    justify-content: center;
-    width: 100%;
-    height: 4rem;
-    gap: 3rem;
+  @apply flex justify-center w-full h-16 gap-12;
 }
-
 .policia_perfil_info_derecha {
-    background-color: var(--colorBusquedaCiudadanoTarjeta);
-    width: 50%;
-    display: flex;
-    justify-content: space-between;
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
-    align-items: center;
-    border-radius: 0.7rem;
+  @apply bg-[color:var(--colorBusquedaCiudadanoTarjeta)] w-6/12 flex justify-between items-center px-2 rounded-[0.7rem];
 }
-
 .policia_perfil_info_izquierda {
-    background-color: var(--colorBusquedaCiudadanoTarjeta);
-    width: 50%;
-    display: flex;
-    justify-content: space-between;
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
-    align-items: center;
-    border-radius: 0.7rem;
+  @apply bg-[color:var(--colorBusquedaCiudadanoTarjeta)] w-6/12 flex justify-between items-center px-2 rounded-[0.7rem];
 }
-
 .policia_perfil_info_izquierda h2 {
-    color: var(--colorTextoTarjeta);
+  @apply text-[color:var(--colorTextoTarjeta)];
 }
-
 .policia_perfil_info_derecha h2 {
-    color: var(--colorTextoTarjeta);
+  @apply text-[color:var(--colorTextoTarjeta)];
 }
-
 .policia_perfil_boton h2 {
-    background-color: var(--colorTituloTarjetaPoliciaRango);
-    padding: 0.5rem;
-    border-radius: 0.4rem;
+  @apply bg-[color:var(--colorTituloTarjetaPoliciaRango)] p-2 rounded-[0.4rem];
 }
-
 .policia_perfil_otros {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: auto auto;
-    gap: 1rem;
-    justify-content: center;
-    align-items: start;
-    width: 100%;
+  @apply grid grid-cols-[1fr_1fr] grid-rows-[auto_auto] gap-4 justify-center w-full;
+  align-items: start;
 }
-
 .policia_perfil_otros_container {
-    display: flex;
-    background-color: var(--colorBusquedaCiudadanoTarjeta);
-    border-radius: 0.7rem;
-    width: 100%;
-    height: 20rem;
+  @apply flex bg-[color:var(--colorBusquedaCiudadanoTarjeta)] w-full h-80 rounded-[0.7rem];
 }
-
 .policia_perfil_otros_container:nth-child(1),
 .policia_perfil_otros_container:nth-child(2) {
-    grid-row: 1;
+  @apply row-[1];
 }
-
 .policia_perfil_otros_container:nth-child(3) {
-    grid-column: 1 / span 2;
-    grid-row: 2;
+  @apply col-[1_/_span_2] row-[2];
 }
-
-
 .policia_icono {
-    width: 2rem;
-    height: 1rem;
-    fill: var(--colorBlanco);
+  @apply w-8 h-4 fill-[var(--colorBlanco)];
 }
-
 .policia_perfil_notasdiv {
-    display: flex;
-    width: 100%;
-    padding: 1rem;
-    gap: 0.5rem;
-    flex-direction: column;
+  @apply flex w-full gap-2 flex-col p-4;
 }
-
 .policia_perfil_notasdiv p {
-    font-size: 16px;
+  @apply text-base;
 }
-
 .policia_perfil_multas {
-    display: flex;
-    width: 100%;
-    justify-content: flex-end;
+  @apply flex w-full justify-end;
 }
-
 .policia_perfil_multas p {
-    font-size: 16px;
+  @apply text-base;
 }
-
 .policia_perfil {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 2rem;
-    flex-direction: column;
-    justify-content: space-between;
-    height: 100%;
+  @apply flex items-center justify-center flex-col justify-between h-full p-8;
 }
-
 .policia_perfil p {
-    color: var(--colorTextoTarjeta);
+  @apply text-[color:var(--colorTextoTarjeta)];
 }
-
 .policia_perfil_notasdiv_titulo {
-    display: flex;
+  @apply flex;
 }
-
 .notas_container {
-    width: 100%;
-    height: 100%;
-    overflow-y: auto;
-    display: flex;
-    gap: 1rem;
-    flex-direction: column;
+  @apply w-full h-full overflow-y-auto flex gap-4 flex-col;
 }
-
 .notas_container::-webkit-scrollbar {
-    width: 8px;
+  @apply w-2;
 }
-
 .notas_container::-webkit-scrollbar-thumb {
-    background-color: var(--colorBlanco);
-    border-radius: 4px;
+  @apply bg-[color:var(--colorBlanco)] rounded hover:bg-[color:var(--colorFondoCiudadano)];
 }
-
-.notas_container::-webkit-scrollbar-thumb:hover {
-    background-color: var(--colorFondoCiudadano);
-}
-
 .tarjeta_otros {
-    background-color: var(--colorBusquedaCiudadanoPerfilOtrosTarjeta);
-    border-radius: 0.7rem;
-    min-height: 2rem;
-    display: flex;
-    padding-left: 2rem;
-    flex-direction: column;
-    justify-content: center;
-    padding: 0.5rem;
-    padding-left: 1rem;
-    gap: 1rem;
+  @apply bg-[color:var(--colorBusquedaCiudadanoPerfilOtrosTarjeta)] min-h-[2rem] flex flex-col justify-center gap-4 pl-8 pl-4 p-2 rounded-[0.7rem];
 }
-
 .tarjeta_otros_cabecera {
-    display: flex;
-    justify-content: space-between;
+  @apply flex justify-between;
 }
-
 .tarjeta_otros_cabecera h1 {
-    color: var(--colorTextoTarjeta);
+  @apply text-[color:var(--colorTextoTarjeta)];
 }
-
 .tarjeta_multa {
-    background-color: var(--colorBusquedaCiudadanoPerfilOtrosTarjeta);
-    border-radius: 0.7rem;
-    height: 10rem;
-    display: flex;
-    padding-left: 2rem;
-    flex-direction: column;
-    justify-content: center;
-    padding: 0.5rem;
-    padding-left: 1rem;
-    gap: 1rem;
+  @apply bg-[color:var(--colorBusquedaCiudadanoPerfilOtrosTarjeta)] h-40 flex flex-col justify-center gap-4 pl-8 pl-4 p-2 rounded-[0.7rem];
 }
-
 .tarjeta_multa_titulo {
-    background-color: var(--colorBusquedaCiudadanoPerfilOtrosTarjeta);
-    border-radius: 0.7rem;
-    display: flex;
-    padding-left: 2rem;
-    flex-direction: column;
-    justify-content: center;
-    padding: 0.5rem;
-    padding-left: 1rem;
-    gap: 1rem;
+  @apply bg-[color:var(--colorBusquedaCiudadanoPerfilOtrosTarjeta)] flex flex-col justify-center gap-4 pl-8 pl-4 p-2 rounded-[0.7rem];
 }
-
 .tarjeta_multa_pagada {
-    background-color: var(--colorBusquedaCiudadanoPerfilOtrosMultaPagada);
-    border-radius: 0.7rem;
-    height: 10rem;
-    display: flex;
-    padding-left: 2rem;
-    flex-direction: column;
-    justify-content: center;
-    padding: 0.5rem;
-    padding-left: 1rem;
-    gap: 1rem;
+  @apply bg-[color:var(--colorBusquedaCiudadanoPerfilOtrosMultaPagada)] h-40 flex flex-col justify-center gap-4 pl-8 pl-4 p-2 rounded-[0.7rem];
 }
-
 .tarjeta_multa_info {
-    display: flex;
-    gap: 1rem;
-    justify-content: flex-end;
+  @apply flex gap-4 justify-end;
 }
-
 .tarjeta_multa_icono {
-    fill: var(--colorBlanco);
-    width: 1.5rem;
-    height: 1rem;
+  @apply fill-[var(--colorBlanco)] w-6 h-4;
+}
+.tarjeta_multa_iconos {
+  @apply flex items-center;
+}
+@media (max-width: 1375px) {
+  .policia_perfil_usuario {
+    @apply flex w-full gap-12 flex-nowrap flex-col;
+  }
+  .policia_perfil_info {
+    @apply flex justify-center w-full h-16 gap-12 mt-[15px];
+  }
+  .policia_perfil_otros {
+    @apply grid grid-cols-[1fr_1fr] grid-rows-[auto_auto] gap-4 justify-center w-full mt-2.5;
+    align-items: start;
+  }
+  .policia_menu_derecha {
+    @apply bg-[color:var(--colorFondoCiudadano2)] flex flex-col gap-8 w-full py-8 rounded-lg;
+  }
+}
+@media (max-width: 1306px) {
+  .policia_menu {
+    @apply flex w-full flex-col gap-8;
+  }
+  .policia_menu_izquierda {
+    @apply w-full;
+  }
+}
+@media (max-width: 697px) {
+  .policia_perfil_usuario_derecha {
+    @apply flex grid-cols-[repeat(3,1fr)] gap-4 justify-center items-center w-full flex-col;
+  }
+}
+@media (max-width: 500px) {
+  .policia_perfil_info {
+    @apply flex justify-center w-full h-16 gap-12 flex-col mt-16;
+  }
+  .policia_perfil_info_izquierda {
+    @apply bg-[color:var(--colorBusquedaCiudadanoTarjeta)] w-full flex justify-between items-center px-2 rounded-[0.7rem];
+  }
+  .policia_perfil_info_derecha {
+    @apply bg-[color:var(--colorBusquedaCiudadanoTarjeta)] w-full flex justify-between items-center px-2 rounded-[0.7rem];
+  }
+  .policia_perfil_boton {
+    @apply w-[23%];
+  }
+  .policia_perfil_otros {
+    @apply flex grid-cols-[1fr_1fr] grid-rows-[auto_auto] gap-4 justify-center w-full flex-col mt-2.5 mt-[50px];
+    align-items: start;
+  }
 }
 
-.tarjeta_multa_iconos {
-    display: flex;
-    align-items: center;
-}
+
 
 </style>

@@ -9,7 +9,6 @@
           <option value="apellidos">Apellidos</option>
           <option value="dni">DNI</option>
           <option value="genero">Género</option>
-          <option value="nacionalidad">Nacionalidad</option>
           <option value="isPeligroso">Es peligroso</option>
         </select>
       </div>
@@ -23,7 +22,6 @@
             <th v-if="filterField !== 'nombre'" class="px-4 py-2">Nombre</th>
             <th v-if="filterField !== 'apellidos'" class="px-4 py-2">Apellidos</th>
             <th v-if="filterField !== 'genero'" class="px-4 py-2">Género</th>
-            <th v-if="filterField !== 'nacionalidad'" class="px-4 py-2">Nacionalidad</th>
             <th v-if="filterField !== 'isPeligroso'" class="px-4 py-2">Peligroso</th>
           </tr>
         </thead>
@@ -34,7 +32,6 @@
             <td v-if="filterField !== 'nombre'" class="px-4 py-2">{{ ciudadano.nombre }}</td>
             <td v-if="filterField !== 'apellidos'" class="px-4 py-2">{{ ciudadano.apellidos }}</td>
             <td v-if="filterField !== 'genero'" class="px-4 py-2">{{ ciudadano.genero }}</td>
-            <td v-if="filterField !== 'nacionalidad'" class="px-4 py-2">{{ ciudadano.nacionalidad }}</td>
             <td v-if="filterField !== 'isPeligroso'" class="px-4 py-2">{{ ciudadano.isPeligroso ? 'Sí' : 'No' }}</td>
           </tr>
         </tbody>
