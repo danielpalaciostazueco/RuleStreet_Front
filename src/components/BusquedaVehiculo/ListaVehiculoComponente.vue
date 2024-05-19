@@ -25,7 +25,7 @@ export default defineComponent({
         modelo: vehicle.modelo,
         marca: vehicle.marca,
         color: vehicle.color,
-        Photo: vehicle.Photo,
+        Photo: vehicle.photo,
         ciudadano: vehicle.ciudadano
       }" />
 
@@ -69,5 +69,26 @@ export default defineComponent({
 
 .vehiculo_menu_izquierda_contenedor::-webkit-scrollbar-thumb:hover {
   background-color: var(--colorFondoCiudadano);
+}
+
+
+@media (max-width: 768px) {
+  .vehiculo_menu_izquierda_contenedor {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .vehiculo_menu_izquierda_contenedor {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+
+  .vehiculo_contenedor_tarjeta {
+    max-height: 10rem;
+
+    overflow-y: auto;
+  }
 }
 </style>

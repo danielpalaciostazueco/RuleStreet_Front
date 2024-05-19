@@ -6,75 +6,139 @@ import ProfileSection from '@/components/BusquedaVehiculo/VehiculoPerfilComponen
 import { useRoute } from 'vue-router';
 
 export default defineComponent({
-    
-    components: {
-        TitleBar,
-        SearchPanel,
-        ProfileSection
-    },
-    setup() {
-        const selectedVehicleId = ref<number>(0);
-        const route = useRoute();
 
-        const handleSelectVehicle = (id: number) => {
-            selectedVehicleId.value = id;
-        };
+  components: {
+    TitleBar,
+    SearchPanel,
+    ProfileSection
+  },
+  setup() {
+    const selectedVehicleId = ref<number>(0);
+    const route = useRoute();
 
-        const containerHeight = computed(() => {
-            return route.path.includes('/busquedaVehiculo/');
-        });
+    const handleSelectVehicle = (id: number) => {
+      selectedVehicleId.value = id;
+    };
 
-        return { selectedVehicleId, handleSelectVehicle, containerHeight };
-    }
+    const containerHeight = computed(() => {
+      return route.path.includes('/busquedaVehiculo/');
+    });
+
+    return { selectedVehicleId, handleSelectVehicle, containerHeight };
+  }
 });
 
 
 </script>
 
 <template>
-    <div class="ciudadano_container">
-        <title-bar title="BUSCAR VEHICULO" />
-        <div class="ciudadano_menu">
-            <search-panel />
-            <profile-section />
-        </div>
+  <div class="vehiculo_container">
+    <title-bar title="BUSCAR VEHICULO" />
+    <div class="vehiculo_menu">
+      <search-panel />
+      <profile-section />
     </div>
+  </div>
 </template>
 
-
 <style scoped>
-body {
-  @apply bg-[color:var(--colorFondo)];
+.vehiculo_container {
+  background-color: var(--colorFondo);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3rem;
 }
 
-.ciudadano_container {
-  @apply bg-[color:var(--colorFondo)] min-h-screen flex flex-col items-center justify-center gap-12 p-8;
+
+.vehiculo_menu {
+  display: flex;
+  flex-direction: row;
+  width: 80%;
+  gap: 2rem;
+  height: 50rem;
 }
 
-.ciudadano_menu {
-  @apply flex flex-row w-full gap-8;
+@media (max-width: 1497px) {
+  .vehiculo_perfil_usuario {
+    display: flex;
+    width: 100%;
+    gap: 3rem;
+    flex-direction: column;
+  }
+
+  .vehiculo_perfil_botones {
+    display: flex;
+    gap: 2rem;
+    background-color: var(--colorBusquedaCiudadanoTarjeta);
+    width: 100%;
+    height: 8rem;
+    border-radius: 0.7rem;
+    justify-content: center;
+    align-items: center;
+    margin-top: 25px;
+  }
+
+  .ciudadano_boton {
+    display: flex;
+    height: 2rem;
+    width: 5rem;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--colorBotonBusquedaCiudadano);
+    color: var(--colorTextoTarjeta);
+    text-decoration-line: none;
+    margin-top: 5px;
+  }
 
 }
 
-@media screen and (max-width: 1024px) {
-  .ciudadano_menu {
-    @apply flex-col;
-    min-height: auto;
+@media (max-width: 1120px) {
+
+  .vehiculo_menu {
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    gap: 2rem;
+    height: 50rem;
+  }
+
+  .vehiculo_menu_izquierda {
+    background-color: var(--colorFondoCiudadano2);
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    border-radius: 0.5rem;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    gap: 2rem;
+  }
+
+  .vehiculo_menu_derecha {
+    background-color: var(--colorFondoCiudadano2);
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    border-radius: 0.5rem;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    gap: 2rem;
   }
 }
 
-@media screen and (max-width: 768px) {
-  .ciudadano_menu {
-    @apply flex-col w-full;
-    min-height: auto;
-  }
-}
 
-@media screen and (max-width: 480px) {
-  .ciudadano_menu {
-    @apply flex-col w-full;
-    min-height: auto;
-    gap: 4; /* Reduce gap between elements for small screens */
+@media (max-width: 787px) {
+
+  .vehiculo_perfil_usuario_derecha {
+    display: flex;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    flex-direction: column;
   }
 }
-</style>
+</style>s

@@ -100,7 +100,7 @@ export default defineComponent({
 }
 
 .vehiculo_busqueda button {
-  width: 5rem;
+  width: 2rem;
   height: 2rem;
   background-color: var(--colorBotonBusquedaCiudadano);
   border: none;
@@ -116,5 +116,6 @@ export default defineComponent({
   height: 1rem;
   fill: var(--colorSvg);
   transition: transform 0.3s ease, width 0.3s ease, height 0.3s ease;
+  margin-left: 6px;
 }
 </style>

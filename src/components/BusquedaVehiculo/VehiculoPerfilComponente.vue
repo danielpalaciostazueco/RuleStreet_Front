@@ -256,4 +256,105 @@ function parseRouteParam(param: string | string[]): string {
 .vehiculo_perfil_botones_izquierda h2 {
   color: var(--colorTextoTarjeta);
 }
+
+@media (max-width: 1497px) {
+  .vehiculo_perfil_usuario {
+    display: flex;
+    width: 100%;
+    gap: 3rem;
+    flex-direction: column;
+  }
+
+  .vehiculo_perfil_botones {
+    display: flex;
+    gap: 2rem;
+    background-color: var(--colorBusquedaCiudadanoTarjeta);
+    width: 100%;
+    height: 8rem;
+    border-radius: 0.7rem;
+    justify-content: center;
+    align-items: center;
+    margin-top: 25px;
+  }
+
+  .ciudadano_boton {
+    display: flex;
+    height: 2rem;
+    width: 5rem;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--colorBotonBusquedaCiudadano);
+    color: var(--colorTextoTarjeta);
+    text-decoration-line: none;
+    margin-top: 5px;
+  }
+
+}
+
+@media (max-width: 1120px) {
+
+  .vehiculo_menu {
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    gap: 2rem;
+    height: 50rem;
+  }
+
+  .vehiculo_menu_izquierda {
+    background-color: var(--colorFondoCiudadano2);
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    border-radius: 0.5rem;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    gap: 2rem;
+  }
+
+  .vehiculo_menu_derecha {
+    background-color: var(--colorFondoCiudadano2);
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    border-radius: 0.5rem;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    gap: 2rem;
+  }
+}
+
+
+@media (max-width: 787px) {
+
+  .vehiculo_perfil_usuario_derecha {
+    display: flex;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 620px) {
+  .vehiculo_perfil_boton {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 6px;
+  }
+
+  .vehiculo_perfil_botones {
+    display: flex;
+    gap: 2rem;
+    background-color: var(--colorBusquedaCiudadanoTarjeta);
+    width: 100%;
+    height: 9rem;
+    border-radius: 0.7rem;
+    justify-content: center;
+    align-items: center;
+    margin-top: 25px;
+  }
+}
 </style>

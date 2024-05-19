@@ -31,6 +31,7 @@ export default defineComponent({
 </script>
 
 <template>
+
   <body>
     <TituloComponente />
     <div class="body-container">
@@ -64,49 +65,62 @@ export default defineComponent({
 </template>
 
 <style scoped>
-html, body {
+html,
+body {
   @apply h-[500vh] bg-[color:var(--colorFondo)] m-0;
 }
+
 .body-container {
   @apply flex flex-col bg-[color:var(--colorFondo)];
 }
+
 .codigo-penal-container {
-  @apply w-4/5 bg-[color:var(--colorFondoCiudadano)] text-[color:var(--colorBlanco)] shadow-[0_4px_8px_rgba(0,0,0,0.1)] grow m-auto p-5 rounded-[10px];
+  @apply w-4/5 bg-[color:var(--colorFondoCiudadano)] text-[color:var(--colorBlanco)] shadow-[0_4px_8px_rgba(0, 0, 0, 0.1)] grow m-auto p-5 rounded-[10px];
   font-family: Arial, sans-serif;
 }
+
 .search-input {
-  @apply w-full box-border border border-[color:var(--colorBlanco)] bg-[rgb(70,69,69)] text-[white] mx-0 my-5 p-2.5 rounded-[5px] border-solid;
+  @apply w-full box-border border border-[color:var(--colorBlanco)] bg-[rgb(70, 69, 69)] text-[white] mx-0 my-5 p-2.5 rounded-[5px] border-solid;
 }
+
 .table-wrapper {
   @apply overflow-x-auto;
 }
+
 table {
   @apply w-full overflow-hidden rounded-[10px] border-separate;
   --tw-border-spacing-x: 0.625rem;
   --tw-border-spacing-y: 0.625rem;
 }
 
-th, td {
+th,
+td {
   @apply text-left border-b-[color:var(--colorFondoCiudadano)] bg-[#525C67] w-5 p-2.5 border-b border-solid;
 }
+
 th {
-  @apply bg-[rgb(36,35,35)];
+  @apply bg-[rgb(36, 35, 35)];
 }
+
 tbody tr:hover {
   @apply bg-[color:var(--colorFondoCiudadano2)];
 }
+
 tbody tr:last-child td {
   @apply border-b-[none];
 }
 
-/* Responsive Design */
+
 @media (max-width: 1024px) {
   .codigo-penal-container {
     @apply w-[90%];
   }
-  th, td {
+
+  th,
+  td {
     @apply text-xs p-2;
   }
+
   .search-input {
     @apply text-xs p-2;
   }
@@ -116,9 +130,12 @@ tbody tr:last-child td {
   .codigo-penal-container {
     @apply w-full;
   }
-  th, td {
+
+  th,
+  td {
     @apply text-xs p-1;
   }
+
   .search-input {
     @apply text-xs p-1;
   }
@@ -128,9 +145,12 @@ tbody tr:last-child td {
   .codigo-penal-container {
     @apply w-full;
   }
-  th, td {
+
+  th,
+  td {
     @apply text-xs p-1;
   }
+
   .search-input {
     @apply text-xs p-1;
   }
