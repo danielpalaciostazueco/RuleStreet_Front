@@ -3,7 +3,7 @@
 import { defineStore } from 'pinia';
 import { reactive } from 'vue';
 import { useListadoAuth } from './storeAuth';
-const storeAuth = useListadoAuth();
+
 
 
 export interface Vehiculo {

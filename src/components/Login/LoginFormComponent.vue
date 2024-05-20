@@ -21,10 +21,10 @@ const submitForm = async () => {
 <template>
     <div class="login-container">
         <form @submit.prevent="submitForm" class="login-form">
-            <h2>{{$t('LoginUsuario.Title')}}</h2>
-            <input type="text" v-model="store.Datos.Dni" :placeholder="{{ $t('LoginUsuario.Dni') }}">
-            <input type="text" v-model="store.Datos.NombreUsuario" :placeholder="{{$t('LoginUsuario.NombreUsuario')}}">
-            <input type="password" v-model="store.Datos.Contrasena" :placeholder="{{ $t('LoginUsuario.Password') }}">
+            <h2>{{ $t('LoginUsuario.Title') }}</h2>
+            <input type="text" v-model="store.Datos.Dni" :placeholder="$t('LoginUsuario.Dni')">
+            <input type="text" v-model="store.Datos.NombreUsuario" :placeholder="$t('LoginUsuario.NombreUsuario')">
+            <input type="password" v-model="store.Datos.Contrasena" :placeholder="$t('LoginUsuario.Password')">
             <p class="links">
                 <RouterLink to="/loginPolicia">{{ $t('LoginUsuario.Policia') }}</RouterLink>
                 <RouterLink to="/loginAyuntamiento">{{ $t('LoginUsuario.Ayuntamiento') }}</RouterLink>

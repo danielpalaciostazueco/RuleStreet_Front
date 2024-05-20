@@ -21,8 +21,8 @@ const submitForm = async () => {
   <div class="login-container">
     <form @submit.prevent="submitForm" class="login-form">
       <h2>{{$t('LoginAyuntamiento.Title')}}</h2>
-      <input type="text" v-model="store.DatosAyuntamiento.Dni" :placeholder="{{$t('LoginAyuntamiento.Email')}}" />
-      <input type="password" v-model="store.DatosAyuntamiento.Contrasena" :placeholder="{{$t('LoginAyuntamiento.Password')}}" />
+      <input type="text" v-model="store.DatosAyuntamiento.Dni" :placeholder="$t('LoginAyuntamiento.Email')" />
+      <input type="password" v-model="store.DatosAyuntamiento.Contrasena" :placeholder="$t('LoginAyuntamiento.Password')" />
       <p class="links">
         <RouterLink to="/loginPolicia">{{$t('LoginAyuntamiento.Policia')}}</RouterLink>
         <RouterLink to="/loginAyuntamiento">{{$t('LoginAyuntamiento.Ayuntamiento')}}</RouterLink>
