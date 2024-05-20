@@ -50,7 +50,7 @@ export default defineComponent({
 <template>
   <div class="policia_menu_izquierda">
     <div class="policia_menu_izquierda_titulo">
-      <h2>LISTA DE POLICIAS</h2>
+      <h2>{{$t('ListadoPolicia.Title')}}</h2>
     </div>
     <div class="policia_busqueda">
       <input type="text" placeholder="Policia" v-model="searchQuery">

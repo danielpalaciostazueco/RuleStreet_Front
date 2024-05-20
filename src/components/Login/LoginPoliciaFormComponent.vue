@@ -22,16 +22,16 @@ const submitForm = async () => {
 <template>
     <div class="login-container">
         <form @submit.prevent="submitForm" class="login-form">
-            <h2>Login Policia</h2>
-            <input type="text" v-model="store.DatosPolicia.numeroPlaca" placeholder="Número de placa">
-            <input type="password" v-model="store.DatosPolicia.Contrasena" placeholder="Contraseña">
+            <h2>{{ $t('LoginPolicia.Title') }}</h2>
+            <input type="text" v-model="store.DatosPolicia.numeroPlaca" :placeholder="{{ $t('LoginPolicia.NumeroPlaca') }}">
+            <input type="password" v-model="store.DatosPolicia.Contrasena" :placeholder="{{ $t('LoginPolicia.Password') }}">
             <p class="links">
-                <RouterLink to="/Login">¿Eres Usuario?</RouterLink>
-                <RouterLink to="/register">¿No tienes cuenta? Regístrate</RouterLink>
+                <RouterLink to="/Login">{{ $t('LoginPolicia.Usuario') }}</RouterLink>
+                <RouterLink to="/register">{{ $t('LoginPolicia.Cuenta') }}</RouterLink>
             </p>
-            <button type="submit">Iniciar sesión</button>
+            <button type="submit">{{ $t('LoginPolicia.Login') }}</button>
             <p>
-                <RouterLink to="/">Volver a la página principal</RouterLink>
+                <RouterLink to="/">{{ $t('LoginPolicia.Principal') }}</RouterLink>
             </p>
         </form>
     </div>

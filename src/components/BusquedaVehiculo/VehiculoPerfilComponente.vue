@@ -71,10 +71,10 @@ function parseRouteParam(param: string | string[]): string {
 <template>
   <div class="vehiculo_menu_derecha">
     <div class="vehiculo_menu_derecha_titulo">
-      <h2>DATOS DEL VEHICULO</h2>
+      <h2>{{$t('PerfilVehiculo.Profile')}}</h2>
     </div>
     <div class="vehiculo_perfil">
-      <p v-if="!vehicleid">SELECIONA UN VEHICULO PARA CARGAR LA INFORMACIÓN</p>
+      <p v-if="!vehicleid">{{$t('PerfilVehiculo.Select')}}</p>
       <template v-else>
         <div class="vehiculo_perfil_usuario">
           <div class="vehiculo_perfil_usuario_izquierda">
@@ -82,23 +82,23 @@ function parseRouteParam(param: string | string[]): string {
           </div>
           <div class="vehiculo_perfil_usuario_derecha">
             <div class="vehiculo_tarjeta">
-              <p>Matricula</p>
+              <p>{{$t('PerfilVehiculo.Placa')}}</p>
               <p>{{ vehicleDetails.matricula }}</p>
             </div>
             <div class="vehiculo_tarjeta">
-              <p>Modelo</p>
+              <p>{{$t('PerfilVehiculo.Model')}}</p>
               <p>{{ vehicleDetails.modelo }}</p>
             </div>
             <div class="vehiculo_tarjeta">
-              <p>Marca</p>
+              <p>{{$t('PerfilVehiculo.Brans')}}</p>
               <p>{{ vehicleDetails.marca }}</p>
             </div>
             <div class="vehiculo_tarjeta">
-              <p>Color</p>
+              <p>{{$t('PerfilVehiculo.Color')}}</p>
               <p>{{ vehicleDetails.color }}</p>
             </div>
             <div class="vehiculo_tarjeta">
-              <p>Dueño</p>
+              <p>{{$t('PerfilVehiculo.Dueno')}}</p>
               <p>{{ vehicleDetails.ciudadano.nombre }}</p>
             </div>
 
@@ -106,12 +106,12 @@ function parseRouteParam(param: string | string[]): string {
         </div>
         <div class="vehiculo_perfil_botones">
           <div class="vehiculo_perfil_botones_izquierda">
-            <h2>EN BUSQUEDA Y CAPTURA</h2>
+            <h2>{{$t('PerfilVehiculo.BusquedaCaptura')}}</h2>
             <div class="vehiculo_perfil_boton">
               <input type="radio" id="no_izquierda" name="response_izquierda" checked>
-              <label for="no_izquierda">No</label>
+              <label for="no_izquierda">{{$t('PerfilVehiculo.No')}}</label>
               <input type="radio" id="yes_izquierda" name="response_izquierda">
-              <label for="yes_izquierda">Sí</label>
+              <label for="yes_izquierda">{{$t('PerfilVehiculo.Yes')}}</label>
             </div>
           </div>
         </div>

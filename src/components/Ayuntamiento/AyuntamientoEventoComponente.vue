@@ -1,14 +1,14 @@
 <template>
     <div class="info-container flex flex-wrap justify-around p-5 gap-5">
         <div v-if="infoEventos.length === 0" class="no-events w-full text-center text-textoTarjeta text-lg">
-            <h2>No hay eventos disponibles en este momento.</h2>
+            <h2>{{ $t('EventoAyuntamiento.Title') }}</h2>
         </div>
         <div class="info-card w-[calc(33.333%-20px)] shadow-lg rounded-lg overflow-hidden flex flex-col bg-white" v-for="evento in infoEventos" :key="evento.idEventos">
             <img :src="evento.imagen" :alt="evento.descripcion" class="card-image w-full h-52 object-cover">
             <div class="card-content p-4 flex-grow flex flex-col justify-between">
                 <h2 class="text-xl text-tituloModal">{{ evento.descripcion }}</h2>
                 <p class="card-date text-base text-negro mt-2 self-end">
-                    Fecha: {{ fechaFormato(evento.fecha) }}
+                  {{ $t('EventoAyuntamiento.Date') }} {{ fechaFormato(evento.fecha) }}
                 </p>
             </div>
         </div>

@@ -23,7 +23,7 @@ export default defineComponent({
                 numeroPlaca: poli.numeroPlaca
             }" />
         </div>
-        <p v-else>No se encontraron resultados para tu búsqueda.</p>
+        <p v-else>{{$t('ListadoCiudadano.Title')}}</p>
     </div>
 </template>
 

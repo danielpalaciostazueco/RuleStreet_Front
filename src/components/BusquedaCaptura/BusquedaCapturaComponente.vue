@@ -3,13 +3,13 @@
     <div class="search-section mb-4">
       <input v-model="searchQuery" placeholder="Buscar ciudadano..." @input="filterCiudadanos" class="search-input" />
       <div class="filter-section mt-2">
-        <label for="filterField" class="mr-2">Filtrar por:</label>
+        <label for="filterField" class="mr-2">{{$t('BusquedaCapturaTabla.Filter')}}</label>
         <select v-model="filterField" @change="filterCiudadanos" class="filter-select">
-          <option value="nombre">Nombre</option>
-          <option value="apellidos">Apellidos</option>
+          <option value="nombre">{{$t('BusquedaCapturaTabla.Name')}}</option>
+          <option value="apellidos">{{$t('BusquedaCapturaTabla.Surname')}}</option>
           <option value="dni">DNI</option>
-          <option value="genero">Género</option>
-          <option value="isPeligroso">Es peligroso</option>
+          <option value="genero">{{$t('BusquedaCapturaTabla.Gender')}}</option>
+          <option value="isPeligroso">{{$t('BusquedaCapturaTabla.Danger')}}</option>
         </select>
       </div>
     </div>
@@ -17,12 +17,12 @@
       <table class="table-auto w-full">
         <thead>
           <tr class="bg-blue-800 text-white">
-            <th class="px-4 py-2">Foto</th>
+            <th class="px-4 py-2">{{$t('BusquedaCapturaTabla.Photo')}}</th>
             <th v-if="filterField" class="px-4 py-2">{{ fieldDisplayName(filterField) }}</th>
-            <th v-if="filterField !== 'nombre'" class="px-4 py-2">Nombre</th>
-            <th v-if="filterField !== 'apellidos'" class="px-4 py-2">Apellidos</th>
-            <th v-if="filterField !== 'genero'" class="px-4 py-2">Género</th>
-            <th v-if="filterField !== 'isPeligroso'" class="px-4 py-2">Peligroso</th>
+            <th v-if="filterField !== 'nombre'" class="px-4 py-2">{{$t('BusquedaCapturaTabla.Name')}}</th>
+            <th v-if="filterField !== 'apellidos'" class="px-4 py-2">{{$t('BusquedaCapturaTabla.Surname')}}</th>
+            <th v-if="filterField !== 'genero'" class="px-4 py-2">{{$t('BusquedaCapturaTabla.Gender')}}</th>
+            <th v-if="filterField !== 'isPeligroso'" class="px-4 py-2">{{$t('BusquedaCapturaTabla.Danger')}}</th>
           </tr>
         </thead>
         <tbody>
@@ -37,7 +37,7 @@
         </tbody>
       </table>
     </div>
-    <button @click="exportToExcel" class="export-button mt-4">Exportar a Excel</button>
+    <button @click="exportToExcel" class="export-button mt-4">{{$t('BusquedaCapturaTabla.Danger')}}</button>
   </div>
 </template>
 

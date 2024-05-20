@@ -99,35 +99,35 @@ export default defineComponent({
     <div class="modal_container">
       <div class="modal_izquierda">
         <div class="modal_titulo">
-          <h1>CODIGO PENAL</h1>
+          <h1>{{ $t('MultaCiudadano.Penal') }}</h1>
         </div>
         <div>
           <input class="model_buscador" type="text" v-model="filtro" placeholder="Buscar en el código criminal...">
         </div>
         <div class="model_tabla">
-          <div class="model_tabla_encabezado">ARTICULO</div>
-          <div class="model_tabla_encabezado">DESCRIPCIÓN</div>
-          <div class="model_tabla_encabezado">CANTIDAD</div>
-          <div class="model_tabla_encabezado">SENTENCIA</div>
-          <div class="model_tabla_encabezado">Añadir</div>
+          <div class="model_tabla_encabezado">{{ $t('MultaCiudadano.Article') }}</div>
+          <div class="model_tabla_encabezado">{{ $t('MultaCiudadano.Description') }}</div>
+          <div class="model_tabla_encabezado">{{ $t('MultaCiudadano.Cuantity') }}</div>
+          <div class="model_tabla_encabezado">{{ $t('MultaCiudadano.Sentencia') }}</div>
+          <div class="model_tabla_encabezado">{{ $t('MultaCiudadano.Add') }}</div>
 
           <div v-for="item in articulosFiltrados" :key="item.idCodigoPenal" class="model_tabla_fila">
             <div class="model_tabla_item">{{ item.articulo }}</div>
             <div class="model_tabla_item_texto">{{ item.descripcion }}</div>
             <div class="model_tabla_item">{{ item.precio }}</div>
             <div class="model_tabla_item">{{ item.sentencia }}</div>
-            <div class="model_tabla_item_filtro" @click="guardarId(item.idCodigoPenal)">Añadir</div>
+            <div class="model_tabla_item_filtro" @click="guardarId(item.idCodigoPenal)">{{ $t('MultaCiudadano.Add') }}</div>
           </div>
 
         </div>
       </div>
       <div class="modal_derecha">
         <div class="modal_titulo">
-          <h1>MAS</h1>
+          <h1>{{ $t('MultaCiudadano.More') }}</h1>
         </div>
         <div class="modal_derecha_div">
           <div class="modal_derecha_container">
-            <p>CONCEPTO DE MULTA</p>
+            <p>{{ $t('MultaCiudadano.Concept') }}</p>
             <div class="modal_derecha_container_tarjeta" v-if="articuloSeleccionado.articulo">
               <div class="izquierda">
                 <p>{{ articuloSeleccionado.articulo }}</p>
@@ -139,7 +139,7 @@ export default defineComponent({
             </div>
           </div>
           <div class="boton_container">
-            <button class="modal_boton" @click="submitMulta">Añadir Multa</button>
+            <button class="modal_boton" @click="submitMulta">{{ $t('MultaCiudadano.AddFine') }}</button>
           </div>
         </div>
       </div>

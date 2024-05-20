@@ -42,10 +42,10 @@ export default defineComponent({
           <table>
             <thead>
               <tr>
-                <th>Artículo</th>
-                <th>Descripción</th>
-                <th>Cantidad</th>
-                <th>Sentencia</th>
+                <th>{{$t('CodigoPenalTabla.Article')}}</th>
+                <th>{{$t('PerfilVehiculo.Description')}}</th>
+                <th>{{$t('PerfilVehiculo.Cantidad')}}</th>
+                <th>{{$t('PerfilVehiculo.Sentencia')}}</th>
               </tr>
             </thead>
             <tbody>

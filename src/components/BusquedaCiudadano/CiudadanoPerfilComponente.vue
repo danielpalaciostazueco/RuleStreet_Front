@@ -125,10 +125,10 @@ function parseRouteParam(param: string | string[]): string {
 <template>
   <div class="ciudadano_menu_derecha">
     <div class="ciudadano_menu_derecha_titulo">
-      <h2>PERFIL DEL CIUDADANO</h2>
+      <h2>{{ $t('PerfilCiudadano.Profile') }}</h2>
     </div>
     <div class="ciudadano_perfil">
-      <p v-if="!citizenId">SELECCIONA UN CIUDADANO PARA CARGAR LA INFORMACIÓN</p>
+      <p v-if="!citizenId">{{ $t('PerfilCiudadano.Select') }}</p>
       <template v-else>
         <div class="ciudadano_perfil_usuario">
           <div class="ciudadano_perfil_usuario_izquierda">
@@ -136,23 +136,23 @@ function parseRouteParam(param: string | string[]): string {
           </div>
           <div class="ciudadano_perfil_usuario_derecha">
             <div class="ciudadano_tarjeta">
-              <p>Nombre</p>
+              <p>{{ $t('PerfilCiudadano.Name') }}</p>
               <p>{{ citizenDetails.nombre }}</p>
             </div>
             <div class="ciudadano_tarjeta">
-              <p>Apellidos</p>
+              <p>{{ $t('PerfilCiudadano.Surname') }}</p>
               <p>{{ citizenDetails.apellidos }}</p>
             </div>
             <div class="ciudadano_tarjeta">
-              <p>Genero</p>
+              <p>{{ $t('PerfilCiudadano.Gender') }}</p>
               <p>{{ citizenDetails.genero }}</p>
             </div>
             <div class="ciudadano_tarjeta">
-              <p>Nacionalidad</p>
+              <p>{{ $t('PerfilCiudadano.Nationality') }}</p>
               <p>{{ citizenDetails.nacionalidad }}</p>
             </div>
             <div class="ciudadano_tarjeta">
-              <p>Fecha de nacimiento</p>
+              <p>{{ $t('PerfilCiudadano.Birthdate') }}</p>
               <p>{{ citizenDetails.fechaNacimiento }}</p>
             </div>
             <div class="ciudadano_tarjeta">
@@ -160,36 +160,36 @@ function parseRouteParam(param: string | string[]): string {
               <p>{{ citizenDetails.idCiudadano }}</p>
             </div>
             <div class="ciudadano_tarjeta">
-              <p>Número de teléfono</p>
+              <p>{{ $t('PerfilCiudadano.PhoneNumber') }}</p>
               <p>{{ citizenDetails.numeroTelefono }}</p>
             </div>
             <div class="ciudadano_tarjeta">
-              <p>Número de cuenta</p>
+              <p>{{ $t('PerfilCiudadano.AccountNumber') }}</p>
               <p>{{ citizenDetails.numeroCuentaBancaria }}</p>
             </div>
             <div class="ciudadano_tarjeta">
-              <p>Trabajo</p>
+              <p>{{ $t('PerfilCiudadano.Work') }}</p>
               <p>{{ citizenDetails.trabajo }}</p>
             </div>
           </div>
         </div>
         <div class="ciudadano_perfil_botones">
           <div class="ciudadano_perfil_botones_izquierda">
-            <h2>EN BUSQUEDA Y CAPTURA</h2>
+            <h2>{{ $t('PerfilCiudadano.Captura') }}</h2>
             <div class="ciudadano_perfil_boton">
               <input type="radio" id="no_izquierda" value="false" v-model="citizenDetails.isBusquedaYCaptura">
-              <label for="no_izquierda">No</label>
+              <label for="no_izquierda">{{ $t('PerfilCiudadano.No') }}</label>
               <input type="radio" id="yes_izquierda" value="true" v-model="citizenDetails.isBusquedaYCaptura">
-              <label for="yes_izquierda">Sí</label>
+              <label for="yes_izquierda">{{ $t('PerfilCiudadano.Yes') }}</label>
             </div>
           </div>
           <div class="ciudadano_perfil_botones_derecha">
-            <h2>PELIGROSO</h2>
+            <h2>{{ $t('PerfilCiudadano.Peligroso') }}</h2>
             <div class="ciudadano_perfil_boton">
               <input type="radio" id="no_derecha" value="false" v-model="citizenDetails.isPeligroso">
-              <label for="no_derecha">No</label>
+              <label for="no_derecha">{{ $t('PerfilCiudadano.No') }}</label>
               <input type="radio" id="yes_derecha" value="true" v-model="citizenDetails.isPeligroso">
-              <label for="yes_derecha">Sí</label>
+              <label for="yes_derecha">{{ $t('PerfilCiudadano.Yes') }}</label>
             </div>
           </div>
         </div>
@@ -201,12 +201,12 @@ function parseRouteParam(param: string | string[]): string {
                   <path
                     d="M64 32C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H288V368c0-26.5 21.5-48 48-48H448V96c0-35.3-28.7-64-64-64H64zM448 352H402.7 336c-8.8 0-16 7.2-16 16v66.7V480l32-32 64-64 32-32z" />
                 </svg>
-                <p>NOTAS</p>
+                <p>{{ $t('PerfilCiudadano.Notas') }}</p>
               </div>
               <!-- añadir en el back las notas en el ciudadano -->
               <div class="notas_container">
                 <div class="tarjeta_otros">
-                  <p>NO HAY NOTAS REGISTRADAS</p>
+                  <p>{{ $t('PerfilCiudadano.NoNotasº') }}</p>
                 </div>
                 <div class="tarjeta_otros">
                   <div class="tarjeta_otros_cabecera">
@@ -226,9 +226,9 @@ function parseRouteParam(param: string | string[]): string {
                   <path
                     d="M96 0C43 0 0 43 0 96V416c0 53 43 96 96 96H384h32c17.7 0 32-14.3 32-32s-14.3-32-32-32V384c17.7 0 32-14.3 32-32V32c0-17.7-14.3-32-32-32H384 96zm0 384H352v64H96c-17.7 0-32-14.3-32-32s14.3-32 32-32zm32-240c0-8.8 7.2-16 16-16H336c8.8 0 16 7.2 16 16s-7.2 16-16 16H144c-8.8 0-16-7.2-16-16zm16 48H336c8.8 0 16 7.2 16 16s-7.2 16-16 16H144c-8.8 0-16-7.2-16-16s7.2-16 16-16z" />
                 </svg>
-                <p>MULTAS</p>
+                <p>{{ $t('PerfilCiudadano.Multa') }}</p>
                 <div class="ciudadano_perfil_multas">
-                  <p @click="showModal = true">+ AÑADIR MULTA</p>
+                  <p @click="showModal = true">+ {{ $t('PerfilCiudadano.AddMulta') }}</p>
                 </div>
                 <Modal :visible="showModal" @update:visible="showModal = $event" @onModalClose="reloadCitizenDetails" />
               </div>
@@ -270,7 +270,7 @@ function parseRouteParam(param: string | string[]): string {
               <template v-else>
                 <div class="notas_container">
                   <div class="tarjeta_multa_titulo">
-                    <p>NO HAY MULTAS REGISTRADAS</p>
+                    <p>{{ $t('PerfilCiudadano.NoMultas') }}</p>
                   </div>
                 </div>
               </template>
@@ -303,7 +303,7 @@ function parseRouteParam(param: string | string[]): string {
                   <path
                     d="M135.2 117.4L109.1 192H402.9l-26.1-74.6C372.3 104.6 360.2 96 346.6 96H165.4c-13.6 0-25.7 8.6-30.2 21.4zM39.6 196.8L74.8 96.3C88.3 57.8 124.6 32 165.4 32H346.6c40.8 0 77.1 25.8 90.6 64.3l35.2 100.5c23.2 9.6 39.6 32.5 39.6 59.2V400v48c0 17.7-14.3 32-32 32H448c-17.7 0-32-14.3-32-32V400H96v48c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32V400 256c0-26.7 16.4-49.6 39.6-59.2zM128 288a32 32 0 1 0 -64 0 32 32 0 1 0 64 0zm288 32a32 32 0 1 0 0-64 32 32 0 1 0 0 64z" />
                 </svg>
-                <p>VEHICULOS</p>
+                <p>{{ $t('PerfilCiudadano.Vehicles') }}</p>
               </div>
               <template v-if="citizenDetails.vehiculos && citizenDetails.vehiculos.length > 0">
                 <div v-for="vehiculo in citizenDetails.vehiculos" :key="vehiculo.idVehiculo" class="tarjeta_otros">
@@ -312,7 +312,7 @@ function parseRouteParam(param: string | string[]): string {
               </template>
               <template v-else>
                 <div class="tarjeta_otros">
-                  <p>NO HAY VEHICULOS REGISTRADOS</p>
+                  <p>{{ $t('PerfilCiudadano.NoVehicles') }}</p>
                 </div>
               </template>
             </div>

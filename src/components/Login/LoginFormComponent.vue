@@ -21,18 +21,18 @@ const submitForm = async () => {
 <template>
     <div class="login-container">
         <form @submit.prevent="submitForm" class="login-form">
-            <h2>Login</h2>
-            <input type="text" v-model="store.Datos.Dni" placeholder="Dni Completo">
-            <input type="text" v-model="store.Datos.NombreUsuario" placeholder="Nombre de usuario">
-            <input type="password" v-model="store.Datos.Contrasena" placeholder="Contraseña">
+            <h2>{{$t('LoginUsuario.Title')}}</h2>
+            <input type="text" v-model="store.Datos.Dni" :placeholder="{{ $t('LoginUsuario.Dni') }}">
+            <input type="text" v-model="store.Datos.NombreUsuario" :placeholder="{{$t('LoginUsuario.NombreUsuario')}}">
+            <input type="password" v-model="store.Datos.Contrasena" :placeholder="{{ $t('LoginUsuario.Password') }}">
             <p class="links">
-                <RouterLink to="/loginPolicia">¿Eres policía?</RouterLink>
-                <RouterLink to="/loginAyuntamiento">¿Eres del Ayuntamiento?</RouterLink>
-                <RouterLink to="/register">¿No tienes cuenta? Regístrate</RouterLink>
+                <RouterLink to="/loginPolicia">{{ $t('LoginUsuario.Policia') }}</RouterLink>
+                <RouterLink to="/loginAyuntamiento">{{ $t('LoginUsuario.Ayuntamiento') }}</RouterLink>
+                <RouterLink to="/register">{{ $t('LoginUsuario.Cuenta') }}</RouterLink>
             </p>
-            <button type="submit">Iniciar Sesión</button>
+            <button type="submit">{{ $t('LoginUsuario.Login') }}</button>
             <p>
-                <RouterLink to="/">Volver a la página principal</RouterLink>
+                <RouterLink to="/">{{ $t('LoginUsuario.Principal') }}</RouterLink>
             </p>
         </form>
     </div>

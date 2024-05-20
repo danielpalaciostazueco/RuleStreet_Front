@@ -59,10 +59,10 @@ export default defineComponent({
 <template>
     <div class="policia_menu_derecha">
         <div class="policia_menu_derecha_titulo">
-            <h2>PERFIL DEL POLICIA</h2>
+            <h2>{{ $t('PerfilPolicia.Profile') }}</h2>
         </div>
         <div class="policia_perfil">
-            <p v-if="!policiaId">SELECCIONA UN POLICIA PARA CARGAR LA INFORMACIÓN</p>
+            <p v-if="!policiaId">{{ $t('PerfilPolicia.Select') }}</p>
             <template v-else>
                 <div class="policia_perfil_usuario">
                     <div class="policia_perfil_usuario_izquierda">
@@ -70,23 +70,23 @@ export default defineComponent({
                     </div>
                     <div class="policia_perfil_usuario_derecha">
                         <div class="policia_tarjeta">
-                            <p>Nombre</p>
+                            <p>{{ $t('PerfilPolicia.Name') }}</p>
                             <p>{{ policiaDetails.ciudadano?.nombre }}</p>
                         </div>
                         <div class="policia_tarjeta">
-                            <p>Apellidos</p>
+                            <p>{{ $t('PerfilPolicia.Surname') }}</p>
                             <p>{{ policiaDetails.ciudadano?.apellidos }}</p>
                         </div>
                         <div class="policia_tarjeta">
-                            <p>Genero</p>
+                            <p>{{ $t('PerfilPolicia.Gender') }}</p>
                             <p>{{ policiaDetails.ciudadano?.genero }}</p>
                         </div>
                         <div class="policia_tarjeta">
-                            <p>Nacionalidad</p>
+                            <p>{{ $t('PerfilPolicia.Nationality') }}</p>
                             <p>{{ policiaDetails.ciudadano?.nacionalidad }}</p>
                         </div>
                         <div class="policia_tarjeta">
-                            <p>Fecha de nacimiento</p>
+                            <p>{{ $t('PerfilPolicia.Bithdate') }}</p>
                             <p>{{ policiaDetails.ciudadano?.fechaNacimiento }}</p>
                         </div>
                         <div class="policia_tarjeta">
@@ -94,28 +94,28 @@ export default defineComponent({
                             <p>{{ policiaDetails.idPolicia }}</p>
                         </div>
                         <div class="policia_tarjeta">
-                            <p>Número de teléfono</p>
+                            <p>{{ $t('PerfilPolicia.PhoneNumber') }}</p>
                             <p>{{ policiaDetails.ciudadano?.numeroTelefono }}</p>
                         </div>
                         <div class="policia_tarjeta">
-                            <p>Número de cuenta</p>
+                            <p>{{ $t('PerfilPolicia.AccountNumber') }}</p>
                             <p>{{ policiaDetails.ciudadano?.numeroCuentaBancaria }}</p>
                         </div>
                         <div class="policia_tarjeta">
-                            <p>Trabajo</p>
+                            <p>{{ $t('PerfilPolicia.Work') }}</p>
                             <p>{{ policiaDetails.ciudadano?.trabajo }}</p>
                         </div>
                     </div>
                 </div>
                 <div class="policia_perfil_info">
                     <div class="policia_perfil_info_izquierda">
-                        <h2>RANGO</h2>
+                        <h2>{{ $t('PerfilPolicia.Rango') }}</h2>
                         <div class="policia_perfil_boton">
                             <h2>{{ policiaDetails.rango.nombre }}</h2>
                         </div>
                     </div>
                     <div class="policia_perfil_info_derecha">
-                        <h2>NUMERO DE PLACA</h2>
+                        <h2>{{ $t('PerfilPolicia.NumeroPlaca') }}</h2>
                         <div class="policia_perfil_boton">
                             <h2>{{ policiaDetails.numeroPlaca }}</h2>
                         </div>
@@ -129,12 +129,12 @@ export default defineComponent({
                                     <path
                                         d="M64 32C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H288V368c0-26.5 21.5-48 48-48H448V96c0-35.3-28.7-64-64-64H64zM448 352H402.7 336c-8.8 0-16 7.2-16 16v66.7V480l32-32 64-64 32-32z" />
                                 </svg>
-                                <p>NOTAS</p>
+                                <p>{{ $t('PerfilPolicia.Notas') }}</p>
                             </div>
                             <!-- añadir en el back las notas en el policia -->
                             <div class="notas_container">
                                 <div class="tarjeta_otros">
-                                    <p>NO HAY NOTAS REGISTRADAS</p>
+                                    <p>{{ $t('PerfilPolicia.NoNotas') }}</p>
                                 </div>
                                 <div class="tarjeta_otros">
                                     <div class="tarjeta_otros_cabecera">
@@ -179,7 +179,7 @@ export default defineComponent({
                                     <path
                                         d="M96 0C43 0 0 43 0 96V416c0 53 43 96 96 96H384h32c17.7 0 32-14.3 32-32s-14.3-32-32-32V384c17.7 0 32-14.3 32-32V32c0-17.7-14.3-32-32-32H384 96zm0 384H352v64H96c-17.7 0-32-14.3-32-32s14.3-32 32-32zm32-240c0-8.8 7.2-16 16-16H336c8.8 0 16 7.2 16 16s-7.2 16-16 16H144c-8.8 0-16-7.2-16-16zm16 48H336c8.8 0 16 7.2 16 16s-7.2 16-16 16H144c-8.8 0-16-7.2-16-16s7.2-16 16-16z" />
                                 </svg>
-                                <p>MULTAS</p>
+                                <p>{{ $t('PerfilPolicia.Multas') }}</p>
                             </div>
                             <template v-if="multas && multas.length > 0">
                                 <div class="notas_container">
@@ -190,8 +190,8 @@ export default defineComponent({
                                         </div>
                                         <p>{{ multa.articuloPenal }}</p>
                                         <div class="tarjeta_multa_info">
-                                            <p>ID Policía: {{ multa.idPolicia }}</p>
-                                            <p>Precio: {{ multa.precio }}</p>
+                                            <p>{{ $t('PerfilPolicia.IdPolicia') }} {{ multa.idPolicia }}</p>
+                                            <p>{{ $t('PerfilPolicia.Precio') }} {{ multa.precio }}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -199,7 +199,7 @@ export default defineComponent({
                             <template v-else>
                                 <div class="notas_container">
                                     <div class="tarjeta_multa_titulo">
-                                        <p>NO HAY MULTAS REGISTRADAS</p>
+                                        <p>{{ $t('PerfilPolicia.NoMultas') }}</p>
                                     </div>
                                 </div>
                             </template>

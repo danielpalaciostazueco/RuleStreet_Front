@@ -30,7 +30,7 @@ export default defineComponent({
       }" />
 
     </div>
-    <p v-else>REALIZA UNA BUSQUEDA PARA MOSTRAR RESULTADOS</p>
+    <p v-else>{{$t('ListadoCiudadano.Title')}}</p>
   </div>
 </template>
 <style scoped>

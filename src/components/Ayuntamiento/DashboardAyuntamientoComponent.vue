@@ -10,10 +10,10 @@
               <thead>
                   <tr>
                       <th>ID</th>
-                      <th>Descripción</th>
-                      <th>Fecha</th>
-                      <th>Imagen</th>
-                      <th>Acciones</th>
+                      <th>{{ $t('DashAyuntamiento.Description') }}</th>
+                      <th>{{ $t('DashAyuntamiento.Date') }}</th>
+                      <th>{{ $t('DashAyuntamiento.Image') }}</th>
+                      <th>{{ $t('DashAyuntamiento.Actions') }}</th>
                   </tr>
               </thead>
               <tbody>
@@ -25,8 +25,8 @@
                           <img :src="evento.imagen" alt="Imagen del evento" class="img-evento">
                       </td>
                       <td>
-                          <button @click="editarEvento(evento)" class="boton-editar">Editar</button>
-                          <button @click="borrarEvento(evento.idEventos)" class="boton-borrar ml-2">Borrar</button>
+                          <button @click="editarEvento(evento)" class="boton-editar">{{ $t('DashAyuntamiento.Edit') }}</button>
+                          <button @click="borrarEvento(evento.idEventos)" class="boton-borrar ml-2">{{ $t('DashAyuntamiento.Delete') }}</button>
                       </td>
                   </tr>
               </tbody>
@@ -37,8 +37,8 @@
           <input v-model="eventoEditando.descripcion" placeholder="Descripción" class="input-formulario" />
           <input type="datetime-local" v-model="eventoEditando.fecha" placeholder="Fecha" class="input-formulario" />
 
-          <button @click="guardarActualizarEvento" class="boton-formulario">Guardar</button>
-          <button @click="cerrarFormulario" class="boton-formulario">Cancelar</button>
+          <button @click="guardarActualizarEvento" class="boton-formulario">{{ $t('DashAyuntamiento.Save') }}</button>
+          <button @click="cerrarFormulario" class="boton-formulario">{{ $t('DashAyuntamiento.Cancel') }}</button>
       </div>
   </div>
 </template>
