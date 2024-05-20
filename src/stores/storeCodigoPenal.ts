@@ -9,7 +9,9 @@ const storeAuth = useListadoAuth();
 export interface CodigoPenal {
   idCodigoPenal: number;
   articulo: string;
+  article: string;
   descripcion: string;
+  description: string;
   precio: number;
   sentencia: string;
 
@@ -20,6 +22,8 @@ export const useListadoCodigoPenal = defineStore('listadoCodigoPenal', () => {
   const apiUrl = `http://localhost:8001`;
   const infoCodigoPenal = reactive<Array<CodigoPenal>>([]);
   let token = '';
+  
+  
   async function cargarDatosCodigoPenal() {
     try {
       if (localStorage.getItem('tokenUsuario') !== null) {
@@ -39,6 +43,55 @@ export const useListadoCodigoPenal = defineStore('listadoCodigoPenal', () => {
       });
     } catch (error) {
       console.error('Error al cargar la información del código penal:', error);
+    }
+  }
+
+  async function cargarDatosCodigoPenalIdioma() {
+    try {
+      if (localStorage.getItem('tokenUsuario') !== null) {
+        token = localStorage.getItem('tokenUsuario') ?? '';
+      } else {
+        token = localStorage.getItem('tokenPolicia') ?? '';
+      }
+      const response = await fetch(apiUrl + '/CodigoPenal/English', {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+
+      if (!response.ok) throw new Error('Error al cargar los datos del código penal');
+      const data = await response.json();
+      infoCodigoPenal.splice(0, infoCodigoPenal.length);
+      data.forEach((cp: CodigoPenal) => {
+        infoCodigoPenal.push(cp);
+      });
+    } catch (error) {
+      console.error('Error al cargar la información del código penal:', error);
+    }
+  }
+
+  async function cargarDatosCodigoPenalIdiomaId(codigoPenalId: number) {
+    try {
+      if (localStorage.getItem('tokenUsuario') !== null) {
+        token = localStorage.getItem('tokenUsuario') ?? '';
+      } else {
+        token = localStorage.getItem('tokenPolicia') ?? '';
+      }
+      const response = await fetch(apiUrl + '/CodigoPenal/English/' + codigoPenalId.toString(), {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      if (!response.ok) throw new Error('Error al cargar los datos del código penal');
+      const codigoPenal = await response.json();
+
+      const index = infoCodigoPenal.findIndex(c => c.idCodigoPenal === codigoPenalId);
+      if (index !== -1) {
+        infoCodigoPenal[index] = codigoPenal;
+      } else {
+        infoCodigoPenal.push(codigoPenal);
+      }
+
+      return codigoPenal;
+    } catch (error) {
+      console.error('Error al cargar la información del código penal:', error);
+      return null;  
     }
   }
 
@@ -117,5 +170,7 @@ export const useListadoCodigoPenal = defineStore('listadoCodigoPenal', () => {
     }
   }
 
-  return { cargarDatosCodigoPenal, cargarDatosCodigoPenalId, borrarDatosCodigoPenal, infoCodigoPenal };
+  return { cargarDatosCodigoPenal, cargarDatosCodigoPenalId, borrarDatosCodigoPenal, infoCodigoPenal 
+           ,cargarDatosCodigoPenalIdioma, cargarDatosCodigoPenalIdiomaId
+  };
 });

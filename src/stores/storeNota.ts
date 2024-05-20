@@ -11,6 +11,7 @@ export interface Nota {
    idNota : number ;
    titulo : string | null;
    descripcion : string | null;
+   description : string | null;
    fecha : Date | null;
    idPolicia : number | null;
    idCiudadano : number | null;
@@ -44,6 +45,29 @@ export const useListadoNotas = defineStore('listadoNotas', () => {
     }
   }
 
+  async function cargarDatosNotasIdioma() {
+    try {
+      if (localStorage.getItem('tokenUsuario') !== null) {
+        token = localStorage.getItem('tokenUsuario') ?? '';
+      } else {
+        token = localStorage.getItem('tokenPolicia') ?? '';
+      }
+      const response = await fetch(apiUrl + '/Nota/English', {
+        headers: { 'Authorization': `Bearer ${token}` } 
+      
+      } );
+      if (!response.ok) throw new Error('Error al cargar los datos de las notas');
+      const data = await response.json();
+      infoNotas.splice(0, infoNotas.length); 
+      data.forEach((nota : Nota) => {
+        infoNotas.push(nota); 
+      });
+    } catch (error) {
+      console.error('Error al cargar la información de las notas:', error);
+    }
+  }
+
+
   async function cargarDatosNotasId(notaId : number) {
     try {
       if (localStorage.getItem('tokenUsuario') !== null) {
@@ -52,6 +76,28 @@ export const useListadoNotas = defineStore('listadoNotas', () => {
         token = localStorage.getItem('tokenPolicia') ?? '';
       }
       const response = await fetch(apiUrl + '/Nota/' + notaId.toString(), {
+        headers: { 'Authorization': `Bearer ${token}` } 
+      });
+   
+      if (!response.ok) throw new Error('Error al cargar los datos de las notas');
+      const data = await response.json();
+      infoNotas.splice(0, infoNotas.length); 
+      data.forEach((nota : Nota) => {
+        infoNotas.push(nota); 
+      });
+    } catch (error) {
+      console.error('Error al cargar la información de las notas:', error);
+    }
+  }
+
+  async function cargarDatosNotasIdiomaId(notaId : number) {
+    try {
+      if (localStorage.getItem('tokenUsuario') !== null) {
+        token = localStorage.getItem('tokenUsuario') ?? '';
+      } else {
+        token = localStorage.getItem('tokenPolicia') ?? '';
+      }
+      const response = await fetch(apiUrl + '/Nota/English' + notaId.toString(), {
         headers: { 'Authorization': `Bearer ${token}` } 
       });
    
@@ -162,5 +208,7 @@ async function borrarDatosNotas(notaId: number) {
     }
   }
 
-  return {cargarDatosNotas ,cargarDatosNotasId, borrarDatosNotas, actualizarNotas, infoNotas, guardarNotas  };
+  return {cargarDatosNotas ,cargarDatosNotasId, borrarDatosNotas, actualizarNotas, infoNotas, guardarNotas,
+          cargarDatosNotasIdioma, cargarDatosNotasIdiomaId  
+    };
 });
