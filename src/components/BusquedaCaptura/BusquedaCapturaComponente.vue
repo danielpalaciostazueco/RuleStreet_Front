@@ -42,7 +42,7 @@
         </tbody>
       </table>
     </div>
-    <button @click="exportToExcel" class="export-button mt-4">{{ $t('BusquedaCapturaTabla.Danger') }}</button>
+    <button @click="exportToExcel" class="export-button mt-4">{{ $t('BusquedaCapturaTabla.Excel') }}</button>
   </div>
 </template>
 
