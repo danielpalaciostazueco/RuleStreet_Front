@@ -10,13 +10,16 @@ interface Vehicle {
   marca: string;
   modelo: string;
   color: string;
+  enColor: string;
   idCiudadano: number;
   Photo: string;
   ciudadano: {
     nombre: string;
   };
 }
+import { useI18n } from 'vue-i18n';
 
+const { t, locale } = useI18n();
 export default defineComponent({
   components: {
     ReturnButton
@@ -33,6 +36,7 @@ export default defineComponent({
         marca: '',
         modelo: '',
         color: '',
+        enColor: '',
         idCiudadano: 0,
         Photo: '',
         ciudadano: {
@@ -57,7 +61,8 @@ export default defineComponent({
 
     return {
       vehicleDetails,
-      vehicleid
+      vehicleid,
+      locale
     };
   }
 });
@@ -71,10 +76,10 @@ function parseRouteParam(param: string | string[]): string {
 <template>
   <div class="vehiculo_menu_derecha">
     <div class="vehiculo_menu_derecha_titulo">
-      <h2>{{$t('PerfilVehiculo.Profile')}}</h2>
+      <h2>{{ $t('PerfilVehiculo.Profile') }}</h2>
     </div>
     <div class="vehiculo_perfil">
-      <p v-if="!vehicleid">{{$t('PerfilVehiculo.Select')}}</p>
+      <p v-if="!vehicleid">{{ $t('PerfilVehiculo.Select') }}</p>
       <template v-else>
         <div class="vehiculo_perfil_usuario">
           <div class="vehiculo_perfil_usuario_izquierda">
@@ -82,23 +87,24 @@ function parseRouteParam(param: string | string[]): string {
           </div>
           <div class="vehiculo_perfil_usuario_derecha">
             <div class="vehiculo_tarjeta">
-              <p>{{$t('PerfilVehiculo.Placa')}}</p>
+              <p>{{ $t('PerfilVehiculo.Placa') }}</p>
               <p>{{ vehicleDetails.matricula }}</p>
             </div>
             <div class="vehiculo_tarjeta">
-              <p>{{$t('PerfilVehiculo.Model')}}</p>
+              <p>{{ $t('PerfilVehiculo.Model') }}</p>
               <p>{{ vehicleDetails.modelo }}</p>
             </div>
             <div class="vehiculo_tarjeta">
-              <p>{{$t('PerfilVehiculo.Brans')}}</p>
+              <p>{{ $t('PerfilVehiculo.Brans') }}</p>
               <p>{{ vehicleDetails.marca }}</p>
             </div>
             <div class="vehiculo_tarjeta">
-              <p>{{$t('PerfilVehiculo.Color')}}</p>
-              <p>{{ vehicleDetails.color }}</p>
+              <p>{{ $t('PerfilVehiculo.Color') }}</p>
+              <p v-if="locale === 'es'">{{ vehicleDetails.color }}</p>
+              <p v-if="locale === 'en'">{{ vehicleDetails.enColor }}</p>
             </div>
             <div class="vehiculo_tarjeta">
-              <p>{{$t('PerfilVehiculo.Dueno')}}</p>
+              <p>{{ $t('PerfilVehiculo.Dueno') }}</p>
               <p>{{ vehicleDetails.ciudadano.nombre }}</p>
             </div>
 
@@ -106,12 +112,12 @@ function parseRouteParam(param: string | string[]): string {
         </div>
         <div class="vehiculo_perfil_botones">
           <div class="vehiculo_perfil_botones_izquierda">
-            <h2>{{$t('PerfilVehiculo.BusquedaCaptura')}}</h2>
+            <h2>{{ $t('PerfilVehiculo.BusquedaCaptura') }}</h2>
             <div class="vehiculo_perfil_boton">
               <input type="radio" id="no_izquierda" name="response_izquierda" checked>
-              <label for="no_izquierda">{{$t('PerfilVehiculo.No')}}</label>
+              <label for="no_izquierda">{{ $t('PerfilVehiculo.No') }}</label>
               <input type="radio" id="yes_izquierda" name="response_izquierda">
-              <label for="yes_izquierda">{{$t('PerfilVehiculo.Yes')}}</label>
+              <label for="yes_izquierda">{{ $t('PerfilVehiculo.Yes') }}</label>
             </div>
           </div>
         </div>

@@ -11,6 +11,7 @@ export interface Auditoria {
     titulo : string;
     title : string;
     descripcion : string;
+    description : string;
     fecha : Date;
     idPolicia : number;
 }

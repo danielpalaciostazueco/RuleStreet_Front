@@ -3,7 +3,7 @@ import { ref } from 'vue';
 
 import { useRouter } from 'vue-router';
 import { useListadoAuth } from '@/stores/storeAuth';
-
+import BotonIdiomaComponente from '../ComponentesGenerales/BotonIdiomaComponente.vue';
 const store = useListadoAuth();
 const NombreUsuario = ref('');
 const Contraseña = ref('');
@@ -35,6 +35,8 @@ const submitForm = async () => {
                 <RouterLink to="/">{{ $t('LoginUsuario.Principal') }}</RouterLink>
             </p>
         </form>
+        <BotonIdiomaComponente />
+
     </div>
 </template>
 <style scoped>

@@ -1,6 +1,7 @@
 <template>
     <div class="p-4">
-        <div id="chart-container" class="relative h-96 overflow-hidden rounded-lg shadow-lg bg-gradient-to-br from-white to-gray-200"></div>
+        <div id="chart-container"
+            class="relative h-96 overflow-hidden rounded-lg shadow-lg bg-gradient-to-br from-white to-gray-200"></div>
         <BotonPaginaPrincipalComponente />
     </div>
 </template>
@@ -42,7 +43,6 @@ onMounted(() => {
         if (chartContainer) {
             const chart = echarts.init(chartContainer);
 
-            // Configuración del título según el tamaño de la pantalla
             const isMobile = window.innerWidth <= 768;
             const titleFontSize = isMobile ? 14 : 18;
             const subTitleFontSize = isMobile ? 10 : 12;
@@ -101,7 +101,8 @@ onMounted(() => {
 
 @media (max-width: 768px) {
     #chart-container {
-        @apply h-64; /* Ajustar la altura para dispositivos móviles */
+        @apply h-64;
+        /* Ajustar la altura para dispositivos móviles */
     }
 }
 </style>

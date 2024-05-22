@@ -22,6 +22,7 @@ interface Multa {
   precio: number;
   articuloPenal: string;
   descripcion: string;
+  description : string;
   pagada: boolean;
   idCiudadano: number;
 }

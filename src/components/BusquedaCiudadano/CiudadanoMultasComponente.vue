@@ -29,6 +29,7 @@ export default defineComponent({
       idCodigoPenal: 0,
       articulo: '',
       descripcion: '',
+      description: '',
       precio: 0,
       sentencia: ''
     });
@@ -41,12 +42,14 @@ export default defineComponent({
       const path = window.location.pathname;
       const segments = path.split('/');
       const lastSegment = segments.pop() || segments.pop();
-      idCiudadano.value = parseInt(lastSegment, 10);
+      if (lastSegment !== undefined) {
+        idCiudadano.value = parseInt(lastSegment, 10);
+      }
     });
 
     const close = () => {
       newMulta.value = { descripcion: '', monto: 0 };
-      articuloSeleccionado.value = { idCodigoPenal: 0, articulo: '', descripcion: '', precio: 0, sentencia: '' };
+      articuloSeleccionado.value = { idCodigoPenal: 0, articulo: '', descripcion: '', description: '', precio: 0, sentencia: '' };
       filtro.value = '';
       emit('update:visible', false);
       emit('onModalClose');
@@ -64,12 +67,16 @@ export default defineComponent({
       const multaData = {
         idMulta: 0,
         idPolicia: infoPolicias.IdPolicia,
-        fecha: new Date().toISOString(),
+        fecha: new Date(),
         idCodigoPenal: articuloSeleccionado.value.idCodigoPenal,
         pagada: false,
         descripcion: articuloSeleccionado.value.descripcion,
-        idCiudadano: idCiudadano.value
+        idCiudadano: idCiudadano.value,
+        precio: articuloSeleccionado.value.precio,
+        articuloPenal: articuloSeleccionado.value.articulo,
+        description: articuloSeleccionado.value.description
       };
+
       await guardarMulta(multaData);
       close();
     };
@@ -116,7 +123,8 @@ export default defineComponent({
             <div class="model_tabla_item_texto">{{ item.descripcion }}</div>
             <div class="model_tabla_item">{{ item.precio }}</div>
             <div class="model_tabla_item">{{ item.sentencia }}</div>
-            <div class="model_tabla_item_filtro" @click="guardarId(item.idCodigoPenal)">{{ $t('MultaCiudadano.Add') }}</div>
+            <div class="model_tabla_item_filtro" @click="guardarId(item.idCodigoPenal)">{{ $t('MultaCiudadano.Add') }}
+            </div>
           </div>
 
         </div>

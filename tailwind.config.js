@@ -15,6 +15,7 @@ export default {
         textoTarjeta: 'var(--colorTextoTarjeta)',
         fondoTablaModal: 'var(--colorFondoTablaModal)',
         tarjetaModal: 'var(--colorTarjetaModal)',
+
       },
     },
   },

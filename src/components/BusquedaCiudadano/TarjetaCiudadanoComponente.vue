@@ -41,13 +41,14 @@ export default defineComponent({
 
 <style scoped>
 .tarjeta {
-  @apply flex bg-[color:var(--colorBlanco)] w-full h-20 items-center gap-2 px-2;
-}
-.tarjeta p {
-  @apply text-[black];
-}
-.tarjeta_imagen {
-  @apply w-16 h-16 rounded-lg;
+    @apply flex bg-[color:var(--colorBlanco)] w-full h-20 items-center gap-2 px-2;
 }
 
+.tarjeta p {
+    @apply text-[black];
+}
+
+.tarjeta_imagen {
+    @apply w-16 h-16 rounded-lg;
+}
 </style>
