@@ -3,6 +3,7 @@ import { defineComponent, ref, computed, watch, onMounted } from 'vue';
 import ReturnButton from '@/components/ComponentesGenerales/BotonPaginaPrincipalComponente.vue';
 import { useRoute } from 'vue-router';
 import { useListadoVehiculos } from '@/stores/storeVehiculo';
+import { useI18n } from 'vue-i18n'; // Importa useI18n dentro del script
 
 interface Vehicle {
   idVehiculo: number;
@@ -17,9 +18,7 @@ interface Vehicle {
     nombre: string;
   };
 }
-import { useI18n } from 'vue-i18n';
 
-const { t, locale } = useI18n();
 export default defineComponent({
   components: {
     ReturnButton
@@ -28,6 +27,7 @@ export default defineComponent({
     const route = useRoute();
     const store = useListadoVehiculos();
     const vehicleid = ref(parseInt(parseRouteParam(route.params.id)));
+    const { t, locale } = useI18n(); // Utiliza useI18n dentro del setup
 
     const vehicleDetails = computed<Vehicle>(() => {
       return store.infoVehiculos.find(c => c.idVehiculo === vehicleid.value) || {
@@ -71,6 +71,7 @@ function parseRouteParam(param: string | string[]): string {
   return Array.isArray(param) ? param[0] : param;
 }
 </script>
+
 
 
 <template>
@@ -160,7 +161,7 @@ function parseRouteParam(param: string | string[]): string {
 }
 
 .vehiculo_perfil_usuario_derecha {
-  @apply grid grid-cols-[repeat(3, 1fr)] gap-4 justify-center items-center w-full;
+  @apply grid grid-cols-custom gap-4 justify-center items-center w-full;
 }
 
 .vehiculo_tarjeta {
@@ -231,7 +232,7 @@ function parseRouteParam(param: string | string[]): string {
 
 @media (max-width: 787px) {
   .vehiculo_perfil_usuario_derecha {
-    @apply flex grid-cols-[repeat(3, 1fr)] gap-4 justify-center items-center w-full flex-col;
+    @apply flex grid-cols-custom gap-4 justify-center items-center w-full flex-col;
   }
 }
 

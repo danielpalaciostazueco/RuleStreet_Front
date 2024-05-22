@@ -221,7 +221,7 @@ function parseRouteParam(param: string | string[]): string {
               <!-- añadir en el back las notas en el ciudadano -->
               <div class="notas_container">
                 <div class="tarjeta_otros">
-                  <p>{{ $t('PerfilCiudadano.NoNotasº') }}</p>
+                  <p>{{ $t('PerfilCiudadano.NoNotas') }}</p>
                 </div>
                 <div class="tarjeta_otros">
                   <div class="tarjeta_otros_cabecera">
@@ -364,7 +364,7 @@ function parseRouteParam(param: string | string[]): string {
 }
 
 .ciudadano_perfil_usuario_derecha {
-  @apply grid grid-cols-[repeat(3, 1fr)] gap-4 justify-center items-center w-full;
+  @apply grid grid-cols-custom gap-4 justify-center items-center w-full;
 }
 
 .ciudadano_tarjeta {
@@ -414,7 +414,7 @@ function parseRouteParam(param: string | string[]): string {
 }
 
 .ciudadano_perfil_otros {
-  @apply grid grid-cols-[repeat(2, 1fr)] gap-4 justify-center items-center w-full;
+  @apply grid grid-cols-custom2 gap-4 justify-center items-center w-full;
 }
 
 .ciudadano_perfil_otros_container {
@@ -515,7 +515,7 @@ function parseRouteParam(param: string | string[]): string {
   }
 
   .ciudadano_perfil_otros {
-    @apply grid w-full grid-cols-[repeat(2, 1fr)] items-center justify-center gap-4 mt-5;
+    @apply grid grid-cols-custom2 gap-4 justify-center items-center w-full;
   }
 
   .ciudadano_boton {
@@ -544,12 +544,12 @@ function parseRouteParam(param: string | string[]): string {
     @apply grid-cols-1;
   }
 
-  .ciudadano_perfil_botones[data-v-a5cac0f2] {
+  .ciudadano_perfil_botones {
     @apply h-auto flex-col gap-4 mt-4;
   }
 
-  .ciudadano_perfil_otros_container[data-v-a5cac0f2] {
-    @apply flex h-80 w-full bg-[color:var(--colorBusquedaCiudadanoTarjeta)] mt-4 rounded-[0.7rem];
+  .ciudadano_perfil_otros_container {
+    @apply flex h-80 w-full bg-[BusquedaCiudadanoTarjeta] mt-4 rounded-[0.7rem];
   }
 }
 
@@ -589,12 +589,12 @@ function parseRouteParam(param: string | string[]): string {
   }
 
   .ciudadano_perfil_otros_container[data-v-a5cac0f2] {
-    @apply flex h-80 w-full bg-[color:var(--colorBusquedaCiudadanoTarjeta)] mt-[2re] mt-4 rounded-[0.7rem];
+    @apply flex h-80 w-full bg-[color:var(--colorBusquedaCiudadanoTarjeta)] mt-4 rounded-[0.7rem];
   }
 
   .ciudadano_busqueda[data-v-845bb2b1] {
     @apply gap-1;
-    /* flex-direction: column; */
+
   }
 }
 
@@ -687,7 +687,7 @@ function parseRouteParam(param: string | string[]): string {
   }
 
   .ciudadano_perfil_otros_container[data-v-a5cac0f2] {
-    @apply flex h-80 w-full bg-[color:var(--colorBusquedaCiudadanoTarjeta)] mt-[1rem, ] mt-4 rounded-[0.7rem];
+    @apply flex h-80 w-full bg-[color:var(--colorBusquedaCiudadanoTarjeta)] mt-4 rounded-[0.7rem];
   }
 
   .notas_container {

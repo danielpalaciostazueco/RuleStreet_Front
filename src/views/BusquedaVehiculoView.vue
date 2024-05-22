@@ -50,6 +50,10 @@ export default defineComponent({
   @apply flex flex-row w-4/5 gap-8 h-[50rem];
 }
 
+.vehiculo_menu_izquierda {
+  @apply flex w-1/5 flex-col gap-8 bg-[color:var(--colorFondoCiudadano2)] py-8 rounded-lg;
+}
+
 @media (max-width: 1497px) {
   .vehiculo_perfil_usuario {
     @apply flex w-full gap-12 flex-col;
@@ -80,7 +84,7 @@ export default defineComponent({
 
 @media (max-width: 787px) {
   .vehiculo_perfil_usuario_derecha {
-    @apply flex grid-cols-[repeat(3, 1fr)] gap-4 justify-center items-center w-full flex-col;
+    @apply flex grid-cols-custom gap-4 justify-center items-center w-full flex-col;
   }
 }
 </style>s
