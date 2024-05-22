@@ -21,10 +21,9 @@ module.exports = {
         '2fr': 'repeat(2, 1fr)',
       },
        spacing: {
-      // Define tu clase personalizada dentro de la directiva @layer
-      '1rem': '1rem', // Define el valor del espacio que deseas, puede ser 1rem o cualquier otro valor deseado
-    },
-      
+        // Define tu clase personalizada dentro de la directiva @layer
+        '1rem': '1rem', // Define el valor del espacio que deseas, puede ser 1rem o cualquier otro valor deseado
+      },
     },
   },
   plugins: [

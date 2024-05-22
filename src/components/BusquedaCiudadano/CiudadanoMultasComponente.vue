@@ -4,6 +4,7 @@ import { useListadoCodigoPenal } from '@/stores/storeCodigoPenal';
 import { useListadoAuth } from '@/stores/storeAuth';
 import { useListadoMultas } from '@/stores/storeMulta';
 import { useRoute } from 'vue-router';
+import { useI18n } from 'vue-i18n';
 
 export default defineComponent({
   props: {
@@ -16,6 +17,7 @@ export default defineComponent({
   setup(props, { emit }) {
     const route = useRoute();
     const idCiudadano = ref(0);
+    const { t, locale } = useI18n();
 
     const newMulta = ref({
       descripcion: '',
@@ -95,7 +97,8 @@ export default defineComponent({
       close,
       guardarId,
       articuloSeleccionado,
-      filtro
+      filtro,
+      locale
     };
   }
 });
@@ -120,7 +123,8 @@ export default defineComponent({
 
           <div v-for="item in articulosFiltrados" :key="item.idCodigoPenal" class="model_tabla_fila">
             <div class="model_tabla_item">{{ item.articulo }}</div>
-            <div class="model_tabla_item_texto">{{ item.descripcion }}</div>
+            <div v-if="locale === 'es'" class="model_tabla_item_texto">{{ item.descripcion }}</div>
+            <div v-if="locale === 'en'" class="model_tabla_item_texto">{{ item.description }}</div>
             <div class="model_tabla_item">{{ item.precio }}</div>
             <div class="model_tabla_item">{{ item.sentencia }}</div>
             <div class="model_tabla_item_filtro" @click="guardarId(item.idCodigoPenal)">{{ $t('MultaCiudadano.Add') }}
@@ -147,7 +151,7 @@ export default defineComponent({
             </div>
           </div>
           <div class="boton_container">
-            <button class="modal_boton" @click="submitMulta">{{ $t('MultaCiudadano.AddFine') }}</button>
+            <button class="modal_boton" @click="submitMulta">{{ $t('MultaCiudadano.AddMulta') }}</button>
           </div>
         </div>
       </div>
