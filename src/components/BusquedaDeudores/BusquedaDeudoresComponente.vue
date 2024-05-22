@@ -3,14 +3,14 @@
     <div class="search-section mb-4">
       <input v-model="searchQuery" placeholder="Buscar deudor..." @input="filterDeudores" class="search-input" />
       <div class="filter-section mt-2">
-        <label for="filterField" class="mr-2">Filtrar por:</label>
+        <label for="filterField" class="mr-2">{{ $t('DeudoresTabla.Filter') }}</label>
         <select v-model="filterField" @change="filterDeudores" class="filter-select">
-          <option value="nombre">Nombre</option>
-          <option value="apellidos">Apellidos</option>
+          <option value="nombre">{{ $t('DeudoresTabla.Name') }}</option>
+          <option value="apellidos">{{ $t('DeudoresTabla.Surname') }}</option>
           <option value="dni">DNI</option>
-          <option value="genero">Género</option>
-          <option value="nacionalidad">Nacionalidad</option>
-            <option value="cantidad">Cantidad</option>
+          <option value="genero">{{ $t('DeudoresTabla.Gender') }}</option>
+          <option value="nacionalidad">{{ $t('DeudoresTabla.Nationality') }}</option>
+          <option value="cantidad">{{ $t('DeudoresTabla.Cantidad') }}</option>
         </select>
       </div>
     </div>
@@ -18,29 +18,34 @@
       <table class="table-auto w-full">
         <thead>
           <tr class="bg-blue-800 text-white">
-            <th class="px-4 py-2">Foto</th>
+            <th class="px-4 py-2">{{ $t('DeudoresTabla.Photo') }}</th>
             <th v-if="filterField" class="px-4 py-2">{{ fieldDisplayName(filterField) }}</th>
-            <th v-if="filterField !== 'nombre'" class="px-4 py-2">Nombre</th>
-            <th v-if="filterField !== 'apellidos'" class="px-4 py-2">Apellidos</th>
-            <th v-if="filterField !== 'genero'" class="px-4 py-2">Género</th>
-            <th v-if="filterField !== 'nacionalidad'" class="px-4 py-2">Nacionalidad</th>
-            <th v-if="filterField !== 'cantidad'" class="px-4 py-2">Cantidad</th>
+            <th v-if="filterField !== 'nombre'" class="px-4 py-2">{{ $t('DeudoresTabla.Name') }}</th>
+            <th v-if="filterField !== 'apellidos'" class="px-4 py-2">{{ $t('DeudoresTabla.Surname') }}</th>
+            <th v-if="filterField !== 'genero'" class="px-4 py-2">{{ $t('DeudoresTabla.Gender') }}</th>
+            <th v-if="filterField !== 'nacionalidad'" class="px-4 py-2">{{ $t('DeudoresTabla.Nationality') }}</th>
+            <th v-if="filterField !== 'cantidad'" class="px-4 py-2">{{ $t('DeudoresTabla.Cantidad') }}</th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="deudor in filteredDeudores" :key="deudor.idCiudadano" class="hover:bg-blue-100">
-            <td class="px-4 py-2"><img :src="deudor.imagenUrl" alt="Foto del deudor" class="rounded-full w-12 h-12 object-cover" /></td>
+            <td class="px-4 py-2"><img :src="deudor.imagenUrl" alt="Foto del deudor"
+                class="rounded-full w-12 h-12 object-cover" /></td>
             <td v-if="filterField" class="px-4 py-2">{{ deudor[filterField as keyof typeof deudor] }}</td>
             <td v-if="filterField !== 'nombre'" class="px-4 py-2">{{ deudor.nombre }}</td>
             <td v-if="filterField !== 'apellidos'" class="px-4 py-2">{{ deudor.apellidos }}</td>
-            <td v-if="filterField !== 'genero'" class="px-4 py-2">{{ deudor.genero }}</td>
-            <td v-if="filterField !== 'nacionalidad'" class="px-4 py-2">{{ deudor.nacionalidad }}</td>
-            <td v-if="filterField !== 'cantidad'" class="px-4 py-2">{{ deudor.cantidad}}</td>
+            <td v-if="filterField !== 'genero' && locale === 'es'" class="px-4 py-2">{{ deudor.genero }}</td>
+            <td v-if="filterField !== 'genero' && locale === 'en'" class="px-4 py-2">{{ deudor.genero }}</td>
+            <td v-if="filterField !== 'nacionalidad' && locale === 'es'" class="px-4 py-2">{{ deudor.nacionalidad }}
+            </td>
+            <td v-if="filterField !== 'nacionalidad' && locale === 'en'" class="px-4 py-2">{{ deudor.nationality }}
+            </td>
+            <td v-if="filterField !== 'cantidad'" class="px-4 py-2">{{ deudor.cantidad }}</td>
           </tr>
         </tbody>
       </table>
     </div>
-    <button @click="exportToExcel" class="export-button mt-4">Exportar a Excel</button>
+    <button @click="exportToExcel" class="export-button mt-4">{{ $t('DeudoresTabla.Excel') }}</button>
   </div>
 </template>
 
@@ -48,7 +53,9 @@
 import { computed, ref, onMounted } from 'vue';
 import { useListadoCiudadanos } from '@/stores/storeCiudadano';
 import * as XLSX from 'xlsx';
+import { useI18n } from 'vue-i18n';
 
+const { t, locale } = useI18n();
 const { infoDeudores, cargarDatosCiudadanosDeudores } = useListadoCiudadanos();
 const searchQuery = ref('');
 const filterField = ref('nombre');
@@ -94,54 +101,75 @@ const exportToExcel = () => {
 .container {
   @apply mx-auto p-4;
 }
+
 .search-section {
   @apply mb-4;
 }
+
 .search-input {
   @apply w-full p-2 mb-2 border rounded focus:outline-none focus:border-blue-600;
 }
+
 .filter-section {
   @apply mt-2;
 }
+
 .filter-select {
   @apply p-2 border rounded focus:outline-none focus:border-blue-600;
 }
+
 .table-wrapper {
   @apply shadow-lg rounded-lg overflow-hidden;
 }
+
 table {
   @apply table-auto w-full;
 }
-th, td {
+
+th,
+td {
   @apply px-4 py-2;
 }
+
 th {
   @apply bg-blue-800 text-white;
 }
+
 tbody tr:hover {
   @apply bg-blue-100;
 }
+
 img {
   @apply rounded-full w-12 h-12 object-cover;
 }
+
 .export-button {
   @apply mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg cursor-pointer transition-all duration-300 ease-in-out;
 }
+
 .export-button:hover {
   @apply bg-blue-700;
 }
+
 @media (max-width: 768px) {
-  th, td {
+
+  th,
+  td {
     @apply text-sm;
   }
+
   img {
     @apply w-10 h-10;
   }
 }
+
 @media (max-width: 480px) {
-  th, td {
+
+  th,
+  td {
     @apply text-xs;
   }
+
   img {
     @apply w-8 h-8;
   }

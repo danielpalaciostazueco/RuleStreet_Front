@@ -1,15 +1,15 @@
 <template>
   <div class="container mx-auto p-4">
     <div class="search-section mb-4">
-      <input v-model="searchQuery" placeholder="Buscar ciudadano..." @input="filterCiudadanos" class="search-input" />
+      <input v-model="searchQuery" placeholder="Buscar ciudadano..." @input="filteredCiudadanos" class="search-input" />
       <div class="filter-section mt-2">
-        <label for="filterField" class="mr-2">Filtrar por:</label>
-        <select v-model="filterField" @change="filterCiudadanos" class="filter-select">
-          <option value="nombre">Nombre</option>
-          <option value="apellidos">Apellidos</option>
+        <label for="filterField" class="mr-2">{{ $t('BusquedaCapturaTabla.Filter') }}</label>
+        <select v-model="filterField" @change="filteredCiudadanos" class="filter-select">
+          <option value="nombre">{{ $t('BusquedaCapturaTabla.Name') }}</option>
+          <option value="apellidos">{{ $t('BusquedaCapturaTabla.Surname') }}</option>
           <option value="dni">DNI</option>
-          <option value="genero">Género</option>
-          <option value="isPeligroso">Es peligroso</option>
+          <option value="genero">{{ $t('BusquedaCapturaTabla.Gender') }}</option>
+          <option value="isPeligroso">{{ $t('BusquedaCapturaTabla.Danger') }}</option>
         </select>
       </div>
     </div>
@@ -17,27 +17,32 @@
       <table class="table-auto w-full">
         <thead>
           <tr class="bg-blue-800 text-white">
-            <th class="px-4 py-2">Foto</th>
+            <th class="px-4 py-2">{{ $t('BusquedaCapturaTabla.Photo') }}</th>
             <th v-if="filterField" class="px-4 py-2">{{ fieldDisplayName(filterField) }}</th>
-            <th v-if="filterField !== 'nombre'" class="px-4 py-2">Nombre</th>
-            <th v-if="filterField !== 'apellidos'" class="px-4 py-2">Apellidos</th>
-            <th v-if="filterField !== 'genero'" class="px-4 py-2">Género</th>
-            <th v-if="filterField !== 'isPeligroso'" class="px-4 py-2">Peligroso</th>
+            <th v-if="filterField !== 'nombre'" class="px-4 py-2">{{ $t('BusquedaCapturaTabla.Name') }}</th>
+            <th v-if="filterField !== 'apellidos'" class="px-4 py-2">{{ $t('BusquedaCapturaTabla.Surname') }}</th>
+            <th v-if="filterField !== 'genero'" class="px-4 py-2">{{ $t('BusquedaCapturaTabla.Gender') }}</th>
+            <th v-if="filterField !== 'isPeligroso'" class="px-4 py-2">{{ $t('BusquedaCapturaTabla.Danger') }}</th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="ciudadano in filteredCiudadanos" :key="ciudadano.idCiudadano" class="hover:bg-blue-100">
-            <td class="px-4 py-2"><img :src="ciudadano.imagenUrl" alt="Foto del ciudadano" class="rounded-full w-12 h-12 object-cover" /></td>
+            <td class="px-4 py-2"><img :src="ciudadano.imagenUrl" alt="Foto del ciudadano"
+                class="rounded-full w-12 h-12 object-cover" /></td>
             <td v-if="filterField" class="px-4 py-2">{{ ciudadano[filterField as keyof typeof ciudadano] }}</td>
             <td v-if="filterField !== 'nombre'" class="px-4 py-2">{{ ciudadano.nombre }}</td>
             <td v-if="filterField !== 'apellidos'" class="px-4 py-2">{{ ciudadano.apellidos }}</td>
-            <td v-if="filterField !== 'genero'" class="px-4 py-2">{{ ciudadano.genero }}</td>
-            <td v-if="filterField !== 'isPeligroso'" class="px-4 py-2">{{ ciudadano.isPeligroso ? 'Sí' : 'No' }}</td>
+            <td v-if="filterField !== 'genero' && locale === 'en'" class="px-4 py-2">{{ ciudadano.genero }}</td>
+            <td v-if="filterField !== 'genero' && locale === 'es'" class="px-4 py-2">{{ ciudadano.gender }}</td>
+            <td v-if="filterField !== 'isPeligroso' && locale === 'es'" class="px-4 py-2">{{ ciudadano.isPeligroso ?
+              'Sí' : 'No' }}</td>
+            <td v-if="filterField !== 'isPeligroso' && locale === 'en'" class="px-4 py-2">{{ ciudadano.isPeligroso ?
+              'Yes' : 'No' }}</td>
           </tr>
         </tbody>
       </table>
     </div>
-    <button @click="exportToExcel" class="export-button mt-4">Exportar a Excel</button>
+    <button @click="exportToExcel" class="export-button mt-4">{{ $t('BusquedaCapturaTabla.Danger') }}</button>
   </div>
 </template>
 
@@ -45,7 +50,9 @@
 import { computed, ref, onMounted } from 'vue';
 import { useListadoCiudadanos } from '@/stores/storeCiudadano';
 import * as XLSX from 'xlsx';
+import { useI18n } from 'vue-i18n';
 
+const { t, locale } = useI18n();
 const store = useListadoCiudadanos();
 const { infoCiudadanosBusquedaCaptura, cargarDatosCiudadanosBusquedaCaptura } = store;
 const searchQuery = ref('');
@@ -66,7 +73,8 @@ const filteredCiudadanos = computed(() => {
 });
 
 function fieldDisplayName(field: any) {
-  const names = {
+
+  const names: { [key: string]: string } = {
     nombre: 'Nombre',
     apellidos: 'Apellidos',
     genero: 'Género',
@@ -94,54 +102,75 @@ const exportToExcel = () => {
 .container {
   @apply mx-auto p-4;
 }
+
 .search-section {
   @apply mb-4;
 }
+
 .search-input {
   @apply w-full p-2 mb-2 border rounded focus:outline-none focus:border-blue-600;
 }
+
 .filter-section {
   @apply mt-2;
 }
+
 .filter-select {
   @apply p-2 border rounded focus:outline-none focus:border-blue-600;
 }
+
 .table-wrapper {
   @apply shadow-lg rounded-lg overflow-hidden;
 }
+
 table {
   @apply table-auto w-full;
 }
-th, td {
+
+th,
+td {
   @apply px-4 py-2;
 }
+
 th {
   @apply bg-blue-800 text-white;
 }
+
 tbody tr:hover {
   @apply bg-blue-100;
 }
+
 img {
   @apply rounded-full w-12 h-12 object-cover;
 }
+
 .export-button {
   @apply mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg cursor-pointer transition-all duration-300 ease-in-out;
 }
+
 .export-button:hover {
   @apply bg-blue-700;
 }
+
 @media (max-width: 768px) {
-  th, td {
+
+  th,
+  td {
     @apply text-sm;
   }
+
   img {
     @apply w-10 h-10;
   }
 }
+
 @media (max-width: 480px) {
-  th, td {
+
+  th,
+  td {
     @apply text-xs;
   }
+
   img {
     @apply w-8 h-8;
   }

@@ -8,6 +8,7 @@ interface Vehiculo {
   matricula: string;
   marca: string;
   modelo: string;
+  enColor: string;
   color: string;
   idCiudadano: number;
 }
@@ -19,6 +20,7 @@ interface Multa {
   precio: number;
   articuloPenal: string;
   descripcion: string;
+  description: string;
   pagada: boolean;
   idCiudadano: number;
 }
@@ -29,9 +31,12 @@ interface Ciudadano {
   apellidos: string;
   dni: string;
   genero: string;
+  gender: string;
   nacionalidad: string;
+  nationality: string;
   fechaNacimiento: Date;
   direccion: string;
+  address: string;
   numeroTelefono: string;
   numeroCuentaBancaria: string;
   isPoli: boolean;
@@ -72,7 +77,7 @@ export default defineComponent({
 <template>
   <div class="ciudadano_menu_izquierda">
     <div class="ciudadano_menu_izquierda_titulo">
-      <h2>LISTA DE CIUDADANOS</h2>
+      <h2>{{ $t('BusquedaCiudadano.List') }}</h2>
     </div>
     <div class="ciudadano_busqueda">
       <input type="text" placeholder="Ciudadano" v-model="searchQuery">

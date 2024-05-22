@@ -1,25 +1,35 @@
 <script lang="ts">
-import { defineComponent, type PropType } from 'vue';
+import { defineComponent, type PropType, computed } from 'vue';
 import VehicleCard from '@/components/BusquedaVehiculo/TarjetaVehiculoComponente.vue';
 import type { Vehiculo } from '@/stores/storeVehiculo';
+import { useI18n } from 'vue-i18n';
 
 export default defineComponent({
   components: {
     VehicleCard
   },
   props: {
-    vehicles: Array as PropType<Vehiculo[]>
+    vehicles: {
+      type: Array as PropType<Vehiculo[]>,
+      required: true
+    }
+  },
+  setup() {
+    const { t, locale } = useI18n();
+    const currentLocale = computed(() => locale.value);
+
+    return {
+      t,
+      locale: currentLocale
+    };
   }
-
-
 });
 </script>
-
 
 <template>
   <div class="vehiculo_menu_izquierda_contenedor">
     <div class="vehiculo_contenedor_tarjeta" v-if="vehicles && vehicles.length > 0">
-      <VehicleCard v-for="vehicle in vehicles" :key="vehicle.idVehiculo" :vehicle="{
+      <VehicleCard v-if="locale === 'es'" v-for="vehicle in vehicles" :key="vehicle.idVehiculo" :vehicle="{
         idVehiculo: vehicle.idVehiculo,
         matricula: vehicle.matricula,
         modelo: vehicle.modelo,
@@ -29,8 +39,17 @@ export default defineComponent({
         ciudadano: vehicle.ciudadano
       }" />
 
+      <VehicleCard v-if="locale === 'en'" v-for="vehicle in vehicles" :key="vehicle.idVehiculo" :vehicle="{
+        idVehiculo: vehicle.idVehiculo,
+        matricula: vehicle.matricula,
+        modelo: vehicle.modelo,
+        marca: vehicle.marca,
+        color: vehicle.enColor,
+        Photo: vehicle.photo,
+        ciudadano: vehicle.ciudadano
+      }" />
     </div>
-    <p v-else>REALIZA UNA BUSQUEDA PARA MOSTRAR RESULTADOS</p>
+    <p v-else>{{ $t('ListadoCiudadano.Title') }}</p>
   </div>
 </template>
 <style scoped>

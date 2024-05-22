@@ -6,9 +6,10 @@ import { useListadoAuth } from './storeAuth';
 const storeAuth = useListadoAuth();
 
 export interface Denuncia{
-   idDenuncia : number;
-   titulo : string;
+    idDenuncia : number;
+    titulo : string;
     descripcion : string;
+    description : string;
     fecha : Date;
     idPolicia : number;
     idCiudadano: number;

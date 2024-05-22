@@ -1,96 +1,62 @@
 <script setup lang="ts">
 import { ref, defineEmits } from 'vue';
 import { useListadoAuth } from '@/stores/storeAuth';
+
 const store = useListadoAuth();
 
 const submitForm = async () => {
-
     await store.registroUsuario();
 };
 </script>
+
 <template>
-    <div class="login-container">
-        <form @submit.prevent="submitForm" class="login-form">
-            <h2>Register</h2>
-            <input type="text" v-model="store.DatosRegistro.Dni" placeholder="Dni Completo">
-            <input type="text" v-model="store.DatosRegistro.NombreUsuario" placeholder="Nombre de usuario">
-            <input type="password" v-model="store.DatosRegistro.Contrasena" placeholder="Contraseña">
-            <p class="links">
-                <RouterLink to="/loginPolicia">¿Eres policía?</RouterLink>
-                <RouterLink to="/loginAyuntamiento">¿Eres del Ayuntamiento?</RouterLink>
-                <RouterLink to="/register">¿No tienes cuenta? Regístrate</RouterLink>
+    <div class="login-container" style="display: flex; justify-content: center; align-items: center; min-height: 100vh; background-color: var(--colorFondo);">
+        <form @submit.prevent="submitForm" class="login-form" style="background-color: var(--colorFondoTarjeta); padding: 2rem; border-radius: 0.75rem; box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1); text-align: center; width: 91.666667%; max-width: 28rem;">
+            <h2 style="font-size: 1.5rem; margin-bottom: 1rem; color: var(--colorBlanco);">{{ $t('Register.Title') }}</h2>
+            <input type="text" v-model="store.DatosRegistro.Dni" :placeholder="$t('Register.Dni')" style="background-color: var(--colorTextoTarjeta); border: 1px solid blue; color: black; padding: 0.5rem; border-radius: 0.375rem; margin-bottom: 1rem; width: 100%; font-size: 1rem;">
+            <input type="text" v-model="store.DatosRegistro.NombreUsuario" :placeholder="$t('Register.NombreUsuario')" style="background-color: var(--colorTextoTarjeta); border: 1px solid blue; color: black; padding: 0.5rem; border-radius: 0.375rem; margin-bottom: 1rem; width: 100%; font-size: 1rem;">
+            <input type="password" v-model="store.DatosRegistro.Contrasena" :placeholder="$t('Register.Password')" style="background-color: var(--colorTextoTarjeta); border: 1px solid blue; color: black; padding: 0.5rem; border-radius: 0.375rem; margin-bottom: 1rem; width: 100%; font-size: 1rem;">
+            <p class="links" style="margin-top: 1rem; color: var(--colorBlanco);">
+                <RouterLink to="/loginPolicia" style="color: var(--colorBlanco); display: block; margin-bottom: 0.5rem; text-align: left;">{{ $t('Register.Policia') }}</RouterLink>
+                <RouterLink to="/loginAyuntamiento" style="color: var(--colorBlanco); display: block; margin-bottom: 0.5rem; text-align: left;">{{ $t('Register.Ayuntamiento') }}</RouterLink>
+                <RouterLink to="/register" style="color: var(--colorBlanco); display: block; margin-bottom: 0.5rem; text-align: left;">{{ $t('Register.Cuenta') }}</RouterLink>
             </p>
-            <button type="submit">Iniciar Sesión</button>
-            <p>
-                <RouterLink to="/">Volver a la página principal</RouterLink>
+            <button type="submit" style="background-color: blue; color: white; padding: 0.5rem; border-radius: 0.375rem; cursor: pointer; width: auto; font-size: 1.25rem; transition: background-color 0.3s;">{{ $t('Register.Login') }}</button>
+            <p style="margin-top: 1rem; color: var(--colorBlanco);">
+                <RouterLink to="/" style="color: var(--colorBlanco);">{{ $t('Register.Principal') }}</RouterLink>
             </p>
         </form>
     </div>
 </template>
+
 <style scoped>
-.login-container {
-    @apply flex justify-center items-center min-h-screen bg-[var(--colorFondo)];
-}
-
-.login-form {
-    @apply bg-[var(--colorFondoTarjeta)] p-8 rounded-xl shadow-md text-center w-11/12 max-w-md;
-}
-
-.login-form h2 {
-    @apply text-2xl mb-4 text-[var(--colorBlanco)];
-}
-
-.login-form input {
-    @apply bg-[var(--colorTextoTarjeta)] border border-blue-500 text-black py-2 rounded-md mb-4 w-full text-base;
-}
-
-.login-form button {
-    @apply bg-blue-500 text-white py-2 rounded-md cursor-pointer w-auto text-xl transition-colors duration-300;
-}
-
-.login-form button:hover {
-    @apply bg-blue-600;
-}
-
-.login-form p {
-    @apply mt-4 text-[var(--colorBlanco)];
-}
-
-.login-form .links a {
-    @apply text-[var(--colorBlanco)] block mb-2 text-left;
-}
-
-.login-form .links a:hover {
-    @apply text-blue-600;
-}
-
 @media (max-width: 768px) {
     .login-form {
-        @apply p-6;
+        padding: 1.5rem;
     }
 
     .login-form h2 {
-        @apply text-lg;
+        font-size: 1.125rem;
     }
 
     .login-form input,
     .login-form button {
-        @apply text-sm;
+        font-size: 0.875rem;
     }
 }
 
 @media (max-width: 480px) {
     .login-form {
-        @apply p-4;
+        padding: 1rem;
     }
 
     .login-form h2 {
-        @apply text-base;
+        font-size: 1rem;
     }
 
     .login-form input,
     .login-form button {
-        @apply text-xs;
+        font-size: 0.75rem;
     }
 }
 </style>

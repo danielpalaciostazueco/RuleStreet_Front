@@ -36,7 +36,7 @@ export default defineComponent({
 <template>
   <div class="vehiculo_menu_izquierda">
     <div class="vehiculo_menu_izquierda_titulo">
-      <h2>LISTA DE VEHICULOS</h2>
+      <h2>{{ $t('VehiculoBusqueda.List') }}</h2>
     </div>
     <div class="vehiculo_busqueda">
       <input type="text" placeholder="Matrícula del vehículo" v-model="searchQuery">

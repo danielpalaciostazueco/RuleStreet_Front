@@ -3,7 +3,7 @@
 import { defineStore } from 'pinia';
 import { reactive } from 'vue';
 import { useListadoAuth } from './storeAuth';
-const storeAuth = useListadoAuth();
+
 
 
 export interface Vehiculo {
@@ -12,6 +12,7 @@ export interface Vehiculo {
   marca : string;
   modelo : string;
   color : string;
+  enColor : string;
   idCiudadano : number,
   photo : string;
 }
@@ -22,6 +23,7 @@ export const useListadoVehiculos = defineStore('listadoVehiculos', () => {
   const infoVehiculos = reactive<Array<Vehiculo>>([]);
   
   let token = ''
+
   async function cargarDatosVehiculos() {
     try {
       if (localStorage.getItem('tokenUsuario') !== null) {
@@ -41,6 +43,28 @@ export const useListadoVehiculos = defineStore('listadoVehiculos', () => {
     } catch (error) {
         console.error('Error al cargar la información de los vehiculos:', error);
     }
+}
+
+
+async function cargarDatosVehiculosIdioma() {
+  try {
+    if (localStorage.getItem('tokenUsuario') !== null) {
+      token = localStorage.getItem('tokenUsuario') ?? '';
+    } else {
+      token = localStorage.getItem('tokenPolicia') ?? '';
+    }
+      const response = await fetch(apiUrl + '/Vehiculo/English', {
+          headers: { 'Authorization': `Bearer ${token}` } 
+      });
+      if (!response.ok) throw new Error('Error al cargar los datos de los vehiculos');
+      const data = await response.json();
+      infoVehiculos.splice(0, infoVehiculos.length); 
+      data.forEach((vehiculo: Vehiculo) => {
+          infoVehiculos.push(vehiculo); 
+      });
+  } catch (error) {
+      console.error('Error al cargar la información de los vehiculos:', error);
+  }
 }
 
   async function cargarDatosVehiculosId(vehiculoId: number) {
@@ -67,7 +91,32 @@ export const useListadoVehiculos = defineStore('listadoVehiculos', () => {
     }
   }
   
-async function guardarObra(vehiculo : Vehiculo) {
+  async function cargarDatosVehiculosIdiomaId(vehiculoId: number) {
+    try {
+      if (localStorage.getItem('tokenUsuario') !== null) {
+        token = localStorage.getItem('tokenUsuario') ?? '';
+      } else {
+        token = localStorage.getItem('tokenPolicia') ?? '';
+      }
+      const response = await fetch(apiUrl + '/Vehiculo/English' + vehiculoId.toString(), {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      if (!response.ok) throw new Error('Error al cargar los datos del vehiculo');
+      const ciudadano = await response.json();
+
+      const index = infoVehiculos.findIndex(c => c.idCiudadano === vehiculoId);
+      if (index !== -1) {
+        infoVehiculos[index] = ciudadano;
+      } else {
+        infoVehiculos.push(ciudadano); 
+      }
+    } catch (error) {
+      console.error('Error al cargar la información del vehiculo:', error);
+    }
+  }
+  
+  
+async function guardarVehiculo(vehiculo : Vehiculo) {
   try {
   
     if (localStorage.getItem('tokenUsuario') !== null) {
@@ -165,5 +214,6 @@ async function actualizarVehiculo(vehiculo : Vehiculo) {
   
 
 
-  return {cargarDatosVehiculos,cargarDatosVehiculosId, borrarDatosVehiculos, actualizarVehiculo, infoVehiculos  };
+  return {cargarDatosVehiculos,cargarDatosVehiculosId, borrarDatosVehiculos, actualizarVehiculo, infoVehiculos, guardarVehiculo 
+          ,cargarDatosVehiculosIdioma, cargarDatosVehiculosIdiomaId, formatearFecha};
 });
