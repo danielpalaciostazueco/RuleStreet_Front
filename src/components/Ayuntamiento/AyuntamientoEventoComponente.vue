@@ -1,4 +1,5 @@
 <template>
+  <BotonPaginaPrincipalComponente />
   <div class="info-container flex flex-wrap justify-around p-5 gap-5">
     <div v-if="infoEventos.length === 0" class="no-events w-full text-center text-textoTarjeta text-lg">
       <h2>{{ $t('EventoAyuntamiento.Title') }}</h2>
@@ -25,6 +26,7 @@ import { onMounted, computed } from 'vue';
 import { useListadoEvento } from '@/stores/storeEventos';
 import type { Evento } from '@/stores/storeEventos';
 import { useI18n } from 'vue-i18n';
+import BotonPaginaPrincipalComponente from '../ComponentesGenerales/BotonPaginaPrincipalComponente.vue';
 
 const { t, locale } = useI18n();
 const store = useListadoEvento();
@@ -49,6 +51,20 @@ const fechaFormato = (fecha: string | Date): string => {
 };
 </script>
 <style scoped>
+.ciudadano_boton {
+  display: flex;
+  height: 2rem;
+  width: 5rem;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--colorBotonBusquedaCiudadano);
+  color: var(--colorTextoTarjeta);
+  text-decoration-line: none;
+  margin-left: 10px;
+  margin-top: 10px;
+  border-radius: 10px;
+}
+
 .info-container {
   @apply flex flex-wrap justify-around p-5 gap-5;
 }

@@ -133,6 +133,7 @@ export const messages = {
       Description: 'Description',
       Cuantity: 'Cuantity',
       Sentencia: 'Sentence',
+      Month : 'Month',
     },
 
     BotonPrincipal: {
@@ -316,6 +317,7 @@ export const messages = {
       Description: 'Descripción',
       Cuantity: 'Cantidad',
       Sentencia: 'Sentencia',
+      Month : 'Mes',
     },
 
     BotonPrincipal: {

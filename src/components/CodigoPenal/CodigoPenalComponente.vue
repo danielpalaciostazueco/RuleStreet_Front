@@ -84,7 +84,7 @@ export default defineComponent({
                   ${{ codigo.precio }}
                 </td>
                 <td class="text-left border-b-[color:var(--colorFondoCiudadano)] bg-[#525C67] w-5 p-2.5">
-                  {{ codigo.sentencia }}
+                  {{ codigo.sentencia }} {{ $t('CodigoPenalTabla.Month') }}
                 </td>
               </tr>
               <tr v-if="!filtrarCodigos.length">

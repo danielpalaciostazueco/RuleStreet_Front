@@ -107,6 +107,19 @@ router.beforeEach((to, from, next) => {
   }
 });
 
+
+router.beforeEach((to, from, next) => {
+  if (to.name === 'graficaBusquedaCaptura' && localStorage.getItem('tokenPolicia') === null) {
+    if (from.name !== 'home') {
+      next({ name: 'home' });
+    } else {
+      next(false); 
+    }
+  } else {
+    next(); 
+  }
+});
+
 router.beforeEach((to, from, next) => {
   if (to.name === 'busquedaVehiculo' && localStorage.getItem('tokenPolicia') === null) {
     if (from.name !== 'home') {

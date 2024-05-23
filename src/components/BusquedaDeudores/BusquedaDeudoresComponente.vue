@@ -46,6 +46,7 @@
       </table>
     </div>
     <button @click="exportToExcel" class="export-button mt-4">{{ $t('DeudoresTabla.Excel') }}</button>
+    <BotonPaginaPrincipalComponente />
   </div>
 </template>
 
@@ -54,6 +55,7 @@ import { computed, ref, onMounted } from 'vue';
 import { useListadoCiudadanos } from '@/stores/storeCiudadano';
 import * as XLSX from 'xlsx';
 import { useI18n } from 'vue-i18n';
+import BotonPaginaPrincipalComponente from '../ComponentesGenerales/BotonPaginaPrincipalComponente.vue';
 
 const { t, locale } = useI18n();
 const { infoDeudores, cargarDatosCiudadanosDeudores } = useListadoCiudadanos();
@@ -72,7 +74,7 @@ const filteredDeudores = computed(() => {
 });
 
 function fieldDisplayName(field: any) {
-  const names = {
+  const names: { [key: string]: string } = {
     nombre: 'Nombre',
     apellidos: 'Apellidos',
     genero: 'Género',
@@ -98,6 +100,19 @@ const exportToExcel = () => {
 </script>
 
 <style scoped>
+.ciudadano_boton {
+  display: flex;
+  height: 2rem;
+  width: 5rem;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--colorBotonBusquedaCiudadano);
+  color: var(--colorTextoTarjeta);
+  text-decoration-line: none;
+  margin-top: 10px;
+  border-radius: 10px;
+}
+
 .container {
   @apply mx-auto p-4;
 }
