@@ -62,7 +62,7 @@ export default defineComponent({
     const citizenId = ref(parseInt(parseRouteParam(route.params.id) || '0'));
     const showModal = ref(false);
 
-    const { t, locale } = useI18n(); // Movido aquí
+    const { t, locale } = useI18n();
 
     const reloadCitizenDetails = () => {
       if (citizenId.value) {
@@ -163,7 +163,6 @@ function parseRouteParam(param: string | string[]): string {
             <div class="ciudadano_tarjeta">
               <p>{{ $t('PerfilCiudadano.Nationality') }}</p>
               <p v-if="locale === 'es'">{{ citizenDetails.nacionalidad }}</p>
-              <p v-if="locale === 'es'">{{ citizenDetails.nationality }}</p>
               <p v-if="locale === 'en'">{{ citizenDetails.nationality }}</p>
             </div>
             <div class="ciudadano_tarjeta">
