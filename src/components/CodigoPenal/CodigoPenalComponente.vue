@@ -41,7 +41,6 @@ export default defineComponent({
 
 <template>
   <div>
-    <TituloComponente />
     <div class="flex flex-col bg-[color:var(--colorFondo)]">
       <div
         class="w-4/5 bg-[color:var(--colorFondoCiudadano)] text-[color:var(--colorBlanco)] shadow-[0_4px_8px_rgba(0,0,0,0.1)] grow m-auto p-5 rounded-[10px] font-[Arial,sans-serif]">
@@ -97,55 +96,27 @@ export default defineComponent({
           </table>
         </div>
       </div>
+      <BotonPaginaPrincipalComponente />
     </div>
-    <BotonPaginaPrincipalComponente />
   </div>
 </template>
 
-<style scoped>
-.vehiculo_contenedor_tarjeta {
-  @apply flex flex-col gap-8;
-}
-
-.vehiculo_menu_izquierda_contenedor {
-  @apply flex flex-col h-full overflow-y-auto px-8 rounded-lg;
-}
-
-.vehiculo_menu_izquierda_contenedor p {
-  @apply text-[color:var(--colorTextoTarjeta)];
-}
-
-.vehiculo_menu_izquierda_contenedor::-webkit-scrollbar {
-  @apply w-2;
-}
-
-.vehiculo_menu_izquierda_contenedor::-webkit-scrollbar-track {
-  @apply bg-[color:var(--colorFondoCiudadano2)];
-}
-
-.vehiculo_menu_izquierda_contenedor::-webkit-scrollbar-thumb {
-  @apply bg-[color:var(--colorBlanco)] rounded hover:bg-[color:var(--colorFondoCiudadano)];
-}
-
-@media (max-width: 768px) {
-  .vehiculo_menu_izquierda_contenedor {
-    @apply px-4;
-  }
-}
-
-@media (max-width: 480px) {
-  .vehiculo_menu_izquierda_contenedor {
-    @apply px-2;
-  }
-
-  .vehiculo_contenedor_tarjeta {
-    @apply max-h-40 overflow-y-auto;
-  }
-}
-</style>
 
 
 <style scoped>
+.ciudadano_boton {
+  display: flex;
+  height: 2rem;
+  width: 5rem;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--colorBotonBusquedaCiudadano);
+  color: var(--colorTextoTarjeta);
+  text-decoration-line: none;
+  margin-left: 45%;
+  margin-top: 10px;
+}
+
 @media (max-width: 1024px) {
   .codigo-penal-container {
     @apply w-[90%];
