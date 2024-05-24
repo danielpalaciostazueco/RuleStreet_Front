@@ -1,14 +1,13 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-
 import { useRouter } from 'vue-router';
 import { useListadoAuth } from '@/stores/storeAuth';
 import BotonIdiomaComponente from '../ComponentesGenerales/BotonIdiomaComponente.vue';
+
 const store = useListadoAuth();
 const NombreUsuario = ref('');
 const Contraseña = ref('');
 const router = useRouter();
-
 
 const submitForm = async () => {
     try {
@@ -19,61 +18,39 @@ const submitForm = async () => {
 };
 </script>
 <template>
-    <div class="login-container">
-        <form @submit.prevent="submitForm" class="login-form">
-            <h2>{{ $t('LoginUsuario.Title') }}</h2>
-            <input type="text" v-model="store.Datos.Dni" :placeholder="$t('LoginUsuario.Dni')">
-            <input type="text" v-model="store.Datos.NombreUsuario" :placeholder="$t('LoginUsuario.NombreUsuario')">
-            <input type="password" v-model="store.Datos.Contrasena" :placeholder="$t('LoginUsuario.Password')">
-            <p class="links">
-                <RouterLink to="/loginPolicia">{{ $t('LoginUsuario.Policia') }}</RouterLink>
-                <RouterLink to="/loginAyuntamiento">{{ $t('LoginUsuario.Ayuntamiento') }}</RouterLink>
-                <RouterLink to="/register">{{ $t('LoginUsuario.Cuenta') }}</RouterLink>
+    <div class="flex flex-col justify-center items-center min-h-screen" style="background-color: var(--colorFondo);">
+        <form @submit.prevent="submitForm" class="bg-[var(--colorFondoTarjeta)] p-8 rounded-xl shadow-md text-center w-11/12 max-w-md">
+            <h2 class="text-2xl mb-4" style="color: var(--colorBlanco);">{{ $t('LoginUsuario.Title') }}</h2>
+            <input type="text" v-model="store.Datos.Dni" :placeholder="$t('LoginUsuario.Dni')" class="bg-[var(--colorTextoTarjeta)] border border-blue-500 text-black py-2 rounded-md mb-4 w-full text-base" />
+            <input type="text" v-model="store.Datos.NombreUsuario" :placeholder="$t('LoginUsuario.NombreUsuario')" class="bg-[var(--colorTextoTarjeta)] border border-blue-500 text-black py-2 rounded-md mb-4 w-full text-base" />
+            <input type="password" v-model="store.Datos.Contrasena" :placeholder="$t('LoginUsuario.Password')" class="bg-[var(--colorTextoTarjeta)] border border-blue-500 text-black py-2 rounded-md mb-4 w-full text-base" />
+            <p class="mt-4" style="color: var(--colorBlanco);">
+                <RouterLink to="/loginPolicia" class="block mb-2 text-left" style="color: var(--colorBlanco);">{{ $t('LoginUsuario.Policia') }}</RouterLink>
+                <RouterLink to="/loginAyuntamiento" class="block mb-2 text-left" style="color: var(--colorBlanco);">{{ $t('LoginUsuario.Ayuntamiento') }}</RouterLink>
+                <RouterLink to="/register" class="block mb-2 text-left" style="color: var(--colorBlanco);">{{ $t('LoginUsuario.Cuenta') }}</RouterLink>
             </p>
-            <button type="submit">{{ $t('LoginUsuario.Login') }}</button>
-            <p>
-                <RouterLink to="/">{{ $t('LoginUsuario.Principal') }}</RouterLink>
+          
+            <button type="submit" class="bg-blue-500 text-white py-2 px-6 rounded-md cursor-pointer w-auto text-xl transition-colors duration-300 hover:bg-blue-600">{{ $t('LoginUsuario.Login') }}</button>
+            <p class="mt-4" style="color: var(--colorBlanco);">
+                <RouterLink to="/" class="block mb-2 text-left" style="color: var(--colorBlanco);">{{ $t('LoginUsuario.Principal') }}</RouterLink>
             </p>
         </form>
         <BotonIdiomaComponente />
-
     </div>
 </template>
+
+
 <style scoped>
-.login-container {
-    @apply flex justify-center items-center min-h-screen bg-[var(--colorFondo)];
-}
-
-.login-form {
-    @apply bg-[var(--colorFondoTarjeta)] p-8 rounded-xl shadow-md text-center w-11/12 max-w-md;
-}
-
-.login-form h2 {
-    @apply text-2xl mb-4 text-[var(--colorBlanco)];
-}
-
-.login-form input {
-    @apply bg-[var(--colorTextoTarjeta)] border border-blue-500 text-black py-2 rounded-md mb-4 w-full text-base;
-}
-
-.login-form button {
-    @apply bg-blue-500 text-white py-2 rounded-md cursor-pointer w-auto text-xl transition-colors duration-300;
-}
-
-.login-form button:hover {
-    @apply bg-blue-600;
-}
-
-.login-form p {
-    @apply mt-4 text-[var(--colorBlanco)];
-}
-
-.login-form .links a {
-    @apply text-[var(--colorBlanco)] block mb-2 text-left;
-}
-
-.login-form .links a:hover {
-    @apply text-blue-600;
+.boton_idioma {
+    display: flex;
+    height: 2rem;
+    width: 5rem;
+    align-items: center;
+    justify-content: center;
+    background-color: #0068f7;
+    color: var(--colorTextoTarjeta);
+    text-decoration-line: none;
+    margin-top: 20px;
 }
 
 @media (max-width: 768px) {

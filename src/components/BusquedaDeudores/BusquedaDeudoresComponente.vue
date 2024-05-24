@@ -1,10 +1,10 @@
 <template>
-  <div class="container mx-auto p-4">
-    <div class="search-section mb-4">
-      <input v-model="searchQuery" placeholder="Buscar deudor..." @input="filterDeudores" class="search-input" />
-      <div class="filter-section mt-2">
+  <div class="mx-auto p-4">
+    <div class="mb-4">
+      <input v-model="searchQuery" placeholder="Buscar deudor..." @input="filterDeudores" class="w-full p-2 mb-2 border rounded focus:outline-none focus:border-blue-600" />
+      <div class="mt-2">
         <label for="filterField" class="mr-2">{{ $t('DeudoresTabla.Filter') }}</label>
-        <select v-model="filterField" @change="filterDeudores" class="filter-select">
+        <select v-model="filterField" @change="filterDeudores" class="p-2 border rounded focus:outline-none focus:border-blue-600">
           <option value="nombre">{{ $t('DeudoresTabla.Name') }}</option>
           <option value="apellidos">{{ $t('DeudoresTabla.Surname') }}</option>
           <option value="dni">DNI</option>
@@ -14,7 +14,7 @@
         </select>
       </div>
     </div>
-    <div class="table-wrapper shadow-lg rounded-lg overflow-hidden">
+    <div class="shadow-lg rounded-lg overflow-hidden">
       <table class="table-auto w-full">
         <thead>
           <tr class="bg-blue-800 text-white">
@@ -29,23 +29,20 @@
         </thead>
         <tbody>
           <tr v-for="deudor in filteredDeudores" :key="deudor.idCiudadano" class="hover:bg-blue-100">
-            <td class="px-4 py-2"><img :src="deudor.imagenUrl" alt="Foto del deudor"
-                class="rounded-full w-12 h-12 object-cover" /></td>
+            <td class="px-4 py-2"><img :src="deudor.imagenUrl" alt="Foto del deudor" class="rounded-full w-12 h-12 object-cover" /></td>
             <td v-if="filterField" class="px-4 py-2">{{ deudor[filterField as keyof typeof deudor] }}</td>
             <td v-if="filterField !== 'nombre'" class="px-4 py-2">{{ deudor.nombre }}</td>
             <td v-if="filterField !== 'apellidos'" class="px-4 py-2">{{ deudor.apellidos }}</td>
             <td v-if="filterField !== 'genero' && locale === 'es'" class="px-4 py-2">{{ deudor.genero }}</td>
             <td v-if="filterField !== 'genero' && locale === 'en'" class="px-4 py-2">{{ deudor.genero }}</td>
-            <td v-if="filterField !== 'nacionalidad' && locale === 'es'" class="px-4 py-2">{{ deudor.nacionalidad }}
-            </td>
-            <td v-if="filterField !== 'nacionalidad' && locale === 'en'" class="px-4 py-2">{{ deudor.nationality }}
-            </td>
+            <td v-if="filterField !== 'nacionalidad' && locale === 'es'" class="px-4 py-2">{{ deudor.nacionalidad }}</td>
+            <td v-if="filterField !== 'nacionalidad' && locale === 'en'" class="px-4 py-2">{{ deudor.nationality }}</td>
             <td v-if="filterField !== 'cantidad'" class="px-4 py-2">{{ deudor.cantidad }}</td>
           </tr>
         </tbody>
       </table>
     </div>
-    <button @click="exportToExcel" class="export-button mt-4">{{ $t('DeudoresTabla.Excel') }}</button>
+    <button @click="exportToExcel" class="mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg cursor-pointer transition-all duration-300 ease-in-out hover:bg-blue-700">{{ $t('DeudoresTabla.Excel') }}</button>
     <BotonPaginaPrincipalComponente />
   </div>
 </template>
@@ -101,70 +98,9 @@ const exportToExcel = () => {
 
 <style scoped>
 .ciudadano_boton {
-  display: flex;
-  height: 2rem;
-  width: 5rem;
-  align-items: center;
-  justify-content: center;
-  background-color: var(--colorBotonBusquedaCiudadano);
-  color: var(--colorTextoTarjeta);
-  text-decoration-line: none;
-  margin-top: 10px;
-  border-radius: 10px;
+  @apply flex h-8 w-20 items-center justify-center bg-[color:var(--colorBotonBusquedaCiudadano)] text-[color:var(--colorTextoTarjeta)] no-underline mt-2.5 rounded-[10px];
 }
 
-.container {
-  @apply mx-auto p-4;
-}
-
-.search-section {
-  @apply mb-4;
-}
-
-.search-input {
-  @apply w-full p-2 mb-2 border rounded focus:outline-none focus:border-blue-600;
-}
-
-.filter-section {
-  @apply mt-2;
-}
-
-.filter-select {
-  @apply p-2 border rounded focus:outline-none focus:border-blue-600;
-}
-
-.table-wrapper {
-  @apply shadow-lg rounded-lg overflow-hidden;
-}
-
-table {
-  @apply table-auto w-full;
-}
-
-th,
-td {
-  @apply px-4 py-2;
-}
-
-th {
-  @apply bg-blue-800 text-white;
-}
-
-tbody tr:hover {
-  @apply bg-blue-100;
-}
-
-img {
-  @apply rounded-full w-12 h-12 object-cover;
-}
-
-.export-button {
-  @apply mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg cursor-pointer transition-all duration-300 ease-in-out;
-}
-
-.export-button:hover {
-  @apply bg-blue-700;
-}
 
 @media (max-width: 768px) {
 
