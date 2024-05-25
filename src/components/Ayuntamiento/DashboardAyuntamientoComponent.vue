@@ -50,15 +50,13 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useListadoEvento } from '@/stores/storeEventos';
-import type { Evento } from '@/stores/storeEventos';
 import { useI18n } from 'vue-i18n';
 
 const mostrarFormulario = ref(false);
 const { t, locale } = useI18n();
 const store = useListadoEvento();
-const obras = store.infoEventos;
 const eventoEditando = store.eventoEditando;
 
 const nuevoEvento = () => {
@@ -66,35 +64,22 @@ const nuevoEvento = () => {
   mostrarFormulario.value = true;
 };
 
-const editarEvento = (obra: any) => {
-  Object.assign(eventoEditando, obra);
+const editarEvento = (evento: any) => {
+  store.setObraEditando(evento);
   mostrarFormulario.value = true;
 };
 
-const guardarActualizarEvento = () => {
-  const Datos = {
-    idEventos: eventoEditando.idEventos || 0,
-    descripcion: eventoEditando.descripcion,
-    imagen: eventoEditando.imagen,
-    fecha: eventoEditando.fecha,
-  };
-
+const guardarActualizarEvento = async () => {
   if (eventoEditando.idEventos) {
-    store.actualizarEventos({
-      ...Datos, fecha: new Date(Datos.fecha),
-      description: ''
-    });
+    await store.actualizarEventos(eventoEditando);
   } else {
-    store.guardarEvento({
-      ...Datos, fecha: new Date(Datos.fecha),
-      description: ''
-    });
+    await store.guardarEvento(eventoEditando);
   }
   cerrarFormulario();
 };
 
-const borrarEvento = (obraID: number) => {
-  store.borrarDatosEvento(obraID);
+const borrarEvento = async (eventoID: number) => {
+  await store.borrarDatosEvento(eventoID);
 };
 
 const cerrarFormulario = () => {
@@ -105,6 +90,7 @@ onMounted(() => {
   store.cargarDatosEventos();
 });
 </script>
+
 
 <style scoped>
 .gestion-obras {

@@ -27,6 +27,16 @@ interface Multa {
   description: string;
   pagada: boolean;
   idCiudadano: number;
+  codigoPenal: CodigoPenal;
+}
+export interface CodigoPenal {
+  idCodigoPenal: number;
+  articulo: string;
+  article: string;
+  descripcion: string;
+  description: string;
+  precio: number;
+  sentencia: string;
 }
 
 interface Ciudadano {
