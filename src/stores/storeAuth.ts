@@ -15,7 +15,7 @@ export interface Usuario {
   IsPolicia: boolean;
 }
 
-interface Policia {
+interface PoliciaAuth {
   IdPolicia: number;
   IdCiudadano: number;
   Rango: number;
@@ -45,7 +45,7 @@ export const useListadoAuth = defineStore('listadoAuth', () => {
     IsPolicia: false
   };
 
-  let infoPolicias: Policia = {
+  let infoPoliciasAuth: PoliciaAuth = {
     IdPolicia: 0,
     IdCiudadano: 0,
     Rango: 0,
@@ -103,7 +103,7 @@ export const useListadoAuth = defineStore('listadoAuth', () => {
       if (!response.ok) throw new Error(`Error en la solicitud: ${await response.text()}`);
       const token = await response.text();
       localStorage.setItem('tokenPolicia', token);
-      resetAndAssign(jwtDecode(token), infoPolicias);
+      resetAndAssign(jwtDecode(token), infoPoliciasAuth);
       router.push('/');
     } catch (error) {
       console.error('Error en LoginPolicia:', error);
@@ -115,7 +115,7 @@ export const useListadoAuth = defineStore('listadoAuth', () => {
     if (token) {
       try {
         const decoded = jwtDecode(token);
-        resetAndAssign(decoded, infoPolicias);
+        resetAndAssign(decoded, infoPoliciasAuth);
       } catch (error) {
         console.error('Error al decodificar el token:', error);
       }
@@ -211,7 +211,7 @@ export const useListadoAuth = defineStore('listadoAuth', () => {
   }
 
   return {
-    infoUsuarios, Datos, DatosRegistro, DatosPolicia, infoPolicias, DatosAyuntamiento, infoAyuntamiento,
+    infoUsuarios, Datos, DatosRegistro, DatosPolicia, infoPoliciasAuth, DatosAyuntamiento, infoAyuntamiento,
     LoginUsuario, LoginPolicia, LoginAyuntamiento, registroUsuario, formatearFecha, loadPoliceInfo
   };
 });

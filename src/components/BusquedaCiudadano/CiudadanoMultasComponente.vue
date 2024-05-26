@@ -1,11 +1,12 @@
 <script lang="ts">
-import { computed, defineComponent, onMounted, ref, watch } from 'vue';
+import { defineComponent, ref, onMounted, computed, watch } from 'vue';
 import { useListadoCodigoPenal } from '@/stores/storeCodigoPenal';
 import { useListadoAuth } from '@/stores/storeAuth';
 import { useListadoMultas } from '@/stores/storeMulta';
+import { useListadoAuditorias } from '@/stores/storeAuditoria';
+import { useListadoPolicias } from '@/stores/storePolicia';
 import { useRoute } from 'vue-router';
 import { useI18n } from 'vue-i18n';
-
 
 export default defineComponent({
   props: {
@@ -18,11 +19,12 @@ export default defineComponent({
   setup(props, { emit }) {
     const route = useRoute();
     const idCiudadano = ref(0);
-
     const { t, locale } = useI18n();
     const { cargarDatosCodigoPenal, infoCodigoPenal, cargarDatosCodigoPenalId } = useListadoCodigoPenal();
-    const { infoPolicias, loadPoliceInfo } = useListadoAuth();
+    const { infoPoliciasAuth, loadPoliceInfo } = useListadoAuth();
     const { guardarMulta } = useListadoMultas();
+    const { guardarPolicia } = useListadoAuditorias();
+    const { infoPolicias, cargarDatosPolicias } = useListadoPolicias();
 
     const newMulta = ref({
       descripcion: '',
@@ -45,7 +47,6 @@ export default defineComponent({
       idCiudadano.value = Array.isArray(rawId) ? parseInt(rawId[0], 10) : parseInt(rawId, 10);
     };
 
-    // Escucha cambios en el parámetro 'id' de la ruta
     watch(() => route.params.id, () => {
       updateIdCiudadano();
     }, { immediate: true });
@@ -53,6 +54,7 @@ export default defineComponent({
     onMounted(async () => {
       loadPoliceInfo();
       await cargarDatosCodigoPenal();
+      await cargarDatosPolicias();
     });
 
     const close = () => {
@@ -71,9 +73,11 @@ export default defineComponent({
     };
 
     const submitMulta = async () => {
+      await cargarDatosPolicias();
+
       const multaData = {
         idMulta: 0,
-        idPolicia: infoPolicias.IdPolicia,
+        idPolicia: infoPoliciasAuth.IdPolicia,
         fecha: new Date(),
         idCodigoPenal: articuloSeleccionado.value.idCodigoPenal,
         pagada: false,
@@ -84,7 +88,21 @@ export default defineComponent({
         description: articuloSeleccionado.value.description
       };
 
+      const policiaInfo = infoPolicias[0];
+
+      const descripcionAuditoria = `El ${policiaInfo.rango.nombre} ${policiaInfo.ciudadano.nombre} ha creado la multa con articulo: ${multaData.articuloPenal}, precio: ${multaData.precio}€ el dia ${multaData.fecha}`;
+
+      const auditoriaData = {
+        idAuditoria: 0,
+        titulo: 'Multa',
+        descripcion: descripcionAuditoria,
+        fecha: new Date(),
+        idPolicia: multaData.idPolicia
+      };
+
       await guardarMulta(multaData);
+      await guardarPolicia(auditoriaData);
+
       close();
     };
 
