@@ -17,7 +17,6 @@ const idiomaCambiado = () => {
 
 <style scoped>
 .ciudadano_boton {
-  @apply flex h-8 w-20 items-center justify-center bg-[#0068f7] text-[color:var(--colorTextoTarjeta)] no-underline mt-5;
+    @apply flex h-8 w-20 items-center justify-center bg-[#0068f7] text-[color:var(--colorTextoTarjeta)] no-underline mt-5;
 }
-
 </style>
