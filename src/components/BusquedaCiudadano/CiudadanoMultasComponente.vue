@@ -1,10 +1,11 @@
 <script lang="ts">
-import { computed, defineComponent, onMounted, ref } from 'vue';
+import { computed, defineComponent, onMounted, ref, watch } from 'vue';
 import { useListadoCodigoPenal } from '@/stores/storeCodigoPenal';
 import { useListadoAuth } from '@/stores/storeAuth';
 import { useListadoMultas } from '@/stores/storeMulta';
 import { useRoute } from 'vue-router';
 import { useI18n } from 'vue-i18n';
+
 
 export default defineComponent({
   props: {
@@ -17,16 +18,17 @@ export default defineComponent({
   setup(props, { emit }) {
     const route = useRoute();
     const idCiudadano = ref(0);
+
     const { t, locale } = useI18n();
+    const { cargarDatosCodigoPenal, infoCodigoPenal, cargarDatosCodigoPenalId } = useListadoCodigoPenal();
+    const { infoPolicias, loadPoliceInfo } = useListadoAuth();
+    const { guardarMulta } = useListadoMultas();
 
     const newMulta = ref({
       descripcion: '',
       monto: 0
     });
 
-    const { cargarDatosCodigoPenal, infoCodigoPenal, cargarDatosCodigoPenalId } = useListadoCodigoPenal();
-    const { infoPolicias, loadPoliceInfo } = useListadoAuth();
-    const { guardarMulta } = useListadoMultas();
     const articuloSeleccionado = ref({
       idCodigoPenal: 0,
       articulo: '',
@@ -38,15 +40,19 @@ export default defineComponent({
 
     const filtro = ref('');
 
+    const updateIdCiudadano = () => {
+      const rawId = route.params.id;
+      idCiudadano.value = Array.isArray(rawId) ? parseInt(rawId[0], 10) : parseInt(rawId, 10);
+    };
+
+    // Escucha cambios en el parámetro 'id' de la ruta
+    watch(() => route.params.id, () => {
+      updateIdCiudadano();
+    }, { immediate: true });
+
     onMounted(async () => {
       loadPoliceInfo();
       await cargarDatosCodigoPenal();
-      const path = window.location.pathname;
-      const segments = path.split('/');
-      const lastSegment = segments.pop() || segments.pop();
-      if (lastSegment !== undefined) {
-        idCiudadano.value = parseInt(lastSegment, 10);
-      }
     });
 
     const close = () => {
@@ -55,7 +61,6 @@ export default defineComponent({
       filtro.value = '';
       emit('update:visible', false);
       emit('onModalClose');
-
     };
 
     const guardarId = async (id: number) => {
@@ -103,6 +108,7 @@ export default defineComponent({
   }
 });
 </script>
+
 
 <template>
   <div v-if="visible" class="modal_fondo" @click.self="close">
