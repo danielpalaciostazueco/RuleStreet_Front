@@ -9,7 +9,7 @@ export default defineComponent({
                 id: number;
                 name: string;
                 dni: string;
-                photo?: string;
+                imagenUrl?: string;
             }>,
             required: true
         }
@@ -28,8 +28,7 @@ export default defineComponent({
 
 <template>
     <div class="tarjeta" @click="navigateToCitizen">
-        <!-- poner foto en el back -->
-        <img class="tarjeta_imagen" :src="citizen.photo || 'https://via.placeholder.com/150'"
+        <img class="tarjeta_imagen" :src="citizen.imagenUrl || 'https://via.placeholder.com/150'"
             alt="Foto del Ciudadano" />
         <div>
             <h3>{{ citizen.name }}</h3>
@@ -42,23 +41,14 @@ export default defineComponent({
 
 <style scoped>
 .tarjeta {
-    display: flex;
-    background-color: var(--colorBlanco);
-    width: 100%;
-    height: 5rem;
-    align-items: center;
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
-    gap: 0.5rem;
+    @apply flex bg-[color:var(--colorBlanco)] w-full h-20 items-center gap-2 px-2;
 }
 
 .tarjeta p {
-    color: black;
+    @apply text-[black];
 }
 
 .tarjeta_imagen {
-    width: 4rem;
-    height: 4rem;
-    border-radius: 0.5rem;
+    @apply w-16 h-16 rounded-lg;
 }
 </style>

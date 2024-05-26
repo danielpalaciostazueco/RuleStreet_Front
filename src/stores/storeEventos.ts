@@ -10,6 +10,7 @@ export interface Evento {
    idEventos : number;
    imagen : string;
    descripcion : string;
+   description : string;
    fecha : Date;
 }
 
@@ -20,11 +21,14 @@ export const useListadoEvento = defineStore('listadoEventos', () => {
     idEventos: 0,
     imagen: '',
     descripcion: '',
+    description: '',
     fecha: new Date()
   });
+
   const apiUrl = `http://localhost:8001`;
   const infoEventos = reactive<Array<Evento>>([]);
   let token = "";
+  
   async function cargarDatosEventos() {
     try {
       token = localStorage.getItem('tokenAyuntamiento') ?? '';
@@ -43,10 +47,47 @@ export const useListadoEvento = defineStore('listadoEventos', () => {
     }
   }
 
+  async function cargarDatosEventosIdioma() {
+    try {
+      token = localStorage.getItem('tokenAyuntamiento') ?? '';
+      const response = await fetch(apiUrl + '/Evento/English' ,{
+        headers: { 'Authorization': `Bearer ${token}` } 
+      
+      });
+      if (!response.ok) throw new Error('Error al cargar los datos de los policias');
+      const data = await response.json();
+      infoEventos.splice(0, infoEventos.length); 
+      data.forEach((evento : Evento) => {
+        infoEventos.push(evento); 
+      });
+    } catch (error) {
+      console.error('Error al cargar la información de los eventos:', error);
+    }
+  }
+
+
   async function cargarDatosEventosId(eventoId : number) {
     try {
       token = localStorage.getItem('tokenAyuntamiento') ?? '';
       const response = await fetch(apiUrl + '/Evento/' + eventoId.toString(), {
+        headers: { 'Authorization': `Bearer ${token}` } 
+      });
+      
+      if (!response.ok) throw new Error('Error al cargar los datos de los eventos');
+      const data = await response.json();
+      infoEventos.splice(0, infoEventos.length); 
+      data.forEach((evento : Evento) => {
+        infoEventos.push(evento); 
+      });
+    } catch (error) {
+      console.error('Error al cargar la información de los eventos:', error);
+    }
+  }
+
+  async function cargarDatosEventosEnglishId(eventoId : number) {
+    try {
+      token = localStorage.getItem('tokenAyuntamiento') ?? '';
+      const response = await fetch(apiUrl + '/Evento/English' + eventoId.toString(), {
         headers: { 'Authorization': `Bearer ${token}` } 
       });
       
@@ -159,5 +200,7 @@ async function borrarDatosEvento(eventoId: number) {
     });
   }
 
-  return {cargarDatosEventos, infoEventos, cargarDatosEventosId, guardarEvento, formatearFecha, actualizarEventos, borrarDatosEvento, eventoEditando,resetEventoEditando};
+  return {cargarDatosEventos, infoEventos, cargarDatosEventosId, guardarEvento, formatearFecha, actualizarEventos, 
+          borrarDatosEvento, eventoEditando,resetEventoEditando, setObraEditando, cargarDatosEventosIdioma, cargarDatosEventosEnglishId
+        };
 });

@@ -8,6 +8,7 @@ const storeAuth = useListadoAuth();
 export interface Permiso {
   idPermiso : number ;
   nombre : string | null;
+  name : string | null;
   idRango : number | null;
 }
 
@@ -16,6 +17,7 @@ export const useListadoPermisos = defineStore('listadoPermisos', () => {
   const apiUrl = `http://localhost:8001`;
   const infoPermiso = reactive<Array<Permiso>>([]);
   let token = ''
+
   async function cargarDatosPermisos() {
     try {
       if (localStorage.getItem('tokenUsuario') !== null) {
@@ -38,6 +40,51 @@ export const useListadoPermisos = defineStore('listadoPermisos', () => {
     }
   }
 
+  
+  async function cargarDatosPermisosIdioma() {
+    try {
+      if (localStorage.getItem('tokenUsuario') !== null) {
+        token = localStorage.getItem('tokenUsuario') ?? '';
+      } else {
+        token = localStorage.getItem('tokenPolicia') ?? '';
+      }
+      const response = await fetch(apiUrl + '/Permiso/English', {
+        headers: { 'Authorization': `Bearer ${token}` }
+      
+      } );
+      if (!response.ok) throw new Error('Error al cargar los datos de las permisos');
+      const data = await response.json();
+      infoPermiso.splice(0, infoPermiso.length); 
+      data.forEach((permiso : Permiso) => {
+        infoPermiso.push(permiso); 
+      });
+    } catch (error) {
+      console.error('Error al cargar la información de los permisos:', error);
+    }
+  }
+
+  async function cargarDatosPermisosIdiomaId(permisoId: number) {
+    try {
+      if (localStorage.getItem('tokenUsuario') !== null) {
+        token = localStorage.getItem('tokenUsuario') ?? '';
+      } else {
+        token = localStorage.getItem('tokenPolicia') ?? '';
+      }
+      const response = await fetch(apiUrl + '/Permiso/English' + permisoId.toString(), {
+        headers: { 'Authorization': `Bearer ${token}` }
+      
+      } );
+      if (!response.ok) throw new Error('Error al cargar los datos de los permisos');
+      const data = await response.json();
+      infoPermiso.splice(0, infoPermiso.length); 
+      data.forEach((permiso : Permiso) => {
+        infoPermiso.push(permiso); 
+      });
+    } catch (error) {
+      console.error('Error al cargar la información de los permisos:', error);
+    }
+  }
+  
   async function cargarDatosPermisosId(permisoId: number) {
     try {
       if (localStorage.getItem('tokenUsuario') !== null) {
@@ -131,5 +178,7 @@ async function borrarDatosMulta(permisoId: number) {
     }
   }
 
-  return {cargarDatosPermisos ,cargarDatosPermisosId, borrarDatosMulta, actualizarMulta, infoPermiso };
+  return {cargarDatosPermisos ,cargarDatosPermisosId, borrarDatosMulta, actualizarMulta, infoPermiso, 
+          formatearFecha, cargarDatosPermisosIdioma, cargarDatosPermisosIdiomaId
+        };
 });

@@ -9,11 +9,13 @@ const storeAuth = useListadoAuth();
 interface Permiso {
   idPermiso: number;
   nombre: string;
+  name : string;
 }
 
 interface Rango {
   idRango: number;
   nombre: string;
+  name : string;
   salario: number;
   isLocal: boolean;
   permisos: Permiso[];
@@ -25,9 +27,12 @@ interface Ciudadano {
   apellidos: string;
   dni: string;
   genero: string;
+  gender: string;
   nacionalidad: string;
+  nationality: string;
   fechaNacimiento: Date;
   direccion: string;
+  address: string;
   numeroTelefono: number;
   numeroCuentaBancaria: string;
   isPoli: boolean;
@@ -52,6 +57,7 @@ export const useListadoPolicias = defineStore('listadoPolicias', () => {
   const apiUrl = `http://localhost:8001`;
   const infoPolicias = reactive<Array<Policia>>([]);
   let token = "";
+
   async function cargarDatosPolicias() {
     try {
       if (localStorage.getItem('tokenUsuario') !== null) {
@@ -73,6 +79,29 @@ export const useListadoPolicias = defineStore('listadoPolicias', () => {
       console.error('Error al cargar la información de los policia:', error);
     }
   }
+
+  async function cargarDatosPoliciasIdioma() {
+    try {
+      if (localStorage.getItem('tokenUsuario') !== null) {
+        token = localStorage.getItem('tokenUsuario') ?? '';
+      } else {
+        token = localStorage.getItem('tokenPolicia') ?? '';
+      }
+      const response = await fetch(apiUrl + '/Policia/English', {
+        headers: { 'Authorization': `Bearer ${token}` }
+
+      });
+      if (!response.ok) throw new Error('Error al cargar los datos de los policias');
+      const data = await response.json();
+      infoPolicias.splice(0, infoPolicias.length);
+      data.forEach((policia: Policia) => {
+        infoPolicias.push(policia);
+      });
+    } catch (error) {
+      console.error('Error al cargar la información de los policia:', error);
+    }
+  }
+
 
   async function cargarDatosPoliciasId(policiaId: number) {
     try {
@@ -97,6 +126,33 @@ export const useListadoPolicias = defineStore('listadoPolicias', () => {
       console.error('Error al cargar la información del ciudadano:', error);
     }
   }
+
+  
+  async function cargarDatosPoliciasIdiomaId(policiaId: number) {
+    try {
+      if (localStorage.getItem('tokenUsuario') !== null) {
+        token = localStorage.getItem('tokenUsuario') ?? '';
+      } else {
+        token = localStorage.getItem('tokenPolicia') ?? '';
+      }
+      const response = await fetch(apiUrl + '/Policia/English' + policiaId.toString(), {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      if (!response.ok) throw new Error('Error al cargar los datos del policia');
+      const policia = await response.json();
+
+      const index = infoPolicias.findIndex(c => c.idPolicia === policiaId);
+      if (index !== -1) {
+        infoPolicias[index] = policia;
+      } else {
+        infoPolicias.push(policia);
+      }
+    } catch (error) {
+      console.error('Error al cargar la información del ciudadano:', error);
+    }
+  }
+
+
 
 
   async function guardarPolicia(policia: Policia) {
@@ -195,5 +251,7 @@ export const useListadoPolicias = defineStore('listadoPolicias', () => {
     }
   }
 
-  return { cargarDatosPolicias, cargarDatosPoliciasId, borrarDatosPolicia, actualizarPolicia, infoPolicias, guardarPolicia };
+  return { cargarDatosPolicias, cargarDatosPoliciasId, borrarDatosPolicia, actualizarPolicia, infoPolicias, guardarPolicia 
+           ,cargarDatosPoliciasIdioma, cargarDatosPoliciasIdiomaId, formatearFecha
+  };
 });

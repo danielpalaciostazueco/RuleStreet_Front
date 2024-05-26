@@ -11,6 +11,7 @@ interface Vehiculo {
   marca: string;
   modelo: string;
   color: string;
+  enColor: string;
   idCiudadano: number;
 }
 
@@ -21,6 +22,7 @@ interface Multa {
   precio: number;
   articuloPenal: string;
   descripcion: string;
+  description : string;
   pagada: boolean;
   idCiudadano: number;
 }
@@ -31,9 +33,12 @@ export interface Ciudadano {
   apellidos: string;
   dni: string;
   genero: string;
+  gender : string;
   nacionalidad: string;
+  nationality : string;
   fechaNacimiento: Date;
   direccion: string;
+  address: string;
   numeroTelefono: string;
   numeroCuentaBancaria: string;
   isPoli: boolean;
@@ -51,9 +56,11 @@ interface Deudores{
   apellidos: string;
   dni: string;
   genero: string;
+  gender: string;
   nacionalidad: string;
+  nationality: string;
   fechaNacimiento: Date;
-  pagada: boolean;
+  cantidad: number;
   imagenUrl : string;
 }
 
@@ -63,6 +70,7 @@ export const useListadoCiudadanos = defineStore('listadoCiduadanos', () => {
   const infoCiudadanosBusquedaCaptura = reactive<Array<Ciudadano>>([]);
   const infoDeudores = reactive<Array<Deudores>>([]);
   let token = ''
+  
   async function cargarDatosCiudadanos() {
     try {
       if (localStorage.getItem('tokenUsuario') !== null) {
@@ -85,6 +93,50 @@ export const useListadoCiudadanos = defineStore('listadoCiduadanos', () => {
     }
   }
 
+  async function cargarDatosCiudadanosIdioma() {
+    try {
+      if (localStorage.getItem('tokenUsuario') !== null) {
+        token = localStorage.getItem('tokenUsuario') ?? '';
+      } else {
+        token = localStorage.getItem('tokenPolicia') ?? '';
+      }
+      const response = await fetch(apiUrl + '/Ciudadano/English', {
+        headers: { 'Authorization': `Bearer ${token}` }
+
+      });
+      if (!response.ok) throw new Error('Error al cargar los datos de los ciudadanos');
+      const data = await response.json();
+      infoCiudadanos.splice(0, infoCiudadanos.length);
+      data.forEach((ciudadano: Ciudadano) => {
+        infoCiudadanos.push(ciudadano);
+      });
+    } catch (error) {
+      console.error('Error al cargar la información de los ciudadanos:', error);
+    }
+  }
+
+
+  async function cargarDatosCiudadanosDeudoresIdioma() {
+    try {
+      if (localStorage.getItem('tokenUsuario') !== null) {
+        token = localStorage.getItem('tokenUsuario') ?? '';
+      } else {
+        token = localStorage.getItem('tokenPolicia') ?? '';
+      }
+      const response = await fetch(apiUrl + '/Deudores/English', {
+        headers: { 'Authorization': `Bearer ${token}` }
+
+      });
+      if (!response.ok) throw new Error('Error al cargar los datos de los ciudadanos deudores');
+      const data = await response.json();
+      infoDeudores.splice(0, infoDeudores.length);
+      data.forEach((deudores : Deudores) => {
+        infoDeudores.push(deudores);
+      });
+    } catch (error) {
+      console.error('Error al cargar la información de los ciudadanos deudores:', error);
+    }
+  }
 
   async function cargarDatosCiudadanosDeudores() {
     try {
@@ -93,7 +145,7 @@ export const useListadoCiudadanos = defineStore('listadoCiduadanos', () => {
       } else {
         token = localStorage.getItem('tokenPolicia') ?? '';
       }
-      const response = await fetch(apiUrl + '/Ciudadano/Deudores', {
+      const response = await fetch(apiUrl + '/Deudores', {
         headers: { 'Authorization': `Bearer ${token}` }
 
       });
@@ -111,7 +163,25 @@ export const useListadoCiudadanos = defineStore('listadoCiduadanos', () => {
   async function cargarDatosCiudadanosBusquedaCaptura() {
     try {
       
-      const response = await fetch(apiUrl + '/Ciudadano/BusquedaCaptura', {
+      const response = await fetch(apiUrl + 'BusquedaCaptura', {
+        headers: {  }
+
+      });
+      if (!response.ok) throw new Error('Error al cargar los datos de los ciudadanos que están en busqueda y captura');
+      const data = await response.json();
+      infoCiudadanosBusquedaCaptura.splice(0, infoCiudadanosBusquedaCaptura.length);
+      data.forEach((ciudadano: Ciudadano) => {
+        infoCiudadanosBusquedaCaptura.push(ciudadano);
+      });
+    } catch (error) {
+      console.error('Error al cargar la información de los ciudadanos en búsqueda y captura:', error);
+    }
+  }
+
+  async function cargarDatosCiudadanosBusquedaCapturaIdioma() {
+    try {
+      
+      const response = await fetch(apiUrl + 'BusquedaCaptura/English', {
         headers: {  }
 
       });
@@ -135,6 +205,30 @@ export const useListadoCiudadanos = defineStore('listadoCiduadanos', () => {
         token = localStorage.getItem('tokenPolicia') ?? '';
       }
       const response = await fetch(apiUrl + '/Ciudadano/' + ciudadanoId.toString(), {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      if (!response.ok) throw new Error('Error al cargar los datos del ciudadano');
+      const ciudadano = await response.json();
+
+      const index = infoCiudadanos.findIndex(c => c.idCiudadano === ciudadanoId);
+      if (index !== -1) {
+        infoCiudadanos[index] = ciudadano;
+      } else {
+        infoCiudadanos.push(ciudadano); 
+      }
+    } catch (error) {
+      console.error('Error al cargar la información del ciudadano:', error);
+    }
+  }
+
+  async function cargarDatosCiudadanosIdiomaId(ciudadanoId: number) {
+    try {
+      if (localStorage.getItem('tokenUsuario') !== null) {
+        token = localStorage.getItem('tokenUsuario') ?? '';
+      } else {
+        token = localStorage.getItem('tokenPolicia') ?? '';
+      }
+      const response = await fetch(apiUrl + '/Ciudadano/English/' + ciudadanoId.toString(), {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       if (!response.ok) throw new Error('Error al cargar los datos del ciudadano');
@@ -247,5 +341,8 @@ export const useListadoCiudadanos = defineStore('listadoCiduadanos', () => {
     }
   }
 
-  return { cargarDatosCiudadanos, cargarDatosCiudadanosId, borrarDatosCiudadano, actualizarCiudadano, infoCiudadanos, guardarCiudadano, cargarDatosCiudadanosBusquedaCaptura, infoCiudadanosBusquedaCaptura, cargarDatosCiudadanosDeudores, infoDeudores};
+  return { cargarDatosCiudadanos, cargarDatosCiudadanosId, borrarDatosCiudadano, actualizarCiudadano, infoCiudadanos, guardarCiudadano, 
+           cargarDatosCiudadanosBusquedaCaptura, infoCiudadanosBusquedaCaptura, cargarDatosCiudadanosDeudores, infoDeudores
+           ,cargarDatosCiudadanosIdioma, cargarDatosCiudadanosIdiomaId, cargarDatosCiudadanosDeudoresIdioma, cargarDatosCiudadanosBusquedaCapturaIdioma
+  };
 });

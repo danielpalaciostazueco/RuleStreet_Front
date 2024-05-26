@@ -5,7 +5,7 @@ export default defineComponent({});
 </script>
 
 <template>
-    <router-link to="/" class="ciudadano_boton">Volver</router-link>
+    <router-link to="/" class="ciudadano_boton">{{$t('BotonPrincipal.Return')}}</router-link>
 </template>
 
 <style scoped>

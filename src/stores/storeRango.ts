@@ -11,6 +11,7 @@ export interface Rango {
     idRange : number;
     idPolicia : number;
     nombre : string;
+    name : string;
     salario : number;
     isLocal : boolean;
 }
@@ -20,7 +21,8 @@ export const useListadoRangos = defineStore('listadoRangos', () => {
   const apiUrl = `http://localhost:8001`;
   const infoRangos = reactive<Array<Rango>>([]);
   let token = ''
-  async function cargarDatosCiudadanos() {
+
+  async function cargarDatosRangos() {
     try {
       if (localStorage.getItem('tokenUsuario') !== null) {
         token = localStorage.getItem('tokenUsuario') ?? '';
@@ -41,8 +43,28 @@ export const useListadoRangos = defineStore('listadoRangos', () => {
     }
   }
   
+  async function cargarDatosRangosIdioma() {
+    try {
+      if (localStorage.getItem('tokenUsuario') !== null) {
+        token = localStorage.getItem('tokenUsuario') ?? '';
+      } else {
+        token = localStorage.getItem('tokenPolicia') ?? '';
+      }
+      const response = await fetch(apiUrl + '/Rango/English' ,{
+        headers: { 'Authorization': `Bearer ${token}` } 
+      });
+      if (!response.ok) throw new Error('Error al cargar los datos de los rangos');
+      const data = await response.json();
+      infoRangos.splice(0, infoRangos.length); 
+      data.forEach((rango : Rango) => {
+        infoRangos.push(rango); 
+      });
+    } catch (error) {
+      console.error('Error al cargar la información de los rangos:', error);
+    }
+  }
 
-  async function cargarDatosCiudadanosId(rangoId: number) {
+  async function cargarDatosRangosId(rangoId: number) {
     try {
       if (localStorage.getItem('tokenUsuario') !== null) {
         token = localStorage.getItem('tokenUsuario') ?? '';
@@ -50,6 +72,30 @@ export const useListadoRangos = defineStore('listadoRangos', () => {
         token = localStorage.getItem('tokenPolicia') ?? '';
       }
       const response = await fetch(apiUrl + '/Rango/' +rangoId.toString(), {
+        headers: { 'Authorization': `Bearer ${token}` } 
+      });
+   
+      if (!response.ok) throw new Error('Error al cargar los datos de los rangos');
+      const data = await response.json();
+      infoRangos.splice(0, infoRangos.length); 
+      data.forEach((rango : Rango) => {
+        infoRangos.push(rango); 
+      });
+    } catch (error) {
+      console.error('Error al cargar la información de los rangos:', error);
+    }
+  }
+
+
+  
+  async function cargarDatosRangosIdiomaId(rangoId: number) {
+    try {
+      if (localStorage.getItem('tokenUsuario') !== null) {
+        token = localStorage.getItem('tokenUsuario') ?? '';
+      } else {
+        token = localStorage.getItem('tokenPolicia') ?? '';
+      }
+      const response = await fetch(apiUrl + '/Rango/English' +rangoId.toString(), {
         headers: { 'Authorization': `Bearer ${token}` } 
       });
    
@@ -93,7 +139,7 @@ function formatearFecha(fecha: string) {
 }
 
 
-async function actualizarCiudadano(rango : Rango) { 
+async function actualizarRango(rango : Rango) { 
   try {
     if (localStorage.getItem('tokenUsuario') !== null) {
       token = localStorage.getItem('tokenUsuario') ?? '';
@@ -111,7 +157,7 @@ async function actualizarCiudadano(rango : Rango) {
       throw new Error(`Error al actualizar la información del rango: ${errorBody}`);
     }
 
-    await cargarDatosCiudadanos();
+    await cargarDatosRangos();
   } catch (error) {
     console.error('Error al actualizar la información del rango:', error);
   }
@@ -119,5 +165,5 @@ async function actualizarCiudadano(rango : Rango) {
 
 
 
-  return {cargarDatosCiudadanos ,cargarDatosCiudadanosId, actualizarCiudadano, infoRangos };
+  return {cargarDatosRangos, cargarDatosRangosIdioma, cargarDatosRangosId, cargarDatosRangosIdiomaId, formatearFecha, actualizarRango, infoRangos};
 });

@@ -29,6 +29,7 @@ export default defineComponent({
 </script>
 
 <template>
+  <html>
     <body>
         <div class="ciudadano_container">
         <title-bar title="BUSCAR CIUDADANO" />
@@ -36,15 +37,17 @@ export default defineComponent({
             <search-panel @select-citizen="handleSelectCitizen" />
             <profile-section :selectedCitizenId="selectedCitizenId" />
         </div>
-    </div>
-    
-    </body>
-    </template>
+    </div> 
+    </body>  
+  </html>
+</template>
 
 <style scoped>
+template,
 html,
 body {
   @apply bg-[color:var(--colorFondo)];
+  height: 120%;
   
 }
 
@@ -54,8 +57,9 @@ body {
 
 .ciudadano_menu {
   @apply flex flex-row w-full gap-8;
-  min-height: 90rem; /* Ensures the menu has a minimum height */
+ 
 }
+
 
 @media screen and (max-width: 1024px) {
   .ciudadano_menu {
@@ -75,12 +79,12 @@ body {
 html,
 body {
   @apply bg-[color:var(--colorFondo)];
-  height: 460vh;
+  height: 465vh;
 }
   .ciudadano_menu {
     @apply flex-col w-full;
     min-height: auto;
-    gap: 4; /* Reduce gap between elements for small screens */
+    gap: 4; 
     
   }
 }

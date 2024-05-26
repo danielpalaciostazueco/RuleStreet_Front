@@ -12,8 +12,6 @@ export interface Denuncia {
   fecha: Date;
   idPolicia: number;
   idCiudadano: number;
-}
-
 
 export const useListadoDenuncias = defineStore('listadoDenuncias', () => {
   const apiUrl = `http://localhost:8001`;

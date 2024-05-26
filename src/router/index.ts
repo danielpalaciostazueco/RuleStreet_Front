@@ -86,6 +86,12 @@ const routes = [
     path: '/:catchAll(.*)',
     redirect: '/notFound',
   },
+  {
+    path: '/codigoPenal',
+    name: 'codigoPenal',
+    component: () => import('../views/CodigoPenalView.vue'),
+  },
+  
 ];
 
 const router = createRouter({
@@ -117,6 +123,21 @@ router.beforeEach((to, from, next) => {
     next(); 
   }
 });
+
+
+router.beforeEach((to, from, next) => {
+  if (to.name === 'busquedaPolicia' && localStorage.getItem('tokenPolicia') === null) {
+    if (from.name !== 'home') {
+      next({ name: 'home' });
+    } else {
+      next(false);
+    }
+  } else {
+    next(); 
+  }
+});
+
+
 
 router.beforeEach((to, from, next) => {
   if (to.name === 'perfilCiudadano' && localStorage.getItem('tokenUsuario') === null) {
