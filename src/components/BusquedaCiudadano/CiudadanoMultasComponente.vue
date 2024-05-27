@@ -64,12 +64,15 @@ export default defineComponent({
         articuloSeleccionado.value = response;
       }
     };
-
     const submitMulta = async () => {
+      const currentTime = new Date();
+      const timezoneOffset = currentTime.getTimezoneOffset() * 60000;
+      const localTime = new Date(currentTime.getTime() - timezoneOffset);
+
       const multaData = {
         idMulta: 0,
         idPolicia: infoPolicias.IdPolicia,
-        fecha: new Date(),
+        fecha: localTime, // Using local time here
         idCodigoPenal: articuloSeleccionado.value.idCodigoPenal,
         pagada: false,
         descripcion: articuloSeleccionado.value.descripcion,
@@ -170,6 +173,7 @@ export default defineComponent({
   display: flex;
   justify-content: center;
   align-items: center;
+  overflow: hidden;
 }
 
 .modal_container {
@@ -177,9 +181,11 @@ export default defineComponent({
   padding: 20px;
   border-radius: 10px;
   width: 70%;
-  height: 50rem;
+  height: 80%;
   display: flex;
+  flex-direction: row;
   gap: 2rem;
+  overflow: hidden;
 }
 
 .modal_izquierda {
@@ -232,6 +238,7 @@ export default defineComponent({
   width: 100%;
   overflow-y: auto;
   padding: 10px;
+  max-height: 70%;
 }
 
 .model_tabla::-webkit-scrollbar {
@@ -303,6 +310,7 @@ export default defineComponent({
   gap: 2rem;
   padding: 2rem;
   justify-content: space-between;
+  overflow-y: auto;
 }
 
 .modal_derecha_div p {
@@ -350,5 +358,101 @@ export default defineComponent({
   display: flex;
   justify-content: center;
   width: 100%;
+}
+
+/* Media Queries for Responsive Design */
+@media (max-width: 1024px) {
+  .modal_container {
+    flex-direction: column;
+    width: 90%;
+    height: 90%;
+  }
+
+  .modal_izquierda,
+  .modal_derecha {
+    width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .modal_titulo h1 {
+    font-size: 1.5rem;
+    height: 3rem;
+  }
+
+  .model_buscador {
+    height: 1.2rem;
+    padding-left: 1rem;
+  }
+
+  .model_tabla_encabezado {
+    font-size: 0.9rem;
+    padding: 8px;
+  }
+
+  .model_tabla_item,
+  .model_tabla_item_filtro {
+    padding: 8px;
+  }
+
+  .modal_derecha_div {
+    padding: 1rem;
+  }
+
+  .modal_boton {
+    width: 5rem;
+    height: 1.2rem;
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .modal_container {
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    padding: 10px;
+  }
+
+  .modal_izquierda,
+  .modal_derecha {
+    width: 100%;
+  }
+
+  .modal_titulo h1 {
+    font-size: 1.2rem;
+    height: 2.5rem;
+  }
+
+  .model_buscador {
+    height: 1.2rem;
+    padding-left: 0.5rem;
+  }
+
+  .model_tabla {
+    grid-template-columns: 1fr;
+    max-height: 50%;
+  }
+
+  .model_tabla_encabezado {
+    font-size: 0.8rem;
+    padding: 6px;
+  }
+
+  .model_tabla_item,
+  .model_tabla_item_filtro {
+    padding: 6px;
+  }
+
+  .modal_derecha_div {
+    padding: 0.5rem;
+    max-height: 50%;
+  }
+
+  .modal_boton {
+    width: 4rem;
+    height: 1rem;
+    font-size: 0.7rem;
+  }
 }
 </style>

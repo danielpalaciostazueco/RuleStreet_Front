@@ -23,7 +23,7 @@ interface Vehiculo {
 interface Multa {
     idMulta: number;
     idPolicia: number;
-    fecha: string;
+    fecha: Date;
     precio: number;
     articuloPenal: string;
     descripcion: string;
@@ -77,7 +77,14 @@ export default defineComponent({
         const storeMultas = useListadoMultas();
         const storePolicias = useListadoPolicias();
         const { t, locale } = useI18n();
-
+        const formatDate = (date: Date): string => {
+            const options: Intl.DateTimeFormatOptions = {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+            };
+            return new Date(date).toLocaleDateString(locale.value, options);
+        };
         const showModal = ref(false);
         const showPaymentModal = ref(false);
         const selectedMulta = ref<Multa | null>(null);
@@ -140,7 +147,8 @@ export default defineComponent({
             citizenId,
             getnombrePolicia,
             showPaymentModal,
-            selectedMulta
+            selectedMulta,
+            formatDate
         };
     }
 });
@@ -178,7 +186,7 @@ export default defineComponent({
                         </div>
                         <div class="ciudadano_tarjeta">
                             <p>{{ $t('PerfilCiudadano.Birthdate') }}</p>
-                            <p>{{ citizenDetails?.fechaNacimiento }}</p>
+                            <p>{{ formatDate(citizenDetails?.fechaNacimiento!) }}</p>
                         </div>
                         <div class="ciudadano_tarjeta">
                             <p>ID</p>

@@ -14,7 +14,7 @@ export interface Multa {
   description: string;
   pagada: boolean;
   idCiudadano: number;
-  codigoPenal: CodigoPenal[];
+  codigoPenal: CodigoPenal;
 }
 
 export interface CodigoPenal {
