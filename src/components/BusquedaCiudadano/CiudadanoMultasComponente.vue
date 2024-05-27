@@ -74,7 +74,7 @@ export default defineComponent({
 
     const submitMulta = async () => {
       await cargarDatosPolicias();
-
+      console.log(infoPoliciasAuth)
       const multaData = {
         idMulta: 0,
         idPolicia: infoPoliciasAuth.IdPolicia,

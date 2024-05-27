@@ -2,11 +2,36 @@
 import { defineComponent, ref, computed, watch, onMounted } from 'vue';
 import ReturnButton from '@/components/ComponentesGenerales/BotonPaginaPrincipalComponente.vue';
 import Modal from '@/components/BusquedaCiudadano/CiudadanoMultasComponente.vue';
+import ConfirmModal from '@/components/BusquedaCiudadano/CiudadanoConfirmacionMultaComponente.vue'
 import { useRoute } from 'vue-router';
 import { useListadoCiudadanos } from '@/stores/storeCiudadano';
 import { useListadoPolicias } from '@/stores/storePolicia';
+import { useListadoMultas } from '@/stores/storeMulta';
+import { useListadoAuth } from '@/stores/storeAuth';
 import { useI18n } from 'vue-i18n';
 
+interface Permiso {
+  idPermiso: number;
+  nombre: string;
+}
+
+interface Rango {
+  idRango: number;
+  nombre: string;
+  salario: number;
+  isLocal: boolean;
+  permisos: Permiso[];
+}
+
+interface Policia {
+  idPolicia: number;
+  idCiudadano: number;
+  rango: Rango;
+  numeroPlaca: string;
+  ciudadano: Ciudadano;
+  contrasena: string;
+  isPolicia: boolean;
+}
 interface Vehiculo {
   idVehiculo: number;
   matricula: string;
@@ -51,17 +76,26 @@ interface Ciudadano {
 }
 
 export default defineComponent({
+  props: {
+    selectedCitizenId: Number
+  },
   components: {
     ReturnButton,
-    Modal
+    Modal,
+    ConfirmModal
   },
   setup() {
     const route = useRoute();
     const store = useListadoCiudadanos();
     const storePolicias = useListadoPolicias();
+    const storeMultas = useListadoMultas();
     const citizenId = ref(parseInt(parseRouteParam(route.params.id) || '0'));
     const showModal = ref(false);
-
+    const showConfirmModal = ref(false);
+    const selectedMultaId = ref(null);
+    const storeAuth = useListadoAuth();
+    const policiaActualId = ref(0);
+    const policiaActual = ref<Policia | null>(null);
     const { t, locale } = useI18n();
 
     const reloadCitizenDetails = () => {
@@ -115,7 +149,43 @@ export default defineComponent({
       if (citizenId.value) {
         store.cargarDatosCiudadanosId(citizenId.value);
       }
+      policiaActualId.value = storeAuth.infoPoliciasAuth.IdPolicia;
+      if (policiaActualId.value) {
+        console.log("Datos del id:", policiaActualId.value);
+        const datosPolicia = await storePolicias.cargarDatosPoliciasId(policiaActualId.value);
+        console.log("Datos del policía cargados:", datosPolicia);
+        policiaActual.value = datosPolicia;
+        console.log("Asignado a policiaActual:", policiaActual.value);
+      }
     });
+
+    // watch(policiaActualId, async (newId) => {
+    //   if (newId) {
+    //     await storePolicias.cargarDatosPoliciasId(newId);
+    //     console.log("Actualizado los detalles del policía para ID:", newId);
+    //   }
+    // });
+
+    const borrarMulta = (idMulta: any) => {
+      selectedMultaId.value = idMulta;
+      showConfirmModal.value = true;
+    };
+
+    const confirmDelete = async () => {
+      try {
+        await storeMultas.borrarDatosMulta(selectedMultaId.value);
+        reloadCitizenDetails();
+        showConfirmModal.value = false;
+      } catch (error) {
+        console.error('Error al eliminar la multa:', error);
+        alert("Error al eliminar la multa.");
+        showConfirmModal.value = false;
+      }
+    };
+
+    const cancelDelete = () => {
+      showConfirmModal.value = false;
+    };
 
     return {
       citizenDetails,
@@ -124,7 +194,12 @@ export default defineComponent({
       openModal,
       reloadCitizenDetails,
       getNombrePolicia,
-      locale
+      locale,
+      borrarMulta,
+      confirmDelete,
+      cancelDelete,
+      showConfirmModal,
+      policiaActual,
     };
   }
 });
@@ -135,6 +210,7 @@ function parseRouteParam(param: string | string[]): string {
 </script>
 
 <template>
+  <p>{{ policiaActual?.contrasena }}</p>
   <div class="ciudadano_menu_derecha">
     <div class="ciudadano_menu_derecha_titulo">
       <h2>{{ $t('PerfilCiudadano.Profile') }}</h2>
@@ -253,6 +329,8 @@ function parseRouteParam(param: string | string[]): string {
                     <div class="tarjeta_otros_cabecera">
                       <p>{{ new Date(multa.fecha).toLocaleDateString() }} - {{ new
                         Date(multa.fecha).toLocaleTimeString() }}</p>
+                      <button @click="borrarMulta(multa.idMulta)" class="btn_pagar_multa">Eliminar</button>
+                      <ConfirmModal v-if="showConfirmModal" @confirm="confirmDelete" @cancel="cancelDelete" />
                     </div>
                     <p>{{ multa.codigoPenal.articulo }}</p>
                     <div class="tarjeta_multa_info">
