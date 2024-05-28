@@ -3,22 +3,22 @@ import { defineProps } from 'vue'
 import HomeCard from './HomeCajaComponente.vue';
 
 interface Card {
-    id: number;
-    iconPath: string;
-    label: string;
-    route: string;
+  id: number;
+  iconPath: string;
+  label: string;
+  route: string;
 }
 
 const props = defineProps<{
-    cards: Card[];
+  cards: Card[];
 }>();
 </script>
 
 <template>
-    <div class="card-container">
-        <HomeCard v-for="card in cards" :key="card.id" :iconPath="card.iconPath" :label="card.label"
-            :cardRoute="card.route" />
-    </div>
+  <div class="card-container">
+    <HomeCard v-for="card in cards" :key="card.id" :iconPath="card.iconPath" :label="card.label"
+      :cardRoute="card.route" />
+  </div>
 </template>
 
 <style scoped>
@@ -29,7 +29,7 @@ const props = defineProps<{
 
 @media (min-width: 1024px) {
   .card-container {
-    grid-template-columns: repeat(4, 1fr); 
+    grid-template-columns: repeat(4, 1fr);
   }
 }
 
@@ -41,11 +41,11 @@ const props = defineProps<{
 
 @media (max-width: 480px) {
   .card-container {
-    grid-template-columns: repeat(1, 1fr); 
+    grid-template-columns: repeat(1, 1fr);
   }
 }
 
 .HomeCard {
-  @apply w-full h-full; 
+  @apply w-full h-full;
 }
 </style>

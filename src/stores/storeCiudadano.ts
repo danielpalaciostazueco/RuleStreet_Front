@@ -1,8 +1,6 @@
-
-
-import { defineStore } from 'pinia';
-import { reactive } from 'vue';
-import { useListadoAuth } from './storeAuth';
+import { defineStore } from "pinia";
+import { reactive } from "vue";
+import { useListadoAuth } from "./storeAuth";
 const storeAuth = useListadoAuth();
 
 interface Vehiculo {
@@ -14,7 +12,15 @@ interface Vehiculo {
   enColor: string;
   idCiudadano: number;
 }
-
+export interface CodigoPenal {
+  idCodigoPenal: number;
+  articulo: string;
+  article: string;
+  descripcion: string;
+  description: string;
+  precio: number;
+  sentencia: string;
+}
 interface Multa {
   idMulta: number;
   idPolicia: number;
@@ -22,9 +28,10 @@ interface Multa {
   precio: number;
   articuloPenal: string;
   descripcion: string;
-  description : string;
+  description: string;
   pagada: boolean;
   idCiudadano: number;
+  codigoPenal: CodigoPenal[];
 }
 
 export interface Ciudadano {
@@ -33,9 +40,9 @@ export interface Ciudadano {
   apellidos: string;
   dni: string;
   genero: string;
-  gender : string;
+  gender: string;
   nacionalidad: string;
-  nationality : string;
+  nationality: string;
   fechaNacimiento: Date;
   direccion: string;
   address: string;
@@ -43,14 +50,14 @@ export interface Ciudadano {
   numeroCuentaBancaria: string;
   isPoli: boolean;
   isBusquedaYCaptura: boolean;
-  imagenUrl : string;
+  imagenUrl: string;
   isPeligroso: boolean;
   diaIntroducidoListaCaptura: Date;
   multas: Multa[];
   vehiculos: Vehiculo[];
 }
 
-interface Deudores{
+interface Deudores {
   idCiudadano: number;
   nombre: string;
   apellidos: string;
@@ -61,288 +68,233 @@ interface Deudores{
   nationality: string;
   fechaNacimiento: Date;
   cantidad: number;
-  imagenUrl : string;
+  imagenUrl: string;
 }
 
-export const useListadoCiudadanos = defineStore('listadoCiduadanos', () => {
+export const useListadoCiudadanos = defineStore("listadoCiduadanos", () => {
   const apiUrl = `http://localhost:8001`;
   const infoCiudadanos = reactive<Array<Ciudadano>>([]);
   const infoCiudadanosBusquedaCaptura = reactive<Array<Ciudadano>>([]);
   const infoDeudores = reactive<Array<Deudores>>([]);
-  let token = ''
-  
+  let token = "";
+
   async function cargarDatosCiudadanos() {
     try {
-      if (localStorage.getItem('tokenUsuario') !== null) {
-        token = localStorage.getItem('tokenUsuario') ?? '';
+      if (localStorage.getItem("tokenUsuario") !== null) {
+        token = localStorage.getItem("tokenUsuario") ?? "";
       } else {
-        token = localStorage.getItem('tokenPolicia') ?? '';
+        token = localStorage.getItem("tokenPolicia") ?? "";
       }
-      const response = await fetch(apiUrl + '/Ciudadano', {
-        headers: { 'Authorization': `Bearer ${token}` }
-
+      const response = await fetch(apiUrl + "/Ciudadano", {
+        headers: { Authorization: `Bearer ${token}` },
       });
-      if (!response.ok) throw new Error('Error al cargar los datos de los ciudadanos');
+      if (!response.ok)
+        throw new Error("Error al cargar los datos de los ciudadanos");
       const data = await response.json();
       infoCiudadanos.splice(0, infoCiudadanos.length);
       data.forEach((ciudadano: Ciudadano) => {
         infoCiudadanos.push(ciudadano);
       });
     } catch (error) {
-      console.error('Error al cargar la información de los ciudadanos:', error);
-    }
-  }
-
-  async function cargarDatosCiudadanosIdioma() {
-    try {
-      if (localStorage.getItem('tokenUsuario') !== null) {
-        token = localStorage.getItem('tokenUsuario') ?? '';
-      } else {
-        token = localStorage.getItem('tokenPolicia') ?? '';
-      }
-      const response = await fetch(apiUrl + '/Ciudadano/English', {
-        headers: { 'Authorization': `Bearer ${token}` }
-
-      });
-      if (!response.ok) throw new Error('Error al cargar los datos de los ciudadanos');
-      const data = await response.json();
-      infoCiudadanos.splice(0, infoCiudadanos.length);
-      data.forEach((ciudadano: Ciudadano) => {
-        infoCiudadanos.push(ciudadano);
-      });
-    } catch (error) {
-      console.error('Error al cargar la información de los ciudadanos:', error);
-    }
-  }
-
-
-  async function cargarDatosCiudadanosDeudoresIdioma() {
-    try {
-      if (localStorage.getItem('tokenUsuario') !== null) {
-        token = localStorage.getItem('tokenUsuario') ?? '';
-      } else {
-        token = localStorage.getItem('tokenPolicia') ?? '';
-      }
-      const response = await fetch(apiUrl + '/Deudores/English', {
-        headers: { 'Authorization': `Bearer ${token}` }
-
-      });
-      if (!response.ok) throw new Error('Error al cargar los datos de los ciudadanos deudores');
-      const data = await response.json();
-      infoDeudores.splice(0, infoDeudores.length);
-      data.forEach((deudores : Deudores) => {
-        infoDeudores.push(deudores);
-      });
-    } catch (error) {
-      console.error('Error al cargar la información de los ciudadanos deudores:', error);
+      console.error("Error al cargar la información de los ciudadanos:", error);
     }
   }
 
   async function cargarDatosCiudadanosDeudores() {
     try {
-      if (localStorage.getItem('tokenUsuario') !== null) {
-        token = localStorage.getItem('tokenUsuario') ?? '';
+      if (localStorage.getItem("tokenUsuario") !== null) {
+        token = localStorage.getItem("tokenUsuario") ?? "";
       } else {
-        token = localStorage.getItem('tokenPolicia') ?? '';
+        token = localStorage.getItem("tokenPolicia") ?? "";
       }
-      const response = await fetch(apiUrl + '/Deudores', {
-        headers: { 'Authorization': `Bearer ${token}` }
-
+      const response = await fetch(apiUrl + "/Deudores", {
+        headers: { Authorization: `Bearer ${token}` },
       });
-      if (!response.ok) throw new Error('Error al cargar los datos de los ciudadanos deudores');
+      if (!response.ok)
+        throw new Error("Error al cargar los datos de los ciudadanos deudores");
       const data = await response.json();
       infoDeudores.splice(0, infoDeudores.length);
-      data.forEach((deudores : Deudores) => {
+      data.forEach((deudores: Deudores) => {
         infoDeudores.push(deudores);
       });
     } catch (error) {
-      console.error('Error al cargar la información de los ciudadanos deudores:', error);
+      console.error(
+        "Error al cargar la información de los ciudadanos deudores:",
+        error
+      );
     }
   }
 
   async function cargarDatosCiudadanosBusquedaCaptura() {
     try {
-      
-      const response = await fetch(apiUrl + 'BusquedaCaptura', {
-        headers: {  }
-
+      const response = await fetch(apiUrl + "BusquedaCaptura", {
+        headers: {},
       });
-      if (!response.ok) throw new Error('Error al cargar los datos de los ciudadanos que están en busqueda y captura');
+      if (!response.ok)
+        throw new Error(
+          "Error al cargar los datos de los ciudadanos que están en busqueda y captura"
+        );
       const data = await response.json();
-      infoCiudadanosBusquedaCaptura.splice(0, infoCiudadanosBusquedaCaptura.length);
+      infoCiudadanosBusquedaCaptura.splice(
+        0,
+        infoCiudadanosBusquedaCaptura.length
+      );
       data.forEach((ciudadano: Ciudadano) => {
         infoCiudadanosBusquedaCaptura.push(ciudadano);
       });
     } catch (error) {
-      console.error('Error al cargar la información de los ciudadanos en búsqueda y captura:', error);
+      console.error(
+        "Error al cargar la información de los ciudadanos en búsqueda y captura:",
+        error
+      );
     }
   }
-
-  async function cargarDatosCiudadanosBusquedaCapturaIdioma() {
-    try {
-      
-      const response = await fetch(apiUrl + 'BusquedaCaptura/English', {
-        headers: {  }
-
-      });
-      if (!response.ok) throw new Error('Error al cargar los datos de los ciudadanos que están en busqueda y captura');
-      const data = await response.json();
-      infoCiudadanosBusquedaCaptura.splice(0, infoCiudadanosBusquedaCaptura.length);
-      data.forEach((ciudadano: Ciudadano) => {
-        infoCiudadanosBusquedaCaptura.push(ciudadano);
-      });
-    } catch (error) {
-      console.error('Error al cargar la información de los ciudadanos en búsqueda y captura:', error);
-    }
-  }
-
 
   async function cargarDatosCiudadanosId(ciudadanoId: number) {
     try {
-      if (localStorage.getItem('tokenUsuario') !== null) {
-        token = localStorage.getItem('tokenUsuario') ?? '';
+      if (localStorage.getItem("tokenUsuario") !== null) {
+        token = localStorage.getItem("tokenUsuario") ?? "";
       } else {
-        token = localStorage.getItem('tokenPolicia') ?? '';
+        token = localStorage.getItem("tokenPolicia") ?? "";
       }
-      const response = await fetch(apiUrl + '/Ciudadano/' + ciudadanoId.toString(), {
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
-      if (!response.ok) throw new Error('Error al cargar los datos del ciudadano');
+      const response = await fetch(
+        apiUrl + "/Ciudadano/" + ciudadanoId.toString(),
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      if (!response.ok)
+        throw new Error("Error al cargar los datos del ciudadano");
       const ciudadano = await response.json();
 
-      const index = infoCiudadanos.findIndex(c => c.idCiudadano === ciudadanoId);
+      const index = infoCiudadanos.findIndex(
+        (c) => c.idCiudadano === ciudadanoId
+      );
       if (index !== -1) {
         infoCiudadanos[index] = ciudadano;
       } else {
-        infoCiudadanos.push(ciudadano); 
+        infoCiudadanos.push(ciudadano);
       }
     } catch (error) {
-      console.error('Error al cargar la información del ciudadano:', error);
+      console.error("Error al cargar la información del ciudadano:", error);
     }
   }
-
-  async function cargarDatosCiudadanosIdiomaId(ciudadanoId: number) {
-    try {
-      if (localStorage.getItem('tokenUsuario') !== null) {
-        token = localStorage.getItem('tokenUsuario') ?? '';
-      } else {
-        token = localStorage.getItem('tokenPolicia') ?? '';
-      }
-      const response = await fetch(apiUrl + '/Ciudadano/English/' + ciudadanoId.toString(), {
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
-      if (!response.ok) throw new Error('Error al cargar los datos del ciudadano');
-      const ciudadano = await response.json();
-
-      const index = infoCiudadanos.findIndex(c => c.idCiudadano === ciudadanoId);
-      if (index !== -1) {
-        infoCiudadanos[index] = ciudadano;
-      } else {
-        infoCiudadanos.push(ciudadano); 
-      }
-    } catch (error) {
-      console.error('Error al cargar la información del ciudadano:', error);
-    }
-  }
-
 
   async function guardarCiudadano(ciudadano: Ciudadano) {
     try {
-      if (localStorage.getItem('tokenUsuario') !== null) {
-        token = localStorage.getItem('tokenUsuario') ?? '';
+      if (localStorage.getItem("tokenUsuario") !== null) {
+        token = localStorage.getItem("tokenUsuario") ?? "";
       } else {
-        token = localStorage.getItem('tokenPolicia') ?? '';
+        token = localStorage.getItem("tokenPolicia") ?? "";
       }
-      const response = await fetch(apiUrl + '/Ciudadano', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+      const response = await fetch(apiUrl + "/Ciudadano", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
         body: JSON.stringify(ciudadano),
       });
 
       if (!response.ok) {
         const errorBody = await response.text();
-        throw new Error(`Error al guardar la información del ciudadano: ${errorBody}`);
+        throw new Error(
+          `Error al guardar la información del ciudadano: ${errorBody}`
+        );
       }
 
       await cargarDatosCiudadanos();
     } catch (error) {
-      console.error('Error al guardar la información del ciudadano:', error);
+      console.error("Error al guardar la información del ciudadano:", error);
     }
   }
-
 
   function formatearFecha(fecha: string) {
     const fechaObj = new Date(fecha);
     const opciones: Intl.DateTimeFormatOptions = {
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit',
-      hour: '2-digit',
-      minute: '2-digit',
-      hour12: false
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
     };
 
-
-    const fechaFormateada = fechaObj.toLocaleDateString('es-ES', opciones);
-    const horaFormateada = fechaObj.toLocaleTimeString('es-ES', opciones);
+    const fechaFormateada = fechaObj.toLocaleDateString("es-ES", opciones);
+    const horaFormateada = fechaObj.toLocaleTimeString("es-ES", opciones);
 
     const fechaMatch = fechaFormateada.match(/(\d{2})\/(\d{2})\/(\d{4})/);
     const horaMatch = horaFormateada.match(/(\d{2}):(\d{2})/);
 
     if (fechaMatch && horaMatch) {
-
       return `${fechaMatch[3]}-${fechaMatch[2]}-${fechaMatch[1]} ${horaMatch[1]}:${horaMatch[2]}`;
     } else {
-      console.error('No se pudo formatear la fecha:', fecha);
-      return '';
+      console.error("No se pudo formatear la fecha:", fecha);
+      return "";
     }
   }
 
-
   async function actualizarCiudadano(ciudadano: Ciudadano) {
-    if (localStorage.getItem('tokenUsuario') !== null) {
-      token = localStorage.getItem('tokenUsuario') ?? '';
+    if (localStorage.getItem("tokenUsuario") !== null) {
+      token = localStorage.getItem("tokenUsuario") ?? "";
     } else {
-      token = localStorage.getItem('tokenPolicia') ?? '';
+      token = localStorage.getItem("tokenPolicia") ?? "";
     }
     try {
-      const response = await fetch(apiUrl + '/Ciudadano', {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+      const response = await fetch(apiUrl + "/Ciudadano", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
         body: JSON.stringify(ciudadano),
       });
 
       if (!response.ok) {
         const errorBody = await response.text();
-        throw new Error(`Error al actualizar la información del ciudadano: ${errorBody}`);
+        throw new Error(
+          `Error al actualizar la información del ciudadano: ${errorBody}`
+        );
       }
 
       await cargarDatosCiudadanos();
     } catch (error) {
-      console.error('Error al actualizar la información del ciudadano:', error);
+      console.error("Error al actualizar la información del ciudadano:", error);
     }
   }
 
   async function borrarDatosCiudadano(ciudadanoId: number) {
-    if (localStorage.getItem('tokenUsuario') !== null) {
-      token = localStorage.getItem('tokenUsuario') ?? '';
+    if (localStorage.getItem("tokenUsuario") !== null) {
+      token = localStorage.getItem("tokenUsuario") ?? "";
     } else {
-      token = localStorage.getItem('tokenPolicia') ?? '';
+      token = localStorage.getItem("tokenPolicia") ?? "";
     }
     try {
-      const response = await fetch(apiUrl + '/Ciduadano/' + ciudadanoId.toString(), {
-        method: 'DELETE',
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
-      if (!response.ok) throw new Error('Error al borrar la información del ciudadano');
+      const response = await fetch(
+        apiUrl + "/Ciduadano/" + ciudadanoId.toString(),
+        {
+          method: "DELETE",
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      if (!response.ok)
+        throw new Error("Error al borrar la información del ciudadano");
       await cargarDatosCiudadanos();
     } catch (error) {
-      console.error('Error al borrar la información del ciudadano', error);
+      console.error("Error al borrar la información del ciudadano", error);
     }
   }
 
-  return { cargarDatosCiudadanos, cargarDatosCiudadanosId, borrarDatosCiudadano, actualizarCiudadano, infoCiudadanos, guardarCiudadano, 
-           cargarDatosCiudadanosBusquedaCaptura, infoCiudadanosBusquedaCaptura, cargarDatosCiudadanosDeudores, infoDeudores
-           ,cargarDatosCiudadanosIdioma, cargarDatosCiudadanosIdiomaId, cargarDatosCiudadanosDeudoresIdioma, cargarDatosCiudadanosBusquedaCapturaIdioma
+  return {
+    cargarDatosCiudadanos,
+    cargarDatosCiudadanosId,
+    borrarDatosCiudadano,
+    actualizarCiudadano,
+    infoCiudadanos,
+    guardarCiudadano,
+    cargarDatosCiudadanosBusquedaCaptura,
+    infoCiudadanosBusquedaCaptura,
+    cargarDatosCiudadanosDeudores,
+    infoDeudores,
   };
 });

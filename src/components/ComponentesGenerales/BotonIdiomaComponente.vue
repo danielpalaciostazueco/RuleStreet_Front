@@ -1,6 +1,6 @@
 <template>
     <div>
-        <button @click="idiomaCambiado" class="nav__link language-toggle">{{ idiomaActual }}</button>
+        <button @click="idiomaCambiado" class="ciudadano_boton">{{ idiomaActual }}</button>
 
     </div>
 </template>
@@ -15,4 +15,8 @@ const idiomaCambiado = () => {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.ciudadano_boton {
+    @apply flex h-8 w-20 items-center justify-center bg-[#0068f7] text-[color:var(--colorTextoTarjeta)] no-underline mt-5;
+}
+</style>

@@ -27,6 +27,16 @@ interface Multa {
   description: string;
   pagada: boolean;
   idCiudadano: number;
+  codigoPenal: CodigoPenal;
+}
+export interface CodigoPenal {
+  idCodigoPenal: number;
+  articulo: string;
+  article: string;
+  descripcion: string;
+  description: string;
+  precio: number;
+  sentencia: string;
 }
 
 interface Ciudadano {
@@ -68,6 +78,14 @@ export default defineComponent({
       if (citizenId.value) {
         store.cargarDatosCiudadanosId(citizenId.value);
       }
+    };
+    const formatDate = (date: Date): string => {
+      const options: Intl.DateTimeFormatOptions = {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      };
+      return new Date(date).toLocaleDateString(locale.value, options);
     };
 
     const citizenDetails = computed<Ciudadano>(() => {
@@ -124,7 +142,8 @@ export default defineComponent({
       openModal,
       reloadCitizenDetails,
       getNombrePolicia,
-      locale
+      locale,
+      formatDate
     };
   }
 });
@@ -167,7 +186,7 @@ function parseRouteParam(param: string | string[]): string {
             </div>
             <div class="ciudadano_tarjeta">
               <p>{{ $t('PerfilCiudadano.Birthdate') }}</p>
-              <p>{{ citizenDetails.fechaNacimiento }}</p>
+              <p>{{ formatDate(citizenDetails.fechaNacimiento) }}</p>
             </div>
             <div class="ciudadano_tarjeta">
               <p>ID</p>
