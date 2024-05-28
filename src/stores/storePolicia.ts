@@ -58,7 +58,7 @@ export const useListadoPolicias = defineStore('listadoPolicias', () => {
   const infoPolicias = reactive<Array<Policia>>([]);
   let token = "";
 
-  let infoPoli: Policia = {
+  const infoPoli = reactive({
     idPolicia: 0,
     idCiudadano: 0,
     rango: {
@@ -92,7 +92,7 @@ export const useListadoPolicias = defineStore('listadoPolicias', () => {
     },
     contrasena: "",
     isPolicia: false,
-  };
+  });
 
   async function cargarDatosPolicias() {
     try {
@@ -139,29 +139,25 @@ export const useListadoPolicias = defineStore('listadoPolicias', () => {
   }
 
 
-  async function cargarDatosPoliciasId(policiaId: number) {
-    try {
-      if (localStorage.getItem("tokenUsuario") !== null) {
-        token = localStorage.getItem("tokenUsuario") ?? "";
-      } else {
-        token = localStorage.getItem("tokenPolicia") ?? "";
-      }
-      const response = await fetch(
-        apiUrl + "/Policia/" + policiaId.toString(),
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-      if (!response.ok)
-        throw new Error("Error al cargar los datos del policia");
-      const policia = await response.json();
 
-      infoPoli = policia;
-      console.log(infoPoli);
+  async function cargarDatosPoliciasId(policiaId: number) {
+    const localToken = localStorage.getItem("tokenUsuario") || localStorage.getItem("tokenPolicia") || '';
+    try {
+      const response = await fetch(`${apiUrl}/Policia/${policiaId}`, {
+        method: 'GET',
+        headers: { 'Authorization': `Bearer ${localToken}` }
+      });
+      if (!response.ok) throw new Error("Error al cargar los datos del policia");
+
+      const data = await response.json();
+      Object.assign(infoPoli, data); // This will update the reactive object correctly
+      console.log("infoPoli after update:", infoPoli);
+
     } catch (error) {
-      console.error("Error al cargar la información del ciudadano:", error);
+      console.error("Error al cargar la información del policia:", error);
     }
-  }
+  };
+
 
   async function cargarDatosPoliciasIdiomaId(policiaId: number) {
     try {
