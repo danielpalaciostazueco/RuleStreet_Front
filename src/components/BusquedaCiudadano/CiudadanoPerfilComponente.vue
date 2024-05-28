@@ -95,8 +95,9 @@ export default defineComponent({
     const selectedMultaId = ref(null);
     const storeAuth = useListadoAuth();
     const policiaActualId = ref(0);
-    const policiaActual = ref<Policia | null>(null);
     const { t, locale } = useI18n();
+    const showError = ref(false);
+    const errorMessage = ref("");
 
     const reloadCitizenDetails = () => {
       if (citizenId.value) {
@@ -149,26 +150,22 @@ export default defineComponent({
       if (citizenId.value) {
         store.cargarDatosCiudadanosId(citizenId.value);
       }
+      storeAuth.loadPoliceInfo()
       policiaActualId.value = storeAuth.infoPoliciasAuth.IdPolicia;
-      if (policiaActualId.value) {
-        console.log("Datos del id:", policiaActualId.value);
-        const datosPolicia = await storePolicias.cargarDatosPoliciasId(policiaActualId.value);
-        console.log("Datos del policía cargados:", datosPolicia);
-        policiaActual.value = datosPolicia;
-        console.log("Asignado a policiaActual:", policiaActual.value);
-      }
+      storePolicias.cargarDatosPoliciasId(policiaActualId.value)
+      console.log(storePolicias.infoPoli)
     });
 
-    // watch(policiaActualId, async (newId) => {
-    //   if (newId) {
-    //     await storePolicias.cargarDatosPoliciasId(newId);
-    //     console.log("Actualizado los detalles del policía para ID:", newId);
-    //   }
-    // });
-
     const borrarMulta = (idMulta: any) => {
-      selectedMultaId.value = idMulta;
-      showConfirmModal.value = true;
+      const permisoBorrarMulta = storePolicias.infoPoli.rango.permisos.some(p => p.nombre === "Borrar multa");
+      if (permisoBorrarMulta) {
+        selectedMultaId.value = idMulta;
+        showConfirmModal.value = true;
+      } else {
+        errorMessage.value = "No tienes permiso para borrar multas.";
+        showError.value = true;
+        setTimeout(() => showError.value = false, 3000);
+      }
     };
 
     const confirmDelete = async () => {
@@ -199,7 +196,8 @@ export default defineComponent({
       confirmDelete,
       cancelDelete,
       showConfirmModal,
-      policiaActual,
+      showError,
+      errorMessage
     };
   }
 });
@@ -210,7 +208,6 @@ function parseRouteParam(param: string | string[]): string {
 </script>
 
 <template>
-  <p>{{ policiaActual?.contrasena }}</p>
   <div class="ciudadano_menu_derecha">
     <div class="ciudadano_menu_derecha_titulo">
       <h2>{{ $t('PerfilCiudadano.Profile') }}</h2>
@@ -322,6 +319,9 @@ function parseRouteParam(param: string | string[]): string {
                 </div>
                 <Modal :visible="showModal" @update:visible="showModal = $event" @onModalClose="reloadCitizenDetails" />
               </div>
+              <div v-if="showError" class="mensaje">
+                        {{ errorMessage }}
+                      </div>
               <template v-if="citizenDetails.multas && citizenDetails.multas.length > 0">
                 <div class="notas_container">
                   <div v-for="multa in citizenDetails.multas" :key="multa.idMulta" class="tarjeta_multa"
@@ -578,6 +578,20 @@ function parseRouteParam(param: string | string[]): string {
   @apply flex items-center;
 }
 
+.mensaje {
+  color: var(--colorRojo);
+  background-color: var(--colorMensajeErrorFondo);
+  padding: 5px;
+  margin: 5px 0;
+  border: 1px solid var(--colorRojo);
+  border-radius: 5px;
+  font-size: 0.9em;
+  z-index: 100;
+  position: absolute;
+  right: 16%
+  ;
+}
+
 @media (max-width: 1407px) {
   .ciudadano_perfil_usuario {
     @apply flex w-full gap-12 flex-col;
@@ -726,7 +740,7 @@ function parseRouteParam(param: string | string[]): string {
   .ciudadano_busqueda {
     @apply gap-1;
     /* flex-direction: column; */
-  }
+}
 }
 
 @media (max-width: 400px) {
