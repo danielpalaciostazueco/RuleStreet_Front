@@ -12,14 +12,51 @@ export interface Usuario {
   IsPolicia: boolean;
 }
 
-interface Policia {
-  IdPolicia: number;
-  IdCiudadano: number;
-  Rango: number;
-  NumeroPlaca: string;
-  IsPolicia: boolean;
+interface Permiso {
+  IdPermiso: number;
+  Nombre: string;
+  Name: string;
 }
 
+interface Rango {
+  IdRango: number;
+  Nombre: string;
+  Name: string;
+  Salario: number;
+  IsLocal: boolean;
+  Permisos: Permiso[];
+}
+
+interface Ciudadano {
+  IdCiudadano: number;
+  Nombre: string;
+  Apellidos: string;
+  Dni: string;
+  Genero: string;
+  Gender: string;
+  Nacionalidad: string;
+  Nationality: string;
+  FechaNacimiento: Date;
+  Direccion: string;
+  Address: string;
+  NumeroTelefono: number;
+  NumeroCuentaBancaria: string;
+  IsPoli: boolean;
+  IsBusquedaYCaptura: boolean;
+  IsPeligroso: boolean;
+  Multas: any[];
+  Vehiculos: any[];
+}
+
+export interface Policia {
+  IdPolicia: number;
+  IdCiudadano: number;
+  Rango: Rango;
+  NumeroPlaca: string;
+  Ciudadano: Ciudadano;
+  Contrasena?: string;
+  IsPolicia: boolean;
+}
 interface Ayuntamiento {
   IdUsuarioAyuntamiento: number;
   Dni: string;
@@ -40,8 +77,36 @@ export const useListadoAuth = defineStore("listadoAuth", () => {
   let infoPolicias: Policia = {
     IdPolicia: 0,
     IdCiudadano: 0,
-    Rango: 0,
+    Rango: {
+      IdRango: 0,
+      Nombre: "",
+      Name: "",
+      Salario: 0,
+      IsLocal: false,
+      Permisos: [],
+    },
     NumeroPlaca: "",
+    Ciudadano: {
+      IdCiudadano: 0,
+      Nombre: "",
+      Apellidos: "",
+      Dni: "",
+      Genero: "",
+      Gender: "",
+      Nacionalidad: "",
+      Nationality: "",
+      FechaNacimiento: new Date(),
+      Direccion: "",
+      Address: "",
+      NumeroTelefono: 0,
+      NumeroCuentaBancaria: "",
+      IsPoli: false,
+      IsBusquedaYCaptura: false,
+      IsPeligroso: false,
+      Multas: [],
+      Vehiculos: [],
+    },
+    Contrasena: "",
     IsPolicia: false,
   };
 
@@ -91,6 +156,7 @@ export const useListadoAuth = defineStore("listadoAuth", () => {
       const token = await response.text();
       localStorage.setItem("tokenPolicia", token);
       resetAndAssign(jwtDecode(token), infoPolicias);
+      console.log(infoPolicias);
       router.push("/");
     } catch (error) {
       console.error("Error en LoginPolicia:", error);

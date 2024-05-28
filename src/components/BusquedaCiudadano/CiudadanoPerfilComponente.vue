@@ -312,16 +312,16 @@ function parseRouteParam(param: string | string[]): string {
 
           <div class="ciudadano_perfil_otros_container">
             <div class="ciudadano_perfil_notasdiv">
-              <!-- añadir en el back las denuncias en el ciudadano -->
+
               <div class="ciudadano_perfil_notasdiv_titulo">
                 <svg class="ciudadano_icono" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
                   <path
                     d="M576 128c0-35.3-28.7-64-64-64H64C28.7 64 0 92.7 0 128V384c0 35.3 28.7 64 64 64l352 0 0-128c0-17.7 14.3-32 32-32H576V128zM448 448L576 320H448l0 128zM96 128a32 32 0 1 1 0 64 32 32 0 1 1 0-64z" />
                 </svg>
-                <p>DENUNCIAS</p>
+                <p>{{ $t('PerfilCiudadano.Denuncia') }}</p>
               </div>
               <div class="tarjeta_otros">
-                <p>NO HAY DENUNCIAS REGISTRADAS</p>
+                <p>{{ $t('PerfilCiudadano.NoDenuncia') }}</p>
               </div>
               <div class="tarjeta_otros">
                 <p>Investigacion de venta de drogas #121</p>

@@ -52,6 +52,42 @@ export interface Policia {
 export const useListadoPolicias = defineStore("listadoPolicias", () => {
   const apiUrl = `http://localhost:8001`;
   const infoPolicias = reactive<Array<Policia>>([]);
+  let infoPoli: Policia = {
+    idPolicia: 0,
+    idCiudadano: 0,
+    rango: {
+      idRango: 0,
+      nombre: "",
+      name: "",
+      salario: 0,
+      isLocal: false,
+      permisos: [],
+    },
+    numeroPlaca: "",
+    ciudadano: {
+      idCiudadano: 0,
+      nombre: "",
+      apellidos: "",
+      dni: "",
+      genero: "",
+      gender: "",
+      nacionalidad: "",
+      nationality: "",
+      fechaNacimiento: new Date(),
+      direccion: "",
+      address: "",
+      numeroTelefono: 0,
+      numeroCuentaBancaria: "",
+      isPoli: false,
+      isBusquedaYCaptura: false,
+      isPeligroso: false,
+      multas: [],
+      vehiculos: [],
+    },
+    contrasena: "",
+    isPolicia: false,
+  };
+
   let token = "";
 
   async function cargarDatosPolicias() {
@@ -93,12 +129,8 @@ export const useListadoPolicias = defineStore("listadoPolicias", () => {
         throw new Error("Error al cargar los datos del policia");
       const policia = await response.json();
 
-      const index = infoPolicias.findIndex((c) => c.idPolicia === policiaId);
-      if (index !== -1) {
-        infoPolicias[index] = policia;
-      } else {
-        infoPolicias.push(policia);
-      }
+      infoPoli = policia;
+      console.log(infoPoli);
     } catch (error) {
       console.error("Error al cargar la información del ciudadano:", error);
     }

@@ -85,6 +85,8 @@ export const messages = {
       NoMultas: "NO FINES REGISTERED",
       Vehicles: "VEHICLES",
       NoVehicles: "NO VEHICLES REGISTERED",
+      Denuncia: "COMPLAINTS",
+      NoDenuncia: "NO COMPLAINTS REGISTERED",
     },
 
     ListadoCiudadano: {
@@ -287,6 +289,8 @@ export const messages = {
       NoMultas: "NO HAY MULTAS REGISTRADAS",
       Vehicles: "VEHÍCULOS",
       NoVehicles: "NO HAY VEHÍCULOS REGISTRADOS",
+      Denuncia: "DENUNCIAS",
+      NoDenuncia: "NO HAY DENUNCIAS REGISTRADAS",
     },
 
     ListadoCiudadano: {
