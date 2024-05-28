@@ -150,7 +150,7 @@ export const useListadoPolicias = defineStore('listadoPolicias', () => {
       if (!response.ok) throw new Error("Error al cargar los datos del policia");
 
       const data = await response.json();
-      Object.assign(infoPoli, data); // This will update the reactive object correctly
+      Object.assign(infoPoli, data); 
       console.log("infoPoli after update:", infoPoli);
 
     } catch (error) {

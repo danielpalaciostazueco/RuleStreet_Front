@@ -150,10 +150,11 @@ export default defineComponent({
       if (citizenId.value) {
         store.cargarDatosCiudadanosId(citizenId.value);
       }
-      storeAuth.loadPoliceInfo()
-      policiaActualId.value = storeAuth.infoPoliciasAuth.IdPolicia;
-      storePolicias.cargarDatosPoliciasId(policiaActualId.value)
-      console.log(storePolicias.infoPoli)
+      await storeAuth.loadPoliceInfo();
+      if (storeAuth.infoPoliciasAuth.IdPolicia) {
+        policiaActualId.value = storeAuth.infoPoliciasAuth.IdPolicia;
+        await storePolicias.cargarDatosPoliciasId(policiaActualId.value);
+      }
     });
 
     const borrarMulta = (idMulta: any) => {
