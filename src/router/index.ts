@@ -90,6 +90,11 @@ const routes = [
     name: "codigoPenal",
     component: () => import("../views/CodigoPenalView.vue"),
   },
+  {
+    path: "/gestionPolicia",
+    name: "gestionPolicia",
+    component: () => import("../views/GestionPoliciaView.vue"),
+  },
 ];
 
 const router = createRouter({

@@ -319,187 +319,23 @@ export const useListadoPolicias = defineStore("listadoPolicias", () => {
     }
   }
 
-  async function actualizarPolicia(policia: Policia) {
+ 
+  async function actualizarPolicia(policiaPostDTO: any) {
     try {
-      if (policia.ciudadano.genero == null) {
-        const res = await fetch("https://es.libretranslate.com/translate", {
-          method: "POST",
-          body: JSON.stringify({
-            q: policia.ciudadano.gender,
-            source: "auto",
-            target: "es",
-            format: "text",
-            api_key: "",
-          }),
-          headers: { "Content-Type": "application/json" },
-        });
-        const data = await res.json();
-        policia.ciudadano.genero = data.translatedText;
-      }
+      token = localStorage.getItem("tokenUsuario") ?? localStorage.getItem("tokenPolicia") ?? "";
 
-      if (policia.ciudadano.gender == null) {
-        const res = await fetch("https://es.libretranslate.com/translate", {
-          method: "POST",
-          body: JSON.stringify({
-            q: policia.ciudadano.genero,
-            source: "auto",
-            target: "en",
-            format: "text",
-            api_key: "",
-          }),
-          headers: { "Content-Type": "application/json" },
-        });
-        const data = await res.json();
-        policia.ciudadano.gender = data.translatedText;
-      }
-
-      if (policia.ciudadano.nacionalidad == null) {
-        const res = await fetch("https://es.libretranslate.com/translate", {
-          method: "POST",
-          body: JSON.stringify({
-            q: policia.ciudadano.nationality,
-            source: "auto",
-            target: "es",
-            format: "text",
-            api_key: "",
-          }),
-          headers: { "Content-Type": "application/json" },
-        });
-        const data = await res.json();
-        policia.ciudadano.nacionalidad = data.translatedText;
-      }
-
-      if (policia.ciudadano.nationality == null) {
-        const res = await fetch("https://es.libretranslate.com/translate", {
-          method: "POST",
-          body: JSON.stringify({
-            q: policia.ciudadano.nacionalidad,
-            source: "auto",
-            target: "en",
-            format: "text",
-            api_key: "",
-          }),
-          headers: { "Content-Type": "application/json" },
-        });
-        const data = await res.json();
-        policia.ciudadano.nationality = data.translatedText;
-      }
-
-      if (policia.ciudadano.direccion == null) {
-        const res = await fetch("https://es.libretranslate.com/translate", {
-          method: "POST",
-          body: JSON.stringify({
-            q: policia.ciudadano.address,
-            source: "auto",
-            target: "es",
-            format: "text",
-            api_key: "",
-          }),
-          headers: { "Content-Type": "application/json" },
-        });
-        const data = await res.json();
-        policia.ciudadano.direccion = data.translatedText;
-      }
-
-      if (policia.ciudadano.address == null) {
-        const res = await fetch("https://es.libretranslate.com/translate", {
-          method: "POST",
-          body: JSON.stringify({
-            q: policia.ciudadano.direccion,
-            source: "auto",
-            target: "en",
-            format: "text",
-            api_key: "",
-          }),
-          headers: { "Content-Type": "application/json" },
-        });
-        const data = await res.json();
-        policia.ciudadano.address = data.translatedText;
-      }
-
-      if (policia.rango.nombre == null) {
-        const res = await fetch("https://es.libretranslate.com/translate", {
-          method: "POST",
-          body: JSON.stringify({
-            q: policia.rango.name,
-            source: "auto",
-            target: "es",
-            format: "text",
-            api_key: "",
-          }),
-          headers: { "Content-Type": "application/json" },
-        });
-        const data = await res.json();
-        policia.rango.nombre = data.translatedText;
-      }
-
-      if (policia.rango.name == null) {
-        const res = await fetch("https://es.libretranslate.com/translate", {
-          method: "POST",
-          body: JSON.stringify({
-            q: policia.rango.nombre,
-            source: "auto",
-            target: "en",
-            format: "text",
-            api_key: "",
-          }),
-          headers: { "Content-Type": "application/json" },
-        });
-        const data = await res.json();
-        policia.rango.name = data.translatedText;
-      }
-      for (let i = 0; i < policia.rango.permisos.length; i++) {
-        if (policia.rango.permisos[i].nombre == null) {
-          const res = await fetch("https://es.libretranslate.com/translate", {
-            method: "POST",
-            body: JSON.stringify({
-              q: policia.rango.permisos[i].name,
-              source: "auto",
-              target: "es",
-              format: "text",
-              api_key: "",
-            }),
-            headers: { "Content-Type": "application/json" },
-          });
-          const data = await res.json();
-          policia.rango.permisos[i].nombre = data.translatedText;
-        }
-
-        if (policia.rango.permisos[i].name == null) {
-          const res = await fetch("https://es.libretranslate.com/translate", {
-            method: "POST",
-            body: JSON.stringify({
-              q: policia.rango.permisos[i].nombre,
-              source: "auto",
-              target: "en",
-              format: "text",
-              api_key: "",
-            }),
-            headers: { "Content-Type": "application/json" },
-          });
-          const data = await res.json();
-          policia.rango.permisos[i].name = data.translatedText;
-        }
-      }
-      if (localStorage.getItem("tokenUsuario") !== null) {
-        token = localStorage.getItem("tokenUsuario") ?? "";
-      } else {
-        token = localStorage.getItem("tokenPolicia") ?? "";
-      }
-      const response = await fetch(apiUrl + "/Policia", {
+      const response = await fetch(apiUrl + "/Policia/" + policiaPostDTO.IdPolicia.toString(), {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(policia),
+        body: JSON.stringify(policiaPostDTO),
       });
 
       if (!response.ok) {
         const errorBody = await response.text();
-        throw new Error(
-          `Error al actualizar la información del policia: ${errorBody}`
-        );
+        throw new Error(`Error al actualizar la información del policia: ${errorBody}`);
       }
 
       await cargarDatosPolicias();
@@ -507,7 +343,6 @@ export const useListadoPolicias = defineStore("listadoPolicias", () => {
       console.error("Error al actualizar la información del policia:", error);
     }
   }
-
   async function borrarDatosPolicia(policiaId: number) {
     try {
       if (localStorage.getItem("tokenUsuario") !== null) {
