@@ -2,11 +2,36 @@
 import { defineComponent, ref, computed, watch, onMounted } from 'vue';
 import ReturnButton from '@/components/ComponentesGenerales/BotonPaginaPrincipalComponente.vue';
 import Modal from '@/components/BusquedaCiudadano/CiudadanoMultasComponente.vue';
+import ConfirmModal from '@/components/BusquedaCiudadano/CiudadanoConfirmacionMultaComponente.vue'
 import { useRoute } from 'vue-router';
 import { useListadoCiudadanos } from '@/stores/storeCiudadano';
 import { useListadoPolicias } from '@/stores/storePolicia';
+import { useListadoMultas } from '@/stores/storeMulta';
+import { useListadoAuth } from '@/stores/storeAuth';
 import { useI18n } from 'vue-i18n';
 
+interface Permiso {
+  idPermiso: number;
+  nombre: string;
+}
+
+interface Rango {
+  idRango: number;
+  nombre: string;
+  salario: number;
+  isLocal: boolean;
+  permisos: Permiso[];
+}
+
+interface Policia {
+  idPolicia: number;
+  idCiudadano: number;
+  rango: Rango;
+  numeroPlaca: string;
+  ciudadano: Ciudadano;
+  contrasena: string;
+  isPolicia: boolean;
+}
 interface Vehiculo {
   idVehiculo: number;
   matricula: string;
@@ -27,16 +52,6 @@ interface Multa {
   description: string;
   pagada: boolean;
   idCiudadano: number;
-  codigoPenal: CodigoPenal;
-}
-export interface CodigoPenal {
-  idCodigoPenal: number;
-  articulo: string;
-  article: string;
-  descripcion: string;
-  description: string;
-  precio: number;
-  sentencia: string;
 }
 
 interface Ciudadano {
@@ -61,31 +76,33 @@ interface Ciudadano {
 }
 
 export default defineComponent({
+  props: {
+    selectedCitizenId: Number
+  },
   components: {
     ReturnButton,
-    Modal
+    Modal,
+    ConfirmModal
   },
   setup() {
     const route = useRoute();
     const store = useListadoCiudadanos();
     const storePolicias = useListadoPolicias();
+    const storeMultas = useListadoMultas();
     const citizenId = ref(parseInt(parseRouteParam(route.params.id) || '0'));
     const showModal = ref(false);
-
+    const showConfirmModal = ref(false);
+    const selectedMultaId = ref(null);
+    const storeAuth = useListadoAuth();
+    const policiaActualId = ref(0);
     const { t, locale } = useI18n();
+    const showError = ref(false);
+    const errorMessage = ref("");
 
     const reloadCitizenDetails = () => {
       if (citizenId.value) {
         store.cargarDatosCiudadanosId(citizenId.value);
       }
-    };
-    const formatDate = (date: Date): string => {
-      const options: Intl.DateTimeFormatOptions = {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-      };
-      return new Date(date).toLocaleDateString(locale.value, options);
     };
 
     const citizenDetails = computed<Ciudadano>(() => {
@@ -133,7 +150,40 @@ export default defineComponent({
       if (citizenId.value) {
         store.cargarDatosCiudadanosId(citizenId.value);
       }
+      await storeAuth.loadPoliceInfo();
+      if (storeAuth.infoPoliciasAuth.IdPolicia) {
+        policiaActualId.value = storeAuth.infoPoliciasAuth.IdPolicia;
+        await storePolicias.cargarDatosPoliciasId(policiaActualId.value);
+      }
     });
+
+    const borrarMulta = (idMulta: any) => {
+      const permisoBorrarMulta = storePolicias.infoPoli.rango.permisos.some(p => p.nombre === "Borrar multa");
+      if (permisoBorrarMulta) {
+        selectedMultaId.value = idMulta;
+        showConfirmModal.value = true;
+      } else {
+        errorMessage.value = "No tienes permiso para borrar multas.";
+        showError.value = true;
+        setTimeout(() => showError.value = false, 3000);
+      }
+    };
+
+    const confirmDelete = async () => {
+      try {
+        await storeMultas.borrarDatosMulta(selectedMultaId.value);
+        reloadCitizenDetails();
+        showConfirmModal.value = false;
+      } catch (error) {
+        console.error('Error al eliminar la multa:', error);
+        alert("Error al eliminar la multa.");
+        showConfirmModal.value = false;
+      }
+    };
+
+    const cancelDelete = () => {
+      showConfirmModal.value = false;
+    };
 
     return {
       citizenDetails,
@@ -143,7 +193,12 @@ export default defineComponent({
       reloadCitizenDetails,
       getNombrePolicia,
       locale,
-      formatDate
+      borrarMulta,
+      confirmDelete,
+      cancelDelete,
+      showConfirmModal,
+      showError,
+      errorMessage
     };
   }
 });
@@ -186,7 +241,7 @@ function parseRouteParam(param: string | string[]): string {
             </div>
             <div class="ciudadano_tarjeta">
               <p>{{ $t('PerfilCiudadano.Birthdate') }}</p>
-              <p>{{ formatDate(citizenDetails.fechaNacimiento) }}</p>
+              <p>{{ citizenDetails.fechaNacimiento }}</p>
             </div>
             <div class="ciudadano_tarjeta">
               <p>ID</p>
@@ -265,6 +320,9 @@ function parseRouteParam(param: string | string[]): string {
                 </div>
                 <Modal :visible="showModal" @update:visible="showModal = $event" @onModalClose="reloadCitizenDetails" />
               </div>
+              <div v-if="showError" class="mensaje">
+                        {{ errorMessage }}
+                      </div>
               <template v-if="citizenDetails.multas && citizenDetails.multas.length > 0">
                 <div class="notas_container">
                   <div v-for="multa in citizenDetails.multas" :key="multa.idMulta" class="tarjeta_multa"
@@ -272,6 +330,8 @@ function parseRouteParam(param: string | string[]): string {
                     <div class="tarjeta_otros_cabecera">
                       <p>{{ new Date(multa.fecha).toLocaleDateString() }} - {{ new
                         Date(multa.fecha).toLocaleTimeString() }}</p>
+                      <button @click="borrarMulta(multa.idMulta)" class="btn_pagar_multa">Eliminar</button>
+                      <ConfirmModal v-if="showConfirmModal" @confirm="confirmDelete" @cancel="cancelDelete" />
                     </div>
                     <p>{{ multa.codigoPenal.articulo }}</p>
                     <div class="tarjeta_multa_info">
@@ -519,6 +579,20 @@ function parseRouteParam(param: string | string[]): string {
   @apply flex items-center;
 }
 
+.mensaje {
+  color: var(--colorRojo);
+  background-color: var(--colorMensajeErrorFondo);
+  padding: 5px;
+  margin: 5px 0;
+  border: 1px solid var(--colorRojo);
+  border-radius: 5px;
+  font-size: 0.9em;
+  z-index: 100;
+  position: absolute;
+  right: 16%
+  ;
+}
+
 @media (max-width: 1407px) {
   .ciudadano_perfil_usuario {
     @apply flex w-full gap-12 flex-col;
@@ -667,7 +741,7 @@ function parseRouteParam(param: string | string[]): string {
   .ciudadano_busqueda {
     @apply gap-1;
     /* flex-direction: column; */
-  }
+}
 }
 
 @media (max-width: 400px) {
