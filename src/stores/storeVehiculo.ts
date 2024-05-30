@@ -1,219 +1,249 @@
-
-
-import { defineStore } from 'pinia';
-import { reactive } from 'vue';
-import { useListadoAuth } from './storeAuth';
-
-
+import { defineStore } from "pinia";
+import { reactive } from "vue";
 
 export interface Vehiculo {
-  idVehiculo : number;
-  matricula : string;
-  marca : string;
-  modelo : string;
-  color : string;
-  enColor : string;
-  idCiudadano : number,
-  photo : string;
+  idVehiculo: number;
+  matricula: string;
+  marca: string;
+  modelo: string;
+  color: string;
+  enColor: string;
+  idCiudadano: number;
+  photo: string;
 }
 
-
-export const useListadoVehiculos = defineStore('listadoVehiculos', () => {
+export const useListadoVehiculos = defineStore("listadoVehiculos", () => {
   const apiUrl = `http://localhost:8001`;
   const infoVehiculos = reactive<Array<Vehiculo>>([]);
-  
-  let token = ''
+
+  let token = "";
 
   async function cargarDatosVehiculos() {
     try {
-      if (localStorage.getItem('tokenUsuario') !== null) {
-        token = localStorage.getItem('tokenUsuario') ?? '';
+      if (localStorage.getItem("tokenUsuario") !== null) {
+        token = localStorage.getItem("tokenUsuario") ?? "";
       } else {
-        token = localStorage.getItem('tokenPolicia') ?? '';
+        token = localStorage.getItem("tokenPolicia") ?? "";
       }
-        const response = await fetch(apiUrl + '/Vehiculo', {
-            headers: { 'Authorization': `Bearer ${token}` } 
-        });
-        if (!response.ok) throw new Error('Error al cargar los datos de los vehiculos');
-        const data = await response.json();
-        infoVehiculos.splice(0, infoVehiculos.length); 
-        data.forEach((vehiculo: Vehiculo) => {
-            infoVehiculos.push(vehiculo); 
-        });
-    } catch (error) {
-        console.error('Error al cargar la información de los vehiculos:', error);
-    }
-}
-
-
-async function cargarDatosVehiculosIdioma() {
-  try {
-    if (localStorage.getItem('tokenUsuario') !== null) {
-      token = localStorage.getItem('tokenUsuario') ?? '';
-    } else {
-      token = localStorage.getItem('tokenPolicia') ?? '';
-    }
-      const response = await fetch(apiUrl + '/Vehiculo/English', {
-          headers: { 'Authorization': `Bearer ${token}` } 
+      const response = await fetch(apiUrl + "/Vehiculo", {
+        headers: { Authorization: `Bearer ${token}` },
       });
-      if (!response.ok) throw new Error('Error al cargar los datos de los vehiculos');
+      if (!response.ok)
+        throw new Error("Error al cargar los datos de los vehiculos");
       const data = await response.json();
-      infoVehiculos.splice(0, infoVehiculos.length); 
+      infoVehiculos.splice(0, infoVehiculos.length);
       data.forEach((vehiculo: Vehiculo) => {
-          infoVehiculos.push(vehiculo); 
+        infoVehiculos.push(vehiculo);
       });
-  } catch (error) {
-      console.error('Error al cargar la información de los vehiculos:', error);
+    } catch (error) {
+      console.error("Error al cargar la información de los vehiculos:", error);
+    }
   }
-}
 
   async function cargarDatosVehiculosId(vehiculoId: number) {
     try {
-      if (localStorage.getItem('tokenUsuario') !== null) {
-        token = localStorage.getItem('tokenUsuario') ?? '';
+      if (localStorage.getItem("tokenUsuario") !== null) {
+        token = localStorage.getItem("tokenUsuario") ?? "";
       } else {
-        token = localStorage.getItem('tokenPolicia') ?? '';
+        token = localStorage.getItem("tokenPolicia") ?? "";
       }
-      const response = await fetch(apiUrl + '/Vehiculo/' + vehiculoId.toString(), {
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
-      if (!response.ok) throw new Error('Error al cargar los datos del vehiculo');
+      const response = await fetch(
+        apiUrl + "/Vehiculo/" + vehiculoId.toString(),
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      if (!response.ok)
+        throw new Error("Error al cargar los datos del vehiculo");
       const ciudadano = await response.json();
 
-      const index = infoVehiculos.findIndex(c => c.idCiudadano === vehiculoId);
+      const index = infoVehiculos.findIndex(
+        (c) => c.idCiudadano === vehiculoId
+      );
       if (index !== -1) {
         infoVehiculos[index] = ciudadano;
       } else {
-        infoVehiculos.push(ciudadano); 
+        infoVehiculos.push(ciudadano);
       }
     } catch (error) {
-      console.error('Error al cargar la información del vehiculo:', error);
+      console.error("Error al cargar la información del vehiculo:", error);
     }
   }
-  
-  async function cargarDatosVehiculosIdiomaId(vehiculoId: number) {
+
+  async function guardarVehiculo(vehiculo: Vehiculo) {
     try {
-      if (localStorage.getItem('tokenUsuario') !== null) {
-        token = localStorage.getItem('tokenUsuario') ?? '';
-      } else {
-        token = localStorage.getItem('tokenPolicia') ?? '';
+      if (vehiculo.enColor == null) {
+        const res = await fetch("https://es.libretranslate.com/translate", {
+          method: "POST",
+          body: JSON.stringify({
+            q: vehiculo.color,
+            source: "auto",
+            target: "en",
+            format: "text",
+            api_key: "",
+          }),
+          headers: { "Content-Type": "application/json" },
+        });
+        const data = await res.json();
+        vehiculo.enColor = data.translatedText;
       }
-      const response = await fetch(apiUrl + '/Vehiculo/English' + vehiculoId.toString(), {
-        headers: { 'Authorization': `Bearer ${token}` }
+
+      if (vehiculo.color == null) {
+        const res = await fetch("https://es.libretranslate.com/translate", {
+          method: "POST",
+          body: JSON.stringify({
+            q: vehiculo.enColor,
+            source: "auto",
+            target: "es",
+            format: "text",
+            api_key: "",
+          }),
+          headers: { "Content-Type": "application/json" },
+        });
+        const data = await res.json();
+        vehiculo.color = data.translatedText;
+      }
+      if (localStorage.getItem("tokenUsuario") !== null) {
+        token = localStorage.getItem("tokenUsuario") ?? "";
+      } else {
+        token = localStorage.getItem("tokenPolicia") ?? "";
+      }
+      const response = await fetch(apiUrl + "/Vehiculo", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(vehiculo),
       });
-      if (!response.ok) throw new Error('Error al cargar los datos del vehiculo');
-      const ciudadano = await response.json();
 
-      const index = infoVehiculos.findIndex(c => c.idCiudadano === vehiculoId);
-      if (index !== -1) {
-        infoVehiculos[index] = ciudadano;
-      } else {
-        infoVehiculos.push(ciudadano); 
+      if (!response.ok) {
+        const errorBody = await response.text();
+        throw new Error(
+          `Error al guardar la información del vehiculo: ${errorBody}`
+        );
       }
-    } catch (error) {
-      console.error('Error al cargar la información del vehiculo:', error);
-    }
-  }
-  
-  
-async function guardarVehiculo(vehiculo : Vehiculo) {
-  try {
-  
-    if (localStorage.getItem('tokenUsuario') !== null) {
-      token = localStorage.getItem('tokenUsuario') ?? '';
-    } else {
-      token = localStorage.getItem('tokenPolicia') ?? '';
-    }
-    const response = await fetch(apiUrl + '/Vehiculo', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-      body: JSON.stringify(vehiculo),
-    });
 
-    if (!response.ok) {
-      const errorBody = await response.text();
-      throw new Error(`Error al guardar la información del vehiculo: ${errorBody}`);
-    }
-
-    await cargarDatosVehiculos();
-  } catch (error) {
-    console.error('Error al guardar la información del vehiculo:', error);
-  }
-}
-function formatearFecha(fecha: string) {
-  const fechaObj = new Date(fecha);
-  const opciones: Intl.DateTimeFormatOptions = {
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-    hour: '2-digit',
-    minute: '2-digit',
-    hour12: false
-  };
-  
-
-  const fechaFormateada = fechaObj.toLocaleDateString('es-ES', opciones);
-  const horaFormateada = fechaObj.toLocaleTimeString('es-ES', opciones);
-
-  const fechaMatch = fechaFormateada.match(/(\d{2})\/(\d{2})\/(\d{4})/);
-  const horaMatch = horaFormateada.match(/(\d{2}):(\d{2})/);
-  
-  if (fechaMatch && horaMatch) {
-  
-    return `${fechaMatch[3]}-${fechaMatch[2]}-${fechaMatch[1]} ${horaMatch[1]}:${horaMatch[2]}`;
-  } else {
-    console.error('No se pudo formatear la fecha:', fecha);
-    return '';
-  }
-}
-
-
-async function actualizarVehiculo(vehiculo : Vehiculo) {
-  try {
-    if (localStorage.getItem('tokenUsuario') !== null) {
-      token = localStorage.getItem('tokenUsuario') ?? '';
-    } else {
-      token = localStorage.getItem('tokenPolicia') ?? '';
-    }
-    const response = await fetch(apiUrl + '/Vehiculo', {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-      body: JSON.stringify(vehiculo),
-    });
-
-    if (!response.ok) {
-      const errorBody = await response.text();
-      throw new Error(`Error al actualizar la información del vehiculo: ${errorBody}`);
-    }
-
-    await cargarDatosVehiculos();
-  } catch (error) {
-    console.error('Error al actualizar la información del vehiculo:', error);
-  }
-}
-
-  async function borrarDatosVehiculos(vehiculoId: number) {
-    
-    try {
-      if (localStorage.getItem('tokenUsuario') !== null) {
-        token = localStorage.getItem('tokenUsuario') ?? '';
-      } else {
-        token = localStorage.getItem('tokenPolicia') ?? '';
-      }
-      const response = await fetch(apiUrl + '/Vehiculo/' + vehiculoId.toString(), {
-        method: 'DELETE',
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
-      if (!response.ok) throw new Error('Error al borrar la información del vehiculo');
       await cargarDatosVehiculos();
     } catch (error) {
-      console.error('Error al borrar la información del vehiculo', error);
+      console.error("Error al guardar la información del vehiculo:", error);
+    }
+  }
+  function formatearFecha(fecha: string) {
+    const fechaObj = new Date(fecha);
+    const opciones: Intl.DateTimeFormatOptions = {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+    };
+
+    const fechaFormateada = fechaObj.toLocaleDateString("es-ES", opciones);
+    const horaFormateada = fechaObj.toLocaleTimeString("es-ES", opciones);
+
+    const fechaMatch = fechaFormateada.match(/(\d{2})\/(\d{2})\/(\d{4})/);
+    const horaMatch = horaFormateada.match(/(\d{2}):(\d{2})/);
+
+    if (fechaMatch && horaMatch) {
+      return `${fechaMatch[3]}-${fechaMatch[2]}-${fechaMatch[1]} ${horaMatch[1]}:${horaMatch[2]}`;
+    } else {
+      console.error("No se pudo formatear la fecha:", fecha);
+      return "";
     }
   }
 
-  
+  async function actualizarVehiculo(vehiculo: Vehiculo) {
+    try {
+      if (vehiculo.enColor == null) {
+        const res = await fetch("https://es.libretranslate.com/translate", {
+          method: "POST",
+          body: JSON.stringify({
+            q: vehiculo.color,
+            source: "auto",
+            target: "en",
+            format: "text",
+            api_key: "",
+          }),
+          headers: { "Content-Type": "application/json" },
+        });
+        const data = await res.json();
+        vehiculo.enColor = data.translatedText;
+      }
 
+      if (vehiculo.color == null) {
+        const res = await fetch("https://es.libretranslate.com/translate", {
+          method: "POST",
+          body: JSON.stringify({
+            q: vehiculo.enColor,
+            source: "auto",
+            target: "es",
+            format: "text",
+            api_key: "",
+          }),
+          headers: { "Content-Type": "application/json" },
+        });
+        const data = await res.json();
+        vehiculo.color = data.translatedText;
+      }
 
-  return {cargarDatosVehiculos,cargarDatosVehiculosId, borrarDatosVehiculos, actualizarVehiculo, infoVehiculos, guardarVehiculo 
-          ,cargarDatosVehiculosIdioma, cargarDatosVehiculosIdiomaId, formatearFecha};
+      if (localStorage.getItem("tokenUsuario") !== null) {
+        token = localStorage.getItem("tokenUsuario") ?? "";
+      } else {
+        token = localStorage.getItem("tokenPolicia") ?? "";
+      }
+      const response = await fetch(apiUrl + "/Vehiculo", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(vehiculo),
+      });
+
+      if (!response.ok) {
+        const errorBody = await response.text();
+        throw new Error(
+          `Error al actualizar la información del vehiculo: ${errorBody}`
+        );
+      }
+
+      await cargarDatosVehiculos();
+    } catch (error) {
+      console.error("Error al actualizar la información del vehiculo:", error);
+    }
+  }
+
+  async function borrarDatosVehiculos(vehiculoId: number) {
+    try {
+      if (localStorage.getItem("tokenUsuario") !== null) {
+        token = localStorage.getItem("tokenUsuario") ?? "";
+      } else {
+        token = localStorage.getItem("tokenPolicia") ?? "";
+      }
+      const response = await fetch(
+        apiUrl + "/Vehiculo/" + vehiculoId.toString(),
+        {
+          method: "DELETE",
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      if (!response.ok)
+        throw new Error("Error al borrar la información del vehiculo");
+      await cargarDatosVehiculos();
+    } catch (error) {
+      console.error("Error al borrar la información del vehiculo", error);
+    }
+  }
+
+  return {
+    cargarDatosVehiculos,
+    cargarDatosVehiculosId,
+    borrarDatosVehiculos,
+    actualizarVehiculo,
+    infoVehiculos,
+    guardarVehiculo,
+    formatearFecha,
+  };
 });

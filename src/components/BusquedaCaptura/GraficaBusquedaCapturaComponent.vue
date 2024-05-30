@@ -1,7 +1,6 @@
 <template>
     <div class="p-4">
-        <div id="chart-container"
-            class="relative h-96 overflow-hidden rounded-lg shadow-lg bg-gradient-to-br from-white to-gray-200"></div>
+        <div id="chart-container" class="relative h-96 overflow-hidden rounded-lg shadow-lg bg-gradient-to-br from-white to-gray-200"></div>
         <BotonPaginaPrincipalComponente />
     </div>
 </template>
@@ -95,14 +94,9 @@ onMounted(() => {
 </script>
 
 <style scoped>
-#chart-container {
-    @apply relative h-96 overflow-hidden rounded-lg shadow-lg bg-gradient-to-br from-white to-gray-200;
-}
-
 @media (max-width: 768px) {
     #chart-container {
-        @apply h-64;
-        /* Ajustar la altura para dispositivos móviles */
+        height: 16rem; 
     }
 }
 </style>

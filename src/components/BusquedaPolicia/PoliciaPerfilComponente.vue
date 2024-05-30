@@ -19,6 +19,14 @@ export default defineComponent({
 
     const { t, locale } = useI18n();
 
+    const formatDate = (date: Date): string => {
+      const options: Intl.DateTimeFormatOptions = {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      };
+      return new Date(date).toLocaleDateString(locale.value, options);
+    };
     const policiaDetails = computed<Policia>(() => {
       return store.infoPolicias.find(p => p.idPolicia === policiaId.value) || {
         idPolicia: 0,
@@ -53,7 +61,8 @@ export default defineComponent({
       policiaDetails,
       policiaId,
       multas,
-      locale
+      locale,
+      formatDate
     };
   }
 });
@@ -93,7 +102,7 @@ export default defineComponent({
             </div>
             <div class="policia_tarjeta">
               <p>{{ $t('PerfilPolicia.Birthdate') }}</p>
-              <p>{{ policiaDetails.ciudadano?.fechaNacimiento }}</p>
+              <p>{{ formatDate(policiaDetails.ciudadano?.fechaNacimiento) }}</p>
             </div>
             <div class="policia_tarjeta">
               <p>ID</p>
