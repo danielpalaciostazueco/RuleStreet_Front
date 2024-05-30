@@ -1,8 +1,10 @@
 <script lang="ts">
-import { computed, defineComponent, onMounted, ref } from 'vue';
+import { defineComponent, ref, onMounted, computed, watch } from 'vue';
 import { useListadoCodigoPenal } from '@/stores/storeCodigoPenal';
 import { useListadoAuth } from '@/stores/storeAuth';
 import { useListadoMultas } from '@/stores/storeMulta';
+import { useListadoAuditorias } from '@/stores/storeAuditoria';
+import { useListadoPolicias } from '@/stores/storePolicia';
 import { useRoute } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 
@@ -18,15 +20,17 @@ export default defineComponent({
     const route = useRoute();
     const idCiudadano = ref(0);
     const { t, locale } = useI18n();
+    const { cargarDatosCodigoPenal, infoCodigoPenal, cargarDatosCodigoPenalId } = useListadoCodigoPenal();
+    const { infoPoliciasAuth, loadPoliceInfo } = useListadoAuth();
+    const { guardarMulta } = useListadoMultas();
+    const { guardarPolicia } = useListadoAuditorias();
+    const { infoPolicias, cargarDatosPolicias } = useListadoPolicias();
 
     const newMulta = ref({
       descripcion: '',
       monto: 0
     });
 
-    const { cargarDatosCodigoPenal, infoCodigoPenal, cargarDatosCodigoPenalId } = useListadoCodigoPenal();
-    const { infoPolicias, loadPoliceInfo } = useListadoAuth();
-    const { guardarMulta } = useListadoMultas();
     const articuloSeleccionado = ref({
       idCodigoPenal: 0,
       articulo: '',
@@ -38,15 +42,19 @@ export default defineComponent({
 
     const filtro = ref('');
 
+    const updateIdCiudadano = () => {
+      const rawId = route.params.id;
+      idCiudadano.value = Array.isArray(rawId) ? parseInt(rawId[0], 10) : parseInt(rawId, 10);
+    };
+
+    watch(() => route.params.id, () => {
+      updateIdCiudadano();
+    }, { immediate: true });
+
     onMounted(async () => {
       loadPoliceInfo();
       await cargarDatosCodigoPenal();
-      const path = window.location.pathname;
-      const segments = path.split('/');
-      const lastSegment = segments.pop() || segments.pop();
-      if (lastSegment !== undefined) {
-        idCiudadano.value = parseInt(lastSegment, 10);
-      }
+      await cargarDatosPolicias();
     });
 
     const close = () => {
@@ -55,7 +63,6 @@ export default defineComponent({
       filtro.value = '';
       emit('update:visible', false);
       emit('onModalClose');
-
     };
 
     const guardarId = async (id: number) => {
@@ -64,15 +71,14 @@ export default defineComponent({
         articuloSeleccionado.value = response;
       }
     };
-    const submitMulta = async () => {
-      const currentTime = new Date();
-      const timezoneOffset = currentTime.getTimezoneOffset() * 60000;
-      const localTime = new Date(currentTime.getTime() - timezoneOffset);
 
+    const submitMulta = async () => {
+      await cargarDatosPolicias();
+      console.log(infoPoliciasAuth)
       const multaData = {
         idMulta: 0,
-        idPolicia: infoPolicias.IdPolicia,
-        fecha: localTime, // Using local time here
+        idPolicia: infoPoliciasAuth.IdPolicia,
+        fecha: new Date(),
         idCodigoPenal: articuloSeleccionado.value.idCodigoPenal,
         pagada: false,
         descripcion: articuloSeleccionado.value.descripcion,
@@ -82,7 +88,21 @@ export default defineComponent({
         description: articuloSeleccionado.value.description
       };
 
+      const policiaInfo = infoPolicias[0];
+
+      const descripcionAuditoria = `El ${policiaInfo.rango.nombre} ${policiaInfo.ciudadano.nombre} ha creado la multa con articulo: ${multaData.articuloPenal}, precio: ${multaData.precio}€ el dia ${multaData.fecha}`;
+
+      const auditoriaData = {
+        idAuditoria: 0,
+        titulo: 'Multa',
+        descripcion: descripcionAuditoria,
+        fecha: new Date(),
+        idPolicia: multaData.idPolicia
+      };
+
       await guardarMulta(multaData);
+      await guardarPolicia(auditoriaData);
+
       close();
     };
 
@@ -106,6 +126,7 @@ export default defineComponent({
   }
 });
 </script>
+
 
 <template>
   <div v-if="visible" class="modal_fondo" @click.self="close">
@@ -173,7 +194,6 @@ export default defineComponent({
   display: flex;
   justify-content: center;
   align-items: center;
-  overflow: hidden;
 }
 
 .modal_container {
@@ -181,11 +201,9 @@ export default defineComponent({
   padding: 20px;
   border-radius: 10px;
   width: 70%;
-  height: 80%;
+  height: 50rem;
   display: flex;
-  flex-direction: row;
   gap: 2rem;
-  overflow: hidden;
 }
 
 .modal_izquierda {
@@ -238,7 +256,6 @@ export default defineComponent({
   width: 100%;
   overflow-y: auto;
   padding: 10px;
-  max-height: 70%;
 }
 
 .model_tabla::-webkit-scrollbar {
@@ -310,7 +327,6 @@ export default defineComponent({
   gap: 2rem;
   padding: 2rem;
   justify-content: space-between;
-  overflow-y: auto;
 }
 
 .modal_derecha_div p {
@@ -358,101 +374,5 @@ export default defineComponent({
   display: flex;
   justify-content: center;
   width: 100%;
-}
-
-/* Media Queries for Responsive Design */
-@media (max-width: 1024px) {
-  .modal_container {
-    flex-direction: column;
-    width: 90%;
-    height: 90%;
-  }
-
-  .modal_izquierda,
-  .modal_derecha {
-    width: 100%;
-  }
-}
-
-@media (max-width: 768px) {
-  .modal_titulo h1 {
-    font-size: 1.5rem;
-    height: 3rem;
-  }
-
-  .model_buscador {
-    height: 1.2rem;
-    padding-left: 1rem;
-  }
-
-  .model_tabla_encabezado {
-    font-size: 0.9rem;
-    padding: 8px;
-  }
-
-  .model_tabla_item,
-  .model_tabla_item_filtro {
-    padding: 8px;
-  }
-
-  .modal_derecha_div {
-    padding: 1rem;
-  }
-
-  .modal_boton {
-    width: 5rem;
-    height: 1.2rem;
-    font-size: 0.8rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .modal_container {
-    flex-direction: column;
-    width: 100%;
-    height: 100%;
-    padding: 10px;
-  }
-
-  .modal_izquierda,
-  .modal_derecha {
-    width: 100%;
-  }
-
-  .modal_titulo h1 {
-    font-size: 1.2rem;
-    height: 2.5rem;
-  }
-
-  .model_buscador {
-    height: 1.2rem;
-    padding-left: 0.5rem;
-  }
-
-  .model_tabla {
-    grid-template-columns: 1fr;
-    max-height: 50%;
-  }
-
-  .model_tabla_encabezado {
-    font-size: 0.8rem;
-    padding: 6px;
-  }
-
-  .model_tabla_item,
-  .model_tabla_item_filtro {
-    padding: 6px;
-  }
-
-  .modal_derecha_div {
-    padding: 0.5rem;
-    max-height: 50%;
-  }
-
-  .modal_boton {
-    width: 4rem;
-    height: 1rem;
-    font-size: 0.7rem;
-  }
 }
 </style>
