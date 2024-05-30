@@ -4,7 +4,7 @@ import { useListadoAuth } from "./storeAuth";
 const storeAuth = useListadoAuth();
 
 export interface Rango {
-  idRange: number;
+  idRango: number;
   idPolicia: number;
   nombre: string;
   name: string;
@@ -17,28 +17,20 @@ export const useListadoRangos = defineStore("listadoRangos", () => {
   const infoRangos = reactive<Array<Rango>>([]);
   let token = "";
 
+ 
   async function cargarDatosRangos() {
     try {
-      if (localStorage.getItem("tokenUsuario") !== null) {
-        token = localStorage.getItem("tokenUsuario") ?? "";
-      } else {
-        token = localStorage.getItem("tokenPolicia") ?? "";
-      }
+      token = localStorage.getItem("tokenUsuario") ?? localStorage.getItem("tokenPolicia") ?? "";
       const response = await fetch(apiUrl + "/Rango", {
         headers: { Authorization: `Bearer ${token}` },
       });
-      if (!response.ok)
-        throw new Error("Error al cargar los datos de los rangos");
+      if (!response.ok) throw new Error("Error al cargar los datos de los rangos");
       const data = await response.json();
-      infoRangos.splice(0, infoRangos.length);
-      data.forEach((rango: Rango) => {
-        infoRangos.push(rango);
-      });
+      infoRangos.splice(0, infoRangos.length, ...data);
     } catch (error) {
       console.error("Error al cargar la información de los rangos:", error);
     }
   }
-
   async function cargarDatosRangosId(rangoId: number) {
     try {
       if (localStorage.getItem("tokenUsuario") !== null) {

@@ -239,18 +239,19 @@ export const useListadoPolicias = defineStore('listadoPolicias', () => {
   }
 
 
-  async function actualizarPolicia(policia: Policia) {
-
+ 
+  async function actualizarPolicia(policiaPostDTO: any) {
     try {
-      if (localStorage.getItem('tokenUsuario') !== null) {
-        token = localStorage.getItem('tokenUsuario') ?? '';
-      } else {
-        token = localStorage.getItem('tokenPolicia') ?? '';
-      }
-      const response = await fetch(apiUrl + '/Policia', {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-        body: JSON.stringify(policia),
+      token = localStorage.getItem("tokenUsuario") ?? localStorage.getItem("tokenPolicia") ?? "";
+
+      const response = await fetch(apiUrl + "/Policia/" + policiaPostDTO.IdPolicia.toString(), {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(policiaPostDTO),
+
       });
 
       if (!response.ok) {
@@ -263,7 +264,6 @@ export const useListadoPolicias = defineStore('listadoPolicias', () => {
       console.error('Error al actualizar la información del policia:', error);
     }
   }
-
   async function borrarDatosPolicia(policiaId: number) {
     try {
       if (localStorage.getItem('tokenUsuario') !== null) {
