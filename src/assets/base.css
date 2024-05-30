@@ -2,6 +2,7 @@
 :root {
   --colorBlanco: #fff;
   --colorNegro: #000;
+  --colorRojo: #ff0000;
   --colorFondo: #234c80;
   --colorSvg: #fff;
   --colorFondoTarjeta: #263d59;
@@ -24,6 +25,7 @@
   --colorTarjetaPoliciaRango: #4f83aa;
   --colorTarjetaBusqueda: #b0b6be;
   --colorTituloTarjetaPoliciaRango: #141a22;
+  --colorMensajeErrorFondo: #ffebe6;
 }
 
 @tailwind base;
