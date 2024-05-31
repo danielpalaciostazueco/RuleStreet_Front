@@ -1,18 +1,6 @@
 <template>
   <div class="mx-auto p-4">
-    <div class="mb-4">
-      <input v-model="searchQuery" placeholder="Buscar ciudadano..." @input="filteredCiudadanos" class="w-full p-2 mb-2 border rounded focus:outline-none focus:border-blue-600" />
-      <div class="mt-2">
-        <label for="filterField" class="mr-2">{{ $t('BusquedaCapturaTabla.Filter') }}</label>
-        <select v-model="filterField" @change="filteredCiudadanos" class="p-2 border rounded focus:outline-none focus:border-blue-600">
-          <option value="nombre">{{ $t('BusquedaCapturaTabla.Name') }}</option>
-          <option value="apellidos">{{ $t('BusquedaCapturaTabla.Surname') }}</option>
-          <option value="dni">DNI</option>
-          <option value="genero">{{ $t('BusquedaCapturaTabla.Gender') }}</option>
-          <option value="isPeligroso">{{ $t('BusquedaCapturaTabla.Danger') }}</option>
-        </select>
-      </div>
-    </div>
+
     <div class="shadow-lg rounded-lg overflow-hidden">
       <table class="table-auto w-full">
         <thead>
@@ -63,7 +51,7 @@ onMounted(async () => {
 
 const filteredCiudadanos = computed(() => {
   const searchLower = searchQuery.value.toLowerCase();
-  return infoCiudadanosBusquedaCaptura.filter(ciudadano =>
+  return infoCiudadanosBusquedaCaptura.filter((ciudadano: any) =>
     ciudadano.nombre.toLowerCase().includes(searchLower) ||
     ciudadano.apellidos.toLowerCase().includes(searchLower) ||
     ciudadano.genero.toLowerCase().includes(searchLower) ||
@@ -83,7 +71,7 @@ function fieldDisplayName(field: any) {
 }
 
 const exportToExcel = () => {
-  const ws = XLSX.utils.json_to_sheet(filteredCiudadanos.value.map(ciudadano => ({
+  const ws = XLSX.utils.json_to_sheet(filteredCiudadanos.value.map((ciudadano: any) => ({
     Nombre: ciudadano.nombre,
     Apellidos: ciudadano.apellidos,
     Género: ciudadano.genero,

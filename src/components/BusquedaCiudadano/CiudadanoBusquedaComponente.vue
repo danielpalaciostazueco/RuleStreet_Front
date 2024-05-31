@@ -3,16 +3,25 @@ import { defineComponent, ref, onMounted, type Ref } from 'vue';
 import CitizenList from '@/components/BusquedaCiudadano/ListaCiudadanosComponente.vue';
 import { useListadoCiudadanos } from '@/stores/storeCiudadano';
 
+
 interface Vehiculo {
   idVehiculo: number;
   matricula: string;
   marca: string;
   modelo: string;
-  enColor: string;
   color: string;
+  enColor: string;
   idCiudadano: number;
 }
-
+export interface CodigoPenal {
+  idCodigoPenal: number;
+  articulo: string;
+  article: string;
+  descripcion: string;
+  description: string;
+  precio: number;
+  sentencia: string;
+}
 interface Multa {
   idMulta: number;
   idPolicia: number;
@@ -23,9 +32,10 @@ interface Multa {
   description: string;
   pagada: boolean;
   idCiudadano: number;
+  codigoPenal: CodigoPenal[];
 }
 
-interface Ciudadano {
+export interface Ciudadano {
   idCiudadano: number;
   nombre: string;
   apellidos: string;
@@ -41,11 +51,27 @@ interface Ciudadano {
   numeroCuentaBancaria: string;
   isPoli: boolean;
   isBusquedaYCaptura: boolean;
+  imagenUrl: string;
   isPeligroso: boolean;
+  diaIntroducidoListaCaptura: Date;
   multas: Multa[];
   vehiculos: Vehiculo[];
+  trabajo: string;
 }
 
+interface Deudores {
+  idCiudadano: number;
+  nombre: string;
+  apellidos: string;
+  dni: string;
+  genero: string;
+  gender: string;
+  nacionalidad: string;
+  nationality: string;
+  fechaNacimiento: Date;
+  cantidad: number;
+  imagenUrl: string;
+}
 export default defineComponent({
   components: {
     CitizenList
@@ -61,7 +87,7 @@ export default defineComponent({
 
     function searchCitizens() {
       if (searchQuery.value.trim()) {
-        filteredCitizens.value = infoCiudadanos.filter(citizen =>
+        filteredCitizens.value = infoCiudadanos.filter((citizen: Ciudadano) =>
           citizen.nombre.toLowerCase().includes(searchQuery.value.toLowerCase())
         );
       } else {

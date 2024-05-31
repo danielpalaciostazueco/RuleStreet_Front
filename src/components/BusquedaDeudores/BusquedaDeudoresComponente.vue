@@ -1,19 +1,6 @@
 <template>
   <div class="mx-auto p-4">
-    <div class="mb-4">
-      <input v-model="searchQuery" placeholder="Buscar deudor..." @input="filterDeudores" class="w-full p-2 mb-2 border rounded focus:outline-none focus:border-blue-600" />
-      <div class="mt-2">
-        <label for="filterField" class="mr-2">{{ $t('DeudoresTabla.Filter') }}</label>
-        <select v-model="filterField" @change="filterDeudores" class="p-2 border rounded focus:outline-none focus:border-blue-600">
-          <option value="nombre">{{ $t('DeudoresTabla.Name') }}</option>
-          <option value="apellidos">{{ $t('DeudoresTabla.Surname') }}</option>
-          <option value="dni">DNI</option>
-          <option value="genero">{{ $t('DeudoresTabla.Gender') }}</option>
-          <option value="nacionalidad">{{ $t('DeudoresTabla.Nationality') }}</option>
-          <option value="cantidad">{{ $t('DeudoresTabla.Cantidad') }}</option>
-        </select>
-      </div>
-    </div>
+   
     <div class="shadow-lg rounded-lg overflow-hidden">
       <table class="table-auto w-full">
         <thead>
@@ -65,7 +52,7 @@ onMounted(async () => {
 
 const filteredDeudores = computed(() => {
   const searchLower = searchQuery.value.toLowerCase();
-  return infoDeudores.filter(deudor => {
+  return infoDeudores.filter((deudor: typeof infoDeudores[0]) => {
     return String(deudor[filterField.value as keyof typeof deudor]).toLowerCase().includes(searchLower);
   });
 });
@@ -82,7 +69,7 @@ function fieldDisplayName(field: any) {
 }
 
 const exportToExcel = () => {
-  const dataToExport = filteredDeudores.value.map(deudor => ({
+  const dataToExport = filteredDeudores.value.map((deudor: typeof infoDeudores[0]) => ({
     Nombre: deudor.nombre,
     Apellidos: deudor.apellidos,
     Género: deudor.genero,

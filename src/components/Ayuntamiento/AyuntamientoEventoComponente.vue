@@ -6,9 +6,9 @@
     </div>
     <div class="info-card w-[calc(33.333%-20px)] shadow-lg rounded-lg overflow-hidden flex flex-col bg-white"
       v-for="evento in infoEventos" :key="evento.idEventos">
-      <img v-if="locale === 'es'" :src="evento.imagen" :alt="evento.descripcion"
+      <img v-if="locale === 'es'" :src="evento.imagen" :alt="evento.descripcion ?? ''"
         class="card-image w-full h-52 object-cover">
-      <img v-if="locale === 'en'" :src="evento.imagen" :alt="evento.description"
+      <img v-if="locale === 'en'" :src="evento.imagen" :alt="evento.description ?? ''"
         class="card-image w-full h-52 object-cover">
       <div class="card-content p-4 flex-grow flex flex-col justify-between">
         <h2 v-if="locale === 'en'" class="text-xl text-tituloModal">{{ evento.descripcion }}</h2>

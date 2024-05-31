@@ -212,6 +212,6 @@ export const useListadoAuth = defineStore('listadoAuth', () => {
 
   return {
     infoUsuarios, Datos, DatosRegistro, DatosPolicia, infoPoliciasAuth, DatosAyuntamiento, infoAyuntamiento,
-    LoginUsuario, LoginPolicia, LoginAyuntamiento, registroUsuario, formatearFecha, loadPoliceInfo
+    LoginUsuario, LoginPolicia, LoginAyuntamiento, registroUsuario, formatearFecha, loadPoliceInfo,
   };
 });

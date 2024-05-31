@@ -67,7 +67,7 @@ export default defineComponent({
     function searchPolicia() {
       hasSearched.value = true;
       if (searchQuery.value.trim()) {
-        Policia.value = store.infoPolicias.filter(policia =>
+        Policia.value = store.infoPolicias.filter((policia: Policia) =>
           policia.ciudadano.nombre.toLowerCase().includes(searchQuery.value.toLowerCase())
         );
       } else {

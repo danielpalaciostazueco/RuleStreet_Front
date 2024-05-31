@@ -1,11 +1,11 @@
 <script lang="ts">
-import { defineComponent, ref, computed, watch, onMounted } from 'vue';
+import { defineComponent, ref, watchEffect, onMounted, reactive } from 'vue';
 import ReturnButton from '@/components/ComponentesGenerales/BotonPaginaPrincipalComponente.vue';
 import { useRoute } from 'vue-router';
 import { useListadoVehiculos } from '@/stores/storeVehiculo';
-import { useI18n } from 'vue-i18n'; // Importa useI18n dentro del script
+import { useI18n } from 'vue-i18n';
 
-interface Vehicle {
+interface Vehiculo {
   idVehiculo: number;
   matricula: string;
   marca: string;
@@ -13,10 +13,52 @@ interface Vehicle {
   color: string;
   enColor: string;
   idCiudadano: number;
-  Photo: string;
-  ciudadano: {
-    nombre: string;
-  };
+  ciudadano: Ciudadano;
+}
+
+interface CodigoPenal {
+  idCodigoPenal: number;
+  articulo: string;
+  article: string;
+  descripcion: string;
+  description: string;
+  precio: number;
+  sentencia: string;
+}
+
+interface Multa {
+  idMulta: number;
+  idPolicia: number;
+  fecha: string;
+  precio: number;
+  articuloPenal: string;
+  descripcion: string;
+  description: string;
+  pagada: boolean;
+  idCiudadano: number;
+  codigoPenal: CodigoPenal[];
+}
+
+interface Ciudadano {
+  idCiudadano: number;
+  nombre: string;
+  apellidos: string;
+  dni: string;
+  genero: string;
+  gender: string;
+  nacionalidad: string;
+  nationality: string;
+  fechaNacimiento: Date;
+  direccion: string;
+  address: string;
+  numeroTelefono: string;
+  numeroCuentaBancaria: string;
+  isPoli: boolean;
+  isBusquedaYCaptura: boolean;
+  imagenUrl: string;
+  isPeligroso: boolean;
+  multas: Multa[];
+  vehiculos: Vehiculo[];
 }
 
 export default defineComponent({
@@ -26,99 +68,88 @@ export default defineComponent({
   setup() {
     const route = useRoute();
     const store = useListadoVehiculos();
-    const vehicleid = ref(parseInt(parseRouteParam(route.params.id)));
-    const { t, locale } = useI18n(); // Utiliza useI18n dentro del setup
+    const vehicleid = ref(parseInt(route.params.id as string || '0'));
+    const infoVehiculo = reactive<Array<Vehiculo>>([]);
 
-    const vehicleDetails = computed<Vehicle>(() => {
-      return store.infoVehiculos.find(c => c.idVehiculo === vehicleid.value) || {
-        idVehiculo: 0,
-        matricula: '',
-        marca: '',
-        modelo: '',
-        color: '',
-        enColor: '',
-        idCiudadano: 0,
-        Photo: '',
-        ciudadano: {
-          nombre: '',
-        }
-      };
-    });
+    const { t, locale } = useI18n();
 
-    watch(() => route.params.id, (newId) => {
-      const parsedId = parseInt(parseRouteParam(newId));
-      if (parsedId) {
-        vehicleid.value = parsedId;
-        store.cargarDatosVehiculosId(parsedId);
+    const loadVehicleDetails = async (id: number) => {
+      await store.cargarDatosVehiculosId(id);
+      if (store.infoVehiculo != null) {
+        infoVehiculo.splice(0, infoVehiculo.length, ...store.infoVehiculo);
+        console.log('infoVehiculo', infoVehiculo);
       }
-    }, { immediate: true });
+    };
+
+    watchEffect(() => {
+      if (vehicleid.value) {
+        loadVehicleDetails(vehicleid.value);
+      }
+    });
 
     onMounted(() => {
       if (vehicleid.value) {
-        store.cargarDatosVehiculosId(vehicleid.value);
+        loadVehicleDetails(vehicleid.value);
       }
     });
 
     return {
-      vehicleDetails,
+      infoVehiculo,
       vehicleid,
-      locale
+      locale,
+      t
     };
   }
 });
-
-function parseRouteParam(param: string | string[]): string {
-  return Array.isArray(param) ? param[0] : param;
-}
 </script>
-
-
 
 <template>
   <div class="vehiculo_menu_derecha">
     <div class="vehiculo_menu_derecha_titulo">
-      <h2>{{ $t('PerfilVehiculo.Profile') }}</h2>
+      <h2>{{ t('PerfilVehiculo.Profile') }}</h2>
     </div>
     <div class="vehiculo_perfil">
-      <p v-if="!vehicleid">{{ $t('PerfilVehiculo.Select') }}</p>
+      <p v-if="!vehicleid">{{ t('PerfilVehiculo.Select') }}</p>
       <template v-else>
-        <div class="vehiculo_perfil_usuario">
+        <div class="vehiculo_perfil_usuario" v-if="infoVehiculo.length && infoVehiculo[0]">
           <div class="vehiculo_perfil_usuario_izquierda">
             <img src="https://via.placeholder.com/150" alt="">
           </div>
           <div class="vehiculo_perfil_usuario_derecha">
             <div class="vehiculo_tarjeta">
-              <p>{{ $t('PerfilVehiculo.Placa') }}</p>
-              <p>{{ vehicleDetails.matricula }}</p>
+              <p>{{ t('PerfilVehiculo.Placa') }}</p>
+              <p>{{ infoVehiculo[0].matricula }}</p>
             </div>
             <div class="vehiculo_tarjeta">
-              <p>{{ $t('PerfilVehiculo.Model') }}</p>
-              <p>{{ vehicleDetails.modelo }}</p>
+              <p>{{ t('PerfilVehiculo.Model') }}</p>
+              <p>{{ infoVehiculo[0].modelo }}</p>
             </div>
             <div class="vehiculo_tarjeta">
-              <p>{{ $t('PerfilVehiculo.Brans') }}</p>
-              <p>{{ vehicleDetails.marca }}</p>
+              <p>{{ t('PerfilVehiculo.Brans') }}</p>
+              <p>{{ infoVehiculo[0].marca }}</p>
             </div>
             <div class="vehiculo_tarjeta">
-              <p>{{ $t('PerfilVehiculo.Color') }}</p>
-              <p v-if="locale === 'es'">{{ vehicleDetails.color }}</p>
-              <p v-if="locale === 'en'">{{ vehicleDetails.enColor }}</p>
+              <p>{{ t('PerfilVehiculo.Color') }}</p>
+              <p v-if="locale === 'es'">{{ infoVehiculo[0].color }}</p>
+              <p v-if="locale === 'en'">{{ infoVehiculo[0].enColor }}</p>
             </div>
             <div class="vehiculo_tarjeta">
-              <p>{{ $t('PerfilVehiculo.Dueno') }}</p>
-              <p>{{ vehicleDetails.ciudadano.nombre }}</p>
+              <p>{{ t('PerfilVehiculo.Dueno') }}</p>
+              <p>{{ infoVehiculo[0].ciudadano.nombre }}</p>
             </div>
-
           </div>
+        </div>
+        <div v-else>
+          <p>{{ t('PerfilVehiculo.Loading') }}</p>
         </div>
         <div class="vehiculo_perfil_botones">
           <div class="vehiculo_perfil_botones_izquierda">
-            <h2>{{ $t('PerfilVehiculo.BusquedaCaptura') }}</h2>
+            <h2>{{ t('PerfilVehiculo.BusquedaCaptura') }}</h2>
             <div class="vehiculo_perfil_boton">
               <input type="radio" id="no_izquierda" name="response_izquierda" checked>
-              <label for="no_izquierda">{{ $t('PerfilVehiculo.No') }}</label>
+              <label for="no_izquierda">{{ t('PerfilVehiculo.No') }}</label>
               <input type="radio" id="yes_izquierda" name="response_izquierda">
-              <label for="yes_izquierda">{{ $t('PerfilVehiculo.Yes') }}</label>
+              <label for="yes_izquierda">{{ t('PerfilVehiculo.Yes') }}</label>
             </div>
           </div>
         </div>
@@ -127,6 +158,7 @@ function parseRouteParam(param: string | string[]): string {
     </div>
   </div>
 </template>
+
 <style scoped>
 .vehiculo_menu_derecha {
   @apply bg-[color:var(--colorFondoCiudadano2)] w-9/12 flex flex-col gap-8 py-8 rounded-lg;

@@ -29,6 +29,16 @@
 <script lang="ts">
 import { defineComponent, type PropType } from 'vue';
 
+interface CodigoPenal {
+    idCodigoPenal: number;
+    articulo: string;
+    article: string;
+    descripcion: string;
+    description: string;
+    precio: number;
+    sentencia: string;
+}
+
 interface Multa {
     idMulta: number;
     idPolicia: number;
@@ -42,16 +52,6 @@ interface Multa {
     codigoPenal: CodigoPenal[];
 }
 
-interface CodigoPenal {
-    idCodigoPenal: number;
-    articulo: string;
-    article: string;
-    descripcion: string;
-    description: string;
-    precio: number;
-    sentencia: string;
-}
-
 export default defineComponent({
     props: {
         visible: {
@@ -59,7 +59,7 @@ export default defineComponent({
             required: true
         },
         multa: {
-            type: Object as PropType<Multa | null>,
+            type: Object as PropType<Multa | null | undefined >,
             required: false
         }
     },
@@ -119,45 +119,32 @@ export default defineComponent({
 });
 </script>
 
+
 <style scoped>
 .payment-modal {
-    position: fixed;
-    z-index: 1000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0, 0, 0, 0.4);
     display: flex;
     justify-content: center;
     align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
 }
 
 .payment-modal-content {
-    background-color: #2c3e50;
-    /* Dark blue background */
-    color: #ecf0f1;
-    /* Light text color */
+    background-color: #fff;
     padding: 20px;
-    border: 1px solid #888;
-    width: 80%;
-    max-width: 500px;
-    border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    border-radius: 5px;
+    width: 300px;
+    position: relative;
 }
 
 .close {
-    color: #ecf0f1;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-}
-
-.close:hover,
-.close:focus {
-    color: #bdc3c7;
-    text-decoration: none;
+    position: absolute;
+    top: 10px;
+    right: 10px;
     cursor: pointer;
 }
 
@@ -174,28 +161,14 @@ export default defineComponent({
     width: 100%;
     padding: 8px;
     box-sizing: border-box;
-    border: 1px solid #34495e;
-    border-radius: 5px;
-    background-color: #34495e;
-    color: #ecf0f1;
 }
 
 .button-container {
-    display: flex;
-    justify-content: center;
-    margin-top: 20px;
+    text-align: center;
 }
 
-button {
-    background-color: #2980b9;
-    color: white;
+.button-container button {
     padding: 10px 20px;
-    border: none;
     cursor: pointer;
-    border-radius: 5px;
-}
-
-button:hover {
-    background-color: #3498db;
 }
 </style>

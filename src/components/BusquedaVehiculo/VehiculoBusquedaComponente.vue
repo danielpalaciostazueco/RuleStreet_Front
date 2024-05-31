@@ -1,7 +1,66 @@
-<script lang="ts">
+<script lang="ts" >
 import { defineComponent, ref, onMounted } from 'vue';
 import VehicleList from '@/components/BusquedaVehiculo/ListaVehiculoComponente.vue';
 import { useListadoVehiculos } from '@/stores/storeVehiculo';
+
+
+interface CodigoPenal {
+  idCodigoPenal: number;
+  articulo: string;
+  article: string;
+  descripcion: string;
+  description: string;
+  precio: number;
+  sentencia: string;
+}
+
+interface Multa {
+  idMulta: number;
+  idPolicia: number;
+  fecha: string;
+  precio: number;
+  articuloPenal: string;
+  descripcion: string;
+  description: string;
+  pagada: boolean;
+  idCiudadano: number;
+  codigoPenal: CodigoPenal[];
+}
+
+interface Ciudadano {
+  idCiudadano: number;
+  nombre: string;
+  apellidos: string;
+  dni: string;
+  genero: string;
+  gender: string;
+  nacionalidad: string;
+  nationality: string;
+  fechaNacimiento: Date;
+  direccion: string;
+  address: string;
+  numeroTelefono: string;
+  numeroCuentaBancaria: string;
+  isPoli: boolean;
+  isBusquedaYCaptura: boolean;
+  imagenUrl: string;
+  isPeligroso: boolean;
+  diaIntroducidoListaCaptura: Date;
+  multas: Multa[];
+  vehiculos: Vehiculo[];
+}
+
+interface Vehiculo {
+  idVehiculo: number;
+  matricula: string;
+  marca: string;
+  modelo: string;
+  color: string;
+  enColor: string;
+  idCiudadano: number;
+  photo: string;
+  ciudadano: Ciudadano;
+}
 
 export default defineComponent({
   components: {
@@ -10,7 +69,7 @@ export default defineComponent({
   setup() {
     const { infoVehiculos, cargarDatosVehiculos } = useListadoVehiculos();
     const searchQuery = ref('');
-    const filteredVehicles = ref([]);
+    const filteredVehicles = ref<Vehiculo[]>([]);
 
     onMounted(async () => {
       await cargarDatosVehiculos();
@@ -18,7 +77,7 @@ export default defineComponent({
 
     function searchVehicles() {
       if (searchQuery.value.trim()) {
-        filteredVehicles.value = infoVehiculos.filter(vehicle =>
+        filteredVehicles.value = infoVehiculos.filter((vehicle: Vehiculo) =>
           vehicle.matricula.toLowerCase().includes(searchQuery.value.toLowerCase())
         );
       } else {
@@ -30,8 +89,6 @@ export default defineComponent({
   }
 });
 </script>
-
-
 
 <template>
   <div class="vehiculo_menu_izquierda">
@@ -50,8 +107,9 @@ export default defineComponent({
     <VehicleList :vehicles="filteredVehicles" />
   </div>
 </template>
+
 <style scoped>
-vehiculo_menu_izquierda {
+.vehiculo_menu_izquierda {
   @apply bg-[color:var(--colorFondoCiudadano2)] w-3/12 flex flex-col gap-8 py-8 rounded-lg;
 }
 

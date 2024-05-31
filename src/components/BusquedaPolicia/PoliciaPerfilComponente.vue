@@ -1,11 +1,59 @@
 <script lang="ts">
-import { defineComponent, ref, computed, watch, onMounted } from 'vue';
+import { defineComponent, ref, computed, watch, onMounted, reactive } from 'vue';
 import ReturnButton from '@/components/ComponentesGenerales/BotonPaginaPrincipalComponente.vue';
 import { useRoute } from 'vue-router';
 import { useListadoPolicias } from '@/stores/storePolicia';
-import type { Policia } from '@/stores/storePolicia';
-import { useListadoMultas } from '@/stores/storeMulta';
+import { useListadoMultas, type Multa } from '@/stores/storeMulta';
 import { useI18n } from 'vue-i18n';
+import type { Vehiculo } from '@/types/types';
+
+interface Permiso {
+  idPermiso: number;
+  nombre: string;
+  name: string;
+}
+
+interface Rango {
+  idRango: number;
+  nombre: string;
+  name: string;
+  salario: number;
+  isLocal: boolean;
+  permisos: Permiso[];
+}
+
+interface Ciudadano {
+  idCiudadano: number;
+  nombre: string;
+  apellidos: string;
+  dni: string;
+  genero: string;
+  gender: string;
+  nacionalidad: string;
+  nationality: string;
+  fechaNacimiento: Date;
+  direccion: string;
+  address: string;
+  numeroTelefono: number;
+  numeroCuentaBancaria: string;
+  isPoli: boolean;
+  isBusquedaYCaptura: boolean;
+  isPeligroso: boolean;
+  multas: Multa[];
+  vehiculos: Vehiculo[];
+  trabajo: string;
+  imagenUrl: string;
+}
+
+interface Policia {
+  idPolicia: number;
+  idCiudadano: number;
+  rango: Rango;
+  numeroPlaca: string;
+  ciudadano: Ciudadano;
+  contrasena?: string;
+  isPolicia: boolean;
+}
 
 export default defineComponent({
   components: {
@@ -16,9 +64,16 @@ export default defineComponent({
     const store = useListadoPolicias();
     const storeMultas = useListadoMultas();
     const policiaId = ref(parseInt(route.params.id as string || '0'));
-
+    const infoPolicias = reactive<Array<Policia>>([]);
     const { t, locale } = useI18n();
+    const policiaDetails = ref<Policia | null>(null);
 
+    const loadPoliciaDetails = async (id: number) => {
+      await store.cargarDatosPoliciasId(id);
+      infoPolicias.splice(0, infoPolicias.length);
+      infoPolicias.push(store.infoPoli);
+    };
+   
     const formatDate = (date: Date): string => {
       const options: Intl.DateTimeFormatOptions = {
         year: 'numeric',
@@ -27,17 +82,6 @@ export default defineComponent({
       };
       return new Date(date).toLocaleDateString(locale.value, options);
     };
-    const policiaDetails = computed<Policia>(() => {
-      return store.infoPolicias.find(p => p.idPolicia === policiaId.value) || {
-        idPolicia: 0,
-        idCiudadano: 0,
-        nombre: '',
-        apellidos: '',
-        rango: '',
-        numeroPlaca: '',
-        foto: undefined
-      };
-    });
 
     const multas = computed(() => storeMultas.infoMultas);
 
@@ -45,14 +89,14 @@ export default defineComponent({
       const parsedId = parseInt(newId as string);
       if (parsedId) {
         policiaId.value = parsedId;
-        store.cargarDatosPoliciasId(parsedId);
+        loadPoliciaDetails(parsedId);
         storeMultas.cargarDatosMultas(parsedId);
       }
     }, { immediate: true });
 
     onMounted(() => {
       if (policiaId.value) {
-        store.cargarDatosPoliciasId(policiaId.value);
+        loadPoliciaDetails(policiaId.value);
         storeMultas.cargarDatosMultas(policiaId.value);
       }
     });
@@ -62,11 +106,13 @@ export default defineComponent({
       policiaId,
       multas,
       locale,
-      formatDate
+      formatDate,
+      infoPolicias
     };
   }
 });
 </script>
+
 
 
 <template>
@@ -84,41 +130,41 @@ export default defineComponent({
           <div class="policia_perfil_usuario_derecha">
             <div class="policia_tarjeta">
               <p>{{ $t('PerfilPolicia.Name') }}</p>
-              <p>{{ policiaDetails.ciudadano?.nombre }}</p>
+              <p>{{ infoPolicias[0].ciudadano?.nombre }}</p>
             </div>
             <div class="policia_tarjeta">
               <p>{{ $t('PerfilPolicia.Surname') }}</p>
-              <p>{{ policiaDetails.ciudadano?.apellidos }}</p>
+              <p>{{ infoPolicias[0].ciudadano?.apellidos }}</p>
             </div>
             <div class="policia_tarjeta">
               <p>{{ $t('PerfilPolicia.Gender') }}</p>
-              <p v-if="locale === 'es'">{{ policiaDetails.ciudadano?.genero }}</p>
-              <p v-if="locale === 'en'">{{ policiaDetails.ciudadano?.gender }}</p>
+              <p v-if="locale === 'es'">{{ infoPolicias[0].ciudadano?.genero }}</p>
+              <p v-if="locale === 'en'">{{ infoPolicias[0].ciudadano?.gender }}</p>
             </div>
             <div class="policia_tarjeta">
               <p>{{ $t('PerfilPolicia.Nationality') }}</p>
-              <p v-if="locale === 'es'">{{ policiaDetails.ciudadano?.nacionalidad }}</p>
-              <p v-if="locale === 'en'">{{ policiaDetails.ciudadano?.nationality }}</p>
+              <p v-if="locale === 'es'">{{ infoPolicias[0].ciudadano?.nacionalidad }}</p>
+              <p v-if="locale === 'en'">{{ infoPolicias[0].ciudadano?.nationality }}</p>
             </div>
             <div class="policia_tarjeta">
               <p>{{ $t('PerfilPolicia.Birthdate') }}</p>
-              <p>{{ formatDate(policiaDetails.ciudadano?.fechaNacimiento) }}</p>
+              <p>{{ formatDate(infoPolicias[0].ciudadano?.fechaNacimiento) }}</p>
             </div>
             <div class="policia_tarjeta">
               <p>ID</p>
-              <p>{{ policiaDetails.idPolicia }}</p>
+              <p>{{ infoPolicias[0].idPolicia }}</p>
             </div>
             <div class="policia_tarjeta">
               <p>{{ $t('PerfilPolicia.PhoneNumber') }}</p>
-              <p>{{ policiaDetails.ciudadano?.numeroTelefono }}</p>
+              <p>{{ infoPolicias[0].ciudadano?.numeroTelefono }}</p>
             </div>
             <div class="policia_tarjeta">
               <p>{{ $t('PerfilPolicia.AccountNumber') }}</p>
-              <p>{{ policiaDetails.ciudadano?.numeroCuentaBancaria }}</p>
+              <p>{{ infoPolicias[0].ciudadano?.numeroCuentaBancaria }}</p>
             </div>
             <div class="policia_tarjeta">
               <p>{{ $t('PerfilPolicia.Work') }}</p>
-              <p>{{ policiaDetails.ciudadano?.trabajo }}</p>
+              <p>{{ infoPolicias[0].ciudadano?.trabajo }}</p>
             </div>
           </div>
         </div>
@@ -126,14 +172,14 @@ export default defineComponent({
           <div class="policia_perfil_info_izquierda">
             <h2>{{ $t('PerfilPolicia.Rango') }}</h2>
             <div class="policia_perfil_boton">
-              <h2 v-if="locale === 'es'">{{ policiaDetails.rango.nombre }}</h2>
-              <h2 v-if="locale === 'en'">{{ policiaDetails.rango.name }}</h2>
+              <h2 v-if="locale === 'es'">{{ infoPolicias[0].rango.nombre }}</h2>
+              <h2 v-if="locale === 'en'">{{ infoPolicias[0].rango.name }}</h2>
             </div>
           </div>
           <div class="policia_perfil_info_derecha">
             <h2>{{ $t('PerfilPolicia.NumeroPlaca') }}</h2>
             <div class="policia_perfil_boton">
-              <h2>{{ policiaDetails.numeroPlaca }}</h2>
+              <h2>{{ infoPolicias[0].numeroPlaca }}</h2>
             </div>
           </div>
         </div>

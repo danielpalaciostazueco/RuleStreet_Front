@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { reactive } from "vue";
 
-export interface Vehiculo {
+interface Vehiculo {
   idVehiculo: number;
   matricula: string;
   marca: string;
@@ -10,11 +10,59 @@ export interface Vehiculo {
   enColor: string;
   idCiudadano: number;
   photo: string;
+  ciudadano: Ciudadano;
 }
+
+ interface CodigoPenal {
+  idCodigoPenal: number;
+  articulo: string;
+  article: string;
+  descripcion: string;
+  description: string;
+  precio: number;
+  sentencia: string;
+}
+interface Multa {
+  idMulta: number;
+  idPolicia: number;
+  fecha: string;
+  precio: number;
+  articuloPenal: string;
+  descripcion: string;
+  description: string;
+  pagada: boolean;
+  idCiudadano: number;
+  codigoPenal: CodigoPenal[];
+}
+
+ interface Ciudadano {
+  idCiudadano: number;
+  nombre: string;
+  apellidos: string;
+  dni: string;
+  genero: string;
+  gender: string;
+  nacionalidad: string;
+  nationality: string;
+  fechaNacimiento: Date;
+  direccion: string;
+  address: string;
+  numeroTelefono: string;
+  numeroCuentaBancaria: string;
+  isPoli: boolean;
+  isBusquedaYCaptura: boolean;
+  imagenUrl: string;
+  isPeligroso: boolean;
+  diaIntroducidoListaCaptura: Date;
+  multas: Multa[];
+  vehiculos: Vehiculo[];
+}
+
 
 export const useListadoVehiculos = defineStore("listadoVehiculos", () => {
   const apiUrl = `http://localhost:8001`;
   const infoVehiculos = reactive<Array<Vehiculo>>([]);
+  const infoVehiculo = reactive<Array<Vehiculo>>([]);
 
   let token = "";
 
@@ -39,7 +87,6 @@ export const useListadoVehiculos = defineStore("listadoVehiculos", () => {
       console.error("Error al cargar la información de los vehiculos:", error);
     }
   }
-
   async function cargarDatosVehiculosId(vehiculoId: number) {
     try {
       if (localStorage.getItem("tokenUsuario") !== null) {
@@ -53,22 +100,15 @@ export const useListadoVehiculos = defineStore("listadoVehiculos", () => {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-      if (!response.ok)
-        throw new Error("Error al cargar los datos del vehiculo");
-      const ciudadano = await response.json();
 
-      const index = infoVehiculos.findIndex(
-        (c) => c.idCiudadano === vehiculoId
-      );
-      if (index !== -1) {
-        infoVehiculos[index] = ciudadano;
-      } else {
-        infoVehiculos.push(ciudadano);
-      }
+      const data = await response.json();
+      Object.assign(infoVehiculo, data);
+      console.log(infoVehiculo);
     } catch (error) {
       console.error("Error al cargar la información del vehiculo:", error);
     }
   }
+
 
   async function guardarVehiculo(vehiculo: Vehiculo) {
     try {
@@ -245,5 +285,6 @@ export const useListadoVehiculos = defineStore("listadoVehiculos", () => {
     infoVehiculos,
     guardarVehiculo,
     formatearFecha,
+    infoVehiculo
   };
 });

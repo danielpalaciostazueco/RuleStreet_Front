@@ -3,6 +3,8 @@
 import { defineStore } from 'pinia';
 import { reactive } from 'vue';
 import { useListadoAuth } from './storeAuth';
+import type { Multa } from './storeMulta';
+import type { Vehiculo } from '@/types/types';
 const storeAuth = useListadoAuth();
 
 
@@ -38,8 +40,10 @@ interface Ciudadano {
   isPoli: boolean;
   isBusquedaYCaptura: boolean;
   isPeligroso: boolean;
-  multas: any[];
-  vehiculos: any[];
+  multas: Multa[];
+  vehiculos: Vehiculo[];
+  trabajo: string;
+  imagenUrl: string;
 }
 
 export interface Policia {
@@ -50,6 +54,8 @@ export interface Policia {
   ciudadano: Ciudadano;
   contrasena?: string;
   isPolicia: boolean;
+  imagenUrl: string;
+  trabajo: string;
 }
 
 
@@ -87,8 +93,10 @@ export const useListadoPolicias = defineStore('listadoPolicias', () => {
       isPoli: false,
       isBusquedaYCaptura: false,
       isPeligroso: false,
-      multas: [],
-      vehiculos: [],
+      multas: [] as Multa[],
+      vehiculos: [] as Vehiculo[],
+      trabajo: "",
+      imagenUrl: "",
     },
     contrasena: "",
     isPolicia: false,

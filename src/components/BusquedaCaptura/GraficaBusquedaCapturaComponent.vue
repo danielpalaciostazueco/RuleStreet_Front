@@ -18,7 +18,7 @@ const filterField = ref('nombre');
 
 const ciudadanosPorDia = computed(() => {
     const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-    return days.map(day => infoCiudadanosBusquedaCaptura.filter(ciudadano =>
+    return days.map(day => infoCiudadanosBusquedaCaptura.filter((ciudadano: any) =>
         new Date(ciudadano.diaIntroducidoListaCaptura).getDay() === days.indexOf(day) + 1
     ).length);
 });

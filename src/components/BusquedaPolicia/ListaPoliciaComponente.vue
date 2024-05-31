@@ -1,13 +1,58 @@
 <script lang="ts">
 import { defineComponent, type PropType } from 'vue';
 import PoliciaCard from '@/components/BusquedaPolicia/TarjetaPoliciaComponente.vue';
+interface Permiso {
+  idPermiso: number;
+  nombre: string;
+  name: string;
+}
+
+interface Rango {
+  idRango: number;
+  nombre: string;
+  name: string;
+  salario: number;
+  isLocal: boolean;
+  permisos: Permiso[];
+}
+
+interface Ciudadano {
+  idCiudadano: number;
+  nombre: string;
+  apellidos: string;
+  dni: string;
+  genero: string;
+  gender: string;
+  nacionalidad: string;
+  nationality: string;
+  fechaNacimiento: Date;
+  direccion: string;
+  address: string;
+  numeroTelefono: number;
+  numeroCuentaBancaria: string;
+  isPoli: boolean;
+  isBusquedaYCaptura: boolean;
+  isPeligroso: boolean;
+  multas: any[];
+  vehiculos: any[];
+}
+
+interface Policia {
+  idPolicia: number;
+  idCiudadano: number;
+  rango: Rango;
+  numeroPlaca: string;
+  ciudadano: Ciudadano;
+  contrasena?: string;
+  isPolicia: boolean;
+}
 
 export default defineComponent({
   components: {
     PoliciaCard
   },
   props: {
-    policias: Array as PropType<Array<{ idPolicia: number; idCiudadano: number, rango: string, numeroPlaca: string }>>
+    policias: Array as PropType<Array<Policia>>
   }
 });
 </script>
