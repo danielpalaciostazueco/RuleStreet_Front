@@ -10,6 +10,14 @@ export interface Rango {
   name: string;
   salario: number;
   isLocal: boolean;
+  permisos: Permiso;
+}
+
+
+interface Permiso {
+  idPermiso: number;
+  nombre: string;
+  active: boolean;
 }
 
 export const useListadoRangos = defineStore("listadoRangos", () => {
@@ -17,7 +25,7 @@ export const useListadoRangos = defineStore("listadoRangos", () => {
   const infoRangos = reactive<Array<Rango>>([]);
   let token = "";
 
- 
+
   async function cargarDatosRangos() {
     try {
       token = localStorage.getItem("tokenUsuario") ?? localStorage.getItem("tokenPolicia") ?? "";
@@ -31,6 +39,7 @@ export const useListadoRangos = defineStore("listadoRangos", () => {
       console.error("Error al cargar la información de los rangos:", error);
     }
   }
+
   async function cargarDatosRangosId(rangoId: number) {
     try {
       if (localStorage.getItem("tokenUsuario") !== null) {
@@ -38,19 +47,23 @@ export const useListadoRangos = defineStore("listadoRangos", () => {
       } else {
         token = localStorage.getItem("tokenPolicia") ?? "";
       }
-      const response = await fetch(apiUrl + "/Rango/" + rangoId.toString(), {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-
+      const response = await fetch(
+        apiUrl + "/Rango/" + rangoId.toString(),
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
       if (!response.ok)
-        throw new Error("Error al cargar los datos de los rangos");
-      const data = await response.json();
-      infoRangos.splice(0, infoRangos.length);
-      data.forEach((rango: Rango) => {
+        throw new Error("Error al cargar los datos del rango");
+      const rango = await response.json();
+      const index = infoRangos.findIndex(r => r.idRango === rangoId);
+      if (index !== -1) {
+        infoRangos[index] = rango;
+      } else {
         infoRangos.push(rango);
-      });
+      }
     } catch (error) {
-      console.error("Error al cargar la información de los rangos:", error);
+      console.error("Error al cargar la información del rango:", error);
     }
   }
 
@@ -81,44 +94,9 @@ export const useListadoRangos = defineStore("listadoRangos", () => {
 
   async function actualizarRango(rango: Rango) {
     try {
-      if (rango.nombre == null) {
-        const res = await fetch("https://es.libretranslate.com/translate", {
-          method: "POST",
-          body: JSON.stringify({
-            q: rango.name,
-            source: "auto",
-            target: "es",
-            format: "text",
-            api_key: "",
-          }),
-          headers: { "Content-Type": "application/json" },
-        });
-        const data = await res.json();
-        rango.nombre = data.translatedText;
-      }
+      const token = localStorage.getItem("tokenUsuario") || localStorage.getItem("tokenPolicia") || "";
 
-      if (rango.name == null) {
-        const res = await fetch("https://es.libretranslate.com/translate", {
-          method: "POST",
-          body: JSON.stringify({
-            q: rango.nombre,
-            source: "auto",
-            target: "en",
-            format: "text",
-            api_key: "",
-          }),
-          headers: { "Content-Type": "application/json" },
-        });
-        const data = await res.json();
-        rango.name = data.translatedText;
-      }
-
-      if (localStorage.getItem("tokenUsuario") !== null) {
-        token = localStorage.getItem("tokenUsuario") ?? "";
-      } else {
-        token = localStorage.getItem("tokenPolicia") ?? "";
-      }
-      const response = await fetch(apiUrl + "/Rango", {
+      const response = await fetch(apiUrl + "/Rango/" + rango.idRango, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -129,11 +107,10 @@ export const useListadoRangos = defineStore("listadoRangos", () => {
 
       if (!response.ok) {
         const errorBody = await response.text();
-        throw new Error(
-          `Error al actualizar la información del rango: ${errorBody}`
-        );
+        throw new Error(`Error al actualizar la información del rango: ${errorBody}`);
       }
 
+      // Recargar los datos de rangos después de la actualización
       await cargarDatosRangos();
     } catch (error) {
       console.error("Error al actualizar la información del rango:", error);

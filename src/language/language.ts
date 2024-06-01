@@ -51,6 +51,10 @@ export const messages = {
       List: "List of Citizens",
     },
 
+    Rangos: {
+      List: "List of range",
+    },
+
     MultaCiudadano: {
       Penal: "Penal Code",
       Article: "Article",
@@ -88,6 +92,10 @@ export const messages = {
     },
 
     ListadoCiudadano: {
+      Title: "No results found for your search.",
+    },
+
+    ListadoRango: {
       Title: "No results found for your search.",
     },
 
@@ -253,6 +261,10 @@ export const messages = {
       List: "Lista de Ciudadanos",
     },
 
+    Rangos: {
+      List: "Lista de Rangos",
+    },
+
     MultasCiudadano: {
       Penal: "Código Penal",
       Article: "Artículo",
@@ -290,6 +302,10 @@ export const messages = {
     },
 
     ListadoCiudadano: {
+      Title: "No se encontraron resultados para tu búsqueda.",
+    },
+
+    ListadoRango: {
       Title: "No se encontraron resultados para tu búsqueda.",
     },
 

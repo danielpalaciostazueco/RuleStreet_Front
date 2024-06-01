@@ -91,6 +91,11 @@ const routes = [
     name: "gestionPolicia",
     component: () => import("../views/GestionPoliciaView.vue"),
   },
+  {
+    path: '/rangos/:id?',
+    name: "rangos",
+    component: () => import("../views/RangoView.vue"),
+  },
 ];
 
 const router = createRouter({
