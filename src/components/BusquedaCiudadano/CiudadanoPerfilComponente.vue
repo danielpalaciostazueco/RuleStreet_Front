@@ -111,6 +111,12 @@ export default defineComponent({
     const infoCiudadanos = ref<Ciudadano | null>(null);
     const loading = ref(true);
 
+    const getnombrePolicia = (idPolicia: number) => {
+      const policia = storePolicias.infoPolicias.find(p => p.idPolicia === idPolicia);
+      return policia ? `${policia.ciudadano.nombre} ${policia.ciudadano.apellidos}` : 'Desconocido';
+    };
+
+
     const loadCitizenDetails = async (id: number) => {
       if (id) {
         await store.cargarDatosCiudadanosId(id);
@@ -184,7 +190,9 @@ export default defineComponent({
       showError,
       errorMessage,
       infoCiudadanos,
-      loading
+      loading,
+      loadCitizenDetails,
+      getnombrePolicia
     };
   }
 });
@@ -292,6 +300,63 @@ function parseRouteParam(param: string | string[]): string {
                   <p>Este usuario tiene una nota</p>
                 </div>
               </div>
+            </div>
+          </div>
+          <div class="ciudadano_perfil_otros_container">
+            <div class="ciudadano_perfil_notasdiv">
+              <div class="ciudadano_perfil_notasdiv_titulo">
+                <svg class="ciudadano_icono" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                  <path
+                    d="M96 0C43 0 0 43 0 96V416c0 53 43 96 96 96H384h32c17.7 0 32-14.3 32-32s-14.3-32-32-32V384c17.7 0 32-14.3 32-32V32c0-17.7-14.3-32-32-32H384 96zm0 384H352v64H96c-17.7 0-32-14.3-32-32s14.3-32 32-32zm32-240c0-8.8 7.2-16 16-16H336c8.8 0 16 7.2 16 16s-7.2 16-16 16H144c-8.8 0-16-7.2-16-16zm16 48H336c8.8 0 16 7.2 16 16s-7.2 16-16 16H144c-8.8 0-16-7.2-16-16s7.2-16 16-16z" />
+                </svg>
+                <p>{{ $t('PerfilCiudadano.Multa') }}</p>
+                <div class="ciudadano_perfil_multas">
+                  <p @click="showModal = true">+ {{ $t('PerfilCiudadano.AddMulta') }}</p>
+                </div>
+                <Modal :visible="showModal" @update:visible="showModal = $event" @onModalClose="loadCitizenDetails" />
+              </div>
+              <template v-if="infoCiudadanos.multas && infoCiudadanos.multas.length > 0">
+                <div class="notas_container">
+                  <div v-for="multa in infoCiudadanos.multas" :key="multa.idMulta" class="tarjeta_multa"
+                    :class="{ 'tarjeta_multa_pagada': multa.pagada }">
+                    <div class="tarjeta_otros_cabecera">
+                      <p>{{ new Date(multa.fecha).toLocaleDateString() }} - {{ new
+                        Date(multa.fecha).toLocaleTimeString() }}</p>
+                    </div>
+                    <p>{{ multa.codigoPenal.articulo }}</p>
+                    <div class="tarjeta_multa_info">
+                      <div class="tarjeta_multa_iconos">
+                        <p>{{ getnombrePolicia(multa.idPolicia) }}</p>
+                        <svg class="tarjeta_multa_icono" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+                          <path
+                            d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512H418.3c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304H178.3z" />
+                        </svg>
+                      </div>
+                      <div class="tarjeta_multa_iconos">
+                        <svg class="tarjeta_multa_icono" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+                          <path
+                            d="M48.1 240c-.1 2.7-.1 5.3-.1 8v16c0 2.7 0 5.3 .1 8H32c-17.7 0-32 14.3-32 32s14.3 32 32 32H60.3C89.9 419.9 170 480 264 480h24c17.7 0 32-14.3 32-32s-14.3-32-32-32H264c-57.9 0-108.2-32.4-133.9-80H256c17.7 0 32-14.3 32-32s-14.3-32-32-32H112.2c-.1-2.6-.2-5.3-.2-8V248c0-2.7 .1-5.4 .2-8H256c17.7 0 32-14.3 32-32s-14.3-32-32-32H130.1c25.7-47.6 76-80 133.9-80h24c17.7 0 32-14.3 32-32s-14.3-32-32-32H264C170 32 89.9 92.1 60.3 176H32c-17.7 0-32 14.3-32 32s14.3 32 32 32H48.1z" />
+                        </svg>
+                        <p>{{ multa.codigoPenal.precio }}</p>
+                      </div>
+                      <div class="tarjeta_multa_iconos">
+                        <svg class="tarjeta_multa_icono" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                          <path
+                            d="M318.6 9.4c-12.5-12.5-32.8-12.5-45.3 0l-120 120c-12.5 12.5-12.5 32.8 0 45.3l16 16c12.5 12.5 32.8 12.5 45.3 0l4-4L325.4 293.4l-4 4c-12.5 12.5-12.5 32.8 0 45.3l16 16c12.5 12.5 32.8 12.5 45.3 0l120-120c12.5-12.5 12.5-32.8 0-45.3l-16-16c-12.5-12.5-32.8-12.5-45.3 0l-4 4L330.6 74.6l4-4c12.5-12.5 12.5-32.8 0-45.3l-16-16zm-152 288c-12.5-12.5-32.8-12.5-45.3 0l-112 112c-12.5 12.5-12.5 32.8 0 45.3l48 48c12.5 12.5 32.8 12.5 45.3 0l112-112c12.5-12.5 12.5-32.8 0-45.3l-1.4-1.4L272 285.3 226.7 240 168 298.7l-1.4-1.4z" />
+                        </svg>
+                        <p>{{ multa.codigoPenal.sentencia }}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </template>
+              <template v-else>
+                <div class="notas_container">
+                  <div class="tarjeta_multa_titulo">
+                    <p>{{ $t('PerfilCiudadano.NoMultas') }}</p>
+                  </div>
+                </div>
+              </template>
             </div>
           </div>
 
@@ -514,8 +579,7 @@ function parseRouteParam(param: string | string[]): string {
   font-size: 0.9em;
   z-index: 100;
   position: absolute;
-  right: 16%
-  ;
+  right: 16%;
 }
 
 @media (max-width: 1407px) {
@@ -666,7 +730,7 @@ function parseRouteParam(param: string | string[]): string {
   .ciudadano_busqueda {
     @apply gap-1;
     /* flex-direction: column; */
-}
+  }
 }
 
 @media (max-width: 400px) {
