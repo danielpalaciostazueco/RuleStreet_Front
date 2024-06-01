@@ -28,16 +28,7 @@
 
 <script lang="ts">
 import { defineComponent, type PropType } from 'vue';
-
-interface CodigoPenal {
-    idCodigoPenal: number;
-    articulo: string;
-    article: string;
-    descripcion: string;
-    description: string;
-    precio: number;
-    sentencia: string;
-}
+import { useListadoMultas } from '@/stores/storeMulta';
 
 interface Multa {
     idMulta: number;
@@ -49,7 +40,16 @@ interface Multa {
     description: string;
     pagada: boolean;
     idCiudadano: number;
-    codigoPenal: CodigoPenal[];
+    codigoPenal: CodigoPenal;
+}
+export interface CodigoPenal {
+    idCodigoPenal: number;
+    articulo: string;
+    article: string;
+    descripcion: string;
+    description: string;
+    precio: number;
+    sentencia: string;
 }
 
 export default defineComponent({
@@ -59,7 +59,7 @@ export default defineComponent({
             required: true
         },
         multa: {
-            type: Object as PropType<Multa | null | undefined >,
+            type: Object as PropType<Multa | null | undefined>,
             required: false
         }
     },
@@ -119,7 +119,6 @@ export default defineComponent({
 });
 </script>
 
-
 <style scoped>
 .payment-modal {
     display: flex;
@@ -131,20 +130,23 @@ export default defineComponent({
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
 }
 
 .payment-modal-content {
     background-color: #fff;
     padding: 20px;
     border-radius: 5px;
-    width: 300px;
-    position: relative;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    width: 100%;
 }
 
 .close {
     position: absolute;
     top: 10px;
     right: 10px;
+    font-size: 20px;
     cursor: pointer;
 }
 
@@ -164,11 +166,19 @@ export default defineComponent({
 }
 
 .button-container {
-    text-align: center;
+    text-align: right;
 }
 
-.button-container button {
+button {
+    background-color: #007BFF;
+    color: white;
+    border: none;
     padding: 10px 20px;
     cursor: pointer;
+    border-radius: 5px;
+}
+
+button:hover {
+    background-color: #0056b3;
 }
 </style>
