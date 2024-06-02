@@ -26,6 +26,7 @@
   --colorTarjetaBusqueda: #b0b6be;
   --colorTituloTarjetaPoliciaRango: #141a22;
   --colorMensajeErrorFondo: #ffebe6;
+  --colorPermisos: #ccc;
 }
 
 @tailwind base;
