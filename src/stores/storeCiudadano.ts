@@ -73,7 +73,8 @@ interface Deudores {
 }
 
 export const useListadoCiudadanos = defineStore("listadoCiduadanos", () => {
-  const apiUrl = `http://rulestreetapi.retocsv.es`;
+  //const apiUrl = `http://rulestreetapi.retocsv.es`;
+  const apiUrl = `http://localhost:8001`;
   const infoCiudadanos = reactive<Array<Ciudadano>>([]);
   const infoCiudadanosBusquedaCaptura = reactive<Array<Ciudadano>>([]);
   let infoCiudadano = {

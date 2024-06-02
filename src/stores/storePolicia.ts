@@ -56,7 +56,8 @@ export interface Policia {
 }
 
 export const useListadoPolicias = defineStore("listadoPolicias", () => {
-  const apiUrl = `http://rulestreetapi.retocsv.es`;
+  //const apiUrl = `http://rulestreetapi.retocsv.es`;
+  const apiUrl = `http://localhost:8001`;
   const infoPolicias = reactive<Array<Policia>>([]);
   let token = "";
 

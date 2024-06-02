@@ -388,9 +388,7 @@ function parseRouteParam(param: string | string[]): string {
 
 .payment-modal-content {
     background-color: #2c3e50;
-    /* Dark blue background */
     color: #ecf0f1;
-    /* Light text color */
     padding: 20px;
     border: 1px solid #888;
     width: 80%;
@@ -452,9 +450,8 @@ button:hover {
 }
 
 .tarjeta_multa_pagada {
-    background-color: #28a745;
-    /* Green background for paid fines */
-    color: white;
+    background-color: var(--colorBusquedaCiudadanoPerfilOtrosMultaPagada) !important;
+    color: var(--colorBlanco) !important;
 }
 
 .ciudadano_menu_derecha {
