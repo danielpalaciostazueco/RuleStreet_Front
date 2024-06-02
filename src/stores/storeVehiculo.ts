@@ -13,7 +13,7 @@ interface Vehiculo {
   ciudadano: Ciudadano;
 }
 
- interface CodigoPenal {
+interface CodigoPenal {
   idCodigoPenal: number;
   articulo: string;
   article: string;
@@ -35,7 +35,7 @@ interface Multa {
   codigoPenal: CodigoPenal[];
 }
 
- interface Ciudadano {
+interface Ciudadano {
   idCiudadano: number;
   nombre: string;
   apellidos: string;
@@ -58,11 +58,42 @@ interface Multa {
   vehiculos: Vehiculo[];
 }
 
-
 export const useListadoVehiculos = defineStore("listadoVehiculos", () => {
   const apiUrl = `http://localhost:8001`;
   const infoVehiculos = reactive<Array<Vehiculo>>([]);
-  const infoVehiculo = reactive<Array<Vehiculo>>([]);
+
+  let vehiculo: Vehiculo = {
+    idVehiculo: 0,
+    matricula: "",
+    marca: "",
+    modelo: "",
+    color: "",
+    enColor: "",
+    idCiudadano: 0,
+    photo: "",
+    ciudadano: {
+      idCiudadano: 0,
+      nombre: "",
+      apellidos: "",
+      dni: "",
+      genero: "",
+      gender: "",
+      nacionalidad: "",
+      nationality: "",
+      fechaNacimiento: new Date(),
+      direccion: "",
+      address: "",
+      numeroTelefono: "",
+      numeroCuentaBancaria: "",
+      isPoli: false,
+      isBusquedaYCaptura: false,
+      imagenUrl: "",
+      isPeligroso: false,
+      diaIntroducidoListaCaptura: new Date(),
+      multas: [],
+      vehiculos: [],
+    },
+  };
 
   let token = "";
 
@@ -102,13 +133,11 @@ export const useListadoVehiculos = defineStore("listadoVehiculos", () => {
       );
 
       const data = await response.json();
-      Object.assign(infoVehiculo, data);
-      console.log(infoVehiculo);
+      Object.assign(vehiculo, data);
     } catch (error) {
       console.error("Error al cargar la información del vehiculo:", error);
     }
   }
-
 
   async function guardarVehiculo(vehiculo: Vehiculo) {
     try {
@@ -285,6 +314,6 @@ export const useListadoVehiculos = defineStore("listadoVehiculos", () => {
     infoVehiculos,
     guardarVehiculo,
     formatearFecha,
-    infoVehiculo
+    vehiculo,
   };
 });
