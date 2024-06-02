@@ -20,7 +20,7 @@ export const useListadoEvento = defineStore("listadoEventos", () => {
     fecha: new Date(),
   });
 
-  const apiUrl = `http://localhost:8001`;
+  const apiUrl = `http://rulestreetapi.retocsv.es`;
   const infoEventos = reactive<Array<Evento>>([]);
   let token = "";
 
