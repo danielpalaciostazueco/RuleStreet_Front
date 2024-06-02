@@ -2,7 +2,7 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useListadoAuth } from '@/stores/storeAuth';
-
+import BotonIdiomaComponente from '../ComponentesGenerales/BotonIdiomaComponente.vue';
 const store = useListadoAuth();
 const NombreUsuario = ref('');
 const Contraseña = ref('');
@@ -18,21 +18,33 @@ const submitForm = async () => {
 </script>
 
 <template>
-  <div class="flex justify-center items-center min-h-screen" style="background-color: var(--colorFondo);">
-    <form @submit.prevent="submitForm" class="bg-[var(--colorFondoTarjeta)] p-8 rounded-xl shadow-md text-center w-11/12 max-w-md">
-      <h2 class="text-2xl mb-4" style="color: var(--colorBlanco);">{{$t('LoginAyuntamiento.Title')}}</h2>
-      <input type="text" v-model="store.DatosAyuntamiento.Dni" :placeholder="$t('LoginAyuntamiento.Email')" class="bg-[var(--colorTextoTarjeta)] border border-blue-500 text-black py-2 rounded-md mb-4 w-full text-base"/>
-      <input type="password" v-model="store.DatosAyuntamiento.Contrasena" :placeholder="$t('LoginAyuntamiento.Password')" class="bg-[var(--colorTextoTarjeta)] border border-blue-500 text-black py-2 rounded-md mb-4 w-full text-base"/>
+  <div class="flex justify-center items-center min-h-screen"
+    style="background-color: var(--colorFondo); display: flex; flex-direction: column;">
+    <form @submit.prevent="submitForm"
+      class="bg-[var(--colorFondoTarjeta)] p-8 rounded-xl shadow-md text-center w-11/12 max-w-md">
+      <h2 class="text-2xl mb-4" style="color: var(--colorBlanco);">{{ $t('LoginAyuntamiento.Title') }}</h2>
+      <input type="text" v-model="store.DatosAyuntamiento.Dni" :placeholder="$t('LoginAyuntamiento.Email')"
+        class="bg-[var(--colorTextoTarjeta)] border border-blue-500 text-black py-2 rounded-md mb-4 w-full text-base" />
+      <input type="password" v-model="store.DatosAyuntamiento.Contrasena"
+        :placeholder="$t('LoginAyuntamiento.Password')"
+        class="bg-[var(--colorTextoTarjeta)] border border-blue-500 text-black py-2 rounded-md mb-4 w-full text-base" />
       <p class="mt-4" style="color: var(--colorBlanco);">
-        <RouterLink to="/loginPolicia" class="block mb-2 text-left" style="color: var(--colorBlanco);">{{$t('LoginAyuntamiento.Policia')}}</RouterLink>
-        <RouterLink to="/loginAyuntamiento" class="block mb-2 text-left" style="color: var(--colorBlanco);">{{$t('LoginAyuntamiento.Ayuntamiento')}}</RouterLink>
-        <RouterLink to="/register" class="block mb-2 text-left" style="color: var(--colorBlanco);">{{$t('LoginAyuntamiento.Cuenta')}}</RouterLink>
+        <RouterLink to="/loginPolicia" class="block mb-2 text-left" style="color: var(--colorBlanco);">
+          {{ $t('LoginAyuntamiento.Policia') }}</RouterLink>
+        <RouterLink to="/loginAyuntamiento" class="block mb-2 text-left" style="color: var(--colorBlanco);">
+          {{ $t('LoginAyuntamiento.Ayuntamiento') }}</RouterLink>
+        <RouterLink to="/register" class="block mb-2 text-left" style="color: var(--colorBlanco);">
+          {{ $t('LoginAyuntamiento.Cuenta') }}</RouterLink>
       </p>
-      <button type="submit" class="bg-blue-500 text-white py-2 px-6 rounded-md cursor-pointer w-auto text-xl transition-colors duration-300 hover:bg-blue-600">{{$t('LoginAyuntamiento.Login')}}</button>
+      <button type="submit"
+        class="bg-blue-500 text-white py-2 px-6 rounded-md cursor-pointer w-auto text-xl transition-colors duration-300 hover:bg-blue-600">{{
+          $t('LoginAyuntamiento.Login') }}</button>
       <p class="mt-4" style="color: var(--colorBlanco);">
-        <RouterLink to="/" class="block mb-2 text-left" style="color: var(--colorBlanco);">{{$t('LoginAyuntamiento.Principal')}}</RouterLink>
+        <RouterLink to="/" class="block mb-2 text-left" style="color: var(--colorBlanco);">
+          {{ $t('LoginAyuntamiento.Principal') }}</RouterLink>
       </p>
     </form>
+    <BotonIdiomaComponente />
   </div>
 </template>
 <style scoped>
