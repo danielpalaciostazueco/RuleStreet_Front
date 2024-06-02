@@ -1,6 +1,6 @@
 <template>
   <div class="mx-auto p-4">
-   
+
     <div class="shadow-lg rounded-lg overflow-hidden">
       <table class="table-auto w-full">
         <thead>
@@ -16,20 +16,24 @@
         </thead>
         <tbody>
           <tr v-for="deudor in filteredDeudores" :key="deudor.idCiudadano" class="hover:bg-blue-100">
-            <td class="px-4 py-2"><img :src="deudor.imagenUrl" alt="Foto del deudor" class="rounded-full w-12 h-12 object-cover" /></td>
+            <td class="px-4 py-2"><img :src="deudor.imagenUrl" alt="Foto del deudor"
+                class="rounded-full w-12 h-12 object-cover" /></td>
             <td v-if="filterField" class="px-4 py-2">{{ deudor[filterField as keyof typeof deudor] }}</td>
             <td v-if="filterField !== 'nombre'" class="px-4 py-2">{{ deudor.nombre }}</td>
             <td v-if="filterField !== 'apellidos'" class="px-4 py-2">{{ deudor.apellidos }}</td>
             <td v-if="filterField !== 'genero' && locale === 'es'" class="px-4 py-2">{{ deudor.genero }}</td>
             <td v-if="filterField !== 'genero' && locale === 'en'" class="px-4 py-2">{{ deudor.genero }}</td>
-            <td v-if="filterField !== 'nacionalidad' && locale === 'es'" class="px-4 py-2">{{ deudor.nacionalidad }}</td>
+            <td v-if="filterField !== 'nacionalidad' && locale === 'es'" class="px-4 py-2">{{ deudor.nacionalidad }}
+            </td>
             <td v-if="filterField !== 'nacionalidad' && locale === 'en'" class="px-4 py-2">{{ deudor.nationality }}</td>
             <td v-if="filterField !== 'cantidad'" class="px-4 py-2">{{ deudor.cantidad }}</td>
           </tr>
         </tbody>
       </table>
     </div>
-    <button @click="exportToExcel" class="mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg cursor-pointer transition-all duration-300 ease-in-out hover:bg-blue-700">{{ $t('DeudoresTabla.Excel') }}</button>
+    <button id="excel-2" @click="exportToExcel"
+      class="mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg cursor-pointer transition-all duration-300 ease-in-out hover:bg-blue-700">{{
+        $t('DeudoresTabla.Excel') }}</button>
     <BotonPaginaPrincipalComponente />
   </div>
 </template>
