@@ -5,6 +5,9 @@ import { useRoute } from 'vue-router';
 import { useListadoRangos, type Rango } from '@/stores/storeRango';
 import { useListadoPermisos, type Permiso } from '@/stores/storePermiso';
 import { useI18n } from 'vue-i18n';
+import { useListadoAuditorias } from '@/stores/storeAuditoria';
+import { useListadoAuth } from '@/stores/storeAuth';
+import { useListadoPolicias } from '@/stores/storePolicia';
 
 
 export default defineComponent({
@@ -16,17 +19,26 @@ export default defineComponent({
     const rangeId = ref(parseInt(parseRouteParam(route.params.id) || '0'));
     const storeRango = useListadoRangos();
     const storePermiso = useListadoPermisos();
+    const storePolicia = useListadoPolicias();
     const { t } = useI18n();
     const permisosConEstado = ref([]);
     const originalPermisos = ref([]);
     const editing = ref(false);
     const editableSalary = ref(0);
+    const { guardarPolicia } = useListadoAuditorias();
+    const storeAuth = useListadoAuth();
+    const policiaActualId = ref(0);
 
     onMounted(async () => {
       if (rangeId.value) {
         await storeRango.cargarDatosRangosId(rangeId.value);
         await storePermiso.cargarDatosPermisos();
         editableSalary.value = storeRango.infoRangos.find(r => r.idRango === rangeId.value)?.salario || 0;
+      }
+      await storeAuth.loadPoliceInfo();
+      if (storeAuth.infoPoliciasAuth.IdPolicia) {
+        policiaActualId.value = storeAuth.infoPoliciasAuth.IdPolicia;
+        await storePolicia.cargarDatosPoliciasId(policiaActualId.value);
       }
     });
 
@@ -68,9 +80,9 @@ export default defineComponent({
     const saveEdit = async () => {
       const updatedRango = {
         idRango: rangeId.value,
-        nombre: rangeDetails.value?.nombre,  // Asegúrate de que este es el campo correcto
+        nombre: rangeDetails.value?.nombre,
         salario: editableSalary.value,
-        isLocal: true,  // Asumiendo que esto es estático y siempre es true
+        isLocal: true,
         permisos: permisosConEstado.value.filter(p => p.active).map(permiso => ({
           idPermiso: permiso.idPermiso,
           nombre: permiso.nombre
@@ -79,11 +91,40 @@ export default defineComponent({
 
       try {
         await storeRango.actualizarRango(updatedRango);
-        editing.value = false; // Desactivar modo de edición si la actualización es exitosa
+        crearMensajeAuditoria(updatedRango.nombre); 
+        editing.value = false;
       } catch (error) {
         console.error('Error al actualizar el rango:', error);
       }
-    }
+    };
+
+    const crearMensajeAuditoria = async (nombreRango: string) => {
+      const fechaFormateada = new Date().toLocaleString('es-ES', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false
+      });
+
+      const descripcionAuditoria = `El ${storePolicia.infoPoli.rango.nombre} ${storePolicia.infoPoli.ciudadano.nombre} ha modificado el rango: ${nombreRango} el día ${fechaFormateada}`;
+      const auditoria = {
+        idAuditoria: 0,
+        titulo: 'Rango',
+        descripcion: descripcionAuditoria,
+        fecha: new Date(),
+        idPolicia: rangeId.value
+      };
+
+      try {
+        await guardarPolicia(auditoria);
+      } catch (error) {
+        console.error('Error al crear el mensaje de auditoría:', error);
+      }
+    };
+
 
     watch(() => route.params.id, async (newId) => {
       const parsedId = parseInt(parseRouteParam(newId));
@@ -391,7 +432,7 @@ input:checked+.slider:before {
   outline: none;
   background-color: var(--colorBusquedaCiudadanoTarjeta);
   width: 80%;
-  color: var(--colorTextoTarjeta); 
+  color: var(--colorTextoTarjeta);
 }
 
 .input_salario::-webkit-inner-spin-button,

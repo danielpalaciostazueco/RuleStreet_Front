@@ -2,7 +2,7 @@
 import { defineComponent, ref, computed, watch, onMounted } from 'vue';
 import ReturnButton from '@/components/ComponentesGenerales/BotonPaginaPrincipalComponente.vue';
 import Modal from '@/components/BusquedaCiudadano/CiudadanoMultasComponente.vue';
-import PaymentModal from './PayComponente.vue'; // Importa el componente del modal de pago
+import PaymentModal from './PayComponente.vue';
 import { useRoute } from 'vue-router';
 import { useListadoCiudadanos } from '@/stores/storeCiudadano';
 import { useListadoPolicias } from '@/stores/storePolicia';
