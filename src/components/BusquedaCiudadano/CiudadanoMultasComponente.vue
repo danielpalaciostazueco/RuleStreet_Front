@@ -8,6 +8,47 @@ import { useListadoPolicias } from '@/stores/storePolicia';
 import { useRoute } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 
+// Define interfaces
+interface CodigoPenal {
+  idCodigoPenal: number;
+  articulo: string;
+  article: string;
+  descripcion: string;
+  description: string;
+  precio: number;
+  sentencia: string;
+}
+
+interface Multa {
+  idMulta: number;
+  idPolicia: number;
+  idCodigoPenal: number;
+  fecha: Date;
+  articuloPenal: string;
+  descripcion: string;
+  description: string;
+  pagada: boolean;
+  idCiudadano: number;
+  precio: number;
+  codigoPenal: CodigoPenal;
+}
+
+interface Auditoria {
+  idAuditoria: number;
+  titulo: string;
+  descripcion: string;
+  fecha: Date;
+  idPolicia: number;
+  title: string;
+  description: string;
+}
+
+interface Policia {
+  idPolicia: number;
+  rango: { nombre: string };
+  ciudadano: { nombre: string };
+}
+
 export default defineComponent({
   props: {
     visible: {
@@ -74,30 +115,32 @@ export default defineComponent({
 
     const submitMulta = async () => {
       await cargarDatosPolicias();
-      console.log(infoPoliciasAuth)
-      const multaData = {
+      const multaData: Multa = {
         idMulta: 0,
         idPolicia: infoPoliciasAuth.IdPolicia,
         fecha: new Date(),
-        idCodigoPenal: articuloSeleccionado.value.idCodigoPenal,
+        idCodigoPenal: articuloSeleccionado.value.idCodigoPenal as number,
         pagada: false,
         descripcion: articuloSeleccionado.value.descripcion,
         idCiudadano: idCiudadano.value,
         precio: articuloSeleccionado.value.precio,
         articuloPenal: articuloSeleccionado.value.articulo,
-        description: articuloSeleccionado.value.description
+        description: articuloSeleccionado.value.description,
+        codigoPenal: articuloSeleccionado.value as CodigoPenal
       };
 
       const policiaInfo = infoPolicias[0];
 
       const descripcionAuditoria = `El ${policiaInfo.rango.nombre} ${policiaInfo.ciudadano.nombre} ha creado la multa con articulo: ${multaData.articuloPenal}, precio: ${multaData.precio}€ el dia ${multaData.fecha}`;
 
-      const auditoriaData = {
+      const auditoriaData: Auditoria = {
         idAuditoria: 0,
         titulo: 'Multa',
         descripcion: descripcionAuditoria,
         fecha: new Date(),
-        idPolicia: multaData.idPolicia
+        idPolicia: multaData.idPolicia,
+        title: 'Multa',
+        description: descripcionAuditoria
       };
 
       await guardarMulta(multaData);
@@ -107,7 +150,7 @@ export default defineComponent({
     };
 
     const articulosFiltrados = computed(() => {
-      return infoCodigoPenal.filter(item =>
+      return infoCodigoPenal.filter((item: CodigoPenal) =>
         item.descripcion.toLowerCase().includes(filtro.value.toLowerCase())
       );
     });

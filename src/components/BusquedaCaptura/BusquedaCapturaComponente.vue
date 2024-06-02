@@ -1,18 +1,6 @@
 <template>
   <div class="mx-auto p-4">
-    <div class="mb-4">
-      <input v-model="searchQuery" placeholder="Buscar ciudadano..." @input="filteredCiudadanos" class="w-full p-2 mb-2 border rounded focus:outline-none focus:border-blue-600" />
-      <div class="mt-2">
-        <label for="filterField" class="mr-2">{{ $t('BusquedaCapturaTabla.Filter') }}</label>
-        <select v-model="filterField" @change="filteredCiudadanos" class="p-2 border rounded focus:outline-none focus:border-blue-600">
-          <option value="nombre">{{ $t('BusquedaCapturaTabla.Name') }}</option>
-          <option value="apellidos">{{ $t('BusquedaCapturaTabla.Surname') }}</option>
-          <option value="dni">DNI</option>
-          <option value="genero">{{ $t('BusquedaCapturaTabla.Gender') }}</option>
-          <option value="isPeligroso">{{ $t('BusquedaCapturaTabla.Danger') }}</option>
-        </select>
-      </div>
-    </div>
+
     <div class="shadow-lg rounded-lg overflow-hidden">
       <table class="table-auto w-full">
         <thead>
@@ -27,19 +15,24 @@
         </thead>
         <tbody>
           <tr v-for="ciudadano in filteredCiudadanos" :key="ciudadano.idCiudadano" class="hover:bg-blue-100">
-            <td class="px-4 py-2"><img :src="ciudadano.imagenUrl" alt="Foto del ciudadano" class="rounded-full w-12 h-12 object-cover" /></td>
+            <td class="px-4 py-2"><img :src="ciudadano.imagenUrl" alt="Foto del ciudadano"
+                class="rounded-full w-12 h-12 object-cover" /></td>
             <td v-if="filterField" class="px-4 py-2">{{ ciudadano[filterField as keyof typeof ciudadano] }}</td>
             <td v-if="filterField !== 'nombre'" class="px-4 py-2">{{ ciudadano.nombre }}</td>
             <td v-if="filterField !== 'apellidos'" class="px-4 py-2">{{ ciudadano.apellidos }}</td>
             <td v-if="filterField !== 'genero' && locale === 'en'" class="px-4 py-2">{{ ciudadano.genero }}</td>
             <td v-if="filterField !== 'genero' && locale === 'es'" class="px-4 py-2">{{ ciudadano.gender }}</td>
-            <td v-if="filterField !== 'isPeligroso' && locale === 'es'" class="px-4 py-2">{{ ciudadano.isPeligroso ? 'Sí' : 'No' }}</td>
-            <td v-if="filterField !== 'isPeligroso' && locale === 'en'" class="px-4 py-2">{{ ciudadano.isPeligroso ? 'Yes' : 'No' }}</td>
+            <td v-if="filterField !== 'isPeligroso' && locale === 'es'" class="px-4 py-2">{{ ciudadano.isPeligroso ?
+              'Sí' : 'No' }}</td>
+            <td v-if="filterField !== 'isPeligroso' && locale === 'en'" class="px-4 py-2">{{ ciudadano.isPeligroso ?
+              'Yes' : 'No' }}</td>
           </tr>
         </tbody>
       </table>
     </div>
-    <button @click="exportToExcel" class="mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg cursor-pointer transition-all duration-300 ease-in-out hover:bg-blue-700">{{ $t('BusquedaCapturaTabla.Excel') }}</button>
+    <button id="excel-1" @click="exportToExcel"
+      class="mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg cursor-pointer transition-all duration-300 ease-in-out hover:bg-blue-700">{{
+        $t('BusquedaCapturaTabla.Excel') }}</button>
     <BotonPaginaPrincipalComponente />
   </div>
 </template>
@@ -63,7 +56,7 @@ onMounted(async () => {
 
 const filteredCiudadanos = computed(() => {
   const searchLower = searchQuery.value.toLowerCase();
-  return infoCiudadanosBusquedaCaptura.filter(ciudadano =>
+  return infoCiudadanosBusquedaCaptura.filter((ciudadano: any) =>
     ciudadano.nombre.toLowerCase().includes(searchLower) ||
     ciudadano.apellidos.toLowerCase().includes(searchLower) ||
     ciudadano.genero.toLowerCase().includes(searchLower) ||
@@ -83,7 +76,7 @@ function fieldDisplayName(field: any) {
 }
 
 const exportToExcel = () => {
-  const ws = XLSX.utils.json_to_sheet(filteredCiudadanos.value.map(ciudadano => ({
+  const ws = XLSX.utils.json_to_sheet(filteredCiudadanos.value.map((ciudadano: any) => ({
     Nombre: ciudadano.nombre,
     Apellidos: ciudadano.apellidos,
     Género: ciudadano.genero,

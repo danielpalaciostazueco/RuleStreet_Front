@@ -89,6 +89,7 @@ export const messages = {
       NoMultas: "NO FINES REGISTERED",
       Vehicles: "VEHICLES",
       NoVehicles: "NO VEHICLES REGISTERED",
+      Loading: "Loading...",
     },
 
     ListadoCiudadano: {
@@ -133,6 +134,7 @@ export const messages = {
       NoMultas: "NO FINES REGISTERED",
       IdPolicia: "ID Police",
       Precio: "Price: ",
+      Loading: "Loading...",
     },
 
     VehiculoBusqueda: {
@@ -151,6 +153,7 @@ export const messages = {
       BusquedaCaptura: "WANTED",
       No: "No",
       Yes: "Yes",
+      Loading: "Loading...",
     },
 
     CodigoPenalTabla: {
@@ -299,6 +302,7 @@ export const messages = {
       NoMultas: "NO HAY MULTAS REGISTRADAS",
       Vehicles: "VEHÍCULOS",
       NoVehicles: "NO HAY VEHÍCULOS REGISTRADOS",
+      Loading: "Cargando...",
     },
 
     ListadoCiudadano: {
@@ -343,6 +347,7 @@ export const messages = {
       NoMultas: "NO HAY MULTAS REGISTRADAS",
       IdPolicia: "ID Policía",
       Precio: "Precio: ",
+      Loading: "Cargando...",
     },
 
     VehiculoBusqueda: {
@@ -361,6 +366,7 @@ export const messages = {
       BusquedaCaptura: "EN BUSQUEDA Y CAPTURA",
       No: "No",
       Yes: "Sí",
+      Loading: "Cargando...",
     },
 
     CodigoPenalTabla: {

@@ -1,7 +1,62 @@
 <script lang="ts">
 import { defineComponent, type PropType, computed } from 'vue';
 import VehicleCard from '@/components/BusquedaVehiculo/TarjetaVehiculoComponente.vue';
-import type { Vehiculo } from '@/stores/storeVehiculo';
+interface Vehiculo {
+  idVehiculo: number;
+  matricula: string;
+  marca: string;
+  modelo: string;
+  color: string;
+  enColor: string;
+  idCiudadano: number;
+  photo: string;
+  ciudadano: Ciudadano;
+}
+
+ interface CodigoPenal {
+  idCodigoPenal: number;
+  articulo: string;
+  article: string;
+  descripcion: string;
+  description: string;
+  precio: number;
+  sentencia: string;
+}
+interface Multa {
+  idMulta: number;
+  idPolicia: number;
+  fecha: string;
+  precio: number;
+  articuloPenal: string;
+  descripcion: string;
+  description: string;
+  pagada: boolean;
+  idCiudadano: number;
+  codigoPenal: CodigoPenal[];
+}
+
+export interface Ciudadano {
+  idCiudadano: number;
+  nombre: string;
+  apellidos: string;
+  dni: string;
+  genero: string;
+  gender: string;
+  nacionalidad: string;
+  nationality: string;
+  fechaNacimiento: Date;
+  direccion: string;
+  address: string;
+  numeroTelefono: string;
+  numeroCuentaBancaria: string;
+  isPoli: boolean;
+  isBusquedaYCaptura: boolean;
+  imagenUrl: string;
+  isPeligroso: boolean;
+  diaIntroducidoListaCaptura: Date;
+  multas: Multa[];
+  vehiculos: Vehiculo[];
+}
 import { useI18n } from 'vue-i18n';
 
 export default defineComponent({

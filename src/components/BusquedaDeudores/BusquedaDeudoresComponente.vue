@@ -1,19 +1,6 @@
 <template>
   <div class="mx-auto p-4">
-    <div class="mb-4">
-      <input v-model="searchQuery" placeholder="Buscar deudor..." @input="filterDeudores" class="w-full p-2 mb-2 border rounded focus:outline-none focus:border-blue-600" />
-      <div class="mt-2">
-        <label for="filterField" class="mr-2">{{ $t('DeudoresTabla.Filter') }}</label>
-        <select v-model="filterField" @change="filterDeudores" class="p-2 border rounded focus:outline-none focus:border-blue-600">
-          <option value="nombre">{{ $t('DeudoresTabla.Name') }}</option>
-          <option value="apellidos">{{ $t('DeudoresTabla.Surname') }}</option>
-          <option value="dni">DNI</option>
-          <option value="genero">{{ $t('DeudoresTabla.Gender') }}</option>
-          <option value="nacionalidad">{{ $t('DeudoresTabla.Nationality') }}</option>
-          <option value="cantidad">{{ $t('DeudoresTabla.Cantidad') }}</option>
-        </select>
-      </div>
-    </div>
+
     <div class="shadow-lg rounded-lg overflow-hidden">
       <table class="table-auto w-full">
         <thead>
@@ -29,20 +16,24 @@
         </thead>
         <tbody>
           <tr v-for="deudor in filteredDeudores" :key="deudor.idCiudadano" class="hover:bg-blue-100">
-            <td class="px-4 py-2"><img :src="deudor.imagenUrl" alt="Foto del deudor" class="rounded-full w-12 h-12 object-cover" /></td>
+            <td class="px-4 py-2"><img :src="deudor.imagenUrl" alt="Foto del deudor"
+                class="rounded-full w-12 h-12 object-cover" /></td>
             <td v-if="filterField" class="px-4 py-2">{{ deudor[filterField as keyof typeof deudor] }}</td>
             <td v-if="filterField !== 'nombre'" class="px-4 py-2">{{ deudor.nombre }}</td>
             <td v-if="filterField !== 'apellidos'" class="px-4 py-2">{{ deudor.apellidos }}</td>
             <td v-if="filterField !== 'genero' && locale === 'es'" class="px-4 py-2">{{ deudor.genero }}</td>
             <td v-if="filterField !== 'genero' && locale === 'en'" class="px-4 py-2">{{ deudor.genero }}</td>
-            <td v-if="filterField !== 'nacionalidad' && locale === 'es'" class="px-4 py-2">{{ deudor.nacionalidad }}</td>
+            <td v-if="filterField !== 'nacionalidad' && locale === 'es'" class="px-4 py-2">{{ deudor.nacionalidad }}
+            </td>
             <td v-if="filterField !== 'nacionalidad' && locale === 'en'" class="px-4 py-2">{{ deudor.nationality }}</td>
             <td v-if="filterField !== 'cantidad'" class="px-4 py-2">{{ deudor.cantidad }}</td>
           </tr>
         </tbody>
       </table>
     </div>
-    <button @click="exportToExcel" class="mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg cursor-pointer transition-all duration-300 ease-in-out hover:bg-blue-700">{{ $t('DeudoresTabla.Excel') }}</button>
+    <button id="excel-2" @click="exportToExcel"
+      class="mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg cursor-pointer transition-all duration-300 ease-in-out hover:bg-blue-700">{{
+        $t('DeudoresTabla.Excel') }}</button>
     <BotonPaginaPrincipalComponente />
   </div>
 </template>
@@ -65,7 +56,7 @@ onMounted(async () => {
 
 const filteredDeudores = computed(() => {
   const searchLower = searchQuery.value.toLowerCase();
-  return infoDeudores.filter(deudor => {
+  return infoDeudores.filter((deudor: typeof infoDeudores[0]) => {
     return String(deudor[filterField.value as keyof typeof deudor]).toLowerCase().includes(searchLower);
   });
 });
@@ -82,7 +73,7 @@ function fieldDisplayName(field: any) {
 }
 
 const exportToExcel = () => {
-  const dataToExport = filteredDeudores.value.map(deudor => ({
+  const dataToExport = filteredDeudores.value.map((deudor: typeof infoDeudores[0]) => ({
     Nombre: deudor.nombre,
     Apellidos: deudor.apellidos,
     Género: deudor.genero,

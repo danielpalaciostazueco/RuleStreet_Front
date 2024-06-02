@@ -1,8 +1,8 @@
 <script lang="ts">
-import { defineComponent, ref, computed, watch, onMounted } from 'vue';
+import { defineComponent, ref, watchEffect, onMounted } from 'vue';
 import ReturnButton from '@/components/ComponentesGenerales/BotonPaginaPrincipalComponente.vue';
 import Modal from '@/components/BusquedaCiudadano/CiudadanoMultasComponente.vue';
-import ConfirmModal from '@/components/BusquedaCiudadano/CiudadanoConfirmacionMultaComponente.vue'
+import ConfirmModal from '@/components/BusquedaCiudadano/CiudadanoConfirmacionMultaComponente.vue';
 import { useRoute } from 'vue-router';
 import { useListadoCiudadanos } from '@/stores/storeCiudadano';
 import { useListadoPolicias } from '@/stores/storePolicia';
@@ -23,6 +23,16 @@ interface Rango {
   permisos: Permiso[];
 }
 
+interface CodigoPenal {
+  idCodigoPenal: number;
+  articulo: string;
+  article: string;
+  descripcion: string;
+  description: string;
+  precio: number;
+  sentencia: string;
+}
+
 interface Policia {
   idPolicia: number;
   idCiudadano: number;
@@ -32,6 +42,7 @@ interface Policia {
   contrasena: string;
   isPolicia: boolean;
 }
+
 interface Vehiculo {
   idVehiculo: number;
   matricula: string;
@@ -52,6 +63,7 @@ interface Multa {
   description: string;
   pagada: boolean;
   idCiudadano: number;
+  codigoPenal: CodigoPenal;
 }
 
 interface Ciudadano {
@@ -73,12 +85,10 @@ interface Ciudadano {
   isPeligroso: boolean;
   multas: Multa[];
   vehiculos: Vehiculo[];
+  trabajo: string;
 }
 
 export default defineComponent({
-  props: {
-    selectedCitizenId: Number
-  },
   components: {
     ReturnButton,
     Modal,
@@ -89,66 +99,47 @@ export default defineComponent({
     const store = useListadoCiudadanos();
     const storePolicias = useListadoPolicias();
     const storeMultas = useListadoMultas();
-    const citizenId = ref(parseInt(parseRouteParam(route.params.id) || '0'));
+    const storeAuth = useListadoAuth();
+    const citizenId = ref(parseInt(parseRouteParam(route.params.id)));
     const showModal = ref(false);
     const showConfirmModal = ref(false);
     const selectedMultaId = ref(null);
-    const storeAuth = useListadoAuth();
     const policiaActualId = ref(0);
     const { t, locale } = useI18n();
     const showError = ref(false);
     const errorMessage = ref("");
+    const infoCiudadanos = ref<Ciudadano | null>(null);
+    const loading = ref(true);
 
-    const reloadCitizenDetails = () => {
-      if (citizenId.value) {
-        store.cargarDatosCiudadanosId(citizenId.value);
+    const getnombrePolicia = (idPolicia: number) => {
+      const policia = storePolicias.infoPolicias.find(p => p.idPolicia === idPolicia);
+      return policia ? `${policia.ciudadano.nombre} ${policia.ciudadano.apellidos}` : 'Desconocido';
+    };
+
+
+    const loadCitizenDetails = async (id: number) => {
+      if (id) {
+        await store.cargarDatosCiudadanosId(id);
+        infoCiudadanos.value = store.infoCiudadano;
+        console.log('infoCiudadanos', infoCiudadanos.value);
+        loading.value = false;
       }
     };
 
-    const citizenDetails = computed<Ciudadano>(() => {
-      return store.infoCiudadanos.find(c => c.idCiudadano === citizenId.value) || {
-        idCiudadano: 0,
-        nombre: '',
-        apellidos: '',
-        dni: '',
-        genero: '',
-        gender: '',
-        nacionalidad: '',
-        nationality: '',
-        fechaNacimiento: new Date(),
-        direccion: '',
-        address: '',
-        numeroTelefono: '',
-        numeroCuentaBancaria: '',
-        isPoli: false,
-        isBusquedaYCaptura: false,
-        isPeligroso: false,
-        multas: [],
-        vehiculos: []
-      };
-    });
-
-    const getNombrePolicia = (idPolicia: any) => {
-      const policia = storePolicias.infoPolicias.find(p => p.idPolicia === idPolicia);
-      return policia ? policia.ciudadano.nombre + " " + policia.ciudadano.apellidos : 'Desconocido';
-    };
-
-    const openModal = () => {
-      showModal.value = true;
-    };
-
-    watch(() => route.params.id, (newId) => {
-      const parsedId = parseInt(parseRouteParam(newId));
+    watchEffect(async () => {
+      const newId = parseRouteParam(route.params.id);
+      const parsedId = parseInt(newId as string);
       if (parsedId) {
         citizenId.value = parsedId;
-        store.cargarDatosCiudadanosId(parsedId);
+        loading.value = true;
+        await loadCitizenDetails(parsedId);
       }
-    }, { immediate: true });
+    });
 
     onMounted(async () => {
       await storePolicias.cargarDatosPolicias();
       if (citizenId.value) {
-        store.cargarDatosCiudadanosId(citizenId.value);
+        await loadCitizenDetails(citizenId.value);
       }
       await storeAuth.loadPoliceInfo();
       if (storeAuth.infoPoliciasAuth.IdPolicia) {
@@ -158,7 +149,7 @@ export default defineComponent({
     });
 
     const borrarMulta = (idMulta: any) => {
-      const permisoBorrarMulta = storePolicias.infoPoli.rango.permisos.some(p => p.nombre === "Borrar multa");
+      const permisoBorrarMulta = storePolicias.infoPoli.rango.permisos.some((p: any) => p.nombre === "Borrar multa");
       if (permisoBorrarMulta) {
         selectedMultaId.value = idMulta;
         showConfirmModal.value = true;
@@ -171,8 +162,10 @@ export default defineComponent({
 
     const confirmDelete = async () => {
       try {
-        await storeMultas.borrarDatosMulta(selectedMultaId.value);
-        reloadCitizenDetails();
+        if (selectedMultaId.value !== null) {
+          await storeMultas.borrarDatosMulta(selectedMultaId.value);
+        }
+        await loadCitizenDetails(citizenId.value);
         showConfirmModal.value = false;
       } catch (error) {
         console.error('Error al eliminar la multa:', error);
@@ -186,19 +179,20 @@ export default defineComponent({
     };
 
     return {
-      citizenDetails,
       citizenId,
       showModal,
-      openModal,
-      reloadCitizenDetails,
-      getNombrePolicia,
+      openModal: () => showModal.value = true,
       locale,
       borrarMulta,
       confirmDelete,
       cancelDelete,
       showConfirmModal,
       showError,
-      errorMessage
+      errorMessage,
+      infoCiudadanos,
+      loading,
+      loadCitizenDetails,
+      getnombrePolicia
     };
   }
 });
@@ -215,7 +209,10 @@ function parseRouteParam(param: string | string[]): string {
     </div>
     <div class="ciudadano_perfil">
       <p v-if="!citizenId">{{ $t('PerfilCiudadano.Select') }}</p>
-      <template v-else>
+      <template v-if="loading">
+        <p>{{ $t('PerfilCiudadano.Loading') }}</p>
+      </template>
+      <template v-else-if="infoCiudadanos">
         <div class="ciudadano_perfil_usuario">
           <div class="ciudadano_perfil_usuario_izquierda">
             <img src="https://via.placeholder.com/150" alt="">
@@ -223,41 +220,41 @@ function parseRouteParam(param: string | string[]): string {
           <div class="ciudadano_perfil_usuario_derecha">
             <div class="ciudadano_tarjeta">
               <p>{{ $t('PerfilCiudadano.Name') }}</p>
-              <p>{{ citizenDetails.nombre }}</p>
+              <p>{{ infoCiudadanos.nombre }}</p>
             </div>
             <div class="ciudadano_tarjeta">
               <p>{{ $t('PerfilCiudadano.Surname') }}</p>
-              <p>{{ citizenDetails.apellidos }}</p>
+              <p>{{ infoCiudadanos.apellidos }}</p>
             </div>
             <div class="ciudadano_tarjeta">
               <p>{{ $t('PerfilCiudadano.Gender') }}</p>
-              <p v-if="locale === 'es'">{{ citizenDetails.genero }}</p>
-              <p v-if="locale === 'en'">{{ citizenDetails.gender }}</p>
+              <p v-if="locale === 'es'">{{ infoCiudadanos.genero }}</p>
+              <p v-if="locale === 'en'">{{ infoCiudadanos.gender }}</p>
             </div>
             <div class="ciudadano_tarjeta">
               <p>{{ $t('PerfilCiudadano.Nationality') }}</p>
-              <p v-if="locale === 'es'">{{ citizenDetails.nacionalidad }}</p>
-              <p v-if="locale === 'en'">{{ citizenDetails.nationality }}</p>
+              <p v-if="locale === 'es'">{{ infoCiudadanos.nacionalidad }}</p>
+              <p v-if="locale === 'en'">{{ infoCiudadanos.nationality }}</p>
             </div>
             <div class="ciudadano_tarjeta">
               <p>{{ $t('PerfilCiudadano.Birthdate') }}</p>
-              <p>{{ citizenDetails.fechaNacimiento }}</p>
+              <p>{{ infoCiudadanos.fechaNacimiento }}</p>
             </div>
             <div class="ciudadano_tarjeta">
               <p>ID</p>
-              <p>{{ citizenDetails.idCiudadano }}</p>
+              <p>{{ infoCiudadanos.idCiudadano }}</p>
             </div>
             <div class="ciudadano_tarjeta">
               <p>{{ $t('PerfilCiudadano.PhoneNumber') }}</p>
-              <p>{{ citizenDetails.numeroTelefono }}</p>
+              <p>{{ infoCiudadanos.numeroTelefono }}</p>
             </div>
             <div class="ciudadano_tarjeta">
               <p>{{ $t('PerfilCiudadano.AccountNumber') }}</p>
-              <p>{{ citizenDetails.numeroCuentaBancaria }}</p>
+              <p>{{ infoCiudadanos.numeroCuentaBancaria }}</p>
             </div>
             <div class="ciudadano_tarjeta">
               <p>{{ $t('PerfilCiudadano.Work') }}</p>
-              <p>{{ citizenDetails.trabajo }}</p>
+              <p>{{ infoCiudadanos.trabajo }}</p>
             </div>
           </div>
         </div>
@@ -265,18 +262,18 @@ function parseRouteParam(param: string | string[]): string {
           <div class="ciudadano_perfil_botones_izquierda">
             <h2>{{ $t('PerfilCiudadano.Captura') }}</h2>
             <div class="ciudadano_perfil_boton">
-              <input type="radio" id="no_izquierda" value="false" v-model="citizenDetails.isBusquedaYCaptura">
+              <input type="radio" id="no_izquierda" value="false" v-model="infoCiudadanos.isBusquedaYCaptura">
               <label for="no_izquierda">{{ $t('PerfilCiudadano.No') }}</label>
-              <input type="radio" id="yes_izquierda" value="true" v-model="citizenDetails.isBusquedaYCaptura">
+              <input type="radio" id="yes_izquierda" value="true" v-model="infoCiudadanos.isBusquedaYCaptura">
               <label for="yes_izquierda">{{ $t('PerfilCiudadano.Yes') }}</label>
             </div>
           </div>
           <div class="ciudadano_perfil_botones_derecha">
             <h2>{{ $t('PerfilCiudadano.Peligroso') }}</h2>
             <div class="ciudadano_perfil_boton">
-              <input type="radio" id="no_derecha" value="false" v-model="citizenDetails.isPeligroso">
+              <input type="radio" id="no_derecha" value="false" v-model="infoCiudadanos.isPeligroso">
               <label for="no_derecha">{{ $t('PerfilCiudadano.No') }}</label>
-              <input type="radio" id="yes_derecha" value="true" v-model="citizenDetails.isPeligroso">
+              <input type="radio" id="yes_derecha" value="true" v-model="infoCiudadanos.isPeligroso">
               <label for="yes_derecha">{{ $t('PerfilCiudadano.Yes') }}</label>
             </div>
           </div>
@@ -291,7 +288,6 @@ function parseRouteParam(param: string | string[]): string {
                 </svg>
                 <p>{{ $t('PerfilCiudadano.Notas') }}</p>
               </div>
-              <!-- añadir en el back las notas en el ciudadano -->
               <div class="notas_container">
                 <div class="tarjeta_otros">
                   <p>{{ $t('PerfilCiudadano.NoNotas') }}</p>
@@ -306,7 +302,6 @@ function parseRouteParam(param: string | string[]): string {
               </div>
             </div>
           </div>
-
           <div class="ciudadano_perfil_otros_container">
             <div class="ciudadano_perfil_notasdiv">
               <div class="ciudadano_perfil_notasdiv_titulo">
@@ -318,25 +313,20 @@ function parseRouteParam(param: string | string[]): string {
                 <div class="ciudadano_perfil_multas">
                   <p @click="showModal = true">+ {{ $t('PerfilCiudadano.AddMulta') }}</p>
                 </div>
-                <Modal :visible="showModal" @update:visible="showModal = $event" @onModalClose="reloadCitizenDetails" />
+                <Modal :visible="showModal" @update:visible="showModal = $event" @onModalClose="loadCitizenDetails" />
               </div>
-              <div v-if="showError" class="mensaje">
-                        {{ errorMessage }}
-                      </div>
-              <template v-if="citizenDetails.multas && citizenDetails.multas.length > 0">
+              <template v-if="infoCiudadanos.multas && infoCiudadanos.multas.length > 0">
                 <div class="notas_container">
-                  <div v-for="multa in citizenDetails.multas" :key="multa.idMulta" class="tarjeta_multa"
+                  <div v-for="multa in infoCiudadanos.multas" :key="multa.idMulta" class="tarjeta_multa"
                     :class="{ 'tarjeta_multa_pagada': multa.pagada }">
                     <div class="tarjeta_otros_cabecera">
                       <p>{{ new Date(multa.fecha).toLocaleDateString() }} - {{ new
                         Date(multa.fecha).toLocaleTimeString() }}</p>
-                      <button @click="borrarMulta(multa.idMulta)" class="btn_pagar_multa">Eliminar</button>
-                      <ConfirmModal v-if="showConfirmModal" @confirm="confirmDelete" @cancel="cancelDelete" />
                     </div>
                     <p>{{ multa.codigoPenal.articulo }}</p>
                     <div class="tarjeta_multa_info">
                       <div class="tarjeta_multa_iconos">
-                        <p>{{ getNombrePolicia(multa.idPolicia) }}</p>
+                        <p>{{ getnombrePolicia(multa.idPolicia) }}</p>
                         <svg class="tarjeta_multa_icono" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
                           <path
                             d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512H418.3c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304H178.3z" />
@@ -372,7 +362,6 @@ function parseRouteParam(param: string | string[]): string {
 
           <div class="ciudadano_perfil_otros_container">
             <div class="ciudadano_perfil_notasdiv">
-              <!-- añadir en el back las denuncias en el ciudadano -->
               <div class="ciudadano_perfil_notasdiv_titulo">
                 <svg class="ciudadano_icono" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
                   <path
@@ -398,8 +387,8 @@ function parseRouteParam(param: string | string[]): string {
                 </svg>
                 <p>{{ $t('PerfilCiudadano.Vehicles') }}</p>
               </div>
-              <template v-if="citizenDetails.vehiculos && citizenDetails.vehiculos.length > 0">
-                <div v-for="vehiculo in citizenDetails.vehiculos" :key="vehiculo.idVehiculo" class="tarjeta_otros">
+              <template v-if="infoCiudadanos.vehiculos && infoCiudadanos.vehiculos.length > 0">
+                <div v-for="vehiculo in infoCiudadanos.vehiculos" :key="vehiculo.idVehiculo" class="tarjeta_otros">
                   <p>{{ vehiculo.marca }} / {{ vehiculo.matricula }}</p>
                 </div>
               </template>
@@ -416,6 +405,7 @@ function parseRouteParam(param: string | string[]): string {
     </div>
   </div>
 </template>
+
 <style scoped>
 .ciudadano_menu_derecha {
   @apply bg-[color:var(--colorFondoCiudadano2)] w-[70%] flex flex-col gap-8 py-8 rounded-lg;
@@ -589,8 +579,7 @@ function parseRouteParam(param: string | string[]): string {
   font-size: 0.9em;
   z-index: 100;
   position: absolute;
-  right: 16%
-  ;
+  right: 16%;
 }
 
 @media (max-width: 1407px) {
@@ -741,7 +730,7 @@ function parseRouteParam(param: string | string[]): string {
   .ciudadano_busqueda {
     @apply gap-1;
     /* flex-direction: column; */
-}
+  }
 }
 
 @media (max-width: 400px) {

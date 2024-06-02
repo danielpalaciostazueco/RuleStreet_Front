@@ -1,14 +1,47 @@
 <script lang="ts">
-import { defineComponent, ref, computed, watch, onMounted } from 'vue';
+import { defineComponent, ref, watchEffect, onMounted } from 'vue';
 import ReturnButton from '@/components/ComponentesGenerales/BotonPaginaPrincipalComponente.vue';
-import Modal from '@/components/BusquedaCiudadano/CiudadanoMultasComponente.vue';
-import PaymentModal from './PayComponente.vue';
+import ConfirmModal from '@/components/BusquedaCiudadano/CiudadanoConfirmacionMultaComponente.vue';
 import { useRoute } from 'vue-router';
 import { useListadoCiudadanos } from '@/stores/storeCiudadano';
 import { useListadoPolicias } from '@/stores/storePolicia';
-import { useListadoAuth } from '@/stores/storeAuth';
 import { useListadoMultas } from '@/stores/storeMulta';
+import { useListadoAuth } from '@/stores/storeAuth';
 import { useI18n } from 'vue-i18n';
+import PayComponente from './PayComponente.vue';
+
+interface Permiso {
+    idPermiso: number;
+    nombre: string;
+}
+
+interface Rango {
+    idRango: number;
+    nombre: string;
+    salario: number;
+    isLocal: boolean;
+    permisos: Permiso[];
+}
+
+interface CodigoPenal {
+    idCodigoPenal: number;
+    articulo: string;
+    article: string;
+    descripcion: string;
+    description: string;
+    precio: number;
+    sentencia: string;
+}
+
+interface Policia {
+    idPolicia: number;
+    idCiudadano: number;
+    rango: Rango;
+    numeroPlaca: string;
+    ciudadano: Ciudadano;
+    contrasena: string;
+    isPolicia: boolean;
+}
 
 interface Vehiculo {
     idVehiculo: number;
@@ -33,16 +66,6 @@ interface Multa {
     codigoPenal: CodigoPenal;
 }
 
-export interface CodigoPenal {
-    idCodigoPenal: number;
-    articulo: string;
-    article: string;
-    descripcion: string;
-    description: string;
-    precio: number;
-    sentencia: string;
-}
-
 interface Ciudadano {
     idCiudadano: number;
     nombre: string;
@@ -62,97 +85,153 @@ interface Ciudadano {
     isPeligroso: boolean;
     multas: Multa[];
     vehiculos: Vehiculo[];
+    trabajo: string;
 }
 
 export default defineComponent({
     components: {
         ReturnButton,
-        Modal,
-        PaymentModal
+        PayComponente,
+        ConfirmModal
     },
     setup() {
         const route = useRoute();
-        const storeCiudadanos = useListadoCiudadanos();
-        const storeAuth = useListadoAuth();
-        const storeMultas = useListadoMultas();
+        const store = useListadoCiudadanos();
         const storePolicias = useListadoPolicias();
-        const { t, locale } = useI18n();
-        const formatDate = (date: Date): string => {
-            const options: Intl.DateTimeFormatOptions = {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-            };
-            return new Date(date).toLocaleDateString(locale.value, options);
-        };
-        const showModal = ref(false);
-        const showPaymentModal = ref(false);
-        const selectedMulta = ref<Multa | null>(null);
-
+        const storeMultas = useListadoMultas();
+        const storeAuth = useListadoAuth();
         const citizenId = ref<number>(storeAuth.getCitizenIdFromToken());
+        console.log('citizenId', citizenId)
+        const citizenid2 = citizenId.value;
+        const showModal = ref(false);
+        const showConfirmModal = ref(false);
+        const selectedMultaId = ref(null);
+        const selectedMulta = ref<Multa | null>(null);
+        const policiaActualId = ref(0);
+        const { t, locale } = useI18n();
+        const showError = ref(false);
+        const errorMessage = ref("");
+        const infoCiudadanos = ref<Ciudadano | null>(null);
+        const loading = ref(true);
 
         const getnombrePolicia = (idPolicia: number) => {
             const policia = storePolicias.infoPolicias.find(p => p.idPolicia === idPolicia);
             return policia ? `${policia.ciudadano.nombre} ${policia.ciudadano.apellidos}` : 'Desconocido';
         };
 
-        const loadCitizenData = async (id: number) => {
-            await storeCiudadanos.cargarDatosCiudadanosId(id);
+        const loadCitizenDetails = async (id: number) => {
+            if (id) {
+                await store.cargarDatosCiudadanosId(id);
+                infoCiudadanos.value = store.infoCiudadano;
+                console.log('infoCiudadanos', infoCiudadanos.value);
+                loading.value = false;
+            }
         };
 
-        watch(() => storeAuth.getCitizenIdFromToken(), (newId) => {
-            if (newId) {
-                citizenId.value = newId;
-                loadCitizenData(newId);
+        watchEffect(async () => {
+            if (citizenId.value) {
+                loading.value = true;
+                await loadCitizenDetails(citizenId.value);
+            } else {
+                loading.value = true;
+                await loadCitizenDetails(citizenid2);
             }
-        }, { immediate: true });
-
-        const citizenDetails = computed<Ciudadano | undefined>(() => {
-            return storeCiudadanos.infoCiudadanos[0];
         });
 
-        const openModal = () => {
+        onMounted(async () => {
+            if (citizenId.value) {
+                loadCitizenDetails(citizenId.value);
+                console.log(citizenId.value)
+            } else {
+                loadCitizenDetails(citizenid2);
+                console.log(citizenid2)
+            }
+            await storePolicias.cargarDatosPolicias();
+            if (storeAuth.infoUsuarios.IdCiudadano) {
+                await loadCitizenDetails(storeAuth.infoUsuarios.IdCiudadano);
+            }
+            await storeAuth.loadPoliceInfo();
+            if (storeAuth.infoPoliciasAuth.IdPolicia) {
+                policiaActualId.value = storeAuth.infoPoliciasAuth.IdPolicia;
+                await storePolicias.cargarDatosPoliciasId(policiaActualId.value);
+            }
+        });
+
+        const borrarMulta = (idMulta: any) => {
+            const permisoBorrarMulta = storePolicias.infoPoli.rango.permisos.some((p: any) => p.nombre === "Borrar multa");
+            if (permisoBorrarMulta) {
+                selectedMultaId.value = idMulta;
+                showConfirmModal.value = true;
+            } else {
+                errorMessage.value = "No tienes permiso para borrar multas.";
+                showError.value = true;
+                setTimeout(() => showError.value = false, 3000);
+            }
+        };
+
+        const confirmDelete = async () => {
+            try {
+                if (selectedMultaId.value !== null) {
+                    await storeMultas.borrarDatosMulta(selectedMultaId.value);
+                }
+                await loadCitizenDetails(storeAuth.infoUsuarios.IdCiudadano);
+                showConfirmModal.value = false;
+            } catch (error) {
+                console.error('Error al eliminar la multa:', error);
+                alert("Error al eliminar la multa.");
+                showConfirmModal.value = false;
+            }
+        };
+
+        const cancelDelete = () => {
+            showConfirmModal.value = false;
+        };
+
+        const openPayFineModal = (multa: Multa) => {
+            selectedMulta.value = multa;
             showModal.value = true;
         };
 
-        const openPaymentModal = (multa: Multa) => {
-            selectedMulta.value = multa;
-            showPaymentModal.value = true;
-        };
-
         const handlePayment = async (multa: Multa, cardData: { cardNumber: string, expirationDate: string, cvv: string }) => {
-            console.log("Procesando pago para la multa: ", multa);
-            console.log("Datos de la tarjeta: ", cardData);
-
+            console.log('Pago realizado', multa, cardData);
+            showModal.value = false;
             multa.pagada = true;
-            await storeMultas.actualizarMulta(multa);
-            showPaymentModal.value = false;
-        };
-
-        onMounted(async () => {
-            await storePolicias.cargarDatosPolicias();
-            if (citizenId.value) {
-                await loadCitizenData(citizenId.value);
+            try {
+                await storeMultas.actualizarMulta(multa);
+                await loadCitizenDetails(citizenId.value || citizenid2);
+                window.location.reload();
+            } catch (error) {
+                console.error('Error al actualizar la multa:', error);
+                alert("Error al actualizar la multa.");
             }
-        });
+        };
 
         return {
-            citizenDetails,
-            showModal,
-            openModal,
-            openPaymentModal,
-            handlePayment,
-            t,
-            locale,
             citizenId,
+            showModal,
+            openPayFineModal,
+            locale,
+            borrarMulta,
+            confirmDelete,
+            cancelDelete,
+            showConfirmModal,
+            showError,
+            errorMessage,
+            infoCiudadanos,
+            loading,
             getnombrePolicia,
-            showPaymentModal,
             selectedMulta,
-            formatDate
+            showPaymentModal: showModal,
+            handlePayment
         };
     }
 });
+
+function parseRouteParam(param: string | string[]): string {
+    return Array.isArray(param) ? param[0] : param || '0';
+}
 </script>
+
 <template>
     <div class="ciudadano_menu_derecha">
         <div class="ciudadano_menu_derecha_titulo">
@@ -160,7 +239,10 @@ export default defineComponent({
         </div>
         <div class="ciudadano_perfil">
             <p v-if="!citizenId">{{ $t('PerfilCiudadano.Select') }}</p>
-            <template v-else>
+            <template v-if="loading">
+                <p>{{ $t('PerfilCiudadano.Loading') }}</p>
+            </template>
+            <template v-else-if="infoCiudadanos">
                 <div class="ciudadano_perfil_usuario">
                     <div class="ciudadano_perfil_usuario_izquierda">
                         <img src="https://via.placeholder.com/150" alt="">
@@ -168,45 +250,44 @@ export default defineComponent({
                     <div class="ciudadano_perfil_usuario_derecha">
                         <div class="ciudadano_tarjeta">
                             <p>{{ $t('PerfilCiudadano.Name') }}</p>
-                            <p>{{ citizenDetails?.nombre }}</p>
+                            <p>{{ infoCiudadanos.nombre }}</p>
                         </div>
                         <div class="ciudadano_tarjeta">
                             <p>{{ $t('PerfilCiudadano.Surname') }}</p>
-                            <p>{{ citizenDetails?.apellidos || 'Desconocido' }}</p>
+                            <p>{{ infoCiudadanos.apellidos }}</p>
                         </div>
                         <div class="ciudadano_tarjeta">
                             <p>{{ $t('PerfilCiudadano.Gender') }}</p>
-                            <p v-if="locale === 'es'">{{ citizenDetails?.genero }}</p>
-                            <p v-if="locale === 'en'">{{ citizenDetails?.gender }}</p>
+                            <p v-if="locale === 'es'">{{ infoCiudadanos.genero }}</p>
+                            <p v-if="locale === 'en'">{{ infoCiudadanos.gender }}</p>
                         </div>
                         <div class="ciudadano_tarjeta">
                             <p>{{ $t('PerfilCiudadano.Nationality') }}</p>
-                            <p v-if="locale === 'es'">{{ citizenDetails?.nacionalidad }}</p>
-                            <p v-if="locale === 'en'">{{ citizenDetails?.nationality }}</p>
+                            <p v-if="locale === 'es'">{{ infoCiudadanos.nacionalidad }}</p>
+                            <p v-if="locale === 'en'">{{ infoCiudadanos.nationality }}</p>
                         </div>
                         <div class="ciudadano_tarjeta">
                             <p>{{ $t('PerfilCiudadano.Birthdate') }}</p>
-                            <p>{{ formatDate(citizenDetails?.fechaNacimiento!) }}</p>
+                            <p>{{ infoCiudadanos.fechaNacimiento }}</p>
                         </div>
                         <div class="ciudadano_tarjeta">
                             <p>ID</p>
-                            <p>{{ citizenDetails?.idCiudadano }}</p>
+                            <p>{{ infoCiudadanos.idCiudadano }}</p>
                         </div>
                         <div class="ciudadano_tarjeta">
                             <p>{{ $t('PerfilCiudadano.PhoneNumber') }}</p>
-                            <p>{{ citizenDetails?.numeroTelefono }}</p>
+                            <p>{{ infoCiudadanos.numeroTelefono }}</p>
                         </div>
                         <div class="ciudadano_tarjeta">
                             <p>{{ $t('PerfilCiudadano.AccountNumber') }}</p>
-                            <p>{{ citizenDetails?.numeroCuentaBancaria }}</p>
+                            <p>{{ infoCiudadanos.numeroCuentaBancaria }}</p>
                         </div>
                         <div class="ciudadano_tarjeta">
                             <p>{{ $t('PerfilCiudadano.Work') }}</p>
-                            <p>{{ citizenDetails?.trabajo || 'Desconocido' }}</p>
+                            <p>{{ infoCiudadanos.trabajo }}</p>
                         </div>
                     </div>
                 </div>
-
                 <div class="ciudadano_perfil_otros">
                     <div class="ciudadano_perfil_otros_container">
                         <div class="ciudadano_perfil_notasdiv">
@@ -218,8 +299,8 @@ export default defineComponent({
                                 <p>{{ $t('PerfilCiudadano.Multa') }}</p>
                             </div>
                             <div class="multas-container"
-                                v-if="citizenDetails?.multas && citizenDetails.multas.length > 0">
-                                <div v-for="multa in citizenDetails.multas" :key="multa.idMulta" class="tarjeta_multa"
+                                v-if="infoCiudadanos?.multas && infoCiudadanos.multas.length > 0">
+                                <div v-for="multa in infoCiudadanos.multas" :key="multa.idMulta" class="tarjeta_multa"
                                     :class="{ 'tarjeta_multa_pagada': multa.pagada }">
                                     <div class="tarjeta_otros_cabecera">
                                         <p>{{ new Date(multa.fecha).toLocaleDateString() }} - {{ new
@@ -251,7 +332,7 @@ export default defineComponent({
                                             </svg>
                                             <p>{{ multa.codigoPenal.sentencia }}</p>
                                         </div>
-                                        <button v-if="!multa.pagada" @click="openPaymentModal(multa)">Pagar
+                                        <button v-if="!multa.pagada" @click="openPayFineModal(multa)">Pagar
                                             Multa</button>
                                     </div>
                                 </div>
@@ -268,8 +349,8 @@ export default defineComponent({
                                 </svg>
                                 <p>{{ $t('PerfilCiudadano.Vehicles') }}</p>
                             </div>
-                            <template v-if="citizenDetails?.vehiculos && citizenDetails.vehiculos.length > 0">
-                                <div v-for="vehiculo in citizenDetails.vehiculos" :key="vehiculo.idVehiculo"
+                            <template v-if="infoCiudadanos?.vehiculos && infoCiudadanos.vehiculos.length > 0">
+                                <div v-for="vehiculo in infoCiudadanos.vehiculos" :key="vehiculo.idVehiculo"
                                     class="tarjeta_otros">
                                     <p>{{ vehiculo.marca }} / {{ vehiculo.matricula }}</p>
                                 </div>
@@ -286,7 +367,7 @@ export default defineComponent({
             <return-button />
         </div>
     </div>
-    <payment-modal :visible="showPaymentModal" @close="showPaymentModal = false" :multa="selectedMulta"
+    <pay-componente :visible="showPaymentModal" @close="showPaymentModal = false" :multa="selectedMulta"
         @pay="handlePayment" />
 </template>
 

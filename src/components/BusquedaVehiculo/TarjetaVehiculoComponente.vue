@@ -13,6 +13,9 @@ export default defineComponent({
                 marca: string;
                 Photo: string;
                 color: string;
+                ciudadano:{
+                    nombre: string;
+                }
 
             }>,
             required: true

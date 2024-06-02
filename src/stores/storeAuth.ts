@@ -1,10 +1,7 @@
-
-import router from '@/router';
-import { defineStore } from 'pinia';
-import { reactive, ref } from 'vue';
-import jwtDecode from 'jwt-decode';
-
-
+import router from "@/router";
+import { defineStore } from "pinia";
+import { reactive, ref } from "vue";
+import jwtDecode from "jwt-decode";
 
 export interface Usuario {
   IdUsuario: number;
@@ -29,20 +26,15 @@ interface Ayuntamiento {
   Contrasena: string;
 }
 
-
-export const useListadoAuth = defineStore('listadoAuth', () => {
-
-
-
-
-  const apiUrl = `http://localhost:8001`;
+export const useListadoAuth = defineStore("listadoAuth", () => {
+  const apiUrl = `http://rulestreetapi.retocsv.es`;
   let infoUsuarios: Usuario = {
     IdUsuario: 0,
     IdPolicia: 0,
     IdCiudadano: 0,
     NombreUsuario: "",
     Contrasena: "",
-    IsPolicia: false
+    IsPolicia: false,
   };
 
   let infoPoliciasAuth: PoliciaAuth = {
@@ -50,74 +42,69 @@ export const useListadoAuth = defineStore('listadoAuth', () => {
     IdCiudadano: 0,
     Rango: 0,
     NumeroPlaca: "",
-    IsPolicia: false
+    IsPolicia: false,
   };
-
 
   let infoAyuntamiento: Ayuntamiento = {
     IdUsuarioAyuntamiento: 0,
     Dni: "",
-    Contrasena: ""
+    Contrasena: "",
   };
 
-
-
-
   const Datos = ref({
-    Dni: '',
-    NombreUsuario: '',
-    Contrasena: '',
+    Dni: "",
+    NombreUsuario: "",
+    Contrasena: "",
   });
-
 
   const DatosRegistro = ref({
     IdUsuario: 0,
-    Dni: '',
-    NombreUsuario: '',
-    Contrasena: '',
+    Dni: "",
+    NombreUsuario: "",
+    Contrasena: "",
   });
 
   const DatosPolicia = ref({
-    numeroPlaca: '',
-    Contrasena: '',
+    numeroPlaca: "",
+    Contrasena: "",
   });
 
-
   const DatosAyuntamiento = ref({
-    Dni: '',
-    Contrasena: '',
+    Dni: "",
+    Contrasena: "",
   });
 
   async function resetAndAssign(decoded: any, target: any) {
-    Object.keys(target).forEach(key => target[key] = 0);
+    Object.keys(target).forEach((key) => (target[key] = 0));
     Object.assign(target, decoded);
   }
 
   async function LoginPolicia() {
     try {
       const response = await fetch(`${apiUrl}/Auth/Login/Policia`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(DatosPolicia.value)
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(DatosPolicia.value),
       });
-      if (!response.ok) throw new Error(`Error en la solicitud: ${await response.text()}`);
+      if (!response.ok)
+        throw new Error(`Error en la solicitud: ${await response.text()}`);
       const token = await response.text();
-      localStorage.setItem('tokenPolicia', token);
+      localStorage.setItem("tokenPolicia", token);
       resetAndAssign(jwtDecode(token), infoPoliciasAuth);
-      router.push('/');
+      router.push("/");
     } catch (error) {
-      console.error('Error en LoginPolicia:', error);
+      console.error("Error en LoginPolicia:", error);
     }
   }
 
   function loadPoliceInfo() {
-    const token = localStorage.getItem('tokenPolicia');
+    const token = localStorage.getItem("tokenPolicia");
     if (token) {
       try {
         const decoded = jwtDecode(token);
         resetAndAssign(decoded, infoPoliciasAuth);
       } catch (error) {
-        console.error('Error al decodificar el token:', error);
+        console.error("Error al decodificar el token:", error);
       }
     }
   }
@@ -125,93 +112,110 @@ export const useListadoAuth = defineStore('listadoAuth', () => {
   async function LoginUsuario() {
     try {
       const response = await fetch(`${apiUrl}/Auth/Login`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(Datos.value)
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(Datos.value),
       });
-      if (!response.ok) throw new Error(`Error en la solicitud: ${await response.text()}`);
+      if (!response.ok)
+        throw new Error(`Error en la solicitud: ${await response.text()}`);
       const token = await response.text();
-      localStorage.setItem('tokenUsuario', token);
+      localStorage.setItem("tokenUsuario", token);
       resetAndAssign(jwtDecode(token), infoUsuarios);
-      router.push('/');
+      console.log(infoUsuarios.IdCiudadano);
+      router.push("/");
     } catch (error) {
-      console.error('Error en LoginUsuario:', error);
+      console.error("Error en LoginUsuario:", error);
     }
   }
-
 
   async function registroUsuario() {
     const url = `${apiUrl}/Auth/Register`;
     try {
       const response = await fetch(url, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
-
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(DatosRegistro.value),
-
       });
-      router.push('/login');
+      router.push("/login");
       if (response.ok) {
         const usuarioRegistrado: Usuario = await response.json();
         infoUsuarios = usuarioRegistrado;
-        localStorage.setItem('usuario', JSON.stringify(usuarioRegistrado));
-
+        localStorage.setItem("usuario", JSON.stringify(usuarioRegistrado));
       } else {
-        console.error('Error en el registro:', response.statusText);
+        console.error("Error en el registro:", response.statusText);
       }
     } catch (error) {
-      console.error('Error en el registro:', error);
+      console.error("Error en el registro:", error);
     }
   }
-
 
   function formatearFecha(fecha: string) {
     const fechaObj = new Date(fecha);
     const opciones: Intl.DateTimeFormatOptions = {
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit',
-      hour: '2-digit',
-      minute: '2-digit',
-      hour12: false
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
     };
 
-
-    const fechaFormateada = fechaObj.toLocaleDateString('es-ES', opciones);
-    const horaFormateada = fechaObj.toLocaleTimeString('es-ES', opciones);
+    const fechaFormateada = fechaObj.toLocaleDateString("es-ES", opciones);
+    const horaFormateada = fechaObj.toLocaleTimeString("es-ES", opciones);
 
     const fechaMatch = fechaFormateada.match(/(\d{2})\/(\d{2})\/(\d{4})/);
     const horaMatch = horaFormateada.match(/(\d{2}):(\d{2})/);
 
     if (fechaMatch && horaMatch) {
-
       return `${fechaMatch[3]}-${fechaMatch[2]}-${fechaMatch[1]} ${horaMatch[1]}:${horaMatch[2]}`;
     } else {
-      console.error('No se pudo formatear la fecha:', fecha);
-      return '';
+      console.error("No se pudo formatear la fecha:", fecha);
+      return "";
     }
   }
   async function LoginAyuntamiento() {
     try {
       const response = await fetch(`${apiUrl}/Auth/Login/Ayuntamiento`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(DatosAyuntamiento.value)
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(DatosAyuntamiento.value),
       });
-      if (!response.ok) throw new Error(`Error en la solicitud: ${await response.text()}`);
+      if (!response.ok)
+        throw new Error(`Error en la solicitud: ${await response.text()}`);
       const token = await response.text();
-      localStorage.setItem('tokenAyuntamiento', token);
+      localStorage.setItem("tokenAyuntamiento", token);
       resetAndAssign(jwtDecode(token), infoAyuntamiento);
-      router.push('/');
+      router.push("/");
     } catch (error) {
-      console.error('Error en LoginAyuntamiento:', error);
+      console.error("Error en LoginAyuntamiento:", error);
     }
   }
-
+  function getCitizenIdFromToken() {
+    const token =
+      localStorage.getItem("tokenUsuario") ||
+      localStorage.getItem("tokenPolicia");
+    if (token) {
+      const decoded: any = jwtDecode(token);
+      return decoded.IdCiudadano;
+    }
+    return null;
+  }
   return {
-    infoUsuarios, Datos, DatosRegistro, DatosPolicia, infoPoliciasAuth, DatosAyuntamiento, infoAyuntamiento,
-    LoginUsuario, LoginPolicia, LoginAyuntamiento, registroUsuario, formatearFecha, loadPoliceInfo
+    infoUsuarios,
+    Datos,
+    DatosRegistro,
+    DatosPolicia,
+    infoPoliciasAuth,
+    DatosAyuntamiento,
+    infoAyuntamiento,
+    LoginUsuario,
+    LoginPolicia,
+    LoginAyuntamiento,
+    registroUsuario,
+    formatearFecha,
+    loadPoliceInfo,
+    getCitizenIdFromToken,
   };
 });
