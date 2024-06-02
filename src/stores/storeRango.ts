@@ -13,18 +13,21 @@ export interface Rango {
 }
 
 export const useListadoRangos = defineStore("listadoRangos", () => {
-  const apiUrl = `http://localhost:8001`;
+  const apiUrl = `http://rulestreetapi.retocsv.es`;
   const infoRangos = reactive<Array<Rango>>([]);
   let token = "";
 
- 
   async function cargarDatosRangos() {
     try {
-      token = localStorage.getItem("tokenUsuario") ?? localStorage.getItem("tokenPolicia") ?? "";
+      token =
+        localStorage.getItem("tokenUsuario") ??
+        localStorage.getItem("tokenPolicia") ??
+        "";
       const response = await fetch(apiUrl + "/Rango", {
         headers: { Authorization: `Bearer ${token}` },
       });
-      if (!response.ok) throw new Error("Error al cargar los datos de los rangos");
+      if (!response.ok)
+        throw new Error("Error al cargar los datos de los rangos");
       const data = await response.json();
       infoRangos.splice(0, infoRangos.length, ...data);
     } catch (error) {

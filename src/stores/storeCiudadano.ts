@@ -73,31 +73,31 @@ interface Deudores {
 }
 
 export const useListadoCiudadanos = defineStore("listadoCiduadanos", () => {
-  const apiUrl = `http://localhost:8001`;
+  const apiUrl = `http://rulestreetapi.retocsv.es`;
   const infoCiudadanos = reactive<Array<Ciudadano>>([]);
   const infoCiudadanosBusquedaCaptura = reactive<Array<Ciudadano>>([]);
-  let infoCiudadano = {  
+  let infoCiudadano = {
     idCiudadano: 0,
-    nombre: '',
-    apellidos: '',
-    dni: '',
-    genero: '',
-    gender: '',
-    nacionalidad: '',
-    nationality: '',
+    nombre: "",
+    apellidos: "",
+    dni: "",
+    genero: "",
+    gender: "",
+    nacionalidad: "",
+    nationality: "",
     fechaNacimiento: new Date(),
-    direccion: '',
-    address: '',
-    numeroTelefono: '',
-    numeroCuentaBancaria: '',
+    direccion: "",
+    address: "",
+    numeroTelefono: "",
+    numeroCuentaBancaria: "",
     isPoli: false,
     isBusquedaYCaptura: false,
     isPeligroso: false,
     multas: [],
     vehiculos: [],
-    trabajo: '',
+    trabajo: "",
   };
-  
+
   const infoDeudores = reactive<Array<Deudores>>([]);
   let token = "";
 
@@ -193,7 +193,7 @@ export const useListadoCiudadanos = defineStore("listadoCiduadanos", () => {
       const index = infoCiudadanos.findIndex(
         (c) => c.idCiudadano === ciudadanoId
       );
-      Object.assign(infoCiudadano, data); 
+      Object.assign(infoCiudadano, data);
       console.log("infociudadano back after update:", infoCiudadano);
     } catch (error) {
       console.error("Error al cargar la información del ciudadano:", error);
@@ -316,6 +316,6 @@ export const useListadoCiudadanos = defineStore("listadoCiduadanos", () => {
     infoCiudadanosBusquedaCaptura,
     cargarDatosCiudadanosDeudores,
     infoDeudores,
-    infoCiudadano
+    infoCiudadano,
   };
 });
