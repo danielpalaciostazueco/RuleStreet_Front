@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent, ref, watchEffect, onMounted, reactive } from 'vue';
+import { defineComponent, ref, watch, onMounted } from 'vue';
 import ReturnButton from '@/components/ComponentesGenerales/BotonPaginaPrincipalComponente.vue';
 import { useRoute } from 'vue-router';
 import { useListadoVehiculos } from '@/stores/storeVehiculo';
@@ -68,28 +68,45 @@ export default defineComponent({
   setup() {
     const route = useRoute();
     const store = useListadoVehiculos();
-    const vehicleid = ref(parseInt(route.params.id as string || '0'));
-    const infoVehiculo = reactive<Array<Vehiculo>>([]);
-
+    const vehicleid = ref<number | null>(null);
+    const infoVehiculo = ref<Vehiculo | null>(null);
     const { t, locale } = useI18n();
 
     const loadVehicleDetails = async (id: number) => {
-      await store.cargarDatosVehiculosId(id);
-      if (store.infoVehiculo != null) {
-        infoVehiculo.splice(0, infoVehiculo.length, ...store.infoVehiculo);
-        console.log('infoVehiculo', infoVehiculo);
+      try {
+        infoVehiculo.value = null; // Reset infoVehiculo before loading new data
+        await store.cargarDatosVehiculosId(id);
+        if (store.vehiculo) {
+          infoVehiculo.value = store.vehiculo;
+        } else {
+          console.error('Vehicle not found');
+        }
+      } catch (error) {
+        console.error('Error loading vehicle details:', error);
       }
     };
 
-    watchEffect(() => {
-      if (vehicleid.value) {
-        loadVehicleDetails(vehicleid.value);
+    watch(() => route.params.id, (newId) => {
+      const id = parseRouteParam(newId);
+      if (id) {
+        vehicleid.value = parseInt(id, 10);
+        if (vehicleid.value) {
+          loadVehicleDetails(vehicleid.value);
+        }
       }
     });
 
+    function parseRouteParam(param: string | string[]): string {
+      return Array.isArray(param) ? param[0] : param || '0';
+    }
+
     onMounted(() => {
-      if (vehicleid.value) {
-        loadVehicleDetails(vehicleid.value);
+      const id = parseRouteParam(route.params.id);
+      if (id) {
+        vehicleid.value = parseInt(id, 10);
+        if (vehicleid.value) {
+          loadVehicleDetails(vehicleid.value);
+        }
       }
     });
 
@@ -111,31 +128,31 @@ export default defineComponent({
     <div class="vehiculo_perfil">
       <p v-if="!vehicleid">{{ t('PerfilVehiculo.Select') }}</p>
       <template v-else>
-        <div class="vehiculo_perfil_usuario" v-if="infoVehiculo.length && infoVehiculo[0]">
+        <div class="vehiculo_perfil_usuario" v-if="infoVehiculo">
           <div class="vehiculo_perfil_usuario_izquierda">
             <img src="https://via.placeholder.com/150" alt="">
           </div>
           <div class="vehiculo_perfil_usuario_derecha">
             <div class="vehiculo_tarjeta">
               <p>{{ t('PerfilVehiculo.Placa') }}</p>
-              <p>{{ infoVehiculo[0].matricula }}</p>
+              <p>{{ infoVehiculo.matricula }}</p>
             </div>
             <div class="vehiculo_tarjeta">
               <p>{{ t('PerfilVehiculo.Model') }}</p>
-              <p>{{ infoVehiculo[0].modelo }}</p>
+              <p>{{ infoVehiculo.modelo }}</p>
             </div>
             <div class="vehiculo_tarjeta">
-              <p>{{ t('PerfilVehiculo.Brans') }}</p>
-              <p>{{ infoVehiculo[0].marca }}</p>
+              <p>{{ t('PerfilVehiculo.Brand') }}</p>
+              <p>{{ infoVehiculo.marca }}</p>
             </div>
             <div class="vehiculo_tarjeta">
               <p>{{ t('PerfilVehiculo.Color') }}</p>
-              <p v-if="locale === 'es'">{{ infoVehiculo[0].color }}</p>
-              <p v-if="locale === 'en'">{{ infoVehiculo[0].enColor }}</p>
+              <p v-if="locale === 'es'">{{ infoVehiculo.color }}</p>
+              <p v-if="locale === 'en'">{{ infoVehiculo.enColor }}</p>
             </div>
             <div class="vehiculo_tarjeta">
               <p>{{ t('PerfilVehiculo.Dueno') }}</p>
-              <p>{{ infoVehiculo[0].ciudadano.nombre }}</p>
+              <p>{{ infoVehiculo.ciudadano.nombre }}</p>
             </div>
           </div>
         </div>
@@ -158,6 +175,7 @@ export default defineComponent({
     </div>
   </div>
 </template>
+
 
 <style scoped>
 .vehiculo_menu_derecha {
