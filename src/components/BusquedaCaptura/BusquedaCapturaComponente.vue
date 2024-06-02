@@ -15,19 +15,24 @@
         </thead>
         <tbody>
           <tr v-for="ciudadano in filteredCiudadanos" :key="ciudadano.idCiudadano" class="hover:bg-blue-100">
-            <td class="px-4 py-2"><img :src="ciudadano.imagenUrl" alt="Foto del ciudadano" class="rounded-full w-12 h-12 object-cover" /></td>
+            <td class="px-4 py-2"><img :src="ciudadano.imagenUrl" alt="Foto del ciudadano"
+                class="rounded-full w-12 h-12 object-cover" /></td>
             <td v-if="filterField" class="px-4 py-2">{{ ciudadano[filterField as keyof typeof ciudadano] }}</td>
             <td v-if="filterField !== 'nombre'" class="px-4 py-2">{{ ciudadano.nombre }}</td>
             <td v-if="filterField !== 'apellidos'" class="px-4 py-2">{{ ciudadano.apellidos }}</td>
             <td v-if="filterField !== 'genero' && locale === 'en'" class="px-4 py-2">{{ ciudadano.genero }}</td>
             <td v-if="filterField !== 'genero' && locale === 'es'" class="px-4 py-2">{{ ciudadano.gender }}</td>
-            <td v-if="filterField !== 'isPeligroso' && locale === 'es'" class="px-4 py-2">{{ ciudadano.isPeligroso ? 'Sí' : 'No' }}</td>
-            <td v-if="filterField !== 'isPeligroso' && locale === 'en'" class="px-4 py-2">{{ ciudadano.isPeligroso ? 'Yes' : 'No' }}</td>
+            <td v-if="filterField !== 'isPeligroso' && locale === 'es'" class="px-4 py-2">{{ ciudadano.isPeligroso ?
+              'Sí' : 'No' }}</td>
+            <td v-if="filterField !== 'isPeligroso' && locale === 'en'" class="px-4 py-2">{{ ciudadano.isPeligroso ?
+              'Yes' : 'No' }}</td>
           </tr>
         </tbody>
       </table>
     </div>
-    <button @click="exportToExcel" class="mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg cursor-pointer transition-all duration-300 ease-in-out hover:bg-blue-700">{{ $t('BusquedaCapturaTabla.Excel') }}</button>
+    <button id="excel-1" @click="exportToExcel"
+      class="mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg cursor-pointer transition-all duration-300 ease-in-out hover:bg-blue-700">{{
+        $t('BusquedaCapturaTabla.Excel') }}</button>
     <BotonPaginaPrincipalComponente />
   </div>
 </template>
