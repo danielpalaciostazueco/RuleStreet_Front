@@ -19,7 +19,7 @@ const filterField = ref('nombre');
 const ciudadanosPorDia = computed(() => {
     const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
     return days.map(day => infoCiudadanosBusquedaCaptura.filter((ciudadano: any) =>
-        new Date(ciudadano.diaIntroducidoListaCaptura).getDay() === days.indexOf(day) + 1
+        new Date(ciudadano.diaBusquedaCaptura).getDay() === days.indexOf(day) + 1
     ).length);
 });
 
@@ -71,8 +71,8 @@ onMounted(() => {
                 yAxis: {
                     type: 'value',
                     min: 0,
-                    max: 60,
-                    interval: 20,
+                    max: 14,
+                    interval: 2,
                     axisLabel: {
                         formatter: '{value}'
                     }

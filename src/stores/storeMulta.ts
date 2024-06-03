@@ -28,7 +28,7 @@ export interface CodigoPenal {
 }
 
 export const useListadoMultas = defineStore("listadoMultas", () => {
-  const apiUrl = `http://rulestreetapi.retocsv.es`;
+  const apiUrl = `http://localhost:8001`;
   const infoMultas = reactive<Array<Multa>>([]);
   let token = localStorage.getItem("token");
 

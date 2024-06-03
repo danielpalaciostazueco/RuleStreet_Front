@@ -372,6 +372,7 @@ function parseRouteParam(param: string | string[]): string {
 </template>
 
 <style scoped>
+
 .payment-modal {
     position: fixed;
     z-index: 1000;

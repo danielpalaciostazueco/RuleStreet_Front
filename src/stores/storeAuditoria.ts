@@ -6,16 +6,14 @@ const storeAuth = useListadoAuth();
 export interface Auditoria {
   idAuditoria: number;
   titulo: string;
-  title: string;
   descripcion: string;
-  description: string;
   fecha: Date;
   idPolicia: number;
 }
 
 let token = "";
 export const useListadoAuditorias = defineStore("listadoAuditorias", () => {
-  const apiUrl = `http://rulestreetapi.retocsv.es`;
+  const apiUrl = `http://localhost:8001`;
   const infoAuditorias = reactive<Array<Auditoria>>([]);
 
   async function cargarDatosAuditorias() {
@@ -112,7 +110,7 @@ export const useListadoAuditorias = defineStore("listadoAuditorias", () => {
     }
   }
 
-  async function guardarPolicia(auditoria: Auditoria) {
+  async function guardarAuditoria(auditoria: Auditoria) {
     if (localStorage.getItem("tokenUsuario") !== null) {
       token = localStorage.getItem("tokenUsuario") ?? "";
     } else {
@@ -226,6 +224,6 @@ export const useListadoAuditorias = defineStore("listadoAuditorias", () => {
     borrarDatosPolicia,
     actualizarPolicia,
     infoAuditorias,
-    guardarPolicia,
+    guardarAuditoria,
   };
 });

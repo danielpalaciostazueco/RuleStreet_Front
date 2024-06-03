@@ -2,6 +2,10 @@ import VehiculoBusquedaComponente from "@/components/BusquedaVehiculo/VehiculoBu
 
 export const messages = {
   en: {
+    HomeTitulo:{
+      Title :"Welcome to RuleStreet"
+    },
+
     BotonesPrincipales: {
       buscarCiudadano: "Search Citizen",
       denuncias: "Complaints",
@@ -170,7 +174,7 @@ export const messages = {
 
     LoginAyuntamiento: {
       Title: "Town Hall Login",
-      Email: "Email",
+      Email: "User",
       Password: "Password",
       Policia: "Are you a police officer?",
       Cuenta: "Do not have an account? Sign up",
@@ -216,6 +220,10 @@ export const messages = {
   },
 
   es: {
+
+    HomeTitulo:{
+      Title :"Bienvenido a RuleStreet"
+    },
     BotonesPrincipales: {
       buscarCiudadano: "Buscar Ciudadano",
       denuncias: "Denuncias",
@@ -248,6 +256,7 @@ export const messages = {
 
     EventoAyuntamiento: {
       Title: "No hay eventos disponibles en este momento.",
+      Date: "Fecha: ",
     },
 
     BusquedaCapturaTabla: {
@@ -383,8 +392,8 @@ export const messages = {
 
     LoginAyuntamiento: {
       Title: "Login Ayuntamiento",
-      Email: "Email",
-      Password: "Password",
+      Email: "Nombre de Usuario",
+      Password: "Contraseña",
       Policia: "¿Eres policía?",
       Cuenta: "¿No tienes cuenta? Registrate",
       Login: "Iniciar de Sesión",
@@ -395,7 +404,7 @@ export const messages = {
     LoginUsuario: {
       Title: "Login",
       NombreUsuario: "Nombre de Usuario",
-      Password: "Password",
+      Password: "Contraseña",
       Policia: "¿Eres policía?",
       Cuenta: "¿No tienes cuenta? Registrate",
       Login: "Iniciar Sesión",
@@ -407,7 +416,7 @@ export const messages = {
     LoginPolicia: {
       Title: "Login Policía",
       NumeroPlaca: "Número de Placa",
-      Password: "Password",
+      Password: "Contraseña",
       Usuario: "¿Eres Usuario?",
       Cuenta: "¿No tienes cuenta? Registrate",
       Login: "Iniciar Sesión",
@@ -418,7 +427,7 @@ export const messages = {
     Register: {
       Title: "Registro",
       NombreUsuario: "Nombre de Usuario",
-      Password: "Password",
+      Password: "Contraseña",
       Policia: "¿Eres policía?",
       Cuenta: "¿No tienes cuenta? Registrate",
       Login: "Iniciar Sesión",
