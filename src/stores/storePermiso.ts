@@ -8,6 +8,7 @@ export interface Permiso {
   nombre: string | null;
   name: string | null;
   idRango: number | null;
+  active: boolean;
 }
 
 export const useListadoPermisos = defineStore("listadoPermisos", () => {

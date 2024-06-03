@@ -61,7 +61,7 @@ export default defineComponent({
       if (rango && Array.isArray(rango.permisos)) {
         permisosConEstado.value = storePermiso.infoPermiso.map(permiso => ({
           ...permiso,
-          active: rango.permisos.some((p: { idPermiso: number; }) => p.idPermiso === permiso.idPermiso) || false
+          active: Array.isArray(rango.permisos) && rango.permisos.some((p: { idPermiso: number; }) => p.idPermiso === permiso.idPermiso) || false
         }));
       } else {
         permisosConEstado.value = storePermiso.infoPermiso.map(permiso => ({
@@ -86,7 +86,6 @@ export default defineComponent({
       }
       editing.value = false;
     };
-
     const saveEdit = async () => {
       const updatedRango: Rango = {
         idRango: rangeId.value,
@@ -97,10 +96,15 @@ export default defineComponent({
           .filter(p => p.active)
           .map(permiso => ({
             idPermiso: permiso.idPermiso,
-            nombre: permiso.nombre,
-            name: permiso.name,
-            idRango: permiso.idRango
-          }))
+            nombre: permiso.nombre || '',
+            name: permiso.name || '',
+            idRango: permiso.idRango || 0,
+            active: permiso.active
+          })) as Permiso[]
+        ,
+        idPolicia: 0,
+        name: '',
+        active: false
       };
 
       try {

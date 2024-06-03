@@ -245,7 +245,7 @@ function parseRouteParam(param: string | string[]): string {
             <template v-else-if="infoCiudadanos">
                 <div class="ciudadano_perfil_usuario">
                     <div class="ciudadano_perfil_usuario_izquierda">
-                        <img src="https://via.placeholder.com/150" alt="">
+
                     </div>
                     <div class="ciudadano_perfil_usuario_derecha">
                         <div class="ciudadano_tarjeta">
@@ -372,7 +372,6 @@ function parseRouteParam(param: string | string[]): string {
 </template>
 
 <style scoped>
-
 .payment-modal {
     position: fixed;
     z-index: 1000;
@@ -456,6 +455,7 @@ button:hover {
 }
 
 .ciudadano_menu_derecha {
+    @apply mb-5;
     @apply flex w-[70%] flex-col gap-8 bg-[color:var(--colorFondoCiudadano2)] ml-[15%] mt-[5%] py-8 rounded-lg;
 }
 
