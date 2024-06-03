@@ -21,6 +21,7 @@ interface Permiso {
 }
 
 export const useListadoRangos = defineStore("listadoRangos", () => {
+  //const apiUrl = `https://rulestreetapi.retocsv.es`;
   const apiUrl = `http://localhost:8001`;
   const infoRangos = reactive<Array<Rango>>([]);
   let token = "";

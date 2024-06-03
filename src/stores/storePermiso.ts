@@ -11,6 +11,7 @@ export interface Permiso {
 }
 
 export const useListadoPermisos = defineStore("listadoPermisos", () => {
+  //const apiUrl = `https://rulestreetapi.retocsv.es`;
   const apiUrl = `http://localhost:8001`;
   const infoPermiso = reactive<Array<Permiso>>([]);
   let token = "";

@@ -3,5 +3,17 @@ import CiudadanoUsuarioComponente from '@/components/PerfilCiudadano/CiudadanoUs
 </script>
 
 <template>
-    <CiudadanoUsuarioComponente />
+    <div class="ciudadano_container">
+        <CiudadanoUsuarioComponente />
+    </div>
 </template>
+
+
+<style scoped>
+.ciudadano_container {
+    height: 100vh; 
+    background-color: var(--colorFondo); 
+    display: flex;
+}
+
+</style>
