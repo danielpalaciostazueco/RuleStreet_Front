@@ -1,5 +1,5 @@
 <script lang="ts">
-import { defineComponent, ref, computed, watch, onMounted, watchEffect } from 'vue';
+import { defineComponent, ref, computed, watch, onMounted } from 'vue';
 import ReturnButton from '@/components/ComponentesGenerales/BotonPaginaPrincipalComponente.vue';
 import { useRoute } from 'vue-router';
 import { useListadoRangos, type Rango } from '@/stores/storeRango';
@@ -9,6 +9,9 @@ import { useListadoAuditorias } from '@/stores/storeAuditoria';
 import { useListadoAuth } from '@/stores/storeAuth';
 import { useListadoPolicias } from '@/stores/storePolicia';
 
+interface PermisoConEstado extends Permiso {
+  active: boolean;
+}
 
 export default defineComponent({
   components: {
@@ -21,11 +24,11 @@ export default defineComponent({
     const storePermiso = useListadoPermisos();
     const storePolicia = useListadoPolicias();
     const { t } = useI18n();
-    const permisosConEstado = ref([]);
-    const originalPermisos = ref([]);
+    const permisosConEstado = ref<PermisoConEstado[]>([]);
+    const originalPermisos = ref<PermisoConEstado[]>([]);
     const editing = ref(false);
     const editableSalary = ref(0);
-    const { guardarPolicia } = useListadoAuditorias();
+    const { guardarAuditoria } = useListadoAuditorias();
     const storeAuth = useListadoAuth();
     const policiaActualId = ref(0);
 
@@ -43,32 +46,39 @@ export default defineComponent({
     });
 
     const rangeDetails = computed<Rango | undefined>(() => {
-      return storeRango.infoRangos.find(c => c.idRango === rangeId.value)
+      return storeRango.infoRangos.find(c => c.idRango === rangeId.value);
     });
 
-    const permisos = computed(() => {
+    const permisos = computed<Permiso[]>(() => {
       return storePermiso.infoPermiso;
     });
 
     const actualizarDatos = async (id: number) => {
       await storeRango.cargarDatosRangosId(id);
       await storePermiso.cargarDatosPermisos();
-      permisosConEstado.value = storePermiso.infoPermiso.map(permiso => ({
-        ...permiso,
-        active: storeRango.infoRangos.find(r => r.idRango === id)?.permisos.some((p: { idPermiso: number; }) => p.idPermiso === permiso.idPermiso) || false
-      }));
+
+      const rango = storeRango.infoRangos.find(r => r.idRango === id);
+      if (rango && Array.isArray(rango.permisos)) {
+        permisosConEstado.value = storePermiso.infoPermiso.map(permiso => ({
+          ...permiso,
+          active: rango.permisos.some((p: { idPermiso: number; }) => p.idPermiso === permiso.idPermiso) || false
+        }));
+      } else {
+        permisosConEstado.value = storePermiso.infoPermiso.map(permiso => ({
+          ...permiso,
+          active: false
+        }));
+      }
     };
 
     const toggleEdit = () => {
       if (!editing.value) {
         originalPermisos.value = permisosConEstado.value.map(permiso => ({
-          ...permiso,
-          active: permiso.active
+          ...permiso
         }));
       }
       editing.value = !editing.value;
     };
-
 
     const cancelEdit = async () => {
       if (rangeId.value) {
@@ -78,20 +88,24 @@ export default defineComponent({
     };
 
     const saveEdit = async () => {
-      const updatedRango = {
+      const updatedRango: Rango = {
         idRango: rangeId.value,
-        nombre: rangeDetails.value?.nombre,
+        nombre: rangeDetails.value?.nombre || '',
         salario: editableSalary.value,
         isLocal: true,
-        permisos: permisosConEstado.value.filter(p => p.active).map(permiso => ({
-          idPermiso: permiso.idPermiso,
-          nombre: permiso.nombre
-        }))
+        permisos: permisosConEstado.value
+          .filter(p => p.active)
+          .map(permiso => ({
+            idPermiso: permiso.idPermiso,
+            nombre: permiso.nombre,
+            name: permiso.name,
+            idRango: permiso.idRango
+          }))
       };
 
       try {
         await storeRango.actualizarRango(updatedRango);
-        crearMensajeAuditoria(updatedRango.nombre); 
+        crearMensajeAuditoria(updatedRango.nombre);
         editing.value = false;
       } catch (error) {
         console.error('Error al actualizar el rango:', error);
@@ -119,12 +133,11 @@ export default defineComponent({
       };
 
       try {
-        await guardarPolicia(auditoria);
+        await guardarAuditoria(auditoria);
       } catch (error) {
         console.error('Error al crear el mensaje de auditoría:', error);
       }
     };
-
 
     watch(() => route.params.id, async (newId) => {
       const parsedId = parseInt(parseRouteParam(newId));
@@ -134,7 +147,7 @@ export default defineComponent({
       }
     }, { immediate: true });
 
-    const handleCheckboxChange = (permisoId: any, active: any) => {
+    const handleCheckboxChange = (permisoId: number, active: boolean) => {
       console.log(`Permiso ID: ${permisoId}, Estado actual: ${active}`);
     };
 
@@ -164,10 +177,8 @@ function parseRouteParam(param: string | string[]): string {
   <div class="ciudadano_menu_derecha">
     <div class="ciudadano_menu_derecha_titulo">
       <h2>{{ $t('PerfilCiudadano.Profile') }}</h2>
-      <!-- Cambiar la traducion de ciudadanos a rangos -->
     </div>
     <div class="ciudadano_perfil">
-      <!-- Cambiar la traducion de ciudadanos a rangos -->
       <p v-if="!rangeId">{{ $t('PerfilCiudadano.Select') }}</p>
       <template v-else>
         <div class="ciudadano_perfil_usuario_derecha">
@@ -201,6 +212,7 @@ function parseRouteParam(param: string | string[]): string {
     </div>
   </div>
 </template>
+
 <style scoped>
 .ciudadano_menu_derecha {
   @apply bg-[color:var(--colorFondoCiudadano2)] w-[70%] flex flex-col gap-8 py-8 rounded-lg;

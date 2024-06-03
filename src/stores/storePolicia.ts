@@ -192,7 +192,7 @@ export const useListadoPolicias = defineStore("listadoPolicias", () => {
     }
   }
 
-  async function guardarPolicia(policia: Policia) {
+  async function guardarPolicia(policia: any) {
     try {
       if (localStorage.getItem("tokenUsuario") !== null) {
         token = localStorage.getItem("tokenUsuario") ?? "";

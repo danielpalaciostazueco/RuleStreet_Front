@@ -6,9 +6,7 @@ const storeAuth = useListadoAuth();
 export interface Auditoria {
   idAuditoria: number;
   titulo: string;
-  title: string;
   descripcion: string;
-  description: string;
   fecha: Date;
   idPolicia: number;
 }
@@ -113,7 +111,7 @@ export const useListadoAuditorias = defineStore("listadoAuditorias", () => {
     }
   }
 
-  async function guardarPolicia(auditoria: Auditoria) {
+  async function guardarAuditoria(auditoria: Auditoria) {
     if (localStorage.getItem("tokenUsuario") !== null) {
       token = localStorage.getItem("tokenUsuario") ?? "";
     } else {
@@ -227,6 +225,6 @@ export const useListadoAuditorias = defineStore("listadoAuditorias", () => {
     borrarDatosPolicia,
     actualizarPolicia,
     infoAuditorias,
-    guardarPolicia,
+    guardarAuditoria,
   };
 });

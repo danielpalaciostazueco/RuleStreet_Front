@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import CiudadanoPerfilComponente from '@/components/BusquedaCiudadano/CiudadanoPerfilComponente.vue';
+import CiudadanoPerfilComponente from '@/components/PerfilCiudadano/CiudadanoUsuarioComponente.vue';
 </script>
 
 <template>

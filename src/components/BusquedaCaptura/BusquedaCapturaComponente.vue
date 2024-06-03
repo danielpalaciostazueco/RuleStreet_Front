@@ -1,8 +1,7 @@
 <template>
   <div class="mx-auto p-4">
-
     <div class="shadow-lg rounded-lg overflow-hidden">
-      <table class="table-auto w-full">
+      <table class="table-auto w-full border-collapse">
         <thead>
           <tr class="bg-blue-800 text-white">
             <th class="px-4 py-2">{{ $t('BusquedaCapturaTabla.Photo') }}</th>
@@ -20,8 +19,8 @@
             <td v-if="filterField" class="px-4 py-2">{{ ciudadano[filterField as keyof typeof ciudadano] }}</td>
             <td v-if="filterField !== 'nombre'" class="px-4 py-2">{{ ciudadano.nombre }}</td>
             <td v-if="filterField !== 'apellidos'" class="px-4 py-2">{{ ciudadano.apellidos }}</td>
-            <td v-if="filterField !== 'genero' && locale === 'en'" class="px-4 py-2">{{ ciudadano.genero }}</td>
-            <td v-if="filterField !== 'genero' && locale === 'es'" class="px-4 py-2">{{ ciudadano.gender }}</td>
+            <td v-if="filterField !== 'genero' && locale === 'es'" class="px-4 py-2">{{ ciudadano.genero }}</td>
+            <td v-if="filterField !== 'genero' && locale === 'en'" class="px-4 py-2">{{ ciudadano.gender }}</td>
             <td v-if="filterField !== 'isPeligroso' && locale === 'es'" class="px-4 py-2">{{ ciudadano.isPeligroso ?
               'Sí' : 'No' }}</td>
             <td v-if="filterField !== 'isPeligroso' && locale === 'en'" class="px-4 py-2">{{ ciudadano.isPeligroso ?
@@ -89,34 +88,57 @@ const exportToExcel = () => {
 };
 </script>
 
-
 <style scoped>
+.table-auto {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  border: 1px solid #ccc;
+  text-align: left;
+  padding: 8px;
+}
+
+th {
+  background-color: #2c5282;
+  color: white;
+}
+
+tbody tr:hover {
+  background-color: #ebf8ff;
+}
+
+img {
+  border-radius: 9999px;
+  width: 3rem;
+  height: 3rem;
+  object-cover: cover;
+}
+
 .ciudadano_boton {
   @apply flex h-8 w-20 items-center justify-center bg-[color:var(--colorBotonBusquedaCiudadano)] text-[color:var(--colorTextoTarjeta)] no-underline mt-2.5 rounded-[5px];
 }
 
-
 @media (max-width: 768px) {
-
-  th,
-  td {
-    @apply text-sm;
+  th, td {
+    font-size: 0.875rem;
   }
 
   img {
-    @apply w-10 h-10;
+    width: 2.5rem;
+    height: 2.5rem;
   }
 }
 
 @media (max-width: 480px) {
-
-  th,
-  td {
-    @apply text-xs;
+  th, td {
+    font-size: 0.75rem;
   }
 
   img {
-    @apply w-8 h-8;
+    width: 2rem;
+    height: 2rem;
   }
 }
 </style>
