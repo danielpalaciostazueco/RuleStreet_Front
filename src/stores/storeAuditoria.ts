@@ -15,7 +15,7 @@ export interface Auditoria {
 
 let token = "";
 export const useListadoAuditorias = defineStore("listadoAuditorias", () => {
-  //const apiUrl = `http://rulestreetapi.retocsv.es`;
+  //const apiUrl = `https://rulestreetapi.retocsv.es`;
   const apiUrl = `http://localhost:8001`;
   const infoAuditorias = reactive<Array<Auditoria>>([]);
 

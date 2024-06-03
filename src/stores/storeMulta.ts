@@ -28,7 +28,7 @@ export interface CodigoPenal {
 }
 
 export const useListadoMultas = defineStore("listadoMultas", () => {
-  //const apiUrl = `http://rulestreetapi.retocsv.es`;
+  //const apiUrl = `https://rulestreetapi.retocsv.es`;
   const apiUrl = `http://localhost:8001`;
   const infoMultas = reactive<Array<Multa>>([]);
   let token = localStorage.getItem("token");
@@ -84,38 +84,6 @@ export const useListadoMultas = defineStore("listadoMultas", () => {
 
   async function guardarMulta(multa: Multa) {
     try {
-      if (multa.descripcion == null) {
-        const res = await fetch("https://es.libretranslate.com/translate", {
-          method: "POST",
-          body: JSON.stringify({
-            q: multa.descripcion,
-            source: "auto",
-            target: "en",
-            format: "text",
-            api_key: "",
-          }),
-          headers: { "Content-Type": "application/json" },
-        });
-        const data = await res.json();
-        multa.description = data.translatedText;
-      }
-
-      if (multa.description == null) {
-        const res = await fetch("https://es.libretranslate.com/translate", {
-          method: "POST",
-          body: JSON.stringify({
-            q: multa.descripcion,
-            source: "auto",
-            target: "en",
-            format: "text",
-            api_key: "",
-          }),
-          headers: { "Content-Type": "application/json" },
-        });
-        const data = await res.json();
-        multa.description = data.translatedText;
-      }
-
       if (localStorage.getItem("tokenUsuario") !== null) {
         token = localStorage.getItem("tokenUsuario") ?? "";
       } else {
