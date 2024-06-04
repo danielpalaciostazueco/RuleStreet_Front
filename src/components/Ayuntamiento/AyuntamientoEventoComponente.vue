@@ -1,22 +1,26 @@
 <template>
-  <BotonPaginaPrincipalComponente />
-  <div class="info-container flex flex-wrap justify-around p-5 gap-5">
-    <div v-if="infoEventos.length === 0" class="no-events w-full text-center text-textoTarjeta text-lg">
-      <h2>{{ $t('EventoAyuntamiento.Title') }}</h2>
-    </div>
-    <div class="info-card w-[calc(33.333%-20px)] shadow-lg rounded-lg overflow-hidden flex flex-col bg-white"
-      v-for="evento in infoEventos" :key="evento.idEventos">
-      <img v-if="locale === 'es'" :src="evento.imagen" :alt="evento.descripcion ?? ''"
-        class="card-image w-full h-52 object-cover">
-      <img v-if="locale === 'en'" :src="evento.imagen" :alt="evento.description ?? ''"
-        class="card-image w-full h-52 object-cover">
-      <div class="card-content p-4 flex-grow flex flex-col justify-between">
-        <h2 v-if="locale === 'en'" class="text-xl text-tituloModal">{{ evento.descripcion }}</h2>
-        <h2 v-if="locale === 'es'" class="text-xl text-tituloModal">{{ evento.description }}</h2>
-        <p class="card-date text-base text-negro mt-2 self-end">
-          {{ $t('EventoAyuntamiento.Date') }} {{ fechaFormato(evento.fecha) }}
-        </p>
+  <div class="ayuntamiento_container">
+    <div class="info-container flex flex-wrap justify-around p-5 gap-5">
+      <div v-if="infoEventos.length === 0" class="no-events w-full text-center text-textoTarjeta text-lg">
+        <h2>{{ $t('EventoAyuntamiento.Title') }}</h2>
       </div>
+      <div class="info-card w-[calc(33.333%-20px)] shadow-lg rounded-lg overflow-hidden flex flex-col bg-white"
+        v-for="evento in infoEventos" :key="evento.idEventos">
+        <img v-if="locale === 'es'" :src="evento.imagen" :alt="evento.descripcion ?? ''"
+          class="card-image w-full h-52 object-cover">
+        <img v-if="locale === 'en'" :src="evento.imagen" :alt="evento.description ?? ''"
+          class="card-image w-full h-52 object-cover">
+        <div class="card-content p-4 flex-grow flex flex-col justify-between">
+          <h2 v-if="locale === 'en'" class="text-xl text-tituloModal">{{ evento.descripcion }}</h2>
+          <h2 v-if="locale === 'es'" class="text-xl text-tituloModal">{{ evento.description }}</h2>
+          <p class="card-date text-base text-negro mt-2 self-end">
+            {{ $t('EventoAyuntamiento.Date') }} {{ fechaFormato(evento.fecha) }}
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="boton_div">
+      <BotonPaginaPrincipalComponente />
     </div>
   </div>
 </template>
@@ -51,6 +55,19 @@ const fechaFormato = (fecha: string | Date): string => {
 };
 </script>
 <style scoped>
+.ayuntamiento_container {
+  display: flex;
+  min-height: 100vh; 
+  background-color: var(--colorFondo);
+  flex-direction: column;
+  padding: 2rem;
+}
+
+.boton_div{
+  display: flex;
+  justify-content: center;
+}
+
 .ciudadano_boton {
   display: flex;
   height: 2rem;
@@ -60,8 +77,6 @@ const fechaFormato = (fecha: string | Date): string => {
   background-color: var(--colorBotonBusquedaCiudadano);
   color: var(--colorTextoTarjeta);
   text-decoration-line: none;
-  margin-left: 10px;
-  margin-top: 10px;
   border-radius: 10px;
 }
 
