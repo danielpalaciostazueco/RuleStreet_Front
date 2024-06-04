@@ -110,6 +110,8 @@ html, body, .container {
     flex-direction: column;
     align-items: center;
     padding: 20px;
+    height: 100vh;
+    justify-content: normal;
 
 }
 

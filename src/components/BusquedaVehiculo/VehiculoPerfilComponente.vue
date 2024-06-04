@@ -129,9 +129,6 @@ export default defineComponent({
       <p v-if="!vehicleid">{{ t('PerfilVehiculo.Select') }}</p>
       <template v-else>
         <div class="vehiculo_perfil_usuario" v-if="infoVehiculo">
-          <div class="vehiculo_perfil_usuario_izquierda">
-            <img src="https://via.placeholder.com/150" alt="">
-          </div>
           <div class="vehiculo_perfil_usuario_derecha">
             <div class="vehiculo_tarjeta">
               <p>{{ t('PerfilVehiculo.Placa') }}</p>

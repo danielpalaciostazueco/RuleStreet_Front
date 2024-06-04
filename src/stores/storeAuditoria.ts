@@ -13,8 +13,8 @@ export interface Auditoria {
 
 let token = "";
 export const useListadoAuditorias = defineStore("listadoAuditorias", () => {
-  //const apiUrl = `https://rulestreetapi.retocsv.es`;
-  const apiUrl = `http://localhost:8001`;
+  const apiUrl = `https://rulestreetapi.retocsv.es`;
+  //const apiUrl = `http://localhost:8001`;
   const infoAuditorias = reactive<Array<Auditoria>>([]);
 
   async function cargarDatosAuditorias() {
@@ -39,52 +39,7 @@ export const useListadoAuditorias = defineStore("listadoAuditorias", () => {
     }
   }
 
-  async function cargarDatosAuditoriasIdioma() {
-    try {
-      if (localStorage.getItem("tokenUsuario") !== null) {
-        token = localStorage.getItem("tokenUsuario") ?? "";
-      } else {
-        token = localStorage.getItem("tokenPolicia") ?? "";
-      }
-      const response = await fetch(apiUrl + "/Auditoria/English", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      if (!response.ok)
-        throw new Error("Error al cargar los datos de las auditorias");
-      const data = await response.json();
-      infoAuditorias.splice(0, infoAuditorias.length);
-      data.forEach((auditoria: Auditoria) => {
-        infoAuditorias.push(auditoria);
-      });
-    } catch (error) {
-      console.error("Error al cargar la información de las auditorias:", error);
-    }
-  }
 
-  async function cargarDatosAuditoriasIdiomaId(auditoriaId: number) {
-    if (localStorage.getItem("tokenUsuario") !== null) {
-      token = localStorage.getItem("tokenUsuario") ?? "";
-    } else {
-      token = localStorage.getItem("tokenPolicia") ?? "";
-    }
-    try {
-      const response = await fetch(
-        apiUrl + "/Auditoria/English/" + auditoriaId.toString(),
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-      if (!response.ok)
-        throw new Error("Error al cargar los datos de las auditorias");
-      const data = await response.json();
-      infoAuditorias.splice(0, infoAuditorias.length);
-      data.forEach((auditoria: Auditoria) => {
-        infoAuditorias.push(auditoria);
-      });
-    } catch (error) {
-      console.error("Error al cargar la información de las auditorias:", error);
-    }
-  }
 
   async function cargarDatosAuditoriasId(auditoriaId: number) {
     if (localStorage.getItem("tokenUsuario") !== null) {

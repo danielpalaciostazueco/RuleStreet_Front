@@ -206,6 +206,31 @@ export default defineComponent({
             }
         };
 
+        function formatearFecha(fecha: string) {
+            const fechaObj = new Date(fecha);
+            const opciones: Intl.DateTimeFormatOptions = {
+                year: "numeric",
+                month: "2-digit",
+                day: "2-digit",
+                hour: "2-digit",
+                minute: "2-digit",
+                hour12: false,
+            };
+
+            const fechaFormateada = fechaObj.toLocaleDateString("es-ES", opciones);
+            const horaFormateada = fechaObj.toLocaleTimeString("es-ES", opciones);
+
+            const fechaMatch = fechaFormateada.match(/(\d{2})\/(\d{2})\/(\d{4})/);
+            const horaMatch = horaFormateada.match(/(\d{2}):(\d{2})/);
+
+            if (fechaMatch && horaMatch) {
+                return `${fechaMatch[3]}-${fechaMatch[2]}-${fechaMatch[1]} ${horaMatch[1]}:${horaMatch[2]}`;
+            } else {
+                console.error("No se pudo formatear la fecha:", fecha);
+                return "";
+            }
+        }
+
         return {
             citizenId,
             showModal,
@@ -222,7 +247,8 @@ export default defineComponent({
             getnombrePolicia,
             selectedMulta,
             showPaymentModal: showModal,
-            handlePayment
+            handlePayment,
+            formatearFecha
         };
     }
 });
