@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import { useListadoPolicias, type Permiso } from "@/stores/storePolicia";
 import { useListadoAuth } from "@/stores/storeAuth";
+import { number } from "echarts";
 
 const routes = [
   {
@@ -112,9 +113,21 @@ const permisosMapear: { [key: string]: number[] } = {
   rangos: [6]
 };
 
+let idPolicia : number
 
+function AsignarId(id : number){
+  idPolicia = id
+}
 
+function ObtenerId(){
+  const storeAuth = useListadoAuth();
+  storeAuth.loadPoliceInfo();
+  if(storeAuth.infoPoliciasAuth.IdPolicia !== 0){
+    AsignarId(storeAuth.infoPoliciasAuth.IdPolicia)
+  }
+}
 router.beforeEach(async (to, from, next) => {
+  ObtenerId()
   const storeAuth = useListadoAuth();
   const storePolicia = useListadoPolicias();
   const tokenPolicia = localStorage.getItem('tokenPolicia');
@@ -130,7 +143,10 @@ router.beforeEach(async (to, from, next) => {
     }
 
     if (storeAuth.infoPoliciasAuth.IdPolicia !== 0) {
+      idPolicia = storeAuth.infoPoliciasAuth.IdPolicia
       await storePolicia.cargarDatosPoliciasId(storeAuth.infoPoliciasAuth.IdPolicia);
+    }else if(idPolicia !== 0){
+      await storePolicia.cargarDatosPoliciasId(idPolicia);
     }
 
     const permisosUsuario = storePolicia.infoPoli.rango.permisos.map((permiso: Permiso) => permiso.idPermiso);
@@ -150,6 +166,7 @@ router.beforeEach(async (to, from, next) => {
 });
 
 router.beforeEach(async (to, from, next) => {
+  ObtenerId()
   const storeAuth = useListadoAuth();
   const storePolicia = useListadoPolicias();
   const tokenPolicia = localStorage.getItem('tokenPolicia');
@@ -165,7 +182,10 @@ router.beforeEach(async (to, from, next) => {
     }
 
     if (storeAuth.infoPoliciasAuth.IdPolicia !== 0) {
+      idPolicia = storeAuth.infoPoliciasAuth.IdPolicia
       await storePolicia.cargarDatosPoliciasId(storeAuth.infoPoliciasAuth.IdPolicia);
+    }else if(idPolicia !== 0){
+      await storePolicia.cargarDatosPoliciasId(idPolicia);
     }
 
     const permisosUsuario = storePolicia.infoPoli.rango.permisos.map((permiso: Permiso) => permiso.idPermiso);
@@ -186,6 +206,7 @@ router.beforeEach(async (to, from, next) => {
 
 
 router.beforeEach((to, from, next) => {
+  ObtenerId()
   if (
     to.name === "graficaBusquedaCaptura" &&
     localStorage.getItem("tokenPolicia") === null
@@ -201,6 +222,7 @@ router.beforeEach((to, from, next) => {
 });
 
 router.beforeEach(async (to, from, next) => {
+  ObtenerId()
   const storeAuth = useListadoAuth();
   const storePolicia = useListadoPolicias();
   const tokenPolicia = localStorage.getItem('tokenPolicia');
@@ -216,7 +238,10 @@ router.beforeEach(async (to, from, next) => {
     }
 
     if (storeAuth.infoPoliciasAuth.IdPolicia !== 0) { 
+      idPolicia = storeAuth.infoPoliciasAuth.IdPolicia
       await storePolicia.cargarDatosPoliciasId(storeAuth.infoPoliciasAuth.IdPolicia);  
+    } else if(idPolicia !== 0){
+      await storePolicia.cargarDatosPoliciasId(idPolicia);
     }
 
     const permisosUsuario = storePolicia.infoPoli.rango.permisos.map((permiso: Permiso) => permiso.idPermiso);
@@ -236,6 +261,7 @@ router.beforeEach(async (to, from, next) => {
 });
 
 router.beforeEach((to, from, next) => {
+  ObtenerId()
   if (
     to.name === "busquedaVehiculo" &&
     localStorage.getItem("tokenPolicia") === null
@@ -252,6 +278,7 @@ router.beforeEach((to, from, next) => {
 
 
 router.beforeEach(async (to, from, next) => {
+  ObtenerId()
   const storeAuth = useListadoAuth();
   const storePolicia = useListadoPolicias();
   const tokenPolicia = localStorage.getItem('tokenPolicia');
@@ -267,7 +294,10 @@ router.beforeEach(async (to, from, next) => {
     }
 
     if (storeAuth.infoPoliciasAuth.IdPolicia !== 0) {
+      idPolicia = storeAuth.infoPoliciasAuth.IdPolicia 
       await storePolicia.cargarDatosPoliciasId(storeAuth.infoPoliciasAuth.IdPolicia);
+    }else if(idPolicia !== 0){
+      await storePolicia.cargarDatosPoliciasId(idPolicia);
     }
 
     const permisosUsuario = storePolicia.infoPoli.rango.permisos.map((permiso: Permiso) => permiso.idPermiso);
@@ -288,6 +318,7 @@ router.beforeEach(async (to, from, next) => {
 
 
 router.beforeEach((to, from, next) => {
+  ObtenerId()
   if (
     to.name === "perfilCiudadano" &&
     localStorage.getItem("tokenUsuario") === null
@@ -318,6 +349,7 @@ router.beforeEach((to, from, next) => {
 });
 
 router.beforeEach((to, from, next) => {
+  ObtenerId()
   if (
     to.name === "busquedaDeudores" &&
     localStorage.getItem("tokenPolicia") === null

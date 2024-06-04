@@ -6,6 +6,15 @@ export const messages = {
       Title :"Welcome to RuleStreet"
     },
 
+    RangoPerfil:{
+      Profile: "RANGE PROFILE",
+      Select: "SELECT A RANGE TO LOAD THE INFORMATION",
+      Search: "SEARCH A RANGE",
+      SearchVehicle: "SEARCH A VEHICLE",
+      SearchCitizen: "SEARCH A CITIZEN",
+      SearchPolice: "SEARCH A POLICE",
+    },
+
     BotonesPrincipales: {
       buscarCiudadano: "Search Citizen",
       denuncias: "Complaints",
@@ -224,6 +233,16 @@ export const messages = {
     HomeTitulo:{
       Title :"Bienvenido a RuleStreet"
     },
+
+    RangoPerfil:{
+      Profile: "PERFIL DE LOS RANGOS",
+      Select: "SELECCIONA UN RANGO PARA CARGAR LA INFORMACIÓN",
+      Search: "BUSCAR UN RANGO", 
+      SearchVehicle: "BUSCAR UN VEHÍCULO",
+      SearchCitizen: "BUSCAR UN CIUDADANO",
+      SearchPolice: "BUSCAR UN POLICÍA",
+    },
+
     BotonesPrincipales: {
       buscarCiudadano: "Buscar Ciudadano",
       denuncias: "Denuncias",

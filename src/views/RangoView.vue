@@ -32,7 +32,7 @@ export default defineComponent({
   <html>
     <body>
         <div class="ciudadano_container">
-        <title-bar title="BUSCAR CIUDADANO" />
+        <title-bar :title="$t('RangoPerfil.SearchCitizen')" />
         <div class="ciudadano_menu" :style="{ height: containerHeight }">
             <search-panel @select-citizen="handleSelectCitizen" />
             <profile-section :selectedCitizenId="selectedCitizenId" />
