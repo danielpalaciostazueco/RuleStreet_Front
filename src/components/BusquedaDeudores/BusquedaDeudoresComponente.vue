@@ -16,17 +16,14 @@
         </thead>
         <tbody>
           <tr v-for="deudor in filteredDeudores" :key="deudor.idCiudadano" class="hover:bg-blue-100">
-            <td class="px-4 py-2"><img :src="deudor.imagenUrl" alt="Foto del deudor"
-                class="rounded-full w-12 h-12 object-cover" /></td>
-            <td v-if="filterField" class="px-4 py-2">{{ deudor[filterField as keyof typeof deudor] }}</td>
-            <td v-if="filterField !== 'nombre'" class="px-4 py-2">{{ deudor.nombre }}</td>
-            <td v-if="filterField !== 'apellidos'" class="px-4 py-2">{{ deudor.apellidos }}</td>
-            <td v-if="filterField !== 'genero' && locale === 'es'" class="px-4 py-2">{{ deudor.genero }}</td>
-            <td v-if="filterField !== 'genero' && locale === 'en'" class="px-4 py-2">{{ deudor.genero }}</td>
-            <td v-if="filterField !== 'nacionalidad' && locale === 'es'" class="px-4 py-2">{{ deudor.nacionalidad }}
-            </td>
-            <td v-if="filterField !== 'nacionalidad' && locale === 'en'" class="px-4 py-2">{{ deudor.nationality }}</td>
-            <td v-if="filterField !== 'cantidad'" class="px-4 py-2">{{ deudor.cantidad }}</td>
+            <td class="px-4 py-2 text-center"><img :src="deudor.imagenUrl" alt="Foto del deudor"
+                class="rounded-full w-12 h-12 object-cover mx-auto" /></td>
+            <td v-if="filterField" class="px-4 py-2 text-center">{{ deudor[filterField as keyof typeof deudor] }}</td>
+            <td v-if="filterField !== 'nombre'" class="px-4 py-2 text-center">{{ deudor.nombre }}</td>
+            <td v-if="filterField !== 'apellidos'" class="px-4 py-2 text-center">{{ deudor.apellidos }}</td>
+            <td v-if="filterField !== 'genero'" class="px-4 py-2 text-center">{{ deudor.genero }}</td>
+            <td v-if="filterField !== 'nacionalidad'" class="px-4 py-2 text-center">{{ deudor.nacionalidad }}</td>
+            <td v-if="filterField !== 'cantidad'" class="px-4 py-2 text-center">{{ deudor.cantidad }}</td>
           </tr>
         </tbody>
       </table>
@@ -92,9 +89,11 @@ const exportToExcel = () => {
   @apply flex h-8 w-20 items-center justify-center bg-[color:var(--colorBotonBusquedaCiudadano)] text-[color:var(--colorTextoTarjeta)] no-underline mt-2.5 rounded-[10px];
 }
 
+.table-auto th, .table-auto td {
+  text-align: center;
+}
 
 @media (max-width: 768px) {
-
   th,
   td {
     @apply text-sm;
@@ -106,7 +105,6 @@ const exportToExcel = () => {
 }
 
 @media (max-width: 480px) {
-
   th,
   td {
     @apply text-xs;

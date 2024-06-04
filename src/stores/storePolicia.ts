@@ -3,9 +3,9 @@ import { reactive } from "vue";
 import { useListadoAuth } from "./storeAuth";
 import type { Multa } from "./storeMulta";
 import type { Vehiculo } from "@/types/types";
-const storeAuth = useListadoAuth();
 
-interface Permiso {
+
+export interface Permiso {
   idPermiso: number;
   nombre: string;
   name: string;
@@ -56,7 +56,8 @@ export interface Policia {
 }
 
 export const useListadoPolicias = defineStore("listadoPolicias", () => {
-  const apiUrl = `http://rulestreetapi.retocsv.es`;
+const apiUrl = `https://rulestreetapi.retocsv.es`;
+//const apiUrl = `http://localhost:8001`;
   const infoPolicias = reactive<Array<Policia>>([]);
   let token = "";
 
@@ -120,28 +121,6 @@ export const useListadoPolicias = defineStore("listadoPolicias", () => {
     }
   }
 
-  async function cargarDatosPoliciasIdioma() {
-    try {
-      if (localStorage.getItem("tokenUsuario") !== null) {
-        token = localStorage.getItem("tokenUsuario") ?? "";
-      } else {
-        token = localStorage.getItem("tokenPolicia") ?? "";
-      }
-      const response = await fetch(apiUrl + "/Policia/English", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      if (!response.ok)
-        throw new Error("Error al cargar los datos de los policias");
-      const data = await response.json();
-      infoPolicias.splice(0, infoPolicias.length);
-      data.forEach((policia: Policia) => {
-        infoPolicias.push(policia);
-      });
-    } catch (error) {
-      console.error("Error al cargar la información de los policia:", error);
-    }
-  }
-
   async function cargarDatosPoliciasId(policiaId: number) {
     const localToken =
       localStorage.getItem("tokenUsuario") ||
@@ -163,35 +142,8 @@ export const useListadoPolicias = defineStore("listadoPolicias", () => {
     }
   }
 
-  async function cargarDatosPoliciasIdiomaId(policiaId: number) {
-    try {
-      if (localStorage.getItem("tokenUsuario") !== null) {
-        token = localStorage.getItem("tokenUsuario") ?? "";
-      } else {
-        token = localStorage.getItem("tokenPolicia") ?? "";
-      }
-      const response = await fetch(
-        apiUrl + "/Policia/English" + policiaId.toString(),
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-      if (!response.ok)
-        throw new Error("Error al cargar los datos del policia");
-      const policia = await response.json();
 
-      const index = infoPolicias.findIndex((c) => c.idPolicia === policiaId);
-      if (index !== -1) {
-        infoPolicias[index] = policia;
-      } else {
-        infoPolicias.push(policia);
-      }
-    } catch (error) {
-      console.error("Error al cargar la información del ciudadano:", error);
-    }
-  }
-
-  async function guardarPolicia(policia: Policia) {
+  async function guardarPolicia(policia: any) {
     try {
       if (localStorage.getItem("tokenUsuario") !== null) {
         token = localStorage.getItem("tokenUsuario") ?? "";
@@ -305,8 +257,6 @@ export const useListadoPolicias = defineStore("listadoPolicias", () => {
     actualizarPolicia,
     infoPolicias,
     guardarPolicia,
-    cargarDatosPoliciasIdioma,
-    cargarDatosPoliciasIdiomaId,
     formatearFecha,
     infoPoli,
   };

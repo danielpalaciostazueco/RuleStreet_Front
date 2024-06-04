@@ -72,10 +72,36 @@ interface Deudores {
   imagenUrl: string;
 }
 
+interface CiudadanoBusquedaCaptura {
+  idCiudadano: number;
+  nombre: string;
+  apellidos: string;
+  dni: string;
+  genero: string;
+  gender: string;
+  nacionalidad: string;
+  nationality: string;
+  fechaNacimiento: Date;
+  direccion: string;
+  address: string;
+  numeroTelefono: string;
+  numeroCuentaBancaria: string;
+  isPoli: boolean;
+  isBusquedaYCaptura: boolean;
+  imagenUrl: string;
+  isPeligroso: boolean;
+  diaIntroducidoListaCaptura: Date;
+  multas: Multa[];
+  vehiculos: Vehiculo[];
+  trabajo: string;
+  diaBusquedaCaptura: Date;
+}
+
 export const useListadoCiudadanos = defineStore("listadoCiduadanos", () => {
-  const apiUrl = `http://rulestreetapi.retocsv.es`;
+  const apiUrl = `https://rulestreetapi.retocsv.es`;
+  //const apiUrl = `http://localhost:8001`;
   const infoCiudadanos = reactive<Array<Ciudadano>>([]);
-  const infoCiudadanosBusquedaCaptura = reactive<Array<Ciudadano>>([]);
+  const infoCiudadanosBusquedaCaptura = reactive<Array<CiudadanoBusquedaCaptura>>([]);
   let infoCiudadano = {
     idCiudadano: 0,
     nombre: "",
@@ -150,7 +176,7 @@ export const useListadoCiudadanos = defineStore("listadoCiduadanos", () => {
 
   async function cargarDatosCiudadanosBusquedaCaptura() {
     try {
-      const response = await fetch(apiUrl + "BusquedaCaptura", {
+      const response = await fetch(apiUrl + "/BusquedaCaptura", {
         headers: {},
       });
       if (!response.ok)
@@ -162,7 +188,7 @@ export const useListadoCiudadanos = defineStore("listadoCiduadanos", () => {
         0,
         infoCiudadanosBusquedaCaptura.length
       );
-      data.forEach((ciudadano: Ciudadano) => {
+      data.forEach((ciudadano: CiudadanoBusquedaCaptura) => {
         infoCiudadanosBusquedaCaptura.push(ciudadano);
       });
     } catch (error) {

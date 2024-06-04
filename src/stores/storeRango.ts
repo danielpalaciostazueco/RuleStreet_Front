@@ -2,7 +2,6 @@ import { defineStore } from "pinia";
 import { reactive } from "vue";
 import { useListadoAuth } from "./storeAuth";
 const storeAuth = useListadoAuth();
-
 export interface Rango {
   idRango: number;
   idPolicia: number;
@@ -10,21 +9,23 @@ export interface Rango {
   name: string;
   salario: number;
   isLocal: boolean;
-  permisos: Permiso;
+  permisos: Permiso[];
+  active: boolean;
 }
-
-
-interface Permiso {
+export interface Permiso {
   idPermiso: number;
-  nombre: string;
+  nombre: string | null;
+  name: string | null;
+  idRango: number | null;
   active: boolean;
 }
 
 export const useListadoRangos = defineStore("listadoRangos", () => {
-  const apiUrl = `http://rulestreetapi.retocsv.es`;
+  const apiUrl = `https://rulestreetapi.retocsv.es`;
+  //const apiUrl = `http://localhost:8001`;
   const infoRangos = reactive<Array<Rango>>([]);
   let token = "";
-  
+
   async function cargarDatosRangos() {
     try {
       token =
@@ -50,16 +51,12 @@ export const useListadoRangos = defineStore("listadoRangos", () => {
       } else {
         token = localStorage.getItem("tokenPolicia") ?? "";
       }
-      const response = await fetch(
-        apiUrl + "/Rango/" + rangoId.toString(),
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-      if (!response.ok)
-        throw new Error("Error al cargar los datos del rango");
+      const response = await fetch(apiUrl + "/Rango/" + rangoId.toString(), {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (!response.ok) throw new Error("Error al cargar los datos del rango");
       const rango = await response.json();
-      const index = infoRangos.findIndex(r => r.idRango === rangoId);
+      const index = infoRangos.findIndex((r) => r.idRango === rangoId);
       if (index !== -1) {
         infoRangos[index] = rango;
       } else {
@@ -97,7 +94,10 @@ export const useListadoRangos = defineStore("listadoRangos", () => {
 
   async function actualizarRango(rango: Rango) {
     try {
-      const token = localStorage.getItem("tokenUsuario") || localStorage.getItem("tokenPolicia") || "";
+      const token =
+        localStorage.getItem("tokenUsuario") ||
+        localStorage.getItem("tokenPolicia") ||
+        "";
 
       const response = await fetch(apiUrl + "/Rango/" + rango.idRango, {
         method: "PUT",
@@ -110,9 +110,11 @@ export const useListadoRangos = defineStore("listadoRangos", () => {
 
       if (!response.ok) {
         const errorBody = await response.text();
-        throw new Error(`Error al actualizar la información del rango: ${errorBody}`);
+        throw new Error(
+          `Error al actualizar la información del rango: ${errorBody}`
+        );
       }
-      
+
       await cargarDatosRangos();
     } catch (error) {
       console.error("Error al actualizar la información del rango:", error);

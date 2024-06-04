@@ -1,4 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
+import { useListadoPolicias, type Permiso } from "@/stores/storePolicia";
+import { useListadoAuth } from "@/stores/storeAuth";
 
 const routes = [
   {
@@ -103,9 +105,89 @@ const router = createRouter({
   routes,
 });
 
+const permisosMapear: { [key: string]: number[] } = {
+  busquedaCiudadano: [ 4, 5, 6],
+  busquedaPolicia: [ 4, 5, 6],
+  gestionPolicia: [5, 6],
+  rangos: [6]
+};
+
+
+
+router.beforeEach(async (to, from, next) => {
+  const storeAuth = useListadoAuth();
+  const storePolicia = useListadoPolicias();
+  const tokenPolicia = localStorage.getItem('tokenPolicia');
+
+  if (to.name === 'busquedaCiudadano') {
+    if (tokenPolicia === null) {
+      if (from.name !== 'home') {
+        next({ name: 'home' });
+      } else {
+        next(false);
+      }
+      return;
+    }
+
+    if (storeAuth.infoPoliciasAuth.IdPolicia !== 0) {
+      await storePolicia.cargarDatosPoliciasId(storeAuth.infoPoliciasAuth.IdPolicia);
+    }
+
+    const permisosUsuario = storePolicia.infoPoli.rango.permisos.map((permiso: Permiso) => permiso.idPermiso);
+    const permisosRequeridos = permisosMapear[to.name] || [];
+
+    const tienePermisos = permisosRequeridos.find(permiso => permisosUsuario.includes(permiso));
+
+    if (tienePermisos == undefined) {
+      next({ name: 'home' });
+      alert('No tienes permisos')
+    } else {
+      next();
+    }
+  } else {
+    next();
+  }
+});
+
+router.beforeEach(async (to, from, next) => {
+  const storeAuth = useListadoAuth();
+  const storePolicia = useListadoPolicias();
+  const tokenPolicia = localStorage.getItem('tokenPolicia');
+
+  if (to.name === 'gestionPolicia') {
+    if (tokenPolicia === null) {
+      if (from.name !== 'home') {
+        next({ name: 'home' });
+      } else {
+        next(false);
+      }
+      return;
+    }
+
+    if (storeAuth.infoPoliciasAuth.IdPolicia !== 0) {
+      await storePolicia.cargarDatosPoliciasId(storeAuth.infoPoliciasAuth.IdPolicia);
+    }
+
+    const permisosUsuario = storePolicia.infoPoli.rango.permisos.map((permiso: Permiso) => permiso.idPermiso);
+    const permisosRequeridos = permisosMapear[to.name] || [];
+
+    const tienePermisos = permisosRequeridos.find(permiso => permisosUsuario.includes(permiso));
+
+    if (tienePermisos == undefined) {
+      next({ name: 'home' });
+      alert('No tienes permisos')
+    } else {
+      next();
+    }
+  } else {
+    next();
+  }
+});
+
+
 router.beforeEach((to, from, next) => {
   if (
-    to.name === "busquedaCiudadano" &&
+    to.name === "graficaBusquedaCaptura" &&
     localStorage.getItem("tokenPolicia") === null
   ) {
     if (from.name !== "home") {
@@ -118,15 +200,35 @@ router.beforeEach((to, from, next) => {
   }
 });
 
-router.beforeEach((to, from, next) => {
-  if (
-    to.name === "graficaBusquedaCaptura" &&
-    localStorage.getItem("tokenPolicia") === null
-  ) {
-    if (from.name !== "home") {
-      next({ name: "home" });
+router.beforeEach(async (to, from, next) => {
+  const storeAuth = useListadoAuth();
+  const storePolicia = useListadoPolicias();
+  const tokenPolicia = localStorage.getItem('tokenPolicia');
+
+  if (to.name === 'rangos') {
+    if (tokenPolicia === null) {
+      if (from.name !== 'home') {
+        next({ name: 'home' });
+      } else {
+        next(false);
+      }
+      return;
+    }
+
+    if (storeAuth.infoPoliciasAuth.IdPolicia !== 0) { 
+      await storePolicia.cargarDatosPoliciasId(storeAuth.infoPoliciasAuth.IdPolicia);  
+    }
+
+    const permisosUsuario = storePolicia.infoPoli.rango.permisos.map((permiso: Permiso) => permiso.idPermiso);
+    const permisosRequeridos = permisosMapear[to.name] || [];
+
+    const tienePermisos = permisosRequeridos.find(permiso => permisosUsuario.includes(permiso));
+
+    if (tienePermisos == undefined) {
+      next({ name: 'home' });
+      alert('No tienes permisos')
     } else {
-      next(false);
+      next();
     }
   } else {
     next();
@@ -148,20 +250,42 @@ router.beforeEach((to, from, next) => {
   }
 });
 
-router.beforeEach((to, from, next) => {
-  if (
-    to.name === "busquedaPolicia" &&
-    localStorage.getItem("tokenPolicia") === null
-  ) {
-    if (from.name !== "home") {
-      next({ name: "home" });
+
+router.beforeEach(async (to, from, next) => {
+  const storeAuth = useListadoAuth();
+  const storePolicia = useListadoPolicias();
+  const tokenPolicia = localStorage.getItem('tokenPolicia');
+
+  if (to.name === 'busquedaPolicia') {
+    if (tokenPolicia === null) {
+      if (from.name !== 'home') {
+        next({ name: 'home' });
+      } else {
+        next(false);
+      }
+      return;
+    }
+
+    if (storeAuth.infoPoliciasAuth.IdPolicia !== 0) {
+      await storePolicia.cargarDatosPoliciasId(storeAuth.infoPoliciasAuth.IdPolicia);
+    }
+
+    const permisosUsuario = storePolicia.infoPoli.rango.permisos.map((permiso: Permiso) => permiso.idPermiso);
+    const permisosRequeridos = permisosMapear[to.name] || [];
+
+    const tienePermisos = permisosRequeridos.find(permiso => permisosUsuario.includes(permiso));
+
+    if (tienePermisos == undefined) {
+      next({ name: 'home' });
+      alert('No tienes permisos')
     } else {
-      next(false);
+      next();
     }
   } else {
     next();
   }
 });
+
 
 router.beforeEach((to, from, next) => {
   if (

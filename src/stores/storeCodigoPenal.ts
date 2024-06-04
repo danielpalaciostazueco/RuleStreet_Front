@@ -14,7 +14,8 @@ export interface CodigoPenal {
 }
 
 export const useListadoCodigoPenal = defineStore("listadoCodigoPenal", () => {
-  const apiUrl = `http://rulestreetapi.retocsv.es`;
+  const apiUrl = `https://rulestreetapi.retocsv.es`;
+  //const apiUrl = `http://localhost:8001`;
   const infoCodigoPenal = reactive<Array<CodigoPenal>>([]);
   let token = "";
 
