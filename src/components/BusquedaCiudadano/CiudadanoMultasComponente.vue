@@ -39,8 +39,6 @@ interface Auditoria {
   descripcion: string;
   fecha: Date;
   idPolicia: number;
-  title: string;
-  description: string;
 }
 
 interface Policia {
@@ -64,7 +62,7 @@ export default defineComponent({
     const { cargarDatosCodigoPenal, infoCodigoPenal, cargarDatosCodigoPenalId } = useListadoCodigoPenal();
     const { infoPoliciasAuth, loadPoliceInfo } = useListadoAuth();
     const { guardarMulta } = useListadoMultas();
-    const { guardarPolicia } = useListadoAuditorias();
+    const { guardarAuditoria} = useListadoAuditorias();
     const { infoPolicias, cargarDatosPolicias } = useListadoPolicias();
 
     const newMulta = ref({
@@ -139,12 +137,11 @@ export default defineComponent({
         descripcion: descripcionAuditoria,
         fecha: new Date(),
         idPolicia: multaData.idPolicia,
-        title: 'Multa',
-        description: descripcionAuditoria
+
       };
 
       await guardarMulta(multaData);
-      await guardarPolicia(auditoriaData);
+      await guardarAuditoria(auditoriaData);
 
       close();
     };

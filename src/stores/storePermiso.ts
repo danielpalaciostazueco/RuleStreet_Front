@@ -8,10 +8,12 @@ export interface Permiso {
   nombre: string | null;
   name: string | null;
   idRango: number | null;
+  active: boolean;
 }
 
 export const useListadoPermisos = defineStore("listadoPermisos", () => {
-  const apiUrl = `http://rulestreetapi.retocsv.es`;
+  const apiUrl = `https://rulestreetapi.retocsv.es`;
+  //const apiUrl = `http://localhost:8001`;
   const infoPermiso = reactive<Array<Permiso>>([]);
   let token = "";
 

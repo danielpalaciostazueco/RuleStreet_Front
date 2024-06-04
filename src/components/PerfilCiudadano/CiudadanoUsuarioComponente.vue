@@ -206,6 +206,31 @@ export default defineComponent({
             }
         };
 
+        function formatearFecha(fecha: string) {
+            const fechaObj = new Date(fecha);
+            const opciones: Intl.DateTimeFormatOptions = {
+                year: "numeric",
+                month: "2-digit",
+                day: "2-digit",
+                hour: "2-digit",
+                minute: "2-digit",
+                hour12: false,
+            };
+
+            const fechaFormateada = fechaObj.toLocaleDateString("es-ES", opciones);
+            const horaFormateada = fechaObj.toLocaleTimeString("es-ES", opciones);
+
+            const fechaMatch = fechaFormateada.match(/(\d{2})\/(\d{2})\/(\d{4})/);
+            const horaMatch = horaFormateada.match(/(\d{2}):(\d{2})/);
+
+            if (fechaMatch && horaMatch) {
+                return `${fechaMatch[3]}-${fechaMatch[2]}-${fechaMatch[1]} ${horaMatch[1]}:${horaMatch[2]}`;
+            } else {
+                console.error("No se pudo formatear la fecha:", fecha);
+                return "";
+            }
+        }
+
         return {
             citizenId,
             showModal,
@@ -222,7 +247,8 @@ export default defineComponent({
             getnombrePolicia,
             selectedMulta,
             showPaymentModal: showModal,
-            handlePayment
+            handlePayment,
+            formatearFecha
         };
     }
 });
@@ -245,7 +271,7 @@ function parseRouteParam(param: string | string[]): string {
             <template v-else-if="infoCiudadanos">
                 <div class="ciudadano_perfil_usuario">
                     <div class="ciudadano_perfil_usuario_izquierda">
-                        <img src="https://via.placeholder.com/150" alt="">
+
                     </div>
                     <div class="ciudadano_perfil_usuario_derecha">
                         <div class="ciudadano_tarjeta">
@@ -388,9 +414,7 @@ function parseRouteParam(param: string | string[]): string {
 
 .payment-modal-content {
     background-color: #2c3e50;
-    /* Dark blue background */
     color: #ecf0f1;
-    /* Light text color */
     padding: 20px;
     border: 1px solid #888;
     width: 80%;
@@ -452,12 +476,12 @@ button:hover {
 }
 
 .tarjeta_multa_pagada {
-    background-color: #28a745;
-    /* Green background for paid fines */
-    color: white;
+    background-color: var(--colorBusquedaCiudadanoPerfilOtrosMultaPagada) !important;
+    color: var(--colorBlanco) !important;
 }
 
 .ciudadano_menu_derecha {
+    @apply mb-5;
     @apply flex w-[70%] flex-col gap-8 bg-[color:var(--colorFondoCiudadano2)] ml-[15%] mt-[5%] py-8 rounded-lg;
 }
 

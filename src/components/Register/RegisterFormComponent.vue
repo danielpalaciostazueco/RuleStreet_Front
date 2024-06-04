@@ -24,7 +24,8 @@ const submitForm = async () => {
                 <RouterLink to="/loginPolicia" class="block mb-2 text-left">{{ $t('Register.Policia') }}</RouterLink>
                 <RouterLink to="/loginAyuntamiento" class="block mb-2 text-left">{{ $t('Register.Ayuntamiento') }}
                 </RouterLink>
-                <RouterLink to="/register" class="block mb-2 text-left">{{ $t('Register.Cuenta') }}</RouterLink>
+                <RouterLink to="/Login" class="block mb-2 text-left" style="color: var(--colorBlanco);">{{
+                    $t('LoginPolicia.Usuario') }}</RouterLink>
             </p>
             <button type="submit"
                 class="bg-blue-500 text-white py-2 px-6 rounded-md cursor-pointer w-auto text-xl transition-colors duration-300 hover:bg-blue-600">{{
