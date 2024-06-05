@@ -210,7 +210,7 @@ function parseRouteParam(param: string | string[]): string {
     <div class="ciudadano_perfil">
       <p v-if="!citizenId">{{ $t('PerfilCiudadano.Select') }}</p>
       <template v-if="loading">
-        <p>{{ $t('PerfilCiudadano.Loading') }}</p>
+  
       </template>
       <template v-else-if="infoCiudadanos">
         <div class="ciudadano_perfil_usuario">
