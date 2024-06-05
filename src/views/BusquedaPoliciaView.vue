@@ -25,7 +25,7 @@ export default defineComponent({
 <template>
   <body>
     <div class="policia_container">
-    <title-bar title="BUSCAR POLICIA" />
+    <title-bar :title="$t('RangoPerfil.SearchPolice')" />
     <div class="policia_menu" :style="{ height: containerHeight }">
       <search-panel />
       <profile-section />

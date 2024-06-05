@@ -180,10 +180,10 @@ function parseRouteParam(param: string | string[]): string {
 <template>
   <div class="ciudadano_menu_derecha">
     <div class="ciudadano_menu_derecha_titulo">
-      <h2>{{ $t('PerfilCiudadano.Profile') }}</h2>
+      <h2>{{ $t('RangoPerfil.Profile') }}</h2>
     </div>
     <div class="ciudadano_perfil">
-      <p v-if="!rangeId">{{ $t('PerfilCiudadano.Select') }}</p>
+      <p v-if="!rangeId">{{ $t('RangoPerfil.Select') }}</p>
       <template v-else>
         <div class="ciudadano_perfil_usuario_derecha">
           <div class="ciudadano_tarjeta">

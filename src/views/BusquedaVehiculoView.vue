@@ -33,7 +33,7 @@ export default defineComponent({
 
 <template>
   <div class="vehiculo_container">
-    <title-bar title="BUSCAR VEHICULO" />
+    <title-bar :title="$t('RangoPerfil.SearchVehicle')" />
     <div class="vehiculo_menu">
       <search-panel />
       <profile-section />
