@@ -98,8 +98,8 @@ interface CiudadanoBusquedaCaptura {
 }
 
 export const useListadoCiudadanos = defineStore("listadoCiduadanos", () => {
-  const apiUrl = `https://rulestreetapi.retocsv.es`;
-  //const apiUrl = `http://localhost:8001`;
+  // const apiUrl = `https://rulestreetapi.retocsv.es`;
+  const apiUrl = `http://localhost:8001`;
   const infoCiudadanos = reactive<Array<Ciudadano>>([]);
   const infoCiudadanosBusquedaCaptura = reactive<Array<CiudadanoBusquedaCaptura>>([]);
   let infoCiudadano = {

@@ -21,14 +21,12 @@ export default defineComponent({
 
     const saveChanges = async (policia: any) => {
       if (policia.rango && policia.rango.nombre) {
-        // Buscar el rango seleccionado por nombre y asignar su idRango
         const selectedRango = infoRangos.find(rango => rango.nombre === policia.rango.nombre);
         if (selectedRango) {
           policia.rango.idRango = selectedRango.idRango;
         }
       }
 
-      // Construir PoliciaPostDTO
       const policiaPostDTO = {
         IdPolicia: policia.idPolicia,
         IdCiudadano: policia.idCiudadano,
@@ -54,7 +52,6 @@ export default defineComponent({
 
 <template>
   <div class="container">
-    <h1>Editar Rangos de Policías</h1>
     <table>
       <thead>
         <tr>
@@ -97,53 +94,46 @@ export default defineComponent({
 </template>
 
 <style scoped>
-html, body, .container {
-  height: 100%;
-  margin: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+
 
 .container{
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 20px;
-    height: 100vh;
+    min-height: 100vh;
     justify-content: normal;
-
+    background-color: var(--colorFondo);
 }
 
 table {
   width: 80%;
   max-width: 1000px;
   border-collapse: collapse;
-  background-color: #1f3b57;
-  color: #ffffff;
+  color: var(--colorTextoTarjeta);
   border-radius: 8px;
   overflow: hidden;
 }
 
 th, td {
-  border: 1px solid #28527a;
+  border: 1px solid var(--colorFondoCiudadano2);
   padding: 12px;
   text-align: left;
 }
 
 th {
-  background-color: #28527a;
+  background-color: var(--colorFondoCiudadano2);
   font-weight: bold;
 }
 
 td {
-  background-color: #1f3b57;
+  background-color: var(--colorBusquedaCiudadanoTarjeta);
 }
 
 button {
-  background-color: #4a90e2;
+  background-color: var(--colorBotonBusquedaCiudadano);
   border: none;
-  color: white;
+  color: var(--colorTextoTarjeta);
   padding: 8px 16px;
   text-align: center;
   text-decoration: none;
@@ -156,9 +146,9 @@ button {
 }
 
 button:hover {
-  background-color: white;
-  color: #1f3b57;
-  border: 2px solid #4a90e2;
+  background-color: var(--colorBotonBusquedaCiudadanoActivo);
+  color: var(--colorBlanco);
+  border: none;
 }
 
 select {
