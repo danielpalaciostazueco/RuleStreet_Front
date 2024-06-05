@@ -51,7 +51,6 @@ export default defineComponent({
 </script>
 
 <template>
-  <div class="container">
     <table>
       <thead>
         <tr>
@@ -90,20 +89,11 @@ export default defineComponent({
         </tr>
       </tbody>
     </table>
-  </div>
 </template>
 
 <style scoped>
-
-
 .container{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
-    min-height: 100vh;
-    justify-content: normal;
-    background-color: var(--colorFondo);
+
 }
 
 table {
