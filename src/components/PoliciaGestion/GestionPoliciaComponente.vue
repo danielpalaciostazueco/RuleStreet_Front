@@ -3,17 +3,30 @@ import { defineComponent, ref, reactive, onMounted } from 'vue';
 import { useListadoPolicias } from '@/stores/storePolicia';
 import { useListadoRangos } from '@/stores/storeRango';
 import { useListadoAuditorias } from '@/stores/storeAuditoria';
+import { useListadoAuth } from '@/stores/storeAuth';
 
 export default defineComponent({
   setup() {
     const { cargarDatosPolicias, infoPolicias, actualizarPolicia } = useListadoPolicias();
     const { cargarDatosRangos, infoRangos } = useListadoRangos();
     const { guardarAuditoria } = useListadoAuditorias();
+    const storeAuth = useListadoAuth();
+    const storePolicia = useListadoPolicias();
+    const storeRango = useListadoRangos();
+    const policiaActualId = ref(0);
 
-    onMounted(() => {
-      cargarDatosPolicias();
-      cargarDatosRangos();
+    onMounted(async () => {
+      await storePolicia.cargarDatosPolicias();
+      await storeRango.cargarDatosRangos();
+      await storeAuth.loadPoliceInfo();
+
+      if (storeAuth.infoPoliciasAuth.IdPolicia) {
+        policiaActualId.value = storeAuth.infoPoliciasAuth.IdPolicia;
+        await storePolicia.cargarDatosPoliciasId(policiaActualId.value);
+        console.log(storePolicia.infoPoli);
+      }
     });
+
 
     const editMode = ref<{ [key: number]: boolean }>({});
     const rangosOriginales = reactive<{ [key: number]: string }>({});
@@ -49,14 +62,24 @@ export default defineComponent({
       await actualizarPolicia(policiaPostDTO);
 
       if (rangoAntiguo !== policia.rango.nombre) {
+        const fechaFormateada = new Date().toLocaleString('es-ES', {
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit',
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit',
+          hour12: false
+        });
+        const descripcionAuditoria = `El ${storePolicia.infoPoli.rango.nombre} ${storePolicia.infoPoli.ciudadano.nombre} ha modificado el rango ${rangoAntiguo} a ${policia.rango.nombre} del agente ${policia.ciudadano.nombre} el día ${fechaFormateada}`;
+        
         const auditoria = {
           idAuditoria: 0,
           titulo: "Cambio de Rango",
-          descripcion: `El rango del policía con ID ${policia.idPolicia} ha sido cambiado del rango ${rangoAntiguo} a ${policia.rango.nombre}.`,
+          descripcion: descripcionAuditoria,
           fecha: new Date(),
           idPolicia: policia.idPolicia,
         };
-
         await guardarAuditoria(auditoria);
       }
 
