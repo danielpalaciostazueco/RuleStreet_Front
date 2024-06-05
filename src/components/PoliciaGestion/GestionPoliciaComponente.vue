@@ -1,11 +1,15 @@
 <script lang="ts">
 import { defineComponent, ref, reactive, onMounted } from 'vue';
+import ReturnButton from '@/components/ComponentesGenerales/BotonPaginaPrincipalComponente.vue';
 import { useListadoPolicias } from '@/stores/storePolicia';
 import { useListadoRangos } from '@/stores/storeRango';
 import { useListadoAuditorias } from '@/stores/storeAuditoria';
 import { useListadoAuth } from '@/stores/storeAuth';
 
 export default defineComponent({
+  components: {
+    ReturnButton
+  },
   setup() {
     const { cargarDatosPolicias, infoPolicias, actualizarPolicia } = useListadoPolicias();
     const { cargarDatosRangos, infoRangos } = useListadoRangos();
@@ -137,6 +141,7 @@ export default defineComponent({
       </tr>
     </tbody>
   </table>
+  <return-button />
 </template>
 
 <style scoped>

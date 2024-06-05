@@ -17,5 +17,6 @@ import GestionPoliciaComponente from '@/components/PoliciaGestion/GestionPolicia
     min-height: 100vh;
     justify-content: normal;
     background-color: var(--colorFondo);
+    gap: 2rem;
 }
 </style>
