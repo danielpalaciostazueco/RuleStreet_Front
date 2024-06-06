@@ -176,6 +176,35 @@ export const useListadoCiudadanos = defineStore("listadoCiduadanos", () => {
     }
   }
 
+  async function actualizarCiudadanoPartial(ciudadanoId: number, updateData: Partial<Ciudadano>) {
+    if (localStorage.getItem("tokenUsuario") !== null) {
+      token = localStorage.getItem("tokenUsuario") ?? "";
+    } else {
+      token = localStorage.getItem("tokenPolicia") ?? "";
+    }
+    try {
+      const response = await fetch(`${apiUrl}/Ciudadano/${ciudadanoId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(updateData),
+      });
+  
+      if (!response.ok) {
+        const errorBody = await response.text();
+        throw new Error(
+          `Error al actualizar la información del ciudadano: ${errorBody}`
+        );
+      }
+  
+      await cargarDatosCiudadanos();
+    } catch (error) {
+      console.error("Error al actualizar la información del ciudadano:", error);
+    }
+  }
+
   async function cargarDatosCiudadanosBusquedaCaptura() {
     try {
       const response = await fetch(apiUrl + "/BusquedaCaptura", {
@@ -345,5 +374,6 @@ export const useListadoCiudadanos = defineStore("listadoCiduadanos", () => {
     cargarDatosCiudadanosDeudores,
     infoDeudores,
     infoCiudadano,
+    actualizarCiudadanoPartial
   };
 });

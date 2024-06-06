@@ -2,8 +2,23 @@ import VehiculoBusquedaComponente from "@/components/BusquedaVehiculo/VehiculoBu
 
 export const messages = {
   en: {
+
+    graficaTraduccion:{
+      Title: "Citizens in Search and Capture by Day",
+      DisSemanal: "Weekly Distribution",
+    },
     HomeTitulo:{
       Title :"Welcome to RuleStreet"
+    },
+
+    days: {
+      "Mon": "Mon",
+      "Tue": "Tue",
+      "Wed": "Wed",
+      "Thu": "Thu",
+      "Fri": "Fri",
+      "Sat": "Sat",
+      "Sun": "Sun"
     },
 
     RangoPerfil:{
@@ -103,6 +118,7 @@ export const messages = {
       Vehicles: "VEHICLES",
       NoVehicles: "NO VEHICLES REGISTERED",
       Loading: "Loading...",
+      BusquedaCiudadano: "Citizen"
     },
 
     ListadoCiudadano: {
@@ -148,6 +164,7 @@ export const messages = {
       IdPolicia: "ID Police",
       Precio: "Price: ",
       Loading: "Loading...",
+      PoliciaBusqueda: "Police"
     },
 
     VehiculoBusqueda: {
@@ -167,6 +184,7 @@ export const messages = {
       No: "No",
       Yes: "Yes",
       Loading: "Loading...",
+      Matricula : "Vehicle plate"
     },
 
     CodigoPenalTabla: {
@@ -175,6 +193,7 @@ export const messages = {
       Cuantity: "Cuantity",
       Sentencia: "Sentence",
       Month: "Month",
+      BusquedaCodigoPenal: "Search in the penal code..."
     },
 
     BotonPrincipal: {
@@ -229,6 +248,22 @@ export const messages = {
   },
 
   es: {
+
+
+    graficaTraduccion:{
+      Title: "Ciudadanos en Búsqueda y Captura por Día",
+      DisSemanal: "Distribución Semanal",
+      
+    },
+    days: {
+    "Mon": "Lun",
+    "Tue": "Mar",
+    "Wed": "Mié",
+    "Thu": "Jue",
+    "Fri": "Vie",
+    "Sat": "Sáb",
+    "Sun": "Dom"
+  },
 
     HomeTitulo:{
       Title :"Bienvenido a RuleStreet"
@@ -331,6 +366,7 @@ export const messages = {
       Vehicles: "VEHÍCULOS",
       NoVehicles: "NO HAY VEHÍCULOS REGISTRADOS",
       Loading: "Cargando...",
+      BusquedaCiudadano: "Ciudadano"
     },
 
     ListadoCiudadano: {
@@ -376,6 +412,7 @@ export const messages = {
       IdPolicia: "ID Policía",
       Precio: "Precio: ",
       Loading: "Cargando...",
+      PoliciaBusqueda: "Policía"
     },
 
     VehiculoBusqueda: {
@@ -395,6 +432,7 @@ export const messages = {
       No: "No",
       Yes: "Sí",
       Loading: "Cargando...",
+      Matricula : "Matrícula del vehículo"
     },
 
     CodigoPenalTabla: {
@@ -403,6 +441,7 @@ export const messages = {
       Cuantity: "Cantidad",
       Sentencia: "Sentencia",
       Month: "Mes",
+      BusquedaCodigoPenal: "Buscar en el código penal..."
     },
 
     BotonPrincipal: {
