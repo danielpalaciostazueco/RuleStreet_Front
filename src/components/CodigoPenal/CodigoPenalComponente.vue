@@ -43,7 +43,7 @@ export default defineComponent({
   <div class="codigoPenal_container">
     <div class="codigoPenal_div">
       <TitleBar :title="t('Código Penal')" />
-      <input type="text" v-model="filtro" :placeholder="t('Buscar en el código penal...')"
+      <input type="text" v-model="filtro" :placeholder="$t('CodigoPenalTabla.BusquedaCodigoPenal')"
         class="codigoPenal_busqueda" />
       <div class="codigoPenal_divContainer">
         <table class="codigoPenal_tabla">
@@ -99,125 +99,75 @@ export default defineComponent({
 
 <style scoped>
 .codigoPenal_container {
-  background-color: var(--colorFondo);
-  flex-direction: column;
-  display: flex;
-  min-height: 100vh;
-  padding: 2rem;
-  align-items: center;
-  gap: 2rem;
+  @apply bg-[color:var(--colorFondo)] flex-col flex min-h-screen items-center gap-8 p-8;
 }
-
 .codigoPenal_div {
-  box-shadow: var(--colorNegro);
-  color: var(--colorBlanco);
+  @apply shadow-[var(--colorNegro)] text-[color:var(--colorBlanco)] bg-[color:var(--colorFondoModal)] grow w-4/5 flex flex-col gap-8 mx-auto my-0 rounded-[10px];
   font-family: Arial, sans-serif;
-  background-color: var(--colorFondoModal);
-  border-radius: 10px;
-  flex-grow: 1;
-  width: 80%;
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-}
 
+  /* Centrar horizontalmente */
+}
 .codigoPenal_busqueda {
-  color: var(--colorTextoTarjeta);
-  font-size: 1rem;
-  line-height: 1.5rem;
-  padding: 0.625rem;
-  background-color: var(--colorNegro);
-  border-style: solid;
-  border-width: 1px;
-  border-radius: 0.7rem;
-  width: 100%;
-  box-sizing: border-box;
+  @apply text-[color:var(--colorTextoTarjeta)] text-base leading-6 bg-[color:var(--colorNegro)] border w-full box-border p-2.5 rounded-[0.7rem] border-solid border-[none];
   outline: none;
-  border: none;
 }
-
-
 .ciudadano_boton {
-  display: flex;
-  height: 2rem;
-  width: 5rem;
-  align-items: center;
-  justify-content: center;
-  background-color: var(--colorBotonBusquedaCiudadano);
-  color: var(--colorTextoTarjeta);
-  text-decoration-line: none;
+  @apply flex h-8 w-20 items-center justify-center bg-[color:var(--colorBotonBusquedaCiudadano)] text-[color:var(--colorTextoTarjeta)] no-underline;
 }
-
 .codigoPenal_divContainer {
-  overflow-x: auto;
-}
+  @apply overflow-x-auto w-full;
 
+  /* Ajustar el contenedor al ancho completo */
+}
 .codigoPenal_tabla {
-  border-radius: 10px;
-  overflow: hidden;
-  border-collapse: separate;
-  width: 100%;
-}
+  @apply overflow-hidden w-full rounded-[10px] border-separate;
 
+  /* Ajustar la tabla al ancho completo */
+}
 .codigoPenal_cabecera {
-  text-align: left;
-  background-color: var(--colorNegro);
-  border-bottom-color: var(--colorFondoCiudadano);
-  width: 1.25rem;
-  height: 3rem;
+  @apply text-left bg-[color:var(--colorNegro)] border-b-[color:var(--colorFondoCiudadano)] w-5 h-12;
+}
+.codigoPenal_tablas {
+  @apply text-left bg-[color:var(--colorFondoTablaModal)] p-2.5;
 }
 
-.codigoPenal_tablas{
-  text-align: left;
-  padding: 0.625rem;
-  background-color: var(--colorFondoTablaModal)
-}
-
-
-
+/* Responsive adjustments */
 @media (max-width: 1024px) {
-  .codigo-penal-container {
+  .codigoPenal_div {
     @apply w-[90%];
   }
-
-  th,
-  td {
-    @apply text-xs p-2;
+  .codigoPenal_cabecera,
+  .codigoPenal_tablas {
+    @apply text-sm p-2;
   }
-
-  .search-input {
-    @apply text-xs p-2;
+  .codigoPenal_busqueda {
+    @apply text-sm p-2;
   }
 }
-
 @media (max-width: 768px) {
-  .codigo-penal-container {
+  .codigoPenal_div {
     @apply w-full;
   }
-
-  th,
-  td {
-    @apply text-xs p-1;
+  .codigoPenal_cabecera,
+  .codigoPenal_tablas {
+    @apply text-xs p-[0.4rem];
   }
-
-  .search-input {
-    @apply text-xs p-1;
+  .codigoPenal_busqueda {
+    @apply text-xs p-[0.4rem];
   }
 }
-
 @media (max-width: 480px) {
-  .codigo-penal-container {
+  .codigoPenal_div {
     @apply w-full;
   }
-
-  th,
-  td {
-    @apply text-xs p-1;
+  .codigoPenal_cabecera,
+  .codigoPenal_tablas {
+    @apply text-[0.625rem] p-[0.3rem];
   }
-
-  .search-input {
-    @apply text-xs p-1;
+  .codigoPenal_busqueda {
+    @apply text-[0.625rem] p-[0.3rem];
   }
-
 }
+
+
 </style>
