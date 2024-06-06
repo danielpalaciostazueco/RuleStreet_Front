@@ -104,11 +104,12 @@ export const useListadoMultas = defineStore("listadoMultas", () => {
           `Error al guardar la información de la multa: ${errorBody}`
         );
       }
-
+      
       await cargarDatosMultas();
     } catch (error) {
       console.error("Error al guardar la información de la multa:", error);
     }
+    window.location.reload();
   }
 
   async function actualizarMulta(multa: Multa) {

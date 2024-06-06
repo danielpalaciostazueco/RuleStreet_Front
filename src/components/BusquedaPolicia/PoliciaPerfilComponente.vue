@@ -60,6 +60,7 @@ export default defineComponent({
     ReturnButton
   },
   setup() {
+
     const route = useRoute();
     const store = useListadoPolicias();
     const storeMultas = useListadoMultas();
@@ -73,15 +74,20 @@ export default defineComponent({
       infoPolicias.splice(0, infoPolicias.length);
       infoPolicias.push(store.infoPoli);
     };
-   
-    const formatDate = (date: Date): string => {
-      const options: Intl.DateTimeFormatOptions = {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-      };
-      return new Date(date).toLocaleDateString(locale.value, options);
-    };
+    function formatDate(date: any): string {
+      if (!(date instanceof Date)) {
+        date = new Date(date);
+      }
+      if (isNaN(date.getTime())) {
+        return '';
+      }
+
+      const day = String(date.getDate()).padStart(2, '0');
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const year = date.getFullYear();
+
+      return `${day}/${month}/${year}`;
+    }
 
     const multas = computed(() => storeMultas.infoMultas);
 
@@ -93,6 +99,7 @@ export default defineComponent({
         storeMultas.cargarDatosMultas(parsedId);
       }
     }, { immediate: true });
+
 
     onMounted(() => {
       if (policiaId.value) {
