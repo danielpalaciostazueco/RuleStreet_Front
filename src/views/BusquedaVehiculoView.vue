@@ -1,5 +1,5 @@
 <script lang="ts">
-import { computed, defineComponent, ref } from 'vue';
+import { computed, defineComponent, ref, onMounted, onUnmounted } from 'vue';
 import TitleBar from '@/components/ComponentesGenerales/TituloComponente.vue';
 import SearchPanel from '@/components/BusquedaVehiculo/VehiculoBusquedaComponente.vue'
 import ProfileSection from '@/components/BusquedaVehiculo/VehiculoPerfilComponente.vue';
@@ -15,14 +15,31 @@ export default defineComponent({
   setup() {
     const selectedVehicleId = ref<number>(0);
     const route = useRoute();
+    const windowWidth = ref(window.innerWidth);
 
     const handleSelectVehicle = (id: number) => {
       selectedVehicleId.value = id;
     };
 
-    const containerHeight = computed(() => {
-      return route.path.includes('/busquedaVehiculo/');
+    const handleResize = () => {
+      windowWidth.value = window.innerWidth;
+    };
+
+    onMounted(() => {
+      window.addEventListener('resize', handleResize);
     });
+
+    onUnmounted(() => {
+      window.removeEventListener('resize', handleResize);
+    });
+
+    const containerHeight = computed(() => {
+      if (windowWidth.value <= 1170) {
+        return 'auto';
+      }
+    });
+
+
 
     return { selectedVehicleId, handleSelectVehicle, containerHeight };
   }
@@ -34,7 +51,7 @@ export default defineComponent({
 <template>
   <div class="vehiculo_container">
     <title-bar :title="$t('RangoPerfil.SearchVehicle')" />
-    <div class="vehiculo_menu">
+    <div class="vehiculo_menu" :style="{ height: containerHeight }">
       <search-panel />
       <profile-section />
     </div>
@@ -85,6 +102,10 @@ export default defineComponent({
 @media (max-width: 787px) {
   .vehiculo_perfil_usuario_derecha {
     @apply flex grid-cols-custom gap-4 justify-center items-center w-full flex-col;
+  }
+
+  .vehiculo_container{
+    padding: 2rem;
   }
 }
 </style>s
