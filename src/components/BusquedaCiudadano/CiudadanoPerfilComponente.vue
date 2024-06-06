@@ -136,6 +136,22 @@ export default defineComponent({
       }
     });
 
+    function formatDate(date: any): string {
+      if (!(date instanceof Date)) {
+        date = new Date(date);
+      }
+      if (isNaN(date.getTime())) {
+        return '';
+      }
+
+      const day = String(date.getDate()).padStart(2, '0');
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const year = date.getFullYear();
+
+      return `${day}/${month}/${year}`;
+    }
+
+
     onMounted(async () => {
       await storePolicias.cargarDatosPolicias();
       if (citizenId.value) {
@@ -192,7 +208,8 @@ export default defineComponent({
       infoCiudadanos,
       loading,
       loadCitizenDetails,
-      getnombrePolicia
+      getnombrePolicia,
+      formatDate
     };
   }
 });
@@ -210,7 +227,7 @@ function parseRouteParam(param: string | string[]): string {
     <div class="ciudadano_perfil">
       <p v-if="!citizenId">{{ $t('PerfilCiudadano.Select') }}</p>
       <template v-if="loading">
-  
+
       </template>
       <template v-else-if="infoCiudadanos">
         <div class="ciudadano_perfil_usuario">
@@ -238,7 +255,7 @@ function parseRouteParam(param: string | string[]): string {
             </div>
             <div class="ciudadano_tarjeta">
               <p>{{ $t('PerfilCiudadano.Birthdate') }}</p>
-              <p>{{ infoCiudadanos.fechaNacimiento }}</p>
+              <p>{{ formatDate(infoCiudadanos.fechaNacimiento) }}</p>
             </div>
             <div class="ciudadano_tarjeta">
               <p>ID</p>
