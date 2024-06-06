@@ -56,7 +56,9 @@ export interface Policia {
 }
 
 export const useListadoPolicias = defineStore("listadoPolicias", () => {
-// const apiUrl = `https://rulestreetapi.retocsv.es`;
+
+//const apiUrl = `https://rulestreetapi.retocsv.es`;
+
 const apiUrl = `http://localhost:8001`;
   const infoPolicias = reactive<Array<Policia>>([]);
   let token = "";
@@ -136,7 +138,6 @@ const apiUrl = `http://localhost:8001`;
 
       const data = await response.json();
       Object.assign(infoPoli, data);
-      console.log("infoPoli after update:", infoPoli);
     } catch (error) {
       console.error("Error al cargar la información del policia:", error);
     }

@@ -8,7 +8,7 @@ import { useListadoPolicias } from '@/stores/storePolicia';
 import { useRoute } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 
-// Define interfaces
+
 interface CodigoPenal {
   idCodigoPenal: number;
   articulo: string;

@@ -28,7 +28,9 @@ export interface CodigoPenal {
 }
 
 export const useListadoMultas = defineStore("listadoMultas", () => {
-  // const apiUrl = `https://rulestreetapi.retocsv.es`;
+
+  //const apiUrl = `https://rulestreetapi.retocsv.es`;
+
   const apiUrl = `http://localhost:8001`;
   const infoMultas = reactive<Array<Multa>>([]);
   let token = localStorage.getItem("token");
@@ -104,11 +106,12 @@ export const useListadoMultas = defineStore("listadoMultas", () => {
           `Error al guardar la información de la multa: ${errorBody}`
         );
       }
-
+      
       await cargarDatosMultas();
     } catch (error) {
       console.error("Error al guardar la información de la multa:", error);
     }
+    window.location.reload();
   }
 
   async function actualizarMulta(multa: Multa) {

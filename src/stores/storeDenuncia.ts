@@ -15,7 +15,9 @@ export interface Denuncia {
 }
 
 export const useListadoDenuncias = defineStore('listadoDenuncias', () => {
-  // const apiUrl = `https://rulestreetapi.retocsv.es`;
+
+  //const apiUrl = `https://rulestreetapi.retocsv.es`;
+
   const apiUrl = `http://localhost:8001`;
   const infoDenuncias = reactive<Array<Denuncia>>([]);
   let token = '';
