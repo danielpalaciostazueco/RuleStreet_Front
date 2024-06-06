@@ -2,6 +2,7 @@
 import { defineComponent, ref, watchEffect, onMounted } from 'vue';
 import ReturnButton from '@/components/ComponentesGenerales/BotonPaginaPrincipalComponente.vue';
 import Modal from '@/components/BusquedaCiudadano/CiudadanoMultasComponente.vue';
+import NotasModal from '@/components/BusquedaCiudadano/CiudadanoNotaComponente.vue';
 import ConfirmModal from '@/components/BusquedaCiudadano/CiudadanoConfirmacionMultaComponente.vue';
 import { useRoute } from 'vue-router';
 import { useListadoCiudadanos } from '@/stores/storeCiudadano';
@@ -86,13 +87,26 @@ interface Ciudadano {
   multas: Multa[];
   vehiculos: Vehiculo[];
   trabajo: string;
+  notas: Notas[];
+}
+
+interface Notas {
+  idNota : number,
+  titulo: string,
+  title: string,
+  descripcion: string,
+  description: string,
+  fecha: Date,
+  idPolicia: number,
+  idCiudadano: number
 }
 
 export default defineComponent({
   components: {
     ReturnButton,
     Modal,
-    ConfirmModal
+    ConfirmModal,
+    NotasModal
   },
   setup() {
     const route = useRoute();
@@ -102,6 +116,7 @@ export default defineComponent({
     const storeAuth = useListadoAuth();
     const citizenId = ref(parseInt(parseRouteParam(route.params.id)));
     const showModal = ref(false);
+    const showNotasModal = ref(false);
     const showConfirmModal = ref(false);
     const selectedMultaId = ref(null);
     const policiaActualId = ref(0);
@@ -201,6 +216,14 @@ export default defineComponent({
       showConfirmModal.value = false;
     };
 
+    function openNotasModal() {
+      showNotasModal.value = true;
+    }
+
+    function closeNotasModal() {
+      showNotasModal.value = false;
+    }
+
     return {
       citizenId,
       showModal,
@@ -216,7 +239,10 @@ export default defineComponent({
       loading,
       loadCitizenDetails,
       getnombrePolicia,
-      formatDateTime
+      formatDateTime,
+      showNotasModal,
+      openNotasModal,
+      closeNotasModal
     };
   }
 });
@@ -311,18 +337,28 @@ function parseRouteParam(param: string | string[]): string {
                     d="M64 32C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H288V368c0-26.5 21.5-48 48-48H448V96c0-35.3-28.7-64-64-64H64zM448 352H402.7 336c-8.8 0-16 7.2-16 16v66.7V480l32-32 64-64 32-32z" />
                 </svg>
                 <p>{{ $t('PerfilCiudadano.Notas') }}</p>
+                <div class="ciudadano_perfil_multas">
+                  <!-- Traducir agregar nota -->
+                  <p @click="openNotasModal">+ Agregar nota</p>
+                </div>
+                <NotasModal :visible="showNotasModal" @update:visible="showNotasModal = $event" />
               </div>
               <div class="notas_container">
-                <div class="tarjeta_otros">
-                  <p>{{ $t('PerfilCiudadano.NoNotas') }}</p>
-                </div>
-                <div class="tarjeta_otros">
-                  <div class="tarjeta_otros_cabecera">
-                    <h1>Nota 1</h1>
-                    <p>1/5/24</p>
+                <template v-if="infoCiudadanos.notas && infoCiudadanos.notas.length > 0">
+                  <div v-for="nota in infoCiudadanos.notas" :key="nota.idNota" class="tarjeta_otros">
+                    <div class="tarjeta_otros_cabecera">
+                      <h1>{{ nota.titulo }}</h1>
+                      <p>{{ formatDateTime(nota.fecha) }}</p>
+                    </div>
+                    <p>{{ nota.descripcion }}</p>
                   </div>
-                  <p>Este usuario tiene una nota</p>
-                </div>
+                </template>
+                <template v-else>
+                  <div class="tarjeta_otros">
+                    <p>{{ $t('PerfilCiudadano.NoNotas') }}</p>
+                  </div>
+                </template>
+
               </div>
             </div>
           </div>
