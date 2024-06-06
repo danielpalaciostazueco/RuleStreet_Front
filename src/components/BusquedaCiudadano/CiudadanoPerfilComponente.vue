@@ -136,21 +136,22 @@ export default defineComponent({
       }
     });
 
-    function formatDate(date: any): string {
+    function formatDateTime(date: any): string {
       if (!(date instanceof Date)) {
         date = new Date(date);
       }
       if (isNaN(date.getTime())) {
         return '';
       }
-
+      date = addHours(date, 2);
       const day = String(date.getDate()).padStart(2, '0');
       const month = String(date.getMonth() + 1).padStart(2, '0');
       const year = date.getFullYear();
+      const hours = String(date.getHours()).padStart(2, '0');
+      const minutes = String(date.getMinutes()).padStart(2, '0');
 
-      return `${day}/${month}/${year}`;
+      return `${day}/${month}/${year} ${hours}:${minutes}`;
     }
-
 
     onMounted(async () => {
       await storePolicias.cargarDatosPolicias();
@@ -163,6 +164,12 @@ export default defineComponent({
         await storePolicias.cargarDatosPoliciasId(policiaActualId.value);
       }
     });
+
+    function addHours(date: Date, hours: number): Date {
+      const newDate = new Date(date);
+      newDate.setHours(newDate.getHours() + hours);
+      return newDate;
+    }
 
     const borrarMulta = (idMulta: any) => {
       const permisoBorrarMulta = storePolicias.infoPoli.rango.permisos.some((p: any) => p.nombre === "Borrar multa");
@@ -209,7 +216,7 @@ export default defineComponent({
       loading,
       loadCitizenDetails,
       getnombrePolicia,
-      formatDate
+      formatDateTime
     };
   }
 });
@@ -255,7 +262,7 @@ function parseRouteParam(param: string | string[]): string {
             </div>
             <div class="ciudadano_tarjeta">
               <p>{{ $t('PerfilCiudadano.Birthdate') }}</p>
-              <p>{{ formatDate(infoCiudadanos.fechaNacimiento) }}</p>
+              <p>{{ formatDateTime(infoCiudadanos.fechaNacimiento) }}</p>
             </div>
             <div class="ciudadano_tarjeta">
               <p>ID</p>
@@ -337,8 +344,7 @@ function parseRouteParam(param: string | string[]): string {
                   <div v-for="multa in infoCiudadanos.multas" :key="multa.idMulta" class="tarjeta_multa"
                     :class="{ 'tarjeta_multa_pagada': multa.pagada }">
                     <div class="tarjeta_otros_cabecera">
-                      <p>{{ new Date(multa.fecha).toLocaleDateString() }} - {{ new
-                        Date(multa.fecha).toLocaleTimeString() }}</p>
+                      <p>{{ formatDateTime(multa.fecha) }}</p>
                     </div>
                     <p>{{ multa.codigoPenal.articulo }}</p>
                     <div class="tarjeta_multa_info">
@@ -352,7 +358,7 @@ function parseRouteParam(param: string | string[]): string {
                       <div class="tarjeta_multa_iconos">
                         <svg class="tarjeta_multa_icono" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
                           <path
-                            d="M48.1 240c-.1 2.7-.1 5.3-.1 8v16c0 2.7 0 5.3 .1 8H32c-17.7 0-32 14.3-32 32s14.3 32 32 32H60.3C89.9 419.9 170 480 264 480h24c17.7 0 32-14.3 32-32s-14.3-32-32-32H264c-57.9 0-108.2-32.4-133.9-80H256c17.7 0 32-14.3 32-32s-14.3-32-32-32H112.2c-.1-2.6-.2-5.3-.2-8V248c0-2.7 .1-5.4 .2-8H256c17.7 0 32-14.3 32-32s-14.3-32-32-32H130.1c25.7-47.6 76-80 133.9-80h24c17.7 0 32-14.3 32-32s-14.3-32-32-32H264C170 32 89.9 92.1 60.3 176H32c-17.7 0-32 14.3-32 32s14.3 32 32 32H48.1z" />
+                            d="M48.1 240c-.1 2.7-.1 5.3-.1 8v16c0 2.7 0 5.3 .1 8H32c-17.7 0-32 14.3-32 32s14.3 32 32 32H60.3C89.9 419.9 170 480 264 480h24c17.7 0 32-14.3 32-32s-14.3-32-32-32V384c17.7 0 32-14.3 32-32V248c0-2.7-.1-5.4-.2-8H256c17.7 0 32-14.3 32-32s-14.3-32-32-32H130.1c25.7-47.6 76-80 133.9-80h24c17.7 0 32-14.3 32-32s-14.3-32-32-32H264C170 32 89.9 92.1 60.3 176H32c-17.7 0-32 14.3-32 32s14.3 32 32 32H48.1z" />
                         </svg>
                         <p>{{ multa.codigoPenal.precio }}</p>
                       </div>

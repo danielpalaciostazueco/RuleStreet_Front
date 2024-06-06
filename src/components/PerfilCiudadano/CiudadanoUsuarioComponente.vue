@@ -208,6 +208,29 @@ export default defineComponent({
             showModal.value = true;
         };
 
+        function addHours(date: Date, hours: number): Date {
+            const newDate = new Date(date);
+            newDate.setHours(newDate.getHours() + hours);
+            return newDate;
+        }
+
+        function formatDateTime(date: any): string {
+            if (!(date instanceof Date)) {
+                date = new Date(date);
+            }
+            if (isNaN(date.getTime())) {
+                return '';
+            }
+            date = addHours(date, 2);
+            const day = String(date.getDate()).padStart(2, '0');
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const year = date.getFullYear();
+            const hours = String(date.getHours()).padStart(2, '0');
+            const minutes = String(date.getMinutes()).padStart(2, '0');
+
+            return `${day}/${month}/${year} ${hours}:${minutes}`;
+        }
+
         const handlePayment = async (multa: Multa, cardData: { cardNumber: string, expirationDate: string, cvv: string }) => {
             console.log('Pago realizado', multa, cardData);
             showModal.value = false;
@@ -241,6 +264,7 @@ export default defineComponent({
             showPaymentModal: showModal,
             handlePayment,
             formatDate,
+            formatDateTime
         };
     }
 });
@@ -286,7 +310,7 @@ function parseRouteParam(param: string | string[]): string {
                         </div>
                         <div class="ciudadano_tarjeta">
                             <p>{{ $t('PerfilCiudadano.Birthdate') }}</p>
-                            <p>{{ formatDate(infoCiudadanos.fechaNacimiento)}}</p>
+                            <p>{{ formatDate(infoCiudadanos.fechaNacimiento) }}</p>
                         </div>
                         <div class="ciudadano_tarjeta">
                             <p>ID</p>
@@ -321,8 +345,7 @@ function parseRouteParam(param: string | string[]): string {
                                 <div v-for="multa in infoCiudadanos.multas" :key="multa.idMulta" class="tarjeta_multa"
                                     :class="{ 'tarjeta_multa_pagada': multa.pagada }">
                                     <div class="tarjeta_otros_cabecera">
-                                        <p>{{ new Date(multa.fecha).toLocaleDateString() }} - {{ new
-                                            Date(multa.fecha).toLocaleTimeString() }}</p>
+                                        <p>{{ formatDateTime(multa.fecha) }}</p>
                                     </div>
                                     <p>{{ multa.codigoPenal.articulo }}</p>
                                     <div class="tarjeta_multa_info">
