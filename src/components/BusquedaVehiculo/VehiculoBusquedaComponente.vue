@@ -96,7 +96,7 @@ export default defineComponent({
       <h2>{{ $t('VehiculoBusqueda.List') }}</h2>
     </div>
     <div class="vehiculo_busqueda">
-      <input type="text" placeholder="Matrícula del vehículo" v-model="searchQuery">
+      <input type="text" :placeholder="$t('PerfilVehiculo.Matricula')" v-model="searchQuery">
       <button @click="searchVehicles">
         <svg class="vehiculo_icono" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
           <path

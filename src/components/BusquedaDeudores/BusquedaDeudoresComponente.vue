@@ -1,7 +1,6 @@
 <template>
   <div class="mx-auto p-4">
-
-    <div class="shadow-lg rounded-lg overflow-hidden">
+    <div class="shadow-lg rounded-lg overflow-x-auto">
       <table class="table-auto w-full">
         <thead>
           <tr class="bg-blue-800 text-white">
@@ -16,8 +15,9 @@
         </thead>
         <tbody>
           <tr v-for="deudor in filteredDeudores" :key="deudor.idCiudadano" class="hover:bg-blue-100">
-            <td class="px-4 py-2 text-center"><img :src="deudor.imagenUrl" alt="Foto del deudor"
-                class="rounded-full w-12 h-12 object-cover mx-auto" /></td>
+            <td class="px-4 py-2 text-center">
+              <img :src="deudor.imagenUrl" alt="Foto del deudor" class="rounded-full w-12 h-12 object-cover mx-auto" />
+            </td>
             <td v-if="filterField" class="px-4 py-2 text-center">{{ deudor[filterField as keyof typeof deudor] }}</td>
             <td v-if="filterField !== 'nombre'" class="px-4 py-2 text-center">{{ deudor.nombre }}</td>
             <td v-if="filterField !== 'apellidos'" class="px-4 py-2 text-center">{{ deudor.apellidos }}</td>
@@ -28,9 +28,9 @@
         </tbody>
       </table>
     </div>
-    <button id="excel-2" @click="exportToExcel"
-      class="mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg cursor-pointer transition-all duration-300 ease-in-out hover:bg-blue-700">{{
-        $t('DeudoresTabla.Excel') }}</button>
+    <button id="excel-2" @click="exportToExcel" class="mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg cursor-pointer transition-all duration-300 ease-in-out hover:bg-blue-700">
+      {{ $t('DeudoresTabla.Excel') }}
+    </button>
     <BotonPaginaPrincipalComponente />
   </div>
 </template>
@@ -94,8 +94,7 @@ const exportToExcel = () => {
 }
 
 @media (max-width: 768px) {
-  th,
-  td {
+  th, td {
     @apply text-sm;
   }
 
@@ -105,8 +104,7 @@ const exportToExcel = () => {
 }
 
 @media (max-width: 480px) {
-  th,
-  td {
+  th, td {
     @apply text-xs;
   }
 
