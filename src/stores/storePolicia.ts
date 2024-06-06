@@ -4,7 +4,6 @@ import { useListadoAuth } from "./storeAuth";
 import type { Multa } from "./storeMulta";
 import type { Vehiculo } from "@/types/types";
 
-
 export interface Permiso {
   idPermiso: number;
   nombre: string;
@@ -56,10 +55,9 @@ export interface Policia {
 }
 
 export const useListadoPolicias = defineStore("listadoPolicias", () => {
+  const apiUrl = `https://rulestreetapi.retocsv.es`;
 
-//const apiUrl = `https://rulestreetapi.retocsv.es`;
-
-const apiUrl = `http://localhost:8001`;
+  //const apiUrl = `http://localhost:8001`;
   const infoPolicias = reactive<Array<Policia>>([]);
   let token = "";
 
@@ -142,7 +140,6 @@ const apiUrl = `http://localhost:8001`;
       console.error("Error al cargar la información del policia:", error);
     }
   }
-
 
   async function guardarPolicia(policia: any) {
     try {

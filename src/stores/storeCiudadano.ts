@@ -98,12 +98,13 @@ interface CiudadanoBusquedaCaptura {
 }
 
 export const useListadoCiudadanos = defineStore("listadoCiduadanos", () => {
+  const apiUrl = `https://rulestreetapi.retocsv.es`;
 
-  //const apiUrl = `https://rulestreetapi.retocsv.es`;
-
-  const apiUrl = `http://localhost:8001`;
+  //const apiUrl = `http://localhost:8001`;
   const infoCiudadanos = reactive<Array<Ciudadano>>([]);
-  const infoCiudadanosBusquedaCaptura = reactive<Array<CiudadanoBusquedaCaptura>>([]);
+  const infoCiudadanosBusquedaCaptura = reactive<
+    Array<CiudadanoBusquedaCaptura>
+  >([]);
   let infoCiudadano = {
     idCiudadano: 0,
     nombre: "",
@@ -176,7 +177,10 @@ export const useListadoCiudadanos = defineStore("listadoCiduadanos", () => {
     }
   }
 
-  async function actualizarCiudadanoPartial(ciudadanoId: number, updateData: Partial<Ciudadano>) {
+  async function actualizarCiudadanoPartial(
+    ciudadanoId: number,
+    updateData: Partial<Ciudadano>
+  ) {
     if (localStorage.getItem("tokenUsuario") !== null) {
       token = localStorage.getItem("tokenUsuario") ?? "";
     } else {
@@ -191,14 +195,14 @@ export const useListadoCiudadanos = defineStore("listadoCiduadanos", () => {
         },
         body: JSON.stringify(updateData),
       });
-  
+
       if (!response.ok) {
         const errorBody = await response.text();
         throw new Error(
           `Error al actualizar la información del ciudadano: ${errorBody}`
         );
       }
-  
+
       await cargarDatosCiudadanos();
     } catch (error) {
       console.error("Error al actualizar la información del ciudadano:", error);
@@ -374,6 +378,6 @@ export const useListadoCiudadanos = defineStore("listadoCiduadanos", () => {
     cargarDatosCiudadanosDeudores,
     infoDeudores,
     infoCiudadano,
-    actualizarCiudadanoPartial
+    actualizarCiudadanoPartial,
   };
 });

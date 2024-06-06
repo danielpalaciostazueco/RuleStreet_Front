@@ -27,11 +27,8 @@ interface Ayuntamiento {
 }
 
 export const useListadoAuth = defineStore("listadoAuth", () => {
-
-
-
-  //const apiUrl = `https://rulestreetapi.retocsv.es`;
-   const apiUrl = `http://localhost:8001`;
+  const apiUrl = `https://rulestreetapi.retocsv.es`;
+  //const apiUrl = `http://localhost:8001`;
 
   let infoUsuarios: Usuario = {
     IdUsuario: 0,
