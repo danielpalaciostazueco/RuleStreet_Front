@@ -59,7 +59,9 @@ interface Ciudadano {
 }
 
 export const useListadoVehiculos = defineStore("listadoVehiculos", () => {
+
   //const apiUrl = `https://rulestreetapi.retocsv.es`;
+
   const apiUrl = `http://localhost:8001`;
   const infoVehiculos = reactive<Array<Vehiculo>>([]);
 
