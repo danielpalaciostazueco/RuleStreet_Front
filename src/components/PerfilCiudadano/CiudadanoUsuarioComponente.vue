@@ -119,6 +119,22 @@ export default defineComponent({
             return policia ? `${policia.ciudadano.nombre} ${policia.ciudadano.apellidos}` : 'Desconocido';
         };
 
+
+        function formatDate(date: any): string {
+            if (!(date instanceof Date)) {
+                date = new Date(date);
+            }
+            if (isNaN(date.getTime())) {
+                return '';
+            }
+
+            const day = String(date.getDate()).padStart(2, '0');
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const year = date.getFullYear();
+
+            return `${day}/${month}/${year}`;
+        }
+
         const loadCitizenDetails = async (id: number) => {
             if (id) {
                 await store.cargarDatosCiudadanosId(id);
@@ -192,6 +208,29 @@ export default defineComponent({
             showModal.value = true;
         };
 
+        function addHours(date: Date, hours: number): Date {
+            const newDate = new Date(date);
+            newDate.setHours(newDate.getHours() + hours);
+            return newDate;
+        }
+
+        function formatDateTime(date: any): string {
+            if (!(date instanceof Date)) {
+                date = new Date(date);
+            }
+            if (isNaN(date.getTime())) {
+                return '';
+            }
+            date = addHours(date, 2);
+            const day = String(date.getDate()).padStart(2, '0');
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const year = date.getFullYear();
+            const hours = String(date.getHours()).padStart(2, '0');
+            const minutes = String(date.getMinutes()).padStart(2, '0');
+
+            return `${day}/${month}/${year} ${hours}:${minutes}`;
+        }
+
         const handlePayment = async (multa: Multa, cardData: { cardNumber: string, expirationDate: string, cvv: string }) => {
             console.log('Pago realizado', multa, cardData);
             showModal.value = false;
@@ -206,30 +245,6 @@ export default defineComponent({
             }
         };
 
-        function formatearFecha(fecha: string) {
-            const fechaObj = new Date(fecha);
-            const opciones: Intl.DateTimeFormatOptions = {
-                year: "numeric",
-                month: "2-digit",
-                day: "2-digit",
-                hour: "2-digit",
-                minute: "2-digit",
-                hour12: false,
-            };
-
-            const fechaFormateada = fechaObj.toLocaleDateString("es-ES", opciones);
-            const horaFormateada = fechaObj.toLocaleTimeString("es-ES", opciones);
-
-            const fechaMatch = fechaFormateada.match(/(\d{2})\/(\d{2})\/(\d{4})/);
-            const horaMatch = horaFormateada.match(/(\d{2}):(\d{2})/);
-
-            if (fechaMatch && horaMatch) {
-                return `${fechaMatch[3]}-${fechaMatch[2]}-${fechaMatch[1]} ${horaMatch[1]}:${horaMatch[2]}`;
-            } else {
-                console.error("No se pudo formatear la fecha:", fecha);
-                return "";
-            }
-        }
 
         return {
             citizenId,
@@ -248,7 +263,8 @@ export default defineComponent({
             selectedMulta,
             showPaymentModal: showModal,
             handlePayment,
-            formatearFecha
+            formatDate,
+            formatDateTime
         };
     }
 });
@@ -294,7 +310,7 @@ function parseRouteParam(param: string | string[]): string {
                         </div>
                         <div class="ciudadano_tarjeta">
                             <p>{{ $t('PerfilCiudadano.Birthdate') }}</p>
-                            <p>{{ infoCiudadanos.fechaNacimiento }}</p>
+                            <p>{{ formatDate(infoCiudadanos.fechaNacimiento) }}</p>
                         </div>
                         <div class="ciudadano_tarjeta">
                             <p>ID</p>
@@ -329,8 +345,7 @@ function parseRouteParam(param: string | string[]): string {
                                 <div v-for="multa in infoCiudadanos.multas" :key="multa.idMulta" class="tarjeta_multa"
                                     :class="{ 'tarjeta_multa_pagada': multa.pagada }">
                                     <div class="tarjeta_otros_cabecera">
-                                        <p>{{ new Date(multa.fecha).toLocaleDateString() }} - {{ new
-                                            Date(multa.fecha).toLocaleTimeString() }}</p>
+                                        <p>{{ formatDateTime(multa.fecha) }}</p>
                                     </div>
                                     <p>{{ multa.codigoPenal.articulo }}</p>
                                     <div class="tarjeta_multa_info">
