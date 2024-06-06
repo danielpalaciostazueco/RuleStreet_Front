@@ -70,7 +70,7 @@ export default defineComponent({
                 {{ codigo.articulo }}
               </td>
               <td v-if="locale === 'es'"
-                class="codigoPenal_tablas5">
+                class="codigoPenal_tablas">
                 {{ codigo.descripcion }}
               </td>
               <td v-if="locale === 'en'"
