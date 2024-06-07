@@ -62,7 +62,7 @@ export default defineComponent({
     const { cargarDatosCodigoPenal, infoCodigoPenal, cargarDatosCodigoPenalId } = useListadoCodigoPenal();
     const { infoPoliciasAuth, loadPoliceInfo } = useListadoAuth();
     const { guardarMulta } = useListadoMultas();
-    const { guardarAuditoria} = useListadoAuditorias();
+    const { guardarAuditoria } = useListadoAuditorias();
     const { infoPolicias, cargarDatosPolicias } = useListadoPolicias();
 
     const newMulta = ref({
@@ -176,7 +176,7 @@ export default defineComponent({
           <h1>{{ $t('MultaCiudadano.Penal') }}</h1>
         </div>
         <div>
-          <input class="model_buscador" type="text" v-model="filtro" placeholder="Buscar en el código criminal...">
+          <input class="model_buscador" type="text" v-model="filtro" :placeholder="$t('MultaCiudadano.Title')">
         </div>
         <div class="model_tabla">
           <div class="model_tabla_encabezado">{{ $t('MultaCiudadano.Article') }}</div>

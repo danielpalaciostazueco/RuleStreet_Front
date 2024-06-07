@@ -2,26 +2,25 @@ import VehiculoBusquedaComponente from "@/components/BusquedaVehiculo/VehiculoBu
 
 export const messages = {
   en: {
-
-    graficaTraduccion:{
+    graficaTraduccion: {
       Title: "Citizens in Search and Capture by Day",
       DisSemanal: "Weekly Distribution",
     },
-    HomeTitulo:{
-      Title :"Welcome to RuleStreet"
+    HomeTitulo: {
+      Title: "Welcome to RuleStreet",
     },
 
     days: {
-      "Mon": "Mon",
-      "Tue": "Tue",
-      "Wed": "Wed",
-      "Thu": "Thu",
-      "Fri": "Fri",
-      "Sat": "Sat",
-      "Sun": "Sun"
+      Mon: "Mon",
+      Tue: "Tue",
+      Wed: "Wed",
+      Thu: "Thu",
+      Fri: "Fri",
+      Sat: "Sat",
+      Sun: "Sun",
     },
 
-    RangoPerfil:{
+    RangoPerfil: {
       Profile: "RANGE PROFILE",
       Select: "SELECT A RANGE TO LOAD THE INFORMATION",
       Search: "SEARCH A RANGE",
@@ -93,6 +92,7 @@ export const messages = {
       More: "More",
       Concept: "FINE CONCEPT",
       AddMulta: "Add Fine",
+      Title: "Search in the criminal code...",
     },
 
     PerfilCiudadano: {
@@ -118,7 +118,7 @@ export const messages = {
       Vehicles: "VEHICLES",
       NoVehicles: "NO VEHICLES REGISTERED",
       Loading: "Loading...",
-      BusquedaCiudadano: "Citizen"
+      BusquedaCiudadano: "Citizen",
     },
 
     ListadoCiudadano: {
@@ -164,7 +164,7 @@ export const messages = {
       IdPolicia: "ID Police",
       Precio: "Price: ",
       Loading: "Loading...",
-      PoliciaBusqueda: "Police"
+      PoliciaBusqueda: "Police",
     },
 
     VehiculoBusqueda: {
@@ -184,7 +184,7 @@ export const messages = {
       No: "No",
       Yes: "Yes",
       Loading: "Loading...",
-      Matricula : "Vehicle plate"
+      Matricula: "Vehicle plate",
     },
 
     CodigoPenalTabla: {
@@ -193,7 +193,7 @@ export const messages = {
       Cuantity: "Cuantity",
       Sentencia: "Sentence",
       Month: "Month",
-      BusquedaCodigoPenal: "Search in the penal code..."
+      BusquedaCodigoPenal: "Search in the penal code...",
     },
 
     BotonPrincipal: {
@@ -248,31 +248,28 @@ export const messages = {
   },
 
   es: {
-
-
-    graficaTraduccion:{
+    graficaTraduccion: {
       Title: "Ciudadanos en Búsqueda y Captura por Día",
       DisSemanal: "Distribución Semanal",
-      
     },
     days: {
-    "Mon": "Lun",
-    "Tue": "Mar",
-    "Wed": "Mié",
-    "Thu": "Jue",
-    "Fri": "Vie",
-    "Sat": "Sáb",
-    "Sun": "Dom"
-  },
-
-    HomeTitulo:{
-      Title :"Bienvenido a RuleStreet"
+      Mon: "Lun",
+      Tue: "Mar",
+      Wed: "Mié",
+      Thu: "Jue",
+      Fri: "Vie",
+      Sat: "Sáb",
+      Sun: "Dom",
     },
 
-    RangoPerfil:{
+    HomeTitulo: {
+      Title: "Bienvenido a RuleStreet",
+    },
+
+    RangoPerfil: {
       Profile: "PERFIL DE LOS RANGOS",
       Select: "SELECCIONA UN RANGO PARA CARGAR LA INFORMACIÓN",
-      Search: "BUSCAR UN RANGO", 
+      Search: "BUSCAR UN RANGO",
       SearchVehicle: "BUSCAR UN VEHÍCULO",
       SearchCitizen: "BUSCAR UN CIUDADANO",
       SearchPolice: "BUSCAR UN POLICÍA",
@@ -297,6 +294,18 @@ export const messages = {
       salirServicio: "Salir de Servicio",
     },
 
+    MultaCiudadano: {
+      Penal: "Código Penal",
+      Article: "Articulo",
+      Description: "Descripción",
+      Cuantity: "Cantidad",
+      Sentencia: "Sentencia",
+      Add: "Añadir",
+      More: "Mas",
+      Concept: "Concepto de la Multa",
+      AddMulta: "Añadir Multa",
+      Title: "",
+    },
     DashAyuntamiento: {
       Description: "Descripción",
       Date: "Fecha",
@@ -341,6 +350,7 @@ export const messages = {
       More: "Más",
       Concept: "CONCEPTO DE LA MULTA",
       AddMulta: "Añadir Multa",
+      Title: "Buscar en el código criminal...",
     },
 
     PerfilCiudadano: {
@@ -366,7 +376,7 @@ export const messages = {
       Vehicles: "VEHÍCULOS",
       NoVehicles: "NO HAY VEHÍCULOS REGISTRADOS",
       Loading: "Cargando...",
-      BusquedaCiudadano: "Ciudadano"
+      BusquedaCiudadano: "Ciudadano",
     },
 
     ListadoCiudadano: {
@@ -412,7 +422,7 @@ export const messages = {
       IdPolicia: "ID Policía",
       Precio: "Precio: ",
       Loading: "Cargando...",
-      PoliciaBusqueda: "Policía"
+      PoliciaBusqueda: "Policía",
     },
 
     VehiculoBusqueda: {
@@ -432,7 +442,7 @@ export const messages = {
       No: "No",
       Yes: "Sí",
       Loading: "Cargando...",
-      Matricula : "Matrícula del vehículo"
+      Matricula: "Matrícula del vehículo",
     },
 
     CodigoPenalTabla: {
@@ -441,7 +451,7 @@ export const messages = {
       Cuantity: "Cantidad",
       Sentencia: "Sentencia",
       Month: "Mes",
-      BusquedaCodigoPenal: "Buscar en el código penal..."
+      BusquedaCodigoPenal: "Buscar en el código penal...",
     },
 
     BotonPrincipal: {

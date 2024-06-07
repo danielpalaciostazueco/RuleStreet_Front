@@ -14,7 +14,6 @@ export interface Usuario {
 }
 
 export const useListadoUsuarios = defineStore("listadoUsuarios", () => {
-
   //const apiUrl = `https://rulestreetapi.retocsv.es`;
 
   const apiUrl = `http://localhost:8001`;

@@ -74,7 +74,7 @@ export default defineComponent({
 
     const loadVehicleDetails = async (id: number) => {
       try {
-        infoVehiculo.value = null; // Reset infoVehiculo before loading new data
+        infoVehiculo.value = null;
         await store.cargarDatosVehiculosId(id);
         if (store.vehiculo) {
           infoVehiculo.value = store.vehiculo;
