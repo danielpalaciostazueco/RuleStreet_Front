@@ -3,5 +3,14 @@ import BusquedaCapturaComponente from '../components/BusquedaCaptura/BusquedaCap
 </script>
 
 <template>
-    <BusquedaCapturaComponente />
+    <div class="app-background">
+        <BusquedaCapturaComponente />
+    </div>
 </template>
+
+<style scoped>
+.app-background {
+    background-color: var(--colorFondo);
+    min-height: 100vh;
+}
+</style>

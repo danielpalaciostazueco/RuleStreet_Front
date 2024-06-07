@@ -1,7 +1,10 @@
 <template>
     <div class="p-4">
-        <div id="chart-container" class="relative h-96 overflow-hidden rounded-lg shadow-lg bg-gradient-to-br from-white to-gray-200"></div>
-        <BotonPaginaPrincipalComponente />
+        <div id="chart-container"
+            class="relative h-96 overflow-hidden rounded-lg shadow-lg bg-gradient-to-br from-white to-gray-200"></div>
+        <div class="botones">
+            <BotonPaginaPrincipalComponente />
+        </div>
     </div>
 </template>
 
@@ -20,12 +23,12 @@ const searchQuery = ref('');
 const filterField = ref('nombre');
 
 const daysOfWeek = computed(() => [
-    t('days.Mon'), 
-    t('days.Tue'), 
-    t('days.Wed'), 
-    t('days.Thu'), 
-    t('days.Fri'), 
-    t('days.Sat'), 
+    t('days.Mon'),
+    t('days.Tue'),
+    t('days.Wed'),
+    t('days.Thu'),
+    t('days.Fri'),
+    t('days.Sat'),
     t('days.Sun')
 ]);
 
@@ -61,7 +64,7 @@ onMounted(() => {
 
             const option = {
                 title: {
-                    text: t('graficaTraduccion.Title'), 
+                    text: t('graficaTraduccion.Title'),
                     subtext: t('graficaTraduccion.DisSemanal'),
                     left: 'center',
                     textStyle: {
@@ -107,9 +110,16 @@ onMounted(() => {
 </script>
 
 <style scoped>
+.botones {
+    display: flex;
+    width: 100%;
+    padding: 2rem;
+    justify-content: center;
+}
+
 @media (max-width: 768px) {
     #chart-container {
-        height: 16rem; 
+        height: 16rem;
     }
 }
 </style>
