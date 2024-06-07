@@ -1,34 +1,34 @@
 <template>
-  <div class="mx-auto p-4">
-    <div class="shadow-lg rounded-lg overflow-x-auto">
-      <table class="table-auto w-full">
-        <thead>
-          <tr class="bg-blue-800 text-white">
-            <th class="px-4 py-2">{{ $t('DeudoresTabla.Photo') }}</th>
-            <th v-if="filterField" class="px-4 py-2">{{ OrdenarPorNombre(filterField) }}</th>
-            <th v-if="filterField !== 'nombre'" class="px-4 py-2">{{ $t('DeudoresTabla.Name') }}</th>
-            <th v-if="filterField !== 'apellidos'" class="px-4 py-2">{{ $t('DeudoresTabla.Surname') }}</th>
-            <th v-if="filterField !== 'genero'" class="px-4 py-2">{{ $t('DeudoresTabla.Gender') }}</th>
-            <th v-if="filterField !== 'nacionalidad'" class="px-4 py-2">{{ $t('DeudoresTabla.Nationality') }}</th>
-            <th v-if="filterField !== 'cantidad'" class="px-4 py-2">{{ $t('DeudoresTabla.Cantidad') }}</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="deudor in filteredDeudores" :key="deudor.idCiudadano" class="hover:bg-blue-100">
-            <td class="px-4 py-2 text-center">
-              <img :src="deudor.imagenUrl" alt="Foto del deudor" class="rounded-full w-12 h-12 object-cover mx-auto" />
-            </td>
-            <td v-if="filterField" class="px-4 py-2 text-center">{{ deudor[filterField as keyof typeof deudor] }}</td>
-            <td v-if="filterField !== 'nombre'" class="px-4 py-2 text-center">{{ deudor.nombre }}</td>
-            <td v-if="filterField !== 'apellidos'" class="px-4 py-2 text-center">{{ deudor.apellidos }}</td>
-            <td v-if="filterField !== 'genero'" class="px-4 py-2 text-center">{{ deudor.genero }}</td>
-            <td v-if="filterField !== 'nacionalidad'" class="px-4 py-2 text-center">{{ deudor.nacionalidad }}</td>
-            <td v-if="filterField !== 'cantidad'" class="px-4 py-2 text-center">{{ deudor.cantidad }}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <button id="excel-2" @click="ExportarExcel" class="mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg cursor-pointer transition-all duration-300 ease-in-out hover:bg-blue-700">
+  <div class="shadow-lg rounded-lg overflow-x-auto">
+    <table class="table-auto w-full">
+      <thead>
+        <tr class="bg-blue-800 text-white">
+          <th class="cabecera">{{ $t('DeudoresTabla.Photo') }}</th>
+          <th v-if="filterField" class="cabecera">{{ OrdenarPorNombre(filterField) }}</th>
+          <th v-if="filterField !== 'nombre'" class="cabecera">{{ $t('DeudoresTabla.Name') }}</th>
+          <th v-if="filterField !== 'apellidos'" class="cabecera">{{ $t('DeudoresTabla.Surname') }}</th>
+          <th v-if="filterField !== 'genero'" class="cabecera">{{ $t('DeudoresTabla.Gender') }}</th>
+          <th v-if="filterField !== 'nacionalidad'" class="cabecera">{{ $t('DeudoresTabla.Nationality') }}</th>
+          <th v-if="filterField !== 'cantidad'" class="cabecera">{{ $t('DeudoresTabla.Cantidad') }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="deudor in filteredDeudores" :key="deudor.idCiudadano" class="hover:bg-blue-100">
+          <td class="tabla">
+            <img :src="deudor.imagenUrl" alt="Foto del deudor" class="rounded-full w-12 h-12 object-cover mx-auto" />
+          </td>
+          <td v-if="filterField" class="tabla">{{ deudor[filterField as keyof typeof deudor] }}</td>
+          <td v-if="filterField !== 'nombre'" class="tabla">{{ deudor.nombre }}</td>
+          <td v-if="filterField !== 'apellidos'" class="tabla">{{ deudor.apellidos }}</td>
+          <td v-if="filterField !== 'genero'" class="tabla">{{ deudor.genero }}</td>
+          <td v-if="filterField !== 'nacionalidad'" class="tabla">{{ deudor.nacionalidad }}</td>
+          <td v-if="filterField !== 'cantidad'" class="tabla">{{ deudor.cantidad }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="divBotones">
+    <button id="excel-2" @click="ExportarExcel" class="botonExcel">
       {{ $t('DeudoresTabla.Excel') }}
     </button>
     <BotonPaginaPrincipalComponente />
@@ -89,12 +89,56 @@ const ExportarExcel = () => {
   @apply flex h-8 w-20 items-center justify-center bg-[color:var(--colorBotonBusquedaCiudadano)] text-[color:var(--colorTextoTarjeta)] no-underline mt-2.5 rounded-[10px];
 }
 
-.table-auto th, .table-auto td {
+.cabecera {
+  text-align: center;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  background-color: var(--colorFondoCiudadano2);
+  color: var(--colorTextoTarjeta);
+}
+
+.tabla {
+  text-align: center;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  background-color: var(--colorBlanco);
+}
+
+.botonExcel {
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 300ms;
+  color: var(--colorBlanco);
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  background-color: var(--colorBotonBusquedaCiudadanoActivo);
+  border-radius: 0.5rem;
+  cursor: pointer;
+  margin-top: 1rem;
+  width: 10rem;
+}
+
+.divBotones{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.table-auto th,
+.table-auto td {
   text-align: center;
 }
 
 @media (max-width: 768px) {
-  th, td {
+
+  th,
+  td {
     @apply text-sm;
   }
 
@@ -104,7 +148,9 @@ const ExportarExcel = () => {
 }
 
 @media (max-width: 480px) {
-  th, td {
+
+  th,
+  td {
     @apply text-xs;
   }
 
