@@ -4,35 +4,38 @@
       <table class="table-auto w-full border-collapse">
         <thead>
           <tr class="bg-blue-800 text-white">
-            <th class="px-4 py-2">{{ $t('BusquedaCapturaTabla.Photo') }}</th>
-            <th v-if="filterField" class="px-4 py-2">{{ OrdenarNombre(filterField) }}</th>
-            <th v-if="filterField !== 'nombre'" class="px-4 py-2">{{ $t('BusquedaCapturaTabla.Name') }}</th>
-            <th v-if="filterField !== 'apellidos'" class="px-4 py-2">{{ $t('BusquedaCapturaTabla.Surname') }}</th>
-            <th v-if="filterField !== 'genero'" class="px-4 py-2">{{ $t('BusquedaCapturaTabla.Gender') }}</th>
-            <th v-if="filterField !== 'isPeligroso'" class="px-4 py-2">{{ $t('BusquedaCapturaTabla.Danger') }}</th>
+            <th class="cabecera">{{ $t('BusquedaCapturaTabla.Photo') }}</th>
+            <th v-if="filterField" class="cabecera">{{ OrdenarNombre(filterField) }}</th>
+            <th v-if="filterField !== 'nombre'" class="cabecera">{{ $t('BusquedaCapturaTabla.Name') }}</th>
+            <th v-if="filterField !== 'apellidos'" class="cabecera">{{ $t('BusquedaCapturaTabla.Surname') }}</th>
+            <th v-if="filterField !== 'genero'" class="cabecera">{{ $t('BusquedaCapturaTabla.Gender') }}</th>
+            <th v-if="filterField !== 'isPeligroso'" class="cabecera">{{ $t('BusquedaCapturaTabla.Danger') }}</th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="ciudadano in CiudadanosFiltrados" :key="ciudadano.idCiudadano" class="hover:bg-blue-100">
-            <td class="px-4 py-2"><img :src="ciudadano.imagenUrl" alt="Foto del ciudadano"
+            <td class="tabla"><img :src="ciudadano.imagenUrl" alt="Foto del ciudadano"
                 class="rounded-full w-12 h-12 object-cover" /></td>
-            <td v-if="filterField" class="px-4 py-2">{{ ciudadano[filterField as keyof typeof ciudadano] }}</td>
-            <td v-if="filterField !== 'nombre'" class="px-4 py-2">{{ ciudadano.nombre }}</td>
-            <td v-if="filterField !== 'apellidos'" class="px-4 py-2">{{ ciudadano.apellidos }}</td>
-            <td v-if="filterField !== 'genero' && locale === 'es'" class="px-4 py-2">{{ ciudadano.genero }}</td>
-            <td v-if="filterField !== 'genero' && locale === 'en'" class="px-4 py-2">{{ ciudadano.gender }}</td>
-            <td v-if="filterField !== 'isPeligroso' && locale === 'es'" class="px-4 py-2">{{ ciudadano.isPeligroso ?
+            <td v-if="filterField" class="tabla">{{ ciudadano[filterField as keyof typeof ciudadano] }}</td>
+            <td v-if="filterField !== 'nombre'" class="tabla">{{ ciudadano.nombre }}</td>
+            <td v-if="filterField !== 'apellidos'" class="tabla">{{ ciudadano.apellidos }}</td>
+            <td v-if="filterField !== 'genero' && locale === 'es'" class="tabla">{{ ciudadano.genero }}</td>
+            <td v-if="filterField !== 'genero' && locale === 'en'" class="tabla">{{ ciudadano.gender }}</td>
+            <td v-if="filterField !== 'isPeligroso' && locale === 'es'" class="tabla">{{ ciudadano.isPeligroso ?
               'Sí' : 'No' }}</td>
-            <td v-if="filterField !== 'isPeligroso' && locale === 'en'" class="px-4 py-2">{{ ciudadano.isPeligroso ?
+            <td v-if="filterField !== 'isPeligroso' && locale === 'en'" class="tabla">{{ ciudadano.isPeligroso ?
               'Yes' : 'No' }}</td>
           </tr>
         </tbody>
       </table>
     </div>
-    <button id="excel-1" @click="ExportarExcel"
-      class="mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg cursor-pointer transition-all duration-300 ease-in-out hover:bg-blue-700">{{
-        $t('BusquedaCapturaTabla.Excel') }}</button>
-    <BotonPaginaPrincipalComponente />
+    <div class="div_botones">
+      <button id="excel-1" @click="ExportarExcel"
+        class="mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg cursor-pointer transition-all duration-300 ease-in-out hover:bg-blue-700">{{
+          $t('BusquedaCapturaTabla.Excel') }}</button>
+      <BotonPaginaPrincipalComponente />
+    </div>
+
   </div>
 </template>
 
@@ -94,7 +97,27 @@ const ExportarExcel = () => {
   border-collapse: collapse;
 }
 
-th, td {
+.cabecera {
+  background-color: var(--colorFondoCiudadano2);
+  color: var(--colorTextoTarjeta);
+}
+
+.tabla {
+  background-color: var(--colorBusquedaCiudadanoTarjeta);
+  border: 1px solid #ccc;
+  color: var(--colorTextoTarjeta);
+  text-align: left;
+  padding: 8px;
+}
+
+.div_botones{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+th,
+td {
   border: 1px solid #ccc;
   text-align: left;
   padding: 8px;
@@ -121,7 +144,9 @@ img {
 }
 
 @media (max-width: 768px) {
-  th, td {
+
+  th,
+  td {
     font-size: 0.875rem;
   }
 
@@ -132,7 +157,9 @@ img {
 }
 
 @media (max-width: 480px) {
-  th, td {
+
+  th,
+  td {
     font-size: 0.75rem;
   }
 
