@@ -5,7 +5,7 @@
         <thead>
           <tr class="bg-blue-800 text-white">
             <th class="px-4 py-2">{{ $t('DeudoresTabla.Photo') }}</th>
-            <th v-if="filterField" class="px-4 py-2">{{ fieldDisplayName(filterField) }}</th>
+            <th v-if="filterField" class="px-4 py-2">{{ OrdenarPorNombre(filterField) }}</th>
             <th v-if="filterField !== 'nombre'" class="px-4 py-2">{{ $t('DeudoresTabla.Name') }}</th>
             <th v-if="filterField !== 'apellidos'" class="px-4 py-2">{{ $t('DeudoresTabla.Surname') }}</th>
             <th v-if="filterField !== 'genero'" class="px-4 py-2">{{ $t('DeudoresTabla.Gender') }}</th>
@@ -28,7 +28,7 @@
         </tbody>
       </table>
     </div>
-    <button id="excel-2" @click="exportToExcel" class="mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg cursor-pointer transition-all duration-300 ease-in-out hover:bg-blue-700">
+    <button id="excel-2" @click="ExportarExcel" class="mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg cursor-pointer transition-all duration-300 ease-in-out hover:bg-blue-700">
       {{ $t('DeudoresTabla.Excel') }}
     </button>
     <BotonPaginaPrincipalComponente />
@@ -58,7 +58,7 @@ const filteredDeudores = computed(() => {
   });
 });
 
-function fieldDisplayName(field: any) {
+function OrdenarPorNombre(field: any) {
   const names: { [key: string]: string } = {
     nombre: 'Nombre',
     apellidos: 'Apellidos',
@@ -69,7 +69,7 @@ function fieldDisplayName(field: any) {
   return names[field] || field;
 }
 
-const exportToExcel = () => {
+const ExportarExcel = () => {
   const dataToExport = filteredDeudores.value.map((deudor: typeof infoDeudores[0]) => ({
     Nombre: deudor.nombre,
     Apellidos: deudor.apellidos,

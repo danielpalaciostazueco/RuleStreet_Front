@@ -65,7 +65,7 @@ export default defineComponent({
     const { guardarAuditoria } = useListadoAuditorias();
     const { infoPolicias, cargarDatosPolicias } = useListadoPolicias();
 
-    const newMulta = ref({
+    const NuevaMulta = ref({
       descripcion: '',
       monto: 0
     });
@@ -81,13 +81,13 @@ export default defineComponent({
 
     const filtro = ref('');
 
-    const updateIdCiudadano = () => {
+    const ActualizarCiudadanoId = () => {
       const rawId = route.params.id;
       idCiudadano.value = Array.isArray(rawId) ? parseInt(rawId[0], 10) : parseInt(rawId, 10);
     };
 
     watch(() => route.params.id, () => {
-      updateIdCiudadano();
+      ActualizarCiudadanoId();
     }, { immediate: true });
 
     onMounted(async () => {
@@ -97,7 +97,7 @@ export default defineComponent({
     });
 
     const close = () => {
-      newMulta.value = { descripcion: '', monto: 0 };
+      NuevaMulta.value = { descripcion: '', monto: 0 };
       articuloSeleccionado.value = { idCodigoPenal: 0, articulo: '', descripcion: '', description: '', precio: 0, sentencia: '' };
       filtro.value = '';
       emit('update:visible', false);
@@ -153,7 +153,7 @@ export default defineComponent({
     });
 
     return {
-      newMulta,
+      NuevaMulta,
       infoCodigoPenal,
       articulosFiltrados,
       submitMulta,

@@ -125,6 +125,7 @@ export const useListadoCiudadanos = defineStore("listadoCiduadanos", () => {
     multas: [],
     vehiculos: [],
     trabajo: "",
+    imagenUrl: "",
   };
 
   const infoDeudores = reactive<Array<Deudores>>([]);

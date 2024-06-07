@@ -86,6 +86,7 @@ interface Ciudadano {
   multas: Multa[];
   vehiculos: Vehiculo[];
   trabajo: string;
+  imagenUrl: string;
 }
 
 export default defineComponent({
@@ -117,7 +118,7 @@ export default defineComponent({
     };
 
 
-    const loadCitizenDetails = async (id: number) => {
+    const CargarCiudadanoId = async (id: number) => {
       if (id) {
         await store.cargarDatosCiudadanosId(id);
         infoCiudadanos.value = store.infoCiudadano;
@@ -132,7 +133,7 @@ export default defineComponent({
       if (parsedId) {
         citizenId.value = parsedId;
         loading.value = true;
-        await loadCitizenDetails(parsedId);
+        await CargarCiudadanoId(parsedId);
       }
     });
 
@@ -156,7 +157,7 @@ export default defineComponent({
     onMounted(async () => {
       await storePolicias.cargarDatosPolicias();
       if (citizenId.value) {
-        await loadCitizenDetails(citizenId.value);
+        await CargarCiudadanoId(citizenId.value);
       }
       await storeAuth.loadPoliceInfo();
       if (storeAuth.infoPoliciasAuth.IdPolicia) {
@@ -188,7 +189,7 @@ export default defineComponent({
         if (selectedMultaId.value !== null) {
           await storeMultas.borrarDatosMulta(selectedMultaId.value);
         }
-        await loadCitizenDetails(citizenId.value);
+        await CargarCiudadanoId(citizenId.value);
         showConfirmModal.value = false;
       } catch (error) {
         console.error('Error al eliminar la multa:', error);
@@ -214,7 +215,7 @@ export default defineComponent({
       errorMessage,
       infoCiudadanos,
       loading,
-      loadCitizenDetails,
+      CargarCiudadanoId,
       getnombrePolicia,
       formatDateTime
     };
@@ -239,7 +240,7 @@ function parseRouteParam(param: string | string[]): string {
       <template v-else-if="infoCiudadanos">
         <div class="ciudadano_perfil_usuario">
           <div class="ciudadano_perfil_usuario_izquierda">
-            <img src="https://via.placeholder.com/150" alt="">
+            <img :src="infoCiudadanos.imagenUrl"  alt="">
           </div>
           <div class="ciudadano_perfil_usuario_derecha">
             <div class="ciudadano_tarjeta">
@@ -337,7 +338,7 @@ function parseRouteParam(param: string | string[]): string {
                 <div class="ciudadano_perfil_multas">
                   <p @click="showModal = true">+ {{ $t('PerfilCiudadano.AddMulta') }}</p>
                 </div>
-                <Modal :visible="showModal" @update:visible="showModal = $event" @onModalClose="loadCitizenDetails" />
+                <Modal :visible="showModal" @update:visible="showModal = $event" @onModalClose="CargarCiudadanoId" />
               </div>
               <template v-if="infoCiudadanos.multas && infoCiudadanos.multas.length > 0">
                 <div class="notas_container">

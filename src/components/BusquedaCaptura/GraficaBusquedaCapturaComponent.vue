@@ -10,11 +10,24 @@ import { computed, ref, onMounted } from 'vue';
 import { useListadoCiudadanos } from '@/stores/storeCiudadano';
 import * as echarts from 'echarts';
 import BotonPaginaPrincipalComponente from '../ComponentesGenerales/BotonPaginaPrincipalComponente.vue';
+import { useI18n } from 'vue-i18n';
+
+const { t } = useI18n();
 
 const store = useListadoCiudadanos();
 const { infoCiudadanosBusquedaCaptura, cargarDatosCiudadanosBusquedaCaptura } = store;
 const searchQuery = ref('');
 const filterField = ref('nombre');
+
+const daysOfWeek = computed(() => [
+    t('days.Mon'), 
+    t('days.Tue'), 
+    t('days.Wed'), 
+    t('days.Thu'), 
+    t('days.Fri'), 
+    t('days.Sat'), 
+    t('days.Sun')
+]);
 
 const ciudadanosPorDia = computed(() => {
     const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
@@ -48,8 +61,8 @@ onMounted(() => {
 
             const option = {
                 title: {
-                    text: 'Ciudadanos en Búsqueda y Captura por Día',
-                    subtext: 'Distribución semanal',
+                    text: t('graficaTraduccion.Title'), 
+                    subtext: t('graficaTraduccion.DisSemanal'),
                     left: 'center',
                     textStyle: {
                         fontSize: titleFontSize
@@ -63,7 +76,7 @@ onMounted(() => {
                 },
                 xAxis: {
                     type: 'category',
-                    data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                    data: daysOfWeek.value,
                     axisTick: {
                         alignWithLabel: true
                     }

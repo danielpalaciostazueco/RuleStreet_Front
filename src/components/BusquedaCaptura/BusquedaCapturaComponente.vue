@@ -5,7 +5,7 @@
         <thead>
           <tr class="bg-blue-800 text-white">
             <th class="px-4 py-2">{{ $t('BusquedaCapturaTabla.Photo') }}</th>
-            <th v-if="filterField" class="px-4 py-2">{{ fieldDisplayName(filterField) }}</th>
+            <th v-if="filterField" class="px-4 py-2">{{ OrdenarNombre(filterField) }}</th>
             <th v-if="filterField !== 'nombre'" class="px-4 py-2">{{ $t('BusquedaCapturaTabla.Name') }}</th>
             <th v-if="filterField !== 'apellidos'" class="px-4 py-2">{{ $t('BusquedaCapturaTabla.Surname') }}</th>
             <th v-if="filterField !== 'genero'" class="px-4 py-2">{{ $t('BusquedaCapturaTabla.Gender') }}</th>
@@ -13,7 +13,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="ciudadano in filteredCiudadanos" :key="ciudadano.idCiudadano" class="hover:bg-blue-100">
+          <tr v-for="ciudadano in CiudadanosFiltrados" :key="ciudadano.idCiudadano" class="hover:bg-blue-100">
             <td class="px-4 py-2"><img :src="ciudadano.imagenUrl" alt="Foto del ciudadano"
                 class="rounded-full w-12 h-12 object-cover" /></td>
             <td v-if="filterField" class="px-4 py-2">{{ ciudadano[filterField as keyof typeof ciudadano] }}</td>
@@ -29,7 +29,7 @@
         </tbody>
       </table>
     </div>
-    <button id="excel-1" @click="exportToExcel"
+    <button id="excel-1" @click="ExportarExcel"
       class="mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg cursor-pointer transition-all duration-300 ease-in-out hover:bg-blue-700">{{
         $t('BusquedaCapturaTabla.Excel') }}</button>
     <BotonPaginaPrincipalComponente />
@@ -53,7 +53,7 @@ onMounted(async () => {
   await cargarDatosCiudadanosBusquedaCaptura();
 });
 
-const filteredCiudadanos = computed(() => {
+const CiudadanosFiltrados = computed(() => {
   const searchLower = searchQuery.value.toLowerCase();
   return infoCiudadanosBusquedaCaptura.filter((ciudadano: any) =>
     ciudadano.nombre.toLowerCase().includes(searchLower) ||
@@ -63,7 +63,7 @@ const filteredCiudadanos = computed(() => {
   );
 });
 
-function fieldDisplayName(field: any) {
+function OrdenarNombre(field: any) {
   const names: { [key: string]: string } = {
     nombre: 'Nombre',
     apellidos: 'Apellidos',
@@ -74,8 +74,8 @@ function fieldDisplayName(field: any) {
   return names[field] || field;
 }
 
-const exportToExcel = () => {
-  const ws = XLSX.utils.json_to_sheet(filteredCiudadanos.value.map((ciudadano: any) => ({
+const ExportarExcel = () => {
+  const ws = XLSX.utils.json_to_sheet(CiudadanosFiltrados.value.map((ciudadano: any) => ({
     Nombre: ciudadano.nombre,
     Apellidos: ciudadano.apellidos,
     Género: ciudadano.genero,
