@@ -101,7 +101,7 @@ export default defineComponent({
         const storeMultas = useListadoMultas();
         const storeAuth = useListadoAuth();
         const citizenId = ref<number>(storeAuth.getCitizenIdFromToken());
-        console.log('citizenId', citizenId)
+    
         const citizenid2 = citizenId.value;
         const showModal = ref(false);
         const showConfirmModal = ref(false);
@@ -139,7 +139,7 @@ export default defineComponent({
             if (id) {
                 await store.cargarDatosCiudadanosId(id);
                 infoCiudadanos.value = store.infoCiudadano;
-                console.log('infoCiudadanos', infoCiudadanos.value);
+                
                 loading.value = false;
             }
         };
@@ -181,7 +181,7 @@ export default defineComponent({
             } else {
                 errorMessage.value = "No tienes permiso para borrar multas.";
                 showError.value = true;
-                setTimeout(() => showError.value = false, 3000);
+                setTimeout(() => showError.value = false, 1000);
             }
         };
 

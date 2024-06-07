@@ -102,9 +102,7 @@ export const useListadoCiudadanos = defineStore("listadoCiduadanos", () => {
 
   //const apiUrl = `http://localhost:8001`;
   const infoCiudadanos = reactive<Array<Ciudadano>>([]);
-  const infoCiudadanosBusquedaCaptura = reactive<
-    Array<CiudadanoBusquedaCaptura>
-  >([]);
+  const infoCiudadanosBusquedaCaptura = reactive<Array<CiudadanoBusquedaCaptura>>([]);
   let infoCiudadano = {
     idCiudadano: 0,
     nombre: "",
@@ -256,7 +254,7 @@ export const useListadoCiudadanos = defineStore("listadoCiduadanos", () => {
         (c) => c.idCiudadano === ciudadanoId
       );
       Object.assign(infoCiudadano, data);
-      console.log("infociudadano back after update:", infoCiudadano);
+    
     } catch (error) {
       console.error("Error al cargar la información del ciudadano:", error);
     }
