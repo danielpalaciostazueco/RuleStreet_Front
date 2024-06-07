@@ -14,8 +14,8 @@ export interface Nota {
 }
 
 export const useListadoNotas = defineStore("listadoNotas", () => {
-  const apiUrl = `http://rulestreetapi.retocsv.es`;
-  //const apiUrl = `http://localhost:8001`;
+  //const apiUrl = `http://rulestreetapi.retocsv.es`;
+  const apiUrl = `http://localhost:8001`;
   const infoNotas = reactive<Array<Nota>>([]);
   let token = "";
 
@@ -66,38 +66,6 @@ export const useListadoNotas = defineStore("listadoNotas", () => {
 
   async function guardarNotas(nota: Nota) {
     try {
-      if (nota.descripcion == null) {
-        const res = await fetch("https://es.libretranslate.com/translate", {
-          method: "POST",
-          body: JSON.stringify({
-            q: nota.descripcion,
-            source: "auto",
-            target: "en",
-            format: "text",
-            api_key: "",
-          }),
-          headers: { "Content-Type": "application/json" },
-        });
-        const data = await res.json();
-        nota.description = data.translatedText;
-      }
-
-      if (nota.description == null) {
-        const res = await fetch("https://es.libretranslate.com/translate", {
-          method: "POST",
-          body: JSON.stringify({
-            q: nota.description,
-            source: "auto",
-            target: "es",
-            format: "text",
-            api_key: "",
-          }),
-          headers: { "Content-Type": "application/json" },
-        });
-        const data = await res.json();
-        nota.descripcion = data.translatedText;
-      }
-
       if (localStorage.getItem("tokenUsuario") !== null) {
         token = localStorage.getItem("tokenUsuario") ?? "";
       } else {

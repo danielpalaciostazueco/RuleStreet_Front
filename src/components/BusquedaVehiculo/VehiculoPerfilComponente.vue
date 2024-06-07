@@ -74,7 +74,7 @@ export default defineComponent({
 
     const CargarDatosVehiculos = async (id: number) => {
       try {
-        infoVehiculo.value = null; 
+        infoVehiculo.value = null;
         await store.cargarDatosVehiculosId(id);
         if (store.vehiculo) {
           infoVehiculo.value = store.vehiculo;
