@@ -43,7 +43,7 @@ export default defineComponent({
       }
     };
 
-    const saveChanges = async (policia: any) => {
+    const GuardarCambios = async (policia: any) => {
       const rangoAntiguo = rangosOriginales[policia.idPolicia] || 'Sin Rango';
 
       if (policia.rango && policia.rango.nombre) {
@@ -96,7 +96,7 @@ export default defineComponent({
       infoRangos,
       editMode,
       startEdit,
-      saveChanges
+      GuardarCambios
     };
   }
 });
@@ -132,7 +132,7 @@ export default defineComponent({
         </td>
         <td>
           <template v-if="editMode[policia.idPolicia]">
-            <button @click="saveChanges(policia)">Guardar</button>
+            <button @click="GuardarCambios(policia)">Guardar</button>
           </template>
           <template v-else>
             <button @click="startEdit(policia.idPolicia)">Editar</button>

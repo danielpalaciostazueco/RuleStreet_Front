@@ -72,7 +72,7 @@ export default defineComponent({
     const infoVehiculo = ref<Vehiculo | null>(null);
     const { t, locale } = useI18n();
 
-    const loadVehicleDetails = async (id: number) => {
+    const CargarDatosVehiculos = async (id: number) => {
       try {
         infoVehiculo.value = null;
         await store.cargarDatosVehiculosId(id);
@@ -91,7 +91,7 @@ export default defineComponent({
       if (id) {
         vehicleid.value = parseInt(id, 10);
         if (vehicleid.value) {
-          loadVehicleDetails(vehicleid.value);
+          CargarDatosVehiculos(vehicleid.value);
         }
       }
     });
@@ -105,7 +105,7 @@ export default defineComponent({
       if (id) {
         vehicleid.value = parseInt(id, 10);
         if (vehicleid.value) {
-          loadVehicleDetails(vehicleid.value);
+          CargarDatosVehiculos(vehicleid.value);
         }
       }
     });

@@ -72,6 +72,8 @@ export const messages = {
       Danger: "Is Dangerous",
       Excel: "Export to Excel",
       Photo: "Photo",
+      Nationality: "Nationality",
+      SortBy: "Sort By"
     },
 
     BusquedaCiudadano: {
@@ -192,7 +194,7 @@ export const messages = {
       Description: "Description",
       Cuantity: "Cuantity",
       Sentencia: "Sentence",
-      Month: "Month",
+      Month: "Months",
       BusquedaCodigoPenal: "Search in the penal code...",
     },
 
@@ -330,6 +332,9 @@ export const messages = {
       Danger: "Es Peligroso",
       Excel: "Exportal a Excel",
       Photo: "Foto",
+      Nationality: "Nacionalidad",
+      SortBy: "Ordenar por"
+   
     },
 
     BusquedaCiudadano: {
@@ -450,7 +455,7 @@ export const messages = {
       Description: "Descripción",
       Cuantity: "Cantidad",
       Sentencia: "Sentencia",
-      Month: "Mes",
+      Month: "Meses",
       BusquedaCodigoPenal: "Buscar en el código penal...",
     },
 

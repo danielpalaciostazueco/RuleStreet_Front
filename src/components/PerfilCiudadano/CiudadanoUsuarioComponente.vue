@@ -101,7 +101,7 @@ export default defineComponent({
         const storeMultas = useListadoMultas();
         const storeAuth = useListadoAuth();
         const citizenId = ref<number>(storeAuth.getCitizenIdFromToken());
-        console.log('citizenId', citizenId)
+    
         const citizenid2 = citizenId.value;
         const showModal = ref(false);
         const showConfirmModal = ref(false);
@@ -135,11 +135,11 @@ export default defineComponent({
             return `${day}/${month}/${year}`;
         }
 
-        const loadCitizenDetails = async (id: number) => {
+        const CargarDatosCiudadanos = async (id: number) => {
             if (id) {
                 await store.cargarDatosCiudadanosId(id);
                 infoCiudadanos.value = store.infoCiudadano;
-                console.log('infoCiudadanos', infoCiudadanos.value);
+                
                 loading.value = false;
             }
         };
@@ -147,24 +147,24 @@ export default defineComponent({
         watchEffect(async () => {
             if (citizenId.value) {
                 loading.value = true;
-                await loadCitizenDetails(citizenId.value);
+                await CargarDatosCiudadanos(citizenId.value);
             } else {
                 loading.value = true;
-                await loadCitizenDetails(citizenid2);
+                await CargarDatosCiudadanos(citizenid2);
             }
         });
 
         onMounted(async () => {
             if (citizenId.value) {
-                loadCitizenDetails(citizenId.value);
+                CargarDatosCiudadanos(citizenId.value);
                 console.log(citizenId.value)
             } else {
-                loadCitizenDetails(citizenid2);
+                CargarDatosCiudadanos(citizenid2);
                 console.log(citizenid2)
             }
             await storePolicias.cargarDatosPolicias();
             if (storeAuth.infoUsuarios.IdCiudadano) {
-                await loadCitizenDetails(storeAuth.infoUsuarios.IdCiudadano);
+                await CargarDatosCiudadanos(storeAuth.infoUsuarios.IdCiudadano);
             }
             await storeAuth.loadPoliceInfo();
             if (storeAuth.infoPoliciasAuth.IdPolicia) {
@@ -181,7 +181,7 @@ export default defineComponent({
             } else {
                 errorMessage.value = "No tienes permiso para borrar multas.";
                 showError.value = true;
-                setTimeout(() => showError.value = false, 3000);
+                setTimeout(() => showError.value = false, 1000);
             }
         };
 
@@ -190,7 +190,7 @@ export default defineComponent({
                 if (selectedMultaId.value !== null) {
                     await storeMultas.borrarDatosMulta(selectedMultaId.value);
                 }
-                await loadCitizenDetails(storeAuth.infoUsuarios.IdCiudadano);
+                await CargarDatosCiudadanos(storeAuth.infoUsuarios.IdCiudadano);
                 showConfirmModal.value = false;
             } catch (error) {
                 console.error('Error al eliminar la multa:', error);
@@ -231,13 +231,13 @@ export default defineComponent({
             return `${day}/${month}/${year} ${hours}:${minutes}`;
         }
 
-        const handlePayment = async (multa: Multa, cardData: { cardNumber: string, expirationDate: string, cvv: string }) => {
+        const ManejarPago = async (multa: Multa, cardData: { cardNumber: string, expirationDate: string, cvv: string }) => {
             console.log('Pago realizado', multa, cardData);
             showModal.value = false;
             multa.pagada = true;
             try {
                 await storeMultas.actualizarMulta(multa);
-                await loadCitizenDetails(citizenId.value || citizenid2);
+                await CargarDatosCiudadanos(citizenId.value || citizenid2);
                 window.location.reload();
             } catch (error) {
                 console.error('Error al actualizar la multa:', error);
@@ -262,7 +262,7 @@ export default defineComponent({
             getnombrePolicia,
             selectedMulta,
             showPaymentModal: showModal,
-            handlePayment,
+            ManejarPago,
             formatDate,
             formatDateTime
         };
@@ -409,7 +409,7 @@ function parseRouteParam(param: string | string[]): string {
         </div>
     </div>
     <pay-componente :visible="showPaymentModal" @close="showPaymentModal = false" :multa="selectedMulta"
-        @pay="handlePayment" />
+        @pay="ManejarPago" />
 </template>
 
 <style scoped>

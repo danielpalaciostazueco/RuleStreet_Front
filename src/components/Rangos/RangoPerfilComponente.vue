@@ -71,7 +71,7 @@ export default defineComponent({
       }
     };
 
-    const toggleEdit = () => {
+    const Editando = () => {
       if (!editing.value) {
         originalPermisos.value = permisosConEstado.value.map(permiso => ({
           ...permiso
@@ -86,7 +86,7 @@ export default defineComponent({
       }
       editing.value = false;
     };
-    const saveEdit = async () => {
+    const GuardarEdicion = async () => {
       const updatedRango: Rango = {
         idRango: rangeId.value,
         nombre: rangeDetails.value?.nombre || '',
@@ -151,7 +151,7 @@ export default defineComponent({
       }
     }, { immediate: true });
 
-    const handleCheckboxChange = (permisoId: number, active: boolean) => {
+    const ManejarPermiso = (permisoId: number, active: boolean) => {
       console.log(`Permiso ID: ${permisoId}, Estado actual: ${active}`);
     };
 
@@ -161,11 +161,11 @@ export default defineComponent({
       permisos,
       permisosConEstado,
       editing,
-      toggleEdit,
+      Editando,
       cancelEdit,
-      saveEdit,
+      GuardarEdicion,
       editableSalary,
-      handleCheckboxChange,
+      ManejarPermiso,
       t
     };
   }
@@ -203,13 +203,13 @@ function parseRouteParam(param: string | string[]): string {
         <div class="permisos">
           <label v-for="permiso in permisosConEstado" :key="permiso.idPermiso" class="switch">
             <input type="checkbox" v-model="permiso.active" :disabled="!editing"
-              @change="handleCheckboxChange(permiso.idPermiso, permiso.active)">
+              @change="ManejarPermiso(permiso.idPermiso, permiso.active)">
             <span class="slider round"></span>
             {{ permiso.nombre }}
           </label>
         </div>
-        <button class="ciudadano_boton" v-if="!editing" @click="toggleEdit">Editar</button>
-        <button class="ciudadano_boton" v-if="editing" @click="saveEdit">Guardar</button>
+        <button class="ciudadano_boton" v-if="!editing" @click="Editando">Editar</button>
+        <button class="ciudadano_boton" v-if="editing" @click="GuardarEdicion">Guardar</button>
         <button class="ciudadano_boton" v-if="editing" @click="cancelEdit">Cancelar</button>
       </template>
       <return-button />

@@ -69,7 +69,7 @@ export default defineComponent({
     const { t, locale } = useI18n();
     const policiaDetails = ref<Policia | null>(null);
 
-    const loadPoliciaDetails = async (id: number) => {
+    const CargarDatosPolicias = async (id: number) => {
       await store.cargarDatosPoliciasId(id);
       infoPolicias.splice(0, infoPolicias.length);
       infoPolicias.push(store.infoPoli);
@@ -95,7 +95,7 @@ export default defineComponent({
       const parsedId = parseInt(newId as string);
       if (parsedId) {
         policiaId.value = parsedId;
-        loadPoliciaDetails(parsedId);
+        CargarDatosPolicias(parsedId);
         storeMultas.cargarDatosMultas(parsedId);
       }
     }, { immediate: true });
@@ -103,7 +103,7 @@ export default defineComponent({
 
     onMounted(() => {
       if (policiaId.value) {
-        loadPoliciaDetails(policiaId.value);
+        CargarDatosPolicias(policiaId.value);
         storeMultas.cargarDatosMultas(policiaId.value);
       }
     });
