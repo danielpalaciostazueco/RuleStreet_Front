@@ -88,6 +88,7 @@ interface Ciudadano {
   vehiculos: Vehiculo[];
   trabajo: string;
   notas: Notas[];
+  imagenUrl: string;
 }
 
 interface Notas {

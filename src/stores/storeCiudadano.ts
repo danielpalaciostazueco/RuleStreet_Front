@@ -136,7 +136,7 @@ export const useListadoCiudadanos = defineStore("listadoCiduadanos", () => {
     multas: [],
     vehiculos: [],
     trabajo: "",
-    notas: []
+    notas: [],
     imagenUrl: "",
   };
 
