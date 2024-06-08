@@ -34,16 +34,15 @@ interface Multa {
   codigoPenal: CodigoPenal[];
 }
 
-
 interface Notas {
-  idNota : number,
-  titulo: string,
-  title: string,
-  descripcion: string,
-  description: string,
-  fecha: Date,
-  idPolicia: number,
-  idCiudadano: number
+  idNota: number;
+  titulo: string;
+  title: string;
+  descripcion: string;
+  description: string;
+  fecha: Date;
+  idPolicia: number;
+  idCiudadano: number;
 }
 
 export interface Ciudadano {
@@ -68,7 +67,7 @@ export interface Ciudadano {
   multas: Multa[];
   vehiculos: Vehiculo[];
   trabajo: string;
-  notas: Notas[]
+  notas: Notas[];
 }
 
 interface Deudores {
@@ -111,11 +110,13 @@ interface CiudadanoBusquedaCaptura {
 }
 
 export const useListadoCiudadanos = defineStore("listadoCiduadanos", () => {
-  //const apiUrl = `https://rulestreetapi.retocsv.es`;
+  const apiUrl = `https://rulestreetapi.retocsv.es`;
 
-  const apiUrl = `http://localhost:8001`;
+  //const apiUrl = `http://localhost:8001`;
   const infoCiudadanos = reactive<Array<Ciudadano>>([]);
-  const infoCiudadanosBusquedaCaptura = reactive<Array<CiudadanoBusquedaCaptura>>([]);
+  const infoCiudadanosBusquedaCaptura = reactive<
+    Array<CiudadanoBusquedaCaptura>
+  >([]);
   let infoCiudadano = {
     idCiudadano: 0,
     nombre: "",
@@ -268,7 +269,6 @@ export const useListadoCiudadanos = defineStore("listadoCiduadanos", () => {
         (c) => c.idCiudadano === ciudadanoId
       );
       Object.assign(infoCiudadano, data);
-    
     } catch (error) {
       console.error("Error al cargar la información del ciudadano:", error);
     }

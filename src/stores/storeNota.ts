@@ -14,8 +14,8 @@ export interface Nota {
 }
 
 export const useListadoNotas = defineStore("listadoNotas", () => {
-  //const apiUrl = `http://rulestreetapi.retocsv.es`;
-  const apiUrl = `http://localhost:8001`;
+  const apiUrl = `https://rulestreetapi.retocsv.es`;
+  //const apiUrl = `http://localhost:8001`;
   const infoNotas = reactive<Array<Nota>>([]);
   let token = "";
 
