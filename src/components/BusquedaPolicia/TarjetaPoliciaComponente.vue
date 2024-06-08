@@ -66,4 +66,16 @@ export default defineComponent({
 .rango p {
   @apply text-[color:var(--colorBlanco)] bg-[color:var(--colorTarjetaPoliciaRango)] p-1 rounded-[0.4rem];
 }
+
+@media screen and (max-width: 1375px){
+  .tarjeta{
+    height: 8rem;
+  }
+}
+
+@media screen and (max-width: 1345px){
+  .tarjeta{
+    height: 10rem;
+  }
+}
 </style>

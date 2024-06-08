@@ -19,11 +19,7 @@ export default defineComponent({
             selectedCitizenId.value = id;
         };
 
-        const containerHeight = computed(() => {
-            return route.path.includes('/busquedaCiudadano/') ? '90rem' : '50rem';
-        });
-
-        return { selectedCitizenId, handleSelectCitizen, containerHeight };
+        return { selectedCitizenId, handleSelectCitizen };
     }
 });
 </script>
@@ -33,7 +29,7 @@ export default defineComponent({
     <body>
         <div class="ciudadano_container">
         <title-bar :title="$t('RangoPerfil.SearchCitizen')" />
-        <div class="ciudadano_menu" :style="{ height: containerHeight }">
+        <div class="ciudadano_menu">
             <search-panel @select-citizen="handleSelectCitizen" />
             <profile-section :selectedCitizenId="selectedCitizenId" />
         </div>

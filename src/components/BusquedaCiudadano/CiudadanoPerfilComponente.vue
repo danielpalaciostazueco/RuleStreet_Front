@@ -92,7 +92,7 @@ interface Ciudadano {
 }
 
 interface Notas {
-  idNota : number,
+  idNota: number,
   titulo: string,
   title: string,
   descripcion: string,
@@ -267,7 +267,7 @@ function parseRouteParam(param: string | string[]): string {
       <template v-else-if="infoCiudadanos">
         <div class="ciudadano_perfil_usuario">
           <div class="ciudadano_perfil_usuario_izquierda">
-            <img :src="infoCiudadanos.imagenUrl"  alt="">
+            <img :src="infoCiudadanos.imagenUrl" alt="">
           </div>
           <div class="ciudadano_perfil_usuario_derecha">
             <div class="ciudadano_tarjeta">
@@ -432,9 +432,6 @@ function parseRouteParam(param: string | string[]): string {
               </div>
               <div class="tarjeta_otros">
                 <p>NO HAY DENUNCIAS REGISTRADAS</p>
-              </div>
-              <div class="tarjeta_otros">
-                <p>Investigacion de venta de drogas #121</p>
               </div>
             </div>
           </div>
@@ -644,14 +641,32 @@ function parseRouteParam(param: string | string[]): string {
 }
 
 @media (max-width: 1407px) {
+  .ciudadano_perfil {
+    gap: 2rem;
+  }
+
   .ciudadano_perfil_usuario {
     @apply flex w-full gap-12 flex-col;
   }
 
   .ciudadano_perfil_botones[data-v-a5cac0f2] {
-    @apply flex h-32 w-full items-center justify-center gap-8 bg-[color:var(--colorBusquedaCiudadanoTarjeta)] mt-5 rounded-[0.7rem];
+    display: flex;
+    width: 100%;
+    margin: 0;
+    flex-direction: row;
   }
 
+  .ciudadano_perfil_boton label[data-v-a5cac0f2]{
+    width: 100%;
+  }
+
+  .ciudadano_perfil_botones_izquierda{
+    width: 50%
+  }
+
+  .ciudadano_perfil_botones_derecha{
+    width: 50%
+  }
   .ciudadano_perfil_boton {
     @apply flex w-6/12 mb-2.5;
   }
