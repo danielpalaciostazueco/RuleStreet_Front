@@ -24,7 +24,7 @@ export default defineComponent({
 
 
     const containerHeight = computed(() => {
-      if (windowWidth.value <= 1330) {
+      if (windowWidth.value <= 1337) {
         return 'auto';
       }
       return route.path.includes('/agentes/') ? '90rem' : '50rem';

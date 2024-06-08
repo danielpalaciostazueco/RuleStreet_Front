@@ -445,6 +445,9 @@ export default defineComponent({
 }
 
 @media (max-width: 1375px) {
+  .policia_perfil{
+    gap: 2rem
+  }
   .policia_perfil_usuario {
     @apply flex w-full gap-12 flex-nowrap flex-col;
   }

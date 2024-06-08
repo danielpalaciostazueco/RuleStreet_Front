@@ -33,7 +33,7 @@ export default defineComponent({
     };
 
     const containerHeight = computed(() => {
-      if (windowWidth.value <= 1170) {
+      if (windowWidth.value <= 1410) {
         return 'auto'; 
       }
       return route.path.includes('/busquedaCiudadano/') ? '90rem' : '50rem';
@@ -75,6 +75,11 @@ body {
 .ciudadano_menu {
   @apply flex flex-row w-full gap-8;
 
+}
+@media screen and (max-width: 1160px){
+  .ciudadano_menu{
+    gap: 1rem;
+  }
 }
 
 @media screen and (max-width: 1024px) {
