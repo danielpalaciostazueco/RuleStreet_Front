@@ -11,7 +11,7 @@ import CiudadanoUsuarioComponente from '@/components/PerfilCiudadano/CiudadanoUs
 
 <style scoped>
 .ciudadano_container {
-    height: 100vh; 
+    min-height: 100vh; 
     background-color: var(--colorFondo); 
     display: flex;
 }
